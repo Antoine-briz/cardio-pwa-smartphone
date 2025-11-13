@@ -21,6 +21,11 @@ const routes = {
   // Réanimation
   "#/reanimation": renderReanMenu,
   "#/reanimation/antibiotherapie": renderReanAntibiotherapieMenu,
+  "#/reanimation/formules": renderReanFormulesMenu,
+  "#/reanimation/eto": renderReanEtoMenu,
+  "#/reanimation/eer": renderReanEerMenu,
+  "#/reanimation/transplantation": renderReanTransplantMenu,
+  "#/reanimation/assistances": renderReanAssistancesMenu,
 
   // CEC
   "#/cec": renderCecMenu,
