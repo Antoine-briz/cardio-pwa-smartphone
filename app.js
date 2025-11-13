@@ -145,26 +145,50 @@ function renderAnesthChirCecMenu() {
   $app.innerHTML = `
     <section>
       <h2>Chirurgies cardiaques sous CEC</h2>
+
+      <h3>Chirurgies programmées</h3>
       <div class="grid">
         <button class="btn" onclick="renderInterventionPontages()">
           Pontages coronaires
         </button>
-        <button class="btn">
-          RVA / Plastie aortique
+        <button class="btn" onclick="renderInterventionRVA()">
+          RVA ou plastie aortique
         </button>
-        <button class="btn">
-          RVM / Plastie mitrale
+        <button class="btn" onclick="renderInterventionRVM()">
+          RVM ou plastie mitrale
         </button>
-        <button class="btn">
+        <button class="btn" onclick="renderInterventionRVT()">
+          RVT ou plastie tricuspide
+        </button>
+        <button class="btn" onclick="renderInterventionAorteAsc()">
+          Chirurgie de l’aorte ascendante (hors dissection)
+        </button>
+      </div>
+
+      <h3 style="margin-top:24px;">Dissection aortique</h3>
+      <div class="grid">
+        <button class="btn" onclick="renderInterventionDissectionAo()">
+          Dissection aortique
+        </button>
+      </div>
+
+      <h3 style="margin-top:24px;">Transplantation cardiaque</h3>
+      <div class="grid">
+        <button class="btn" onclick="renderInterventionTransplantAnesth()">
           Transplantation cardiaque
         </button>
-        <button class="btn">
-          Assistances circulatoires
+      </div>
+
+      <h3 style="margin-top:24px;">Assistances circulatoires</h3>
+      <div class="grid">
+        <button class="btn" onclick="renderInterventionAssistancesCEC()">
+          Assistances circulatoires (implantation / explantation)
         </button>
       </div>
     </section>
   `;
 }
+
 
 function renderAnesthCardioStructMenu() {
   $app.innerHTML = `
@@ -1946,6 +1970,22 @@ function renderInterventionPage({ titre, sousTitre, encadres }) {
     });
 }
 
+// Helpers génériques pour les calculs poids / mg/kg
+
+function parseKg(inputId) {
+  const el = document.getElementById(inputId);
+  if (!el) return null;
+  const v = parseFloat((el.value || "").replace(",", "."));
+  if (isNaN(v) || v <= 0) return null;
+  return v;
+}
+
+function formatDoseMgPerKg(poids, mgPerKg) {
+  if (!poids) return `${mgPerKg} mg/kg`;
+  const dose = mgPerKg * poids;
+  return `${mgPerKg} mg/kg (~${dose.toFixed(0)} mg)`;
+}
+
 function renderInterventionPontages() {
   const encadres = [
     {
@@ -1954,28 +1994,28 @@ function renderInterventionPontages() {
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="pontages-poids" min="30" max="250" step="1" />
+              <input type="number" id="pc-poids" min="30" max="250" step="1" />
             </label>
           </div>
 
           <div class="row">
             <label>
-              <input type="checkbox" id="pontages-imc50" />
-              IMC > 50 kg/m²
+              <input type="checkbox" id="pc-imc50" />
+              IMC &gt; 50 kg/m²
             </label>
             <label>
-              <input type="checkbox" id="pontages-induction-risque" />
+              <input type="checkbox" id="pc-induction-risque" />
               Induction à risque (FEVG &lt; 35%, TC serré, HTAP)
             </label>
           </div>
 
           <div class="row">
             <label>
-              <input type="checkbox" id="pontages-seq-rapide" />
+              <input type="checkbox" id="pc-seq-rapide" />
               Séquence rapide
             </label>
             <label>
-              <input type="checkbox" id="pontages-allergie-bl" />
+              <input type="checkbox" id="pc-allergie-bl" />
               Allergie aux bêta-lactamines
             </label>
           </div>
@@ -1986,32 +2026,31 @@ function renderInterventionPontages() {
       titre: "Monitorage",
       html: `
         <p>
-          Scope ECG 5 branches, SpO₂, KTA radial gauche, KTC 5 voies jugulaire interne droite,
-          BIS, NIRS si facteurs de risque, ETO possible, Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID, BIS,
+          NIRS si FdR, ETO possible, Swan-Ganz si FEVG &lt; 35% ou HTAP.
         </p>
-        <p><strong>Objectif :</strong> lent, mou, fermé.</p>
+        <p><strong>Objectif :</strong> Lent, mou, fermé.</p>
       `,
     },
     {
       titre: "Anesthésie",
       html: `
-        <p id="pontages-induction-text">
+        <p id="pc-induction-text">
           <strong>Induction :</strong>
-          AIVOC Propofol / Sufentanil, Atracurium 0,5 mg/kg.
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
         <p>
-          <strong>Entretien :</strong>
-          AIVOC Propofol / Sufentanil.
+          <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
         </p>
-        <p id="pontages-ketamine-text">
+        <p id="pc-keta-text">
           Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
         </p>
-        <p id="pontages-exacyl-text">
-          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf contre-indication).
+        <p id="pc-exacyl-text">
+          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
         </p>
         <p>
-          <strong>ALR :</strong> bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose maximale 3 mg/kg).
+          <strong>ALR :</strong> Bloc thoracique transverse,
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose max 3 mg/kg).
         </p>
       `,
     },
@@ -2019,18 +2058,18 @@ function renderInterventionPontages() {
       titre: "Antibioprophylaxie",
       html: `
         <ul>
-          <li id="pontages-atb-cefazoline">
+          <li id="pc-cefazoline-standard">
             <strong>Céfazoline :</strong>
-            2 g (+ 1 g dans le priming CEC) puis 1 g toutes les 4 h.
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
           </li>
-          <li id="pontages-atb-cefazoline-obese" style="display:none;">
+          <li id="pc-cefazoline-obese" style="display:none;">
             <strong>Céfazoline (IMC &gt; 50) :</strong>
-            4 g (+ 2 g dans le priming CEC) puis 2 g toutes les 4 h.
+            4 g (+ 2 g priming CEC) puis 2 g toutes les 4 h.
           </li>
-          <li id="pontages-atb-vancomycine" style="display:none;">
-            <strong>Allergie bêta-lactamines :</strong>
-            Vancomycine <span id="pontages-vanco-dose">30 mg/kg</span> IVL en une injection
-            30 minutes avant incision.
+          <li id="pc-vancomycine" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="pc-vanco-dose">30 mg/kg</span> IVL,
+            en une injection 30 min avant incision.
           </li>
         </ul>
       `,
@@ -2038,19 +2077,861 @@ function renderInterventionPontages() {
     {
       titre: "ETO (optionnelle)",
       html: `
-        <p><strong>Fonction VG :</strong> FEVG visuelle, Simpson biplan, ITV CCVG.</p>
-        <p><strong>VD :</strong> TAPSE, onde S tricuspide, indice de Tei, strain VD.</p>
-        <p>
-          <span style="color:#0070C0;">Lien ETO fonction VG.png</span><br>
-          <span style="color:#0070C0;">Lien ETO VD.png</span>
-        </p>
+        <p><strong>Fonction VG :</strong></p>
+        <ul>
+          <li>FEVG visuelle et Simpson biplan</li>
+          <li>ITV CCVG</li>
+          <li>FR de surface</li>
+          <li>dP/dt sur IM</li>
+          <li>Onde S mitrale</li>
+          <li>Indice de Tei</li>
+          <li>Cinétique segmentaire (17 segments du VG)</li>
+          <li>Strain VG</li>
+        </ul>
+        <p><strong>Fonction VD :</strong></p>
+        <ul>
+          <li>FEVD visuelle</li>
+          <li>ITV CCVD</li>
+          <li>TAPSE</li>
+          <li>Onde S tricuspide</li>
+          <li>Indice de Tei</li>
+          <li>Strain VD</li>
+        </ul>
       `,
     },
     {
       titre: "CEC",
       html: `
-        <p><strong>Canulation artérielle :</strong> aortique.</p>
-        <p><strong>Canulation veineuse :</strong> atrio-cave.</p>
+        <p><strong>Canulation artérielle :</strong> Aortique.</p>
+        <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
+        <p>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.</p>
+        <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min.</p>
+        <p>Protamine 60–80 % de la dose initiale d’héparine.</p>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Pontages coronaires",
+    sousTitre: "Chirurgie programmée sous CEC",
+    encadres,
+  });
+
+  setupPcLogic();
+}
+
+function setupPcLogic() {
+  const poidsInputId = "pc-poids";
+  const cbImc = document.getElementById("pc-imc50");
+  const cbRisk = document.getElementById("pc-induction-risque");
+  const cbSeq = document.getElementById("pc-seq-rapide");
+  const cbAllergie = document.getElementById("pc-allergie-bl");
+
+  const indText = document.getElementById("pc-induction-text");
+  const liCefaStd = document.getElementById("pc-cefazoline-standard");
+  const liCefaObese = document.getElementById("pc-cefazoline-obese");
+  const liVanco = document.getElementById("pc-vancomycine");
+  const spanVanco = document.getElementById("pc-vanco-dose");
+
+  function updateInduction() {
+    const poids = parseKg(poidsInputId);
+    let txt = "<strong>Induction :</strong> ";
+
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${formatDoseMgPerKg(poids, 0.3)} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${formatDoseMgPerKg(poids, 1.2)} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${formatDoseMgPerKg(poids, 0.5)}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+  }
+
+  function updateAtb() {
+    const poids = parseKg(poidsInputId);
+
+    if (cbImc && cbImc.checked) {
+      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaObese) liCefaObese.style.display = "";
+    } else {
+      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaObese) liCefaObese.style.display = "none";
+    }
+
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateInduction();
+    updateAtb();
+  }
+
+  ["pc-poids"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", updateAll);
+  });
+  [cbImc, cbRisk, cbSeq, cbAllergie].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionRVA() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="rva-poids" min="30" max="250" step="1" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="rva-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="rva-induction-risque" />
+              Induction à risque (FEVG &lt; 35%, RA serré, IA sévère, HTAP)
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="rva-seq-rapide" />
+              Séquence rapide
+            </label>
+            <label>
+              <input type="checkbox" id="rva-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID, BIS,
+          NIRS si FdR, ETO, Swan-Ganz si FEVG &lt; 35% ou HTAP.
+        </p>
+        <p><strong>Objectif IA :</strong> Plein, rapide, ouvert.</p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="rva-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+        </p>
+        <p>
+          <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
+        </p>
+        <p>
+          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        </p>
+        <p>
+          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+        </p>
+        <p>
+          <strong>ALR :</strong> Bloc thoracique transverse,
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (max 3 mg/kg).
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="rva-cefazoline-standard">
+            <strong>Céfazoline :</strong>
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="rva-cefazoline-obese" style="display:none;">
+            <strong>Céfazoline (IMC &gt; 50) :</strong>
+            4 g (+ 2 g priming CEC) puis 2 g toutes les 4 h.
+          </li>
+          <li id="rva-vancomycine" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="rva-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO (optionnelle)",
+      html: `
+        <p><strong>Insuffisance aortique :</strong></p>
+        <ul>
+          <li>Vena contracta</li>
+          <li>PHT</li>
+          <li>SOR, volume régurgité</li>
+          <li>DTDVG / VTDVG</li>
+          <li>Diamètres aorte ascendante</li>
+        </ul>
+        <p><strong>Rétrécissement aortique :</strong></p>
+        <ul>
+          <li>Épaisseur SIV</li>
+          <li>Gradient max VA</li>
+          <li>Vmax VA</li>
+          <li>Surface VA</li>
+          <li>ITV CCVG/VA</li>
+          <li>Morphologie (uni/bicuspidie)</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "CEC",
+      html: `
+        <p><strong>Canulation artérielle :</strong> Aortique.</p>
+        <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
+        <p>Héparine 300–400 UI/kg, ACT &gt; 400 s.</p>
+        <p>Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
+        <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min (Custodiol si durée prévue &gt; 2 h).</p>
+        <p>Protamine 60–80 % de la dose d’héparine.</p>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "RVA ou plastie aortique",
+    sousTitre: "Chirurgie programmée sous CEC",
+    encadres,
+  });
+
+  setupRvaLogic();
+}
+
+function setupRvaLogic() {
+  const poidsId = "rva-poids";
+  const cbImc = document.getElementById("rva-imc50");
+  const cbRisk = document.getElementById("rva-induction-risque");
+  const cbSeq = document.getElementById("rva-seq-rapide");
+  const cbAllergie = document.getElementById("rva-allergie-bl");
+
+  const indText = document.getElementById("rva-induction-text");
+  const liCefaStd = document.getElementById("rva-cefazoline-standard");
+  const liCefaObese = document.getElementById("rva-cefazoline-obese");
+  const liVanco = document.getElementById("rva-vancomycine");
+  const spanVanco = document.getElementById("rva-vanco-dose");
+
+  function updateInduction() {
+    const poids = parseKg(poidsId);
+    let txt = "<strong>Induction :</strong> ";
+
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${formatDoseMgPerKg(poids, 0.3)} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${formatDoseMgPerKg(poids, 1.2)} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${formatDoseMgPerKg(poids, 0.5)}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+  }
+
+  function updateAtb() {
+    const poids = parseKg(poidsId);
+
+    if (cbImc && cbImc.checked) {
+      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaObese) liCefaObese.style.display = "";
+    } else {
+      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaObese) liCefaObese.style.display = "none";
+    }
+
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateInduction();
+    updateAtb();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbRisk, cbSeq, cbAllergie].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionRVM() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Type d'intervention
+              <select id="rvm-type">
+                <option value="rvm">RVM</option>
+                <option value="plastie">Plastie mitrale</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="rvm-poids" min="30" max="250" step="1" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="rvm-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="rvm-induction-risque" />
+              Induction à risque (FEVG &lt; 35%, RM serré, IM sévère, HTAP)
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="rvm-seq-rapide" />
+              Séquence rapide
+            </label>
+            <label>
+              <input type="checkbox" id="rvm-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID
+          (ajouter « KTa radial droit » si indiqué), BIS, NIRS si FdR, ETO,
+          Swan-Ganz si FEVG &lt; 35% ou HTAP.
+        </p>
+        <p><strong>Objectif IM :</strong> Plein, rapide, ouvert.</p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="rvm-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+        </p>
+        <p id="rvm-video-text" style="display:none;">
+          <strong>Si plastie mitrale avec vidéo :</strong>
+          Intubation sélective par Carlens ou bloqueur endobronchique.
+        </p>
+        <p>
+          <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
+        </p>
+        <p>
+          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        </p>
+        <p>
+          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+        </p>
+        <p>
+          <strong>ALR :</strong> Bloc thoracique transverse,
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (max 3 mg/kg).
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="rvm-cefazoline-standard">
+            <strong>Céfazoline :</strong>
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="rvm-cefazoline-obese" style="display:none;">
+            <strong>Céfazoline (IMC &gt; 50) :</strong>
+            4 g (+ 2 g priming CEC) puis 2 g toutes les 4 h.
+          </li>
+          <li id="rvm-vancomycine" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="rvm-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO (optionnelle)",
+      html: `
+        <p><strong>Insuffisance mitrale :</strong></p>
+        <ul>
+          <li>Vena contracta</li>
+          <li>SOR, volume régurgité</li>
+          <li>PISA</li>
+          <li>Mécanisme IM</li>
+          <li>Diamètre anneau mitral</li>
+          <li>Longueur valvules</li>
+          <li>Dilatation OG/VG</li>
+          <li>PAPs sur IT</li>
+          <li>PAPm/d sur IP</li>
+          <li>Risque de SAM</li>
+        </ul>
+        <p><strong>Rétrécissement mitral :</strong></p>
+        <ul>
+          <li>Gradient moyen</li>
+          <li>Surface mitrale</li>
+          <li>Dilatation OG</li>
+          <li>PAPs sur IT</li>
+          <li>PAPm/d sur IP</li>
+          <li>Fonction VD</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "CEC",
+      html: `
+        <p><strong>Canulation artérielle :</strong> Aortique.</p>
+        <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
+        <p>Héparine 300–400 UI/kg, ACT &gt; 400 s.</p>
+        <p>Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
+        <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min (Custodiol si durée prévue &gt; 2 h).</p>
+        <p>Protamine 60–80 % de la dose d’héparine.</p>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "RVM ou plastie mitrale",
+    sousTitre: "Chirurgie programmée sous CEC",
+    encadres,
+  });
+
+  setupRvmLogic();
+}
+
+function setupRvmLogic() {
+  const poidsId = "rvm-poids";
+  const cbImc = document.getElementById("rvm-imc50");
+  const cbRisk = document.getElementById("rvm-induction-risque");
+  const cbSeq = document.getElementById("rvm-seq-rapide");
+  const cbAllergie = document.getElementById("rvm-allergie-bl");
+  const selType = document.getElementById("rvm-type");
+
+  const indText = document.getElementById("rvm-induction-text");
+  const videoText = document.getElementById("rvm-video-text");
+  const liCefaStd = document.getElementById("rvm-cefazoline-standard");
+  const liCefaObese = document.getElementById("rvm-cefazoline-obese");
+  const liVanco = document.getElementById("rvm-vancomycine");
+  const spanVanco = document.getElementById("rvm-vanco-dose");
+
+  function updateInduction() {
+    const poids = parseKg(poidsId);
+    let txt = "<strong>Induction :</strong> ";
+
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${formatDoseMgPerKg(poids, 0.3)} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${formatDoseMgPerKg(poids, 1.2)} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${formatDoseMgPerKg(poids, 0.5)}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+  }
+
+  function updateAtb() {
+    const poids = parseKg(poidsId);
+
+    if (cbImc && cbImc.checked) {
+      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaObese) liCefaObese.style.display = "";
+    } else {
+      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaObese) liCefaObese.style.display = "none";
+    }
+
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateType() {
+    if (!selType || !videoText) return;
+    const isPlastie = selType.value === "plastie";
+    videoText.style.display = isPlastie ? "" : "none";
+  }
+
+  function updateAll() {
+    updateInduction();
+    updateAtb();
+    updateType();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbRisk, cbSeq, cbAllergie].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+  if (selType) selType.addEventListener("change", updateAll);
+
+  updateAll();
+}
+
+function renderInterventionRVT() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="rvt-poids" min="30" max="250" step="1" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="rvt-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="rvt-induction-risque" />
+              Induction à risque (FEVG &lt; 35%, RT serré, IT sévère, HTAP)
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="rvt-seq-rapide" />
+              Séquence rapide
+            </label>
+            <label>
+              <input type="checkbox" id="rvt-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies, BIS,
+          NIRS si FdR, ETO, Swan-Ganz si induction à risque.
+        </p>
+        <p><strong>Objectif IT :</strong> Normovolémie, rapide, ouvert (RVP basses).</p>
+        <p><strong>Objectif RT :</strong> Plein, lent, fermé.</p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="rvt-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+        </p>
+        <p>
+          <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
+        </p>
+        <p>
+          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        </p>
+        <p>
+          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+        </p>
+        <p>
+          <strong>ALR :</strong> Bloc thoracique transverse,
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (Max 3 mg/kg).
+        </p>
+        <p style="font-size: 0.9em; opacity: 0.8;">
+          (Remplacement par Etomidate si induction à risque, Rocuronium 1,2 mg/kg si séquence rapide,
+          comme indiqué dans le tableau.)
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="rvt-cefazoline-standard">
+            <strong>Céfazoline :</strong>
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="rvt-cefazoline-obese" style="display:none;">
+            <strong>Céfazoline (IMC &gt; 50) :</strong>
+            4 g (+ 2 g priming CEC) puis 2 g toutes les 4 h.
+          </li>
+          <li id="rvt-vancomycine" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="rvt-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO (optionnelle)",
+      html: `
+        <p><strong>Insuffisance tricuspide :</strong></p>
+        <ul>
+          <li>Vena contracta</li>
+          <li>SOR, volume régurgité</li>
+          <li>PISA</li>
+          <li>Mécanisme IT</li>
+          <li>Diamètre anneau tricuspide</li>
+          <li>Dilatation OD/VD</li>
+          <li>PAPs sur IT</li>
+          <li>TAPSE</li>
+          <li>Onde S tricuspide</li>
+        </ul>
+        <p><strong>Rétrécissement tricuspide :</strong></p>
+        <ul>
+          <li>Gradient moyen</li>
+          <li>Surface tricuspide</li>
+          <li>Dilatation OD/VCI</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "CEC",
+      html: `
+        <p><strong>Canulation artérielle :</strong> Aortique.</p>
+        <p><strong>Canulation veineuse :</strong> Bi-cave
+           (risque de « lackage » du KTC).</p>
+        <p>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.</p>
+        <p>
+          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min.
+        </p>
+        <p>
+          Protamine 60–80 % de la dose initiale d’héparine.
+        </p>
+        <p>
+          <strong>Sevrage CEC :</strong> Dobutamine/NO si dysfonction VD pré-opératoire.
+        </p>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "RVT ou plastie tricuspide",
+    sousTitre: "Chirurgie programmée sous CEC",
+    encadres,
+  });
+
+  setupRvtLogic();
+}
+
+function setupRvtLogic() {
+  const poidsId = "rvt-poids";
+  const cbImc = document.getElementById("rvt-imc50");
+  const cbRisk = document.getElementById("rvt-induction-risque");
+  const cbSeq = document.getElementById("rvt-seq-rapide");
+  const cbAllergie = document.getElementById("rvt-allergie-bl");
+
+  const indText = document.getElementById("rvt-induction-text");
+  const liCefaStd = document.getElementById("rvt-cefazoline-standard");
+  const liCefaObese = document.getElementById("rvt-cefazoline-obese");
+  const liVanco = document.getElementById("rvt-vancomycine");
+  const spanVanco = document.getElementById("rvt-vanco-dose");
+
+  function updateInduction() {
+    const poids = parseKg(poidsId);
+    let txt = "<strong>Induction :</strong> ";
+
+    // Hypnotique : Etomidate si induction à risque, sinon Propofol
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${formatDoseMgPerKg(poids, 0.3)} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    // Curare : Rocuronium si SR, sinon Atracurium
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${formatDoseMgPerKg(poids, 1.2)} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${formatDoseMgPerKg(poids, 0.5)}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+  }
+
+  function updateAtb() {
+    const poids = parseKg(poidsId);
+
+    // Céfazoline dose standard vs obèse
+    if (cbImc && cbImc.checked) {
+      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaObese) liCefaObese.style.display = "";
+    } else {
+      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaObese) liCefaObese.style.display = "none";
+    }
+
+    // Vancomycine si allergie BL
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateInduction();
+    updateAtb();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbRisk, cbSeq, cbAllergie].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionAorteAsc() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="aoasc-poids" min="30" max="250" step="1" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="aoasc-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="aoasc-induction-risque" />
+              Induction à risque (FEVG &lt; 35%, valvulopathie sévère, HTAP)
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="aoasc-seq-rapide" />
+              Séquence rapide
+            </label>
+            <label>
+              <input type="checkbox" id="aoasc-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, KTa radial gauche, KTc 5 voies, BIS,
+          NIRS <strong>systématique</strong>, ETO, Swan-Ganz si FEVG &lt; 35% ou HTAP.
+        </p>
+        <p>
+          <strong>Objectif :</strong> Plein, mou, ouvert, lent. Éviter les pics hypertensifs&nbsp;!
+        </p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="aoasc-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+        </p>
+        <p>
+          <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
+        </p>
+        <p>
+          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        </p>
+        <p>
+          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+        </p>
+        <p>
+          <strong>ALR :</strong> Bloc thoracique transverse,
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (Max 3 mg/kg).
+        </p>
+        <p style="font-size:0.9em;opacity:0.8;">
+          (Remplacement par Etomidate si induction à risque, Rocuronium 1,2 mg/kg si séquence rapide cochée,
+          comme indiqué dans le tableau.)
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="aoasc-cefazoline-standard">
+            <strong>Céfazoline :</strong>
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="aoasc-cefazoline-obese" style="display:none;">
+            <strong>Céfazoline (IMC &gt; 50) :</strong>
+            4 g (+ 2 g priming CEC) puis 2 g toutes les 4 h.
+          </li>
+          <li id="aoasc-vancomycine" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="aoasc-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO (optionnelle)",
+      html: `
+        <p><strong>Aorte ascendante et valve aortique :</strong></p>
+        <ul>
+          <li>Diamètres aortiques (anneau, sinus, jonction sino-tubulaire, aorte ascendante)</li>
+          <li>Recherche d’insuffisance aortique</li>
+          <li>Gradient max VA</li>
+          <li>Vmax VA</li>
+          <li>Surface valvulaire aortique</li>
+          <li>ITV CCVG/VA</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "CEC",
+      html: `
+        <p><strong>Canulation artérielle :</strong> Aortique.</p>
+        <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
         <p>
           Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.
         </p>
@@ -2058,8 +2939,8 @@ function renderInterventionPontages() {
           Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.
         </p>
         <p>
-          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 minutes.
-          Custodiol si durée prévue &gt; 2 h.
+          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min
+          (Custodiol si durée prévue &gt; 2 h).
         </p>
         <p>
           Protamine 60–80 % de la dose initiale d’héparine.
@@ -2069,120 +2950,1437 @@ function renderInterventionPontages() {
   ];
 
   renderInterventionPage({
-    titre: "Pontages coronaires",
-    sousTitre: "",
+    titre: "Chirurgie de l’aorte ascendante (hors dissection Ao)",
+    sousTitre: "Chirurgie programmée sous CEC",
     encadres,
   });
 
-  // ⚙️ Active la logique dynamique (poids, IMC, induction à risque, etc.)
-  setupPontagesLogic();
+  setupAorteAscLogic();
 }
 
-function setupPontagesLogic() {
-  const poidsInput = document.getElementById("pontages-poids");
-  const cbImc50 = document.getElementById("pontages-imc50");
-  const cbInductionRisque = document.getElementById("pontages-induction-risque");
-  const cbSeqRapide = document.getElementById("pontages-seq-rapide");
-  const cbAllergieBL = document.getElementById("pontages-allergie-bl");
+function setupAorteAscLogic() {
+  const poidsId = "aoasc-poids";
+  const cbImc = document.getElementById("aoasc-imc50");
+  const cbRisk = document.getElementById("aoasc-induction-risque");
+  const cbSeq = document.getElementById("aoasc-seq-rapide");
+  const cbAllergie = document.getElementById("aoasc-allergie-bl");
 
-  const inductionText = document.getElementById("pontages-induction-text");
-  const liCefa = document.getElementById("pontages-atb-cefazoline");
-  const liCefaObese = document.getElementById("pontages-atb-cefazoline-obese");
-  const liVanco = document.getElementById("pontages-atb-vancomycine");
-  const spanVancoDose = document.getElementById("pontages-vanco-dose");
-
-  function getPoids() {
-    const v = parseFloat(poidsInput.value.replace(",", "."));
-    if (isNaN(v) || v <= 0) return null;
-    return v;
-  }
+  const indText = document.getElementById("aoasc-induction-text");
+  const liCefaStd = document.getElementById("aoasc-cefazoline-standard");
+  const liCefaObese = document.getElementById("aoasc-cefazoline-obese");
+  const liVanco = document.getElementById("aoasc-vancomycine");
+  const spanVanco = document.getElementById("aoasc-vanco-dose");
 
   function updateInduction() {
-    const poids = getPoids();
-    let texte = "<strong>Induction :</strong> ";
+    const poids = parseKg(poidsId);
+    let txt = "<strong>Induction :</strong> ";
 
-    // Hypnotique
-    if (cbInductionRisque.checked) {
-      if (poids) {
-        const doseMg = 0.3 * poids;
-        texte += `Etomidate 0,3 mg/kg (~${doseMg.toFixed(0)} mg) `;
-      } else {
-        texte += "Etomidate 0,3 mg/kg ";
-      }
-      texte += " + Sufentanil (AIVOC)";
+    // Hypnotique : Etomidate si induction à risque, sinon Propofol
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${formatDoseMgPerKg(poids, 0.3)} + Sufentanil (AIVOC), `;
     } else {
-      texte += "AIVOC Propofol / Sufentanil";
+      txt += "AIVOC Propofol/Sufentanil, ";
     }
 
-    texte += ", ";
-
-    // Curare
-    if (cbSeqRapide.checked) {
-      if (poids) {
-        const doseMg = 1.2 * poids;
-        texte += `Rocuronium 1,2 mg/kg (~${doseMg.toFixed(0)} mg).`;
-      } else {
-        texte += "Rocuronium 1,2 mg/kg.";
-      }
+    // Curare : Rocuronium si SR, sinon Atracurium
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${formatDoseMgPerKg(poids, 1.2)} (séquence rapide).`;
     } else {
-      if (poids) {
-        const doseMg = 0.5 * poids;
-        texte += `Atracurium 0,5 mg/kg (~${doseMg.toFixed(0)} mg).`;
-      } else {
-        texte += "Atracurium 0,5 mg/kg.";
-      }
+      txt += `Atracurium ${formatDoseMgPerKg(poids, 0.5)}.`;
     }
 
-    inductionText.innerHTML = texte;
+    if (indText) indText.innerHTML = txt;
   }
 
-  function updateAntibioprophylaxie() {
-    const poids = getPoids();
+  function updateAtb() {
+    const poids = parseKg(poidsId);
 
     // Céfazoline : dose standard vs obèse
-    if (cbImc50.checked) {
-      liCefa.style.display = "none";
-      liCefaObese.style.display = "";
+    if (cbImc && cbImc.checked) {
+      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaObese) liCefaObese.style.display = "";
     } else {
-      liCefa.style.display = "";
-      liCefaObese.style.display = "none";
+      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaObese) liCefaObese.style.display = "none";
     }
 
-    // Allergie BL => affiche Vancomycine
-    if (cbAllergieBL.checked) {
-      liVanco.style.display = "";
-      if (poids) {
-        const doseVanco = 30 * poids;
-        spanVancoDose.textContent = `30 mg/kg (~${doseVanco.toFixed(0)} mg)`;
-      } else {
-        spanVancoDose.textContent = "30 mg/kg";
-      }
+    // Vancomycine si allergie BL
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
     } else {
-      liVanco.style.display = "none";
+      if (liVanco) liVanco.style.display = "none";
     }
   }
 
   function updateAll() {
     updateInduction();
-    updateAntibioprophylaxie();
+    updateAtb();
   }
 
-  if (poidsInput) poidsInput.addEventListener("input", updateAll);
-  if (cbImc50) cbImc50.addEventListener("change", updateAll);
-  if (cbInductionRisque) cbInductionRisque.addEventListener("change", updateAll);
-  if (cbSeqRapide) cbSeqRapide.addEventListener("change", updateAll);
-  if (cbAllergieBL) cbAllergieBL.addEventListener("change", updateAll);
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbRisk, cbSeq, cbAllergie].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
 
-  // Premier calcul
   updateAll();
 }
 
+function renderInterventionDissectionAo() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="dissec-poids" min="30" max="250" step="1" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="dissec-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="dissec-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Conditionnement pré-opératoire",
+      html: `
+        <p><strong>Analgésie (Morphiniques)</strong></p>
+        <p><strong>En l’absence d’instabilité hémodynamique :</strong></p>
+        <ul>
+          <li>Contrôle FC 50–65/min (Esmolol ou Landiolol)</li>
+          <li>Contrôle PAS 110–120 mmHg (Urapidil ou Nicardipine)</li>
+        </ul>
+        <p><strong>Précommande large de PSL</strong></p>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, KTa radial droit (gauche si canulation
+          artère sous-clavière droite ou TSA droite), KTC 5 voies, BIS,
+          NIRS <strong>systématique</strong>, ETO.
+        </p>
+        <p>
+          <strong>Objectif :</strong> Plein, mou, ouvert, lent.
+          Aucun pic hypertensif&nbsp;!
+        </p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p>
+          <strong>IOT :</strong> vidéo-laryngoscope systématique.
+        </p>
+        <p>
+          <strong>Entretien :</strong>
+          AIVOC Propofol/Sufentanil.
+        </p>
+        <p>
+          +/- Thiopental 5–10 mg/kg avant arrêt circulatoire à 28 °C.
+        </p>
+        <p>
+          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h IVSE.
+        </p>
+        <p>
+          Exacyl 20 mg/kg puis 2 mg/kg/h IVSE (sauf CI).
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="dissec-cefazoline-standard">
+            <strong>Céfazoline :</strong>
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="dissec-cefazoline-obese" style="display:none;">
+            <strong>Céfazoline (IMC &gt; 50) :</strong>
+            4 g (+ 2 g priming CEC) puis 2 g toutes les 4 h.
+          </li>
+          <li id="dissec-vancomycine" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="dissec-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO",
+      html: `
+        <p><strong>ETO :</strong></p>
+        <ul>
+          <li>Recherche d’insuffisance aortique</li>
+          <li>Aorte ascendante</li>
+          <li>Crosse aortique / TSA</li>
+          <li>Aorte descendante</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "CEC",
+      html: `
+        <p><strong>Canulation artérielle :</strong> Aortique, fémorale ou axillaire/sous-clavière droite.</p>
+        <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
+        <p>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.</p>
+        <p>
+          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min
+          (Custodiol si durée prévue &gt; 2 h).
+        </p>
+        <p>
+          Cérébroplégie à 28 °C si arrêt circulatoire. Réchauffement 1 °C/5 min.
+        </p>
+        <p>Protamine 60–80 % de la dose initiale d’héparine.</p>
+      `,
+    },
+    {
+      titre: "Particularités post-CEC",
+      html: `
+        <p><strong>Correction agressive de l’hémostase :</strong></p>
+        <ul>
+          <li>PFC, CUP, fibrinogène guidés par Quantra
+              (<em>voir algorithme Quantra</em>)</li>
+          <li>Correction de l’hypothermie</li>
+          <li>Correction de l’hypocalcémie</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Dissection aortique",
+    sousTitre: "Chirurgie sous CEC",
+    encadres,
+  });
+
+  setupDissectionAoLogic();
+}
+
+function setupDissectionAoLogic() {
+  const poidsId = "dissec-poids";
+  const cbImc = document.getElementById("dissec-imc50");
+  const cbAllergie = document.getElementById("dissec-allergie-bl");
+
+  const liCefaStd = document.getElementById("dissec-cefazoline-standard");
+  const liCefaObese = document.getElementById("dissec-cefazoline-obese");
+  const liVanco = document.getElementById("dissec-vancomycine");
+  const spanVanco = document.getElementById("dissec-vanco-dose");
+
+  function updateAtb() {
+    const poids = parseKg(poidsId);
+
+    // Céfazoline : standard vs obèse
+    if (cbImc && cbImc.checked) {
+      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaObese) liCefaObese.style.display = "";
+    } else {
+      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaObese) liCefaObese.style.display = "none";
+    }
+
+    // Vancomycine si allergie BL
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateAtb();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbAllergie].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionTransplantAnesth() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="txa-poids" min="30" max="250" step="1" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="txa-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="txa-seq-rapide" />
+              Séquence rapide
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              <input type="checkbox" id="txa-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Conditionnement pré-opératoire",
+      html: `
+        <p><strong>Bilan pré-opératoire :</strong></p>
+        <ul>
+          <li>
+            Recherche de DSA + cross-match virtuel<br>
+            &rarr; Si DSA &gt; 3000 MFI ou cross-match positif : EP ×1 en réanimation.
+          </li>
+          <li>
+            Bilan receveur : 2 tubes secs (cross-match réel + Ac anti-HLA J0),
+            hémostase complète (TP, TCA, INR, fibrinogène, anti-Xa, ATIII).
+          </li>
+          <li>Pré-commande large de PSL.</li>
+        </ul>
+        <p><strong>Traitements à administrer :</strong></p>
+        <ul>
+          <li>
+            Solumédrol <span id="txa-solumedrol-preop-dose">4 mg/kg</span> IVL sur 1 h.
+          </li>
+          <li>
+            Si AVK : Vitamine K 10 mg + prévoir PPSB
+            (administrer 30 % de la dose pré-incision si redux).
+          </li>
+          <li>
+            Prévoir en salle : bouteille de NO + aimant si DAI.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p><strong>Monitorage standard :</strong></p>
+        <ul>
+          <li>Scope ECG 5 branches</li>
+          <li>SpO₂</li>
+          <li>KTa radial droit</li>
+          <li>KTc 5 voies JID</li>
+          <li>BIS</li>
+          <li>NIRS</li>
+          <li>ETO</li>
+          <li>Swan-Ganz</li>
+        </ul>
+        <p><strong>Gestion hémodynamique :</strong></p>
+        <ul>
+          <li>PAM &gt; 65 mmHg</li>
+          <li>PVC &lt; 15 mmHg</li>
+          <li>FC 90–110/min</li>
+          <li>NO inhalé systématique</li>
+        </ul>
+        <p><strong>En cas de dysfonction VD :</strong></p>
+        <ul>
+          <li>NO inhalé</li>
+          <li>Accélération de la FC (stimulation épicardique ou inotropes)</li>
+          <li>± ECMO VA</li>
+        </ul>
+        <p><strong>Si défaillance multi-cavitaire (DPG VG ou biV) :</strong></p>
+        <ul>
+          <li>Dobutamine</li>
+          <li>± ECMO VA (BCPIA généralement associée)</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="txa-induction-text">
+          <strong>Induction :</strong>
+          Etomidate 0,3 mg/kg (induction à risque),
+          Atracurium 0,5 mg/kg (remplacé par Rocuronium 1,2 mg/kg si séquence rapide),
+          Sufentanil (AIVOC).
+        </p>
+        <p id="txa-keta-text">
+          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h IVSE.
+        </p>
+        <p id="txa-exacyl-text">
+          Exacyl 20 mg/kg puis 2 mg/kg/h IVSE (sauf CI).
+        </p>
+        <p>
+          Solumédrol 120 mg IVL.
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="txa-cefazoline-standard">
+            <strong>Céfazoline :</strong>
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="txa-cefazoline-obese" style="display:none;">
+            <strong>Céfazoline (IMC &gt; 50) :</strong>
+            4 g (+ 2 g priming CEC) puis 2 g toutes les 4 h.
+          </li>
+          <li id="txa-vancomycine" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="txa-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO – Fonction VD",
+      html: `
+        <p><strong>Recherche de dysfonction VD :</strong></p>
+        <ul>
+          <li>FEVD visuelle</li>
+          <li>ITV CCVD</li>
+          <li>TAPSE</li>
+          <li>Onde S tricuspide</li>
+          <li>Indice de Tei</li>
+          <li>Strain VD</li>
+        </ul>
+        <p><strong>Gestion hémodynamique (rappel) :</strong></p>
+        <ul>
+          <li>PAM &gt; 65 mmHg, PVC &lt; 15 mmHg, FC 90–110/min</li>
+          <li>NO inhalé systématique</li>
+          <li>Si dysfonction VD : NO inhalé, accélération FC, ± ECMO VA</li>
+          <li>Si DPG (VG ou biV) : Dobutamine, ± ECMO VA (BCPIA généralement associée)</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "CEC",
+      html: `
+        <p><strong>Canulation :</strong></p>
+        <ul>
+          <li>Canulation artérielle : aortique</li>
+          <li>Canulation veineuse : bi-cave</li>
+        </ul>
+        <p><strong>Anticoagulation :</strong></p>
+        <ul>
+          <li>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s</li>
+        </ul>
+        <p><strong>Spécificités :</strong></p>
+        <ul>
+          <li>Pas de cardioplégie</li>
+          <li>Temps d’assistance = ~25 % de la durée d’ischémie</li>
+        </ul>
+        <p><strong>Décanulation :</strong></p>
+        <ul>
+          <li>Protamine 60–80 % de la dose initiale d’héparine</li>
+          <li>PPSB 25 UI/kg si AVK pré-opératoire</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Particularités post-CEC",
+      html: `
+        <p><strong>Correction agressive de l’hémostase :</strong></p>
+        <ul>
+          <li>PFC, CUP, fibrinogène guidés par Quantra
+              (<em>voir algorithme Quantra</em>)</li>
+          <li>Correction de l’hypothermie</li>
+          <li>Correction de l’hypocalcémie</li>
+        </ul>
+        <p><strong>Gestion hémodynamique (post-CEC) :</strong></p>
+        <ul>
+          <li>PAM &gt; 65 mmHg</li>
+          <li>PVC &lt; 15 mmHg</li>
+          <li>FC 90–110/min</li>
+          <li>NO inhalé systématique</li>
+          <li>Si dysfonction VD : NO inhalé, accélération FC, ± ECMO VA</li>
+          <li>Si DPG (VG ou biV) : Dobutamine, ± ECMO VA (BCPIA généralement associée)</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Transplantation cardiaque",
+    sousTitre: "Anesthésie – chirurgie sous CEC",
+    encadres,
+  });
+
+  setupTransplantAnesthLogic();
+}
+
+function setupTransplantAnesthLogic() {
+  const poidsId = "txa-poids";
+  const cbImc = document.getElementById("txa-imc50");
+  const cbSeq = document.getElementById("txa-seq-rapide");
+  const cbAllergie = document.getElementById("txa-allergie-bl");
+
+  const indText = document.getElementById("txa-induction-text");
+  const ketaText = document.getElementById("txa-keta-text");
+  const exacylText = document.getElementById("txa-exacyl-text");
+  const solumedrolPreopSpan = document.getElementById("txa-solumedrol-preop-dose");
+
+  const liCefaStd = document.getElementById("txa-cefazoline-standard");
+  const liCefaObese = document.getElementById("txa-cefazoline-obese");
+  const liVanco = document.getElementById("txa-vancomycine");
+  const spanVanco = document.getElementById("txa-vanco-dose");
+
+  function updateInductionEtPerfusions() {
+    const poids = parseKg(poidsId);
+
+    // Induction : Etomidate toujours (induction à risque), curare selon SR
+    const etoDose = formatDoseMgPerKg(poids, 0.3);
+    const atrDose = formatDoseMgPerKg(poids, 0.5);
+    const rocDose = formatDoseMgPerKg(poids, 1.2);
+
+    let txt = `<strong>Induction :</strong> Etomidate ${etoDose} (induction à risque), Sufentanil (AIVOC), `;
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${rocDose} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${atrDose}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+
+    // Kétamine
+    if (ketaText) {
+      const doseKeta = formatDoseMgPerKg(poids, 0.5);
+      ketaText.innerHTML = `Kétamine ${doseKeta} puis 0,125 mg/kg/h IVSE.`;
+    }
+
+    // Exacyl
+    if (exacylText) {
+      const doseExacyl = formatDoseMgPerKg(poids, 20);
+      exacylText.innerHTML = `Exacyl ${doseExacyl} puis 2 mg/kg/h IVSE (sauf CI).`;
+    }
+
+    // Solumédrol pré-op 4 mg/kg
+    if (solumedrolPreopSpan) {
+      solumedrolPreopSpan.textContent = formatDoseMgPerKg(poids, 4);
+    }
+  }
+
+  function updateAntibioprophylaxie() {
+    const poids = parseKg(poidsId);
+
+    // Céfazoline : standard vs obèse
+    if (cbImc && cbImc.checked) {
+      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaObese) liCefaObese.style.display = "";
+    } else {
+      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaObese) liCefaObese.style.display = "none";
+    }
+
+    // Vancomycine si allergie BL
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateInductionEtPerfusions();
+    updateAntibioprophylaxie();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbSeq, cbAllergie].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderAnesthCardioStructMenu() {
+  $app.innerHTML = `
+    <section>
+      <h2>Cardiologie structurelle & rythmologie</h2>
+      <div class="grid">
+        <button class="btn" onclick="renderInterventionTAVI()">
+          TAVI
+        </button>
+        <button class="btn" onclick="renderInterventionMitraClip()">
+          Mitra-clip
+        </button>
+        <button class="btn" onclick="renderInterventionFOPCIA()">
+          Fermeture FOP / CIA
+        </button>
+        <button class="btn" onclick="renderInterventionPacemakerDAI()">
+          Pacemaker & DAI
+        </button>
+        <button class="btn" onclick="renderInterventionAblationDroit()">
+          Ablations du cœur droit
+        </button>
+        <button class="btn" onclick="renderInterventionAblationGauche()">
+          Ablations du cœur gauche
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+function renderInterventionTAVI() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="tavi-poids" min="30" max="200" step="1" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="tavi-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="tavi-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="tavi-ag" />
+              Anesthésie générale
+            </label>
+          </div>
+          <div class="row" id="tavi-ag-options" style="display:none;">
+            <label>
+              <input type="checkbox" id="tavi-induction-risque" />
+              Induction à risque (FEVG &lt; 35%, RA serré)
+            </label>
+            <label>
+              <input type="checkbox" id="tavi-seq-rapide" />
+              Séquence rapide
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p id="tavi-monitor-text">
+          Scope ECG 5 branches, SpO₂, VVP x2 de bon calibre, PNI
+          (KTa radial si anesthésie générale ou RA très serré), ± BIS / NIRS,
+          ETT/ETO selon l'opérateur.
+        </p>
+        <p><strong>Objectif RA :</strong> Plein, régulier, fermé.</p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="tavi-anesth-text">
+          <strong>Mode par défaut :</strong>
+          Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
+          + anesthésie locale fémorale (Lidocaïne/Ropivacaïne).
+        </p>
+        <p>
+          <strong>En cas d’anesthésie générale :</strong> voir adaptation automatique ci-dessus
+          (Etomidate si induction à risque, Rocuronium si séquence rapide).
+        </p>
+        <p>
+          Héparine 80–100 UI/kg (ACT cible 200–300 s).<br>
+          Protamine = 50 % de la dose d’héparine (à discuter avec l’opérateur).
+        </p>
+        <p>
+          <strong>ALR :</strong> Aucune si voie fémorale.
+          Discuter bloc cervical pour voie carotidienne,
+          bloc serratus antérieur pour voie apicale.
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="tavi-augm-standard">
+            <strong>Augmentin :</strong>
+            2 g IVL, puis 1 g après 2 h (1 g toutes les 2 h).
+          </li>
+          <li id="tavi-augm-obese" style="display:none;">
+            <strong>Augmentin (IMC &gt; 50) :</strong>
+            4 g IVL, puis 2 g après 2 h (2 g toutes les 2 h).
+          </li>
+          <li id="tavi-vanco" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="tavi-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Imagerie (ETO/ETT)",
+      html: `
+        <p><strong>ETO :</strong> généralement non indiquée.</p>
+        <p><strong>ETT en fin d’intervention :</strong></p>
+        <ul>
+          <li>Recherche d’épanchement péricardique</li>
+          <li>Contrôle du fonctionnement de la prothèse valvulaire</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "TAVI",
+    sousTitre: "Cardiologie structurelle",
+    encadres,
+  });
+
+  setupTaviLogic();
+}
+
+function setupTaviLogic() {
+  const poidsId = "tavi-poids";
+  const cbImc = document.getElementById("tavi-imc50");
+  const cbAllergie = document.getElementById("tavi-allergie-bl");
+  const cbAG = document.getElementById("tavi-ag");
+  const cbRisk = document.getElementById("tavi-induction-risque");
+  const cbSeq = document.getElementById("tavi-seq-rapide");
+
+  const agOptions = document.getElementById("tavi-ag-options");
+  const anesthText = document.getElementById("tavi-anesth-text");
+  const liAugmStd = document.getElementById("tavi-augm-standard");
+  const liAugmObese = document.getElementById("tavi-augm-obese");
+  const liVanco = document.getElementById("tavi-vanco");
+  const spanVanco = document.getElementById("tavi-vanco-dose");
+
+  function updateAnesth() {
+    const poids = parseKg(poidsId);
+
+    if (!cbAG || !cbAG.checked) {
+      if (agOptions) agOptions.style.display = "none";
+      if (anesthText) {
+        anesthText.innerHTML = `
+          <strong>Mode par défaut :</strong>
+          Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
+          + anesthésie locale fémorale (Lidocaïne/Ropivacaïne).
+        `;
+      }
+      return;
+    }
+
+    if (agOptions) agOptions.style.display = "";
+
+    const etoDose = formatDoseMgPerKg(poids, 0.3);
+    const atrDose = formatDoseMgPerKg(poids, 0.5);
+    const rocDose = formatDoseMgPerKg(poids, 1.2);
+
+    let txt = "<strong>Anesthésie générale :</strong> ";
+
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${rocDose} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${atrDose}.`;
+    }
+
+    if (anesthText) anesthText.innerHTML = txt;
+  }
+
+  function updateATB() {
+    const poids = parseKg(poidsId);
+
+    if (cbImc && cbImc.checked) {
+      if (liAugmStd) liAugmStd.style.display = "none";
+      if (liAugmObese) liAugmObese.style.display = "";
+    } else {
+      if (liAugmStd) liAugmStd.style.display = "";
+      if (liAugmObese) liAugmObese.style.display = "none";
+    }
+
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateAnesth();
+    updateATB();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbAllergie, cbAG, cbRisk, cbSeq].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionMitraClip() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="mitra-poids" min="30" max="200" step="1" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="mitra-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="mitra-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="mitra-induction-risque" />
+              Induction à risque (FEVG &lt; 50 % et IM sévère)
+            </label>
+            <label>
+              <input type="checkbox" id="mitra-seq-rapide" />
+              Séquence rapide
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, VVP x2 de bon calibre, PNI
+          (remplacer par KTa radial si induction à risque),
+          BIS ± NIRS, ETO.
+        </p>
+        <p><strong>Objectif IM :</strong> Plein, rapide, ouvert.</p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="mitra-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+        </p>
+        <p>
+          Héparine 100 UI/kg (ACT cible 300–350 s).<br>
+          Protamine : généralement non indiquée
+          (parfois 50 % de la dose d’héparine à la demande de l’opérateur).
+        </p>
+        <p><strong>ALR :</strong> Aucune.</p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <ul>
+          <li id="mitra-augm-standard">
+            <strong>Augmentin :</strong>
+            2 g IVL, puis 1 g après 2 h (1 g toutes les 2 h).
+          </li>
+          <li id="mitra-augm-obese" style="display:none;">
+            <strong>Augmentin (IMC &gt; 50) :</strong>
+            4 g IVL, puis 2 g après 2 h (2 g toutes les 2 h).
+          </li>
+          <li id="mitra-vanco" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="mitra-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO",
+      html: `
+        <p><strong>Caractérisation de l’IM :</strong></p>
+        <ul>
+          <li>Vena contracta</li>
+          <li>PISA</li>
+          <li>SOR, volume régurgité</li>
+          <li>Mécanisme de l’IM</li>
+          <li>Diamètre anneau mitral</li>
+        </ul>
+        <p><strong>Points complémentaires :</strong></p>
+        <ul>
+          <li>Vacuité auriculaire</li>
+          <li>Echo-guidage de la ponction trans-septale</li>
+          <li>Contrôle post-op :
+            persistance de l’IM ? FEVG ? épanchement péricardique ?</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Mitra-clip",
+    sousTitre: "Cardiologie structurelle",
+    encadres,
+  });
+
+  setupMitraClipLogic();
+}
+
+function setupMitraClipLogic() {
+  const poidsId = "mitra-poids";
+  const cbImc = document.getElementById("mitra-imc50");
+  const cbAllergie = document.getElementById("mitra-allergie-bl");
+  const cbRisk = document.getElementById("mitra-induction-risque");
+  const cbSeq = document.getElementById("mitra-seq-rapide");
+
+  const indText = document.getElementById("mitra-induction-text");
+  const liAugmStd = document.getElementById("mitra-augm-standard");
+  const liAugmObese = document.getElementById("mitra-augm-obese");
+  const liVanco = document.getElementById("mitra-vanco");
+  const spanVanco = document.getElementById("mitra-vanco-dose");
+
+  function updateInduction() {
+    const poids = parseKg(poidsId);
+    const etoDose = formatDoseMgPerKg(poids, 0.3);
+    const atrDose = formatDoseMgPerKg(poids, 0.5);
+    const rocDose = formatDoseMgPerKg(poids, 1.2);
+
+    let txt = "<strong>Induction :</strong> ";
+
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${rocDose} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${atrDose}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+  }
+
+  function updateATB() {
+    const poids = parseKg(poidsId);
+
+    if (cbImc && cbImc.checked) {
+      if (liAugmStd) liAugmStd.style.display = "none";
+      if (liAugmObese) liAugmObese.style.display = "";
+    } else {
+      if (liAugmStd) liAugmStd.style.display = "";
+      if (liAugmObese) liAugmObese.style.display = "none";
+    }
+
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+      if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateInduction();
+    updateATB();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbImc, cbAllergie, cbRisk, cbSeq].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionFOPCIA() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="fop-poids" min="30" max="200" step="1" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="fop-imc50" />
+              IMC &gt; 50 kg/m²
+            </label>
+            <label>
+              <input type="checkbox" id="fop-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="fop-induction-risque" />
+              Induction à risque (FEVG &lt; 30 %, valvulopathie sévère, HTAP)
+            </label>
+            <label>
+              <input type="checkbox" id="fop-seq-rapide" />
+              Séquence rapide
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p id="fop-monitor-text">
+          Scope ECG 5 branches, SpO₂, VVP de bon calibre, PNI
+          (KTa radial si induction à risque), BIS ± NIRS, ETO.
+        </p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="fop-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+        </p>
+        <p>
+          Héparine 100 UI/kg (ACT cible 300–350 s).<br>
+          Protamine : généralement non indiquée
+          (parfois 50 % de la dose d’héparine à la demande de l’opérateur).
+        </p>
+        <p><strong>ALR :</strong> Aucune.</p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `<p>Non indiquée.</p>`,
+    },
+    {
+      titre: "ETO",
+      html: `<p>Non indiquée.</p>`,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Fermeture FOP / CIA",
+    sousTitre: "Cardiologie structurelle",
+    encadres,
+  });
+
+  setupFOPLogic();
+}
+
+function setupFOPLogic() {
+  const poidsId = "fop-poids";
+  const cbRisk = document.getElementById("fop-induction-risque");
+  const cbSeq = document.getElementById("fop-seq-rapide");
+
+  const indText = document.getElementById("fop-induction-text");
+  const monitorText = document.getElementById("fop-monitor-text");
+
+  function updateInduction() {
+    const poids = parseKg(poidsId);
+    const etoDose = formatDoseMgPerKg(poids, 0.3);
+    const atrDose = formatDoseMgPerKg(poids, 0.5);
+    const rocDose = formatDoseMgPerKg(poids, 1.2);
+
+    let txt = "<strong>Induction :</strong> ";
+
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${rocDose} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${atrDose}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+  }
+
+  function updateMonitor() {
+    if (!monitorText) return;
+    if (cbRisk && cbRisk.checked) {
+      monitorText.innerHTML = `
+        Scope ECG 5 branches, SpO₂, KTa radial, BIS ± NIRS, ETO.
+      `;
+    } else {
+      monitorText.innerHTML = `
+        Scope ECG 5 branches, SpO₂, VVP de bon calibre, PNI, BIS ± NIRS, ETO.
+      `;
+    }
+  }
+
+  function updateAll() {
+    updateInduction();
+    updateMonitor();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbRisk, cbSeq].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionPacemakerDAI() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>
+              <input type="checkbox" id="pm-allergie-bl" />
+              Allergie aux bêta-lactamines
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="pm-retrait-sondes" />
+              Retrait de sondes de PM/DAI anciennes
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p id="pm-monitor-text">
+          Scope ECG 5 branches, SpO₂, VVP de bon calibre, PNI.
+        </p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="pm-anesth-text">
+          <strong>Options :</strong><br>
+          - Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL) + anesthésie locale par l’opérateur<br>
+          - ou ALR bi-bloc (Serratus antérieur + PECS1 ou thoracique transverse)
+            + anesthésie locale par l’opérateur<br>
+          - ou anesthésie générale avec masque laryngé si intolérance, douleur,
+            troubles cognitifs.
+        </p>
+        <p id="pm-retrait-text" style="font-style:italic;">
+          Si retrait de sondes de PM/DAI anciennes : anesthésie générale
+          systématique avec intubation oro-trachéale (idem protocole CEC).
+        </p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `
+        <p><strong>Uniquement si pose de matériel (non indiquée si retrait isolé) :</strong></p>
+        <ul id="pm-atb-block">
+          <li id="pm-cefa-standard">
+            Céfazoline 2 g (+1 g priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="pm-cefa-obese" style="display:none;">
+            Céfazoline 4 g (+2 g priming CEC) puis 2 g toutes les 4 h
+            (IMC &gt; 50).
+          </li>
+          <li id="pm-vanco" style="display:none;">
+            Allergie BL : Vancomycine 30 mg/kg IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "ETO",
+      html: `<p>Non indiquée.</p>`,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Pacemaker & DAI",
+    sousTitre: "Rythmologie",
+    encadres,
+  });
+
+  setupPacemakerLogic();
+}
+
+function setupPacemakerLogic() {
+  const cbAllergie = document.getElementById("pm-allergie-bl");
+  const cbRetrait = document.getElementById("pm-retrait-sondes");
+  const monitorText = document.getElementById("pm-monitor-text");
+  const anesthText = document.getElementById("pm-anesth-text");
+  const retraitText = document.getElementById("pm-retrait-text");
+  const liCefaStd = document.getElementById("pm-cefa-standard");
+  const liCefaObese = document.getElementById("pm-cefa-obese");
+  const liVanco = document.getElementById("pm-vanco");
+
+  // Ici pas de poids dans le tableau pour dosage mg/kg → on laisse la vancomycine à 30 mg/kg "sec".
+
+  function updateMonitor() {
+    if (!monitorText) return;
+    if (cbRetrait && cbRetrait.checked) {
+      monitorText.innerHTML = `
+        KTa radial, KTc 5 voies JID, BIS ± NIRS, ETO.
+      `;
+    } else {
+      monitorText.innerHTML = `
+        Scope ECG 5 branches, SpO₂, VVP de bon calibre, PNI.
+      `;
+    }
+  }
+
+  function updateAnesth() {
+    if (!anesthText || !retraitText) return;
+    if (cbRetrait && cbRetrait.checked) {
+      retraitText.style.display = "";
+    } else {
+      retraitText.style.display = "none";
+    }
+  }
+
+  function updateATB() {
+    // IMC > 50 n'est pas explicitement dans la cellule caracs pour cette ligne,
+    // on garde donc les posologies textuelles, avec uniquement l'allergie :
+    if (cbAllergie && cbAllergie.checked) {
+      if (liVanco) liVanco.style.display = "";
+    } else {
+      if (liVanco) liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateMonitor();
+    updateAnesth();
+    updateATB();
+  }
+
+  [cbAllergie, cbRetrait].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
+
+function renderInterventionAblationDroit() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `<p>Aucun critère particulier dans le protocole.</p>`,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, VVP de bon calibre, PNI.
+        </p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p>
+          <strong>Sédation :</strong>
+          AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
+          + anesthésie locale par l’opérateur.
+        </p>
+        <p>
+          <strong>Héparine :</strong>
+          généralement non indiquée, poursuite de l’AOD.<br>
+          Si héparine : objectif ACT = 250 s.
+        </p>
+        <p><strong>ALR :</strong> Aucune.</p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `<p>Non indiquée.</p>`,
+    },
+    {
+      titre: "ETO",
+      html: `<p>Non indiquée.</p>`,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Ablations du cœur droit",
+    sousTitre: "Flutter commun, ESV / TV droites",
+    encadres,
+  });
+}
+
+function renderInterventionAblationGauche() {
+  const encadres = [
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Poids (kg)
+              <input type="number" id="ablg-poids" min="30" max="200" step="1" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="checkbox" id="ablg-induction-risque" />
+              Induction à risque (FEVG &lt; 30 %, valvulopathie sévère, HTAP)
+            </label>
+            <label>
+              <input type="checkbox" id="ablg-seq-rapide" />
+              Séquence rapide
+            </label>
+          </div>
+        </div>
+      `,
+    },
+    {
+      titre: "Monitorage",
+      html: `
+        <p id="ablg-monitor-text">
+          Scope ECG 5 branches, SpO₂, VVP de bon calibre, PNI
+          (remplacer par KTa radial si induction à risque), BIS ± NIRS, ETO.
+        </p>
+      `,
+    },
+    {
+      titre: "Anesthésie",
+      html: `
+        <p id="ablg-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
+        </p>
+        <p>
+          Héparine 100 UI/kg (ACT cible 300–350 s).<br>
+          Protamine : généralement non indiquée
+          (parfois 50 % de la dose d’héparine à la demande de l’opérateur).
+        </p>
+        <p><strong>ALR :</strong> Aucune.</p>
+      `,
+    },
+    {
+      titre: "Antibioprophylaxie",
+      html: `<p>Non indiquée.</p>`,
+    },
+    {
+      titre: "ETO",
+      html: `
+        <p><strong>ETO :</strong></p>
+        <ul>
+          <li>Vacuité auriculaire</li>
+          <li>Echo-guidage de la trans-septale</li>
+          <li>Contrôle post-opératoire :
+            épanchement péricardique, fonction systolique VG
+            (risque de choc cardiogénique si ablation de TV)</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Ablations du cœur gauche",
+    sousTitre: "Flutter gauche, FA, ESV / TV gauches",
+    encadres,
+  });
+
+  setupAblationGaucheLogic();
+}
+
+function setupAblationGaucheLogic() {
+  const poidsId = "ablg-poids";
+  const cbRisk = document.getElementById("ablg-induction-risque");
+  const cbSeq = document.getElementById("ablg-seq-rapide");
+
+  const monitorText = document.getElementById("ablg-monitor-text");
+  const indText = document.getElementById("ablg-induction-text");
+
+  function updateMonitor() {
+    if (!monitorText) return;
+    if (cbRisk && cbRisk.checked) {
+      monitorText.innerHTML = `
+        Scope ECG 5 branches, SpO₂, KTa radial, BIS ± NIRS, ETO.
+      `;
+    } else {
+      monitorText.innerHTML = `
+        Scope ECG 5 branches, SpO₂, VVP de bon calibre, PNI, BIS ± NIRS, ETO.
+      `;
+    }
+  }
+
+  function updateInduction() {
+    const poids = parseKg(poidsId);
+    const etoDose = formatDoseMgPerKg(poids, 0.3);
+    const atrDose = formatDoseMgPerKg(poids, 0.5);
+    const rocDose = formatDoseMgPerKg(poids, 1.2);
+
+    let txt = "<strong>Induction :</strong> ";
+
+    if (cbRisk && cbRisk.checked) {
+      txt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
+    } else {
+      txt += "AIVOC Propofol/Sufentanil, ";
+    }
+
+    if (cbSeq && cbSeq.checked) {
+      txt += `Rocuronium ${rocDose} (séquence rapide).`;
+    } else {
+      txt += `Atracurium ${atrDose}.`;
+    }
+
+    if (indText) indText.innerHTML = txt;
+  }
+
+  function updateAll() {
+    updateMonitor();
+    updateInduction();
+  }
+
+  const poidsEl = document.getElementById(poidsId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  [cbRisk, cbSeq].forEach(el => {
+    if (el) el.addEventListener("change", updateAll);
+  });
+
+  updateAll();
+}
 
 
 // =====================================================================
 //  RÉANIMATION 
 // =====================================================================
-
 
 function renderReanMenu() {
   $app.innerHTML = `
@@ -2193,39 +4391,39 @@ function renderReanMenu() {
       </div>
 
       <div class="grid">
-        <button class="btn" onclick="location.hash = '#/reanimation/formules'">
+        <button class="btn" onclick="renderReanFormules()">
           Formules
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/prescriptions'">
+        <button class="btn" onclick="renderReanPrescriptionsPostOp()">
           Prescriptions post-opératoires
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/saignements'">
+        <button class="btn" onclick="renderReanSaignementsPostOp()">
           Saignements post-opératoires
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/fa'">
+        <button class="btn" onclick="renderReanFAPostOp()">
           FA post-opératoire
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/eto'">
+        <button class="btn" onclick="renderReanEto()">
           ETO (hors assistances)
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/antibiotherapie'">
+        <button class="btn" onclick="renderReanAntibiotherapieMenu()">
           Antibiothérapies
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/eer'">
+        <button class="btn" onclick="renderReanEer()">
           EER et échanges plasmatiques
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/transplantation'">
+        <button class="btn" onclick="renderReanTransplant()">
           Transplantation cardiaque
         </button>
 
-        <button class="btn" onclick="location.hash = '#/reanimation/assistances'">
+        <button class="btn" onclick="renderReanAssistances()">
           Assistances circulatoires
         </button>
       </div>
@@ -2233,133 +4431,742 @@ function renderReanMenu() {
   `;
 }
 
+// ===================== Réanimation – Formules =====================
+// NB : le tableau ne donne que les intitulés, pas les formules chiffrées.
+// Par respect de ta consigne "pas d'internet", je n'invente PAS les équations.
+
+function renderReanFormules() {
+  const encadres = [
+    {
+      titre: "Ventilation",
+      html: `
+        <ul>
+          <li><strong>Volume courant idéal</strong></li>
+          <li><strong>Espace mort</strong></li>
+          <li><strong>Conversion NO (L/min → ppm)</strong></li>
+        </ul>
+        <p>Les formules exactes peuvent être ajoutées ici si tu veux les expliciter.</p>
+      `,
+    },
+    {
+      titre: "Cardio-vasculaire",
+      html: `
+        <ul>
+          <li><strong>Débit cardiaque échographique</strong></li>
+          <li><strong>Résistances vasculaires pulmonaires</strong></li>
+          <li><strong>Calcul masse sanguine :</strong><br>
+              Masse sanguine (mL) = (100 – Ht %) × 0,7 × poids (kg)</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Métabolique",
+      html: `
+        <ul>
+          <li><strong>DFG (UV/P)</strong></li>
+          <li><strong>Osmolarité plasmatique</strong></li>
+          <li><strong>Déficit / excès hydrique</strong></li>
+          <li><strong>Na corrigée</strong>, <strong>Ca corrigée</strong></li>
+          <li><strong>FF sang / FF plasmatique</strong></li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Formules",
+    sousTitre: "",
+    encadres,
+  });
+}
+
 // ===================== Réanimation – Prescriptions post-op =====================
 
 function renderReanPrescriptionsPostOp() {
-  $app.innerHTML = `
-    <section>
-      <h2>Prescriptions post-opératoires</h2>
-      <p>
-        Cette page affichera directement les 6 encadrés du tableau
-        "Prescriptions post-opératoires (hors transplant. et assistances)" :
-        Intervention chirurgicale, Analgésie, Anticoagulation, etc.
-      </p>
-    </section>
-  `;
-  // Plus tard : on remplacera par un appel à renderInterventionPage(...)
+  const encadres = [
+    {
+      titre: "Intervention chirurgicale (Choix)",
+      html: `
+        <p><strong>Type d’intervention :</strong></p>
+        <div class="form">
+          <label>Intervention
+            <select id="presc-intervention">
+              <option value="pc">Pontages coronaires</option>
+              <option value="rva-bio">RVA biologique</option>
+              <option value="rva-meca">RVA mécanique</option>
+              <option value="rvm-bio">RVM biologique</option>
+              <option value="rvm-meca">RVM mécanique</option>
+              <option value="rvt-bio">RVT biologique</option>
+              <option value="plastie-ao">Plastie aortique</option>
+              <option value="plastie-mit">Plastie mitrale</option>
+              <option value="plastie-tric">Plastie tricuspide</option>
+              <option value="tsc">TSC</option>
+              <option value="tirone">Tirone-David</option>
+              <option value="bentall-bio">Bentall biologique</option>
+              <option value="bentall-meca">Bentall mécanique</option>
+              <option value="crosse">Remplacement crosse</option>
+            </select>
+          </label>
+        </div>
+        <p>Cette sélection sert surtout à contextualiser les prescriptions ci-dessous.</p>
+      `,
+    },
+    {
+      titre: "Analgésie",
+      html: `
+        <p><strong>Analgésie post-opératoire :</strong></p>
+        <ul>
+          <li>Paracétamol 1 g x4/j IVL ou PO</li>
+          <li>Acupan 80–120 mg/j en IVSE</li>
+          <li>Morphine (titration IV puis relais IVSE ou PO)</li>
+          <li>Oxycodone 5 mg x6/j PO</li>
+          <li>± Kétoprofène 50–100 mg x4/j IVL/PO (si pas de contre-indication)</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Anti-agrégants plaquettaires",
+      html: `
+        <p><strong>Anti-agrégants :</strong></p>
+        <ul>
+          <li>Aspirine 100 mg IVL à H+6 puis Kardégic 75 mg/j PO selon l’indication.</li>
+          <li>Bi-AAP selon indication (stent récent, pontages, etc.).</li>
+          <li>Si électrodes épicardiques en place, adapter le timing de reprise.</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Anticoagulation",
+      html: `
+        <p><strong>Anticoagulation :</strong></p>
+        <ul>
+          <li>Lovenox 4000 UI SC à H+6.</li>
+          <li>Ensuite :
+            <ul>
+              <li>Chirurgie coronaire simple : prophylaxie standard (ex : 4000 UI x1/j).</li>
+              <li>Chirurgie valvulaire (hors RVA bio) : Lovenox 100 UI/kg x2/j dès J1.</li>
+            </ul>
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Retrait des drainages",
+      html: `
+        <p><strong>Retrait des drainages :</strong></p>
+        <ul>
+          <li>Retrait dès 24 h post-op si &lt; 100 mL / 6 h et absence de bullage.</li>
+          <li>Pas d’arrêt de l’anticoagulation, sauf surdosage.</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Retrait des électrodes épicardiques",
+      html: `
+        <p><strong>Retrait des électrodes épicardiques :</strong></p>
+        <ul>
+          <li>En l’absence de trouble de conduction :</li>
+          <li>Dès J1 pour PC et TSC.</li>
+          <li>Dès J4 pour les chirurgies valvulaires.</li>
+          <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Prescriptions post-opératoires (hors transplant. et assistances)",
+    sousTitre: "",
+    encadres,
+  });
 }
 
 // ===================== Réanimation – Saignements post-op =====================
 
 function renderReanSaignementsPostOp() {
-  $app.innerHTML = `
-    <section>
-      <h2>Saignements post-opératoires</h2>
-      <p>
-        Cette page affichera directement les 3 encadrés du tableau "Saignements post-opératoires" :
-        Objectifs transfusionnels, Conduite à tenir, Examens complémentaires, etc.
-      </p>
-    </section>
-  `;
+  const encadres = [
+    {
+      titre: "Objectifs",
+      html: `
+        <p><strong>Objectifs transfusionnels :</strong></p>
+        <ul>
+          <li>TP &gt; 50 %</li>
+          <li>Fibrinogène &gt; 2 g/L</li>
+          <li>Plaquettes &gt; 50 000/mm³
+              (bi-AAP ou très haut risque hémorragique : &gt; 100 000/mm³)</li>
+          <li>Hb 7–8 g/dL</li>
+          <li>Privilégier la transfusion de PSL sur réchauffeur thermique (sauf plaquettes).</li>
+        </ul>
+        <p><strong>Autres objectifs :</strong></p>
+        <ul>
+          <li>PAM &gt; 60–65 mmHg</li>
+          <li>Température &gt; 36 °C</li>
+          <li>Ca ionisé &gt; 1,10</li>
+          <li>pH &gt; 7,30</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Algorithme hémostase (Quantra)",
+      html: `
+        <p><strong>Algorithme selon Quantra :</strong></p>
+        <p>Utilisation des différents tests (CTR, fibrinogène, plaquettes…) pour guider :</p>
+        <ul>
+          <li>Protamine 30 UI/kg si ACT élevé.</li>
+          <li>Cryo / concentré de fibrinogène si fibrinogène bas.</li>
+          <li>Transfusion de plaquettes si thrombopénie ou fonction altérée.</li>
+          <li>PPSB 20–25 UI/kg si déficit en facteurs vitamine K dépendants suspecté.</li>
+        </ul>
+        <p>Si tests normaux et saignement persistant : discuter reprise.</p>
+      `,
+    },
+    {
+      titre: "Indications de reprise chirurgicale",
+      html: `
+        <p><strong>Reprise chirurgicale si :</strong></p>
+        <ul>
+          <li>&gt; 400 mL la 1ʳᵉ heure</li>
+          <li>OU &gt; 200 mL/h sur 2 h</li>
+          <li>OU &gt; 100 mL/h sur 4 h</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Saignements post-opératoires",
+    sousTitre: "",
+    encadres,
+  });
 }
 
 // ===================== Réanimation – FA post-opératoire =====================
+//
+// Il y a clairement une logique conditionnelle (catécholamines ? BB pré-op ?)
 
 function renderReanFAPostOp() {
-  $app.innerHTML = `
-    <section>
-      <h2>Prise en charge de la FA post-opératoire</h2>
-      <p>
-        Cette page affichera directement les encadrés correspondant à la FA post-opératoire
-        (contrôle de la fréquence, anticoagulation, ETO si nécessaire, etc.).
-      </p>
-    </section>
-  `;
+  const encadres = [
+    {
+      titre: "Traitement préventif",
+      html: `
+        <p><strong>Contrôle des facteurs favorisants :</strong></p>
+        <ul>
+          <li>Corriger hypovolémie, troubles ioniques, hypoxémie, infections.</li>
+          <li>Limiter les inotropes positifs au strict nécessaire.</li>
+        </ul>
+        <p><strong>Traitement anti-arythmique (prévention) :</strong></p>
+        <div class="form">
+          <label>
+            <input type="checkbox" id="fa-catecholamines" />
+            Catécholamines en cours
+          </label>
+          <label>
+            <input type="checkbox" id="fa-bb-preop" />
+            Bêta-bloquant pré-opératoire
+          </label>
+        </div>
+        <div id="fa-preventif-reco"></div>
+      `,
+    },
+    {
+      titre: "Traitement curatif",
+      html: `
+        <p><strong>Traitement curatif de la FAPO :</strong></p>
+        <ul>
+          <li>Évaluer la tolérance hémodynamique.</li>
+          <li>Corriger facteurs favorisants.</li>
+          <li>CEE (cardioversion) selon tolérance et délai.</li>
+          <li>Amiodarone IV/PO (charge puis entretien) selon protocole.</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Anticoagulation",
+      html: `
+        <p><strong>Anticoagulation :</strong></p>
+        <ul>
+          <li>Pendant les premières 48 h : discussion au cas par cas selon CHADS-VASc, risque hémorragique.</li>
+          <li>Après 48 h de FAPO : anticoagulation systématique (sauf contre-indication).</li>
+          <li>Durée : au moins 4 à 6 semaines puis réévaluation.</li>
+          <li><span style="color:#0070C0;">Lien vers le score CHADS-VASc</span></li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Prise en charge de la FA post-opératoire",
+    sousTitre: "",
+    encadres,
+  });
+
+  setupReanFALogic();
 }
 
-// ===================== Réanimation – Formules =====================
+function setupReanFALogic() {
+  const cbCatechol = document.getElementById("fa-catecholamines");
+  const cbBBpreop = document.getElementById("fa-bb-preop");
+  const reco = document.getElementById("fa-preventif-reco");
 
-function renderReanFormulesMenu() {
-  $app.innerHTML = `
-    <section>
-      <h2>Formules</h2>
-      <div class="grid">
-        <button class="btn">Ventilation</button>
-        <button class="btn">Cardio-vasculaire</button>
-        <button class="btn">Métabolique</button>
-      </div>
-      <p style="margin-top:16px;">
-        Chaque sous-partie correspond aux encadrés du tableau "Formules"
-        (Volume courant idéal, Débit cardiaque échographique, DFG, etc.).
-      </p>
-    </section>
-  `;
+  function update() {
+    let html = "<p><strong>Proposition de prévention :</strong></p><ul>";
+
+    if (cbCatechol && cbCatechol.checked) {
+      html += `
+        <li>Catécholamines présentes : privilégier l'Amiodarone
+            (ex. 5 mg/kg x2/j PO ou ~10 mg/kg/j IVSE si PO impossible).</li>
+      `;
+    } else if (cbBBpreop && cbBBpreop.checked) {
+      html += `
+        <li>Patient déjà sous bêta-bloquant : reprise du bêta-bloquant habituel.</li>
+      `;
+    } else {
+      html += `
+        <li>Pas de BB pré-op ni catécholamines : envisager initiation d'un bêta-bloquant
+            (Carvédilol 6,25 mg x2/j ou Métoprolol 25 mg x2/j) si pas de contre-indication.</li>
+      `;
+    }
+
+    html += "</ul>";
+    if (reco) reco.innerHTML = html;
+  }
+
+  if (cbCatechol) cbCatechol.addEventListener("change", update);
+  if (cbBBpreop) cbBBpreop.addEventListener("change", update);
+  update();
 }
 
-// ===================== Réanimation – ETO =====================
+// ===================== Réanimation – ETO (hors assistances) =====================
 
-function renderReanEtoMenu() {
-  $app.innerHTML = `
-    <section>
-      <h2>ETO (hors assistances)</h2>
-      <div class="grid">
-        <button class="btn">Pré-charge dépendance</button>
-        <button class="btn">Fonction systolique VG et cinétique segmentaire</button>
-        <button class="btn">Valve aortique et aorte ascendante</button>
-        <button class="btn">Valve mitrale et PTDVG</button>
-        <button class="btn">Fonction VD et HTAP</button>
-        <button class="btn">Epanchements et caillots péricardiques</button>
-      </div>
-    </section>
-  `;
+function renderReanEto() {
+  const encadres = [
+    {
+      titre: "Évaluation de la pré-charge dépendance",
+      html: `
+        <ul>
+          <li>Variation respiratoire de l'ITV CCVG</li>
+          <li>Variation respiratoire de Vmax aortique</li>
+          <li>Variation respiratoire de la veine cave supérieure (collapsibilité VCS)</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Fonction systolique VG et cinétique segmentaire",
+      html: `
+        <ul>
+          <li>FEVG visuelle</li>
+          <li>Méthode de Simpson biplan</li>
+          <li>Indice de Tei</li>
+          <li>Cinétique segmentaire (17 segments du VG)</li>
+          <li>Strain VG</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Valve aortique et aorte ascendante",
+      html: `
+        <ul>
+          <li>Morphologie : cuspides, calcifications, aorte ascendante</li>
+          <li>Insuffisance aortique : quantification standard</li>
+          <li>Sténose aortique :
+            <ul>
+              <li>Gradient moyen / maximum</li>
+              <li>Vmax VA</li>
+              <li>Surface valvulaire aortique</li>
+              <li>ITV CCVG / ITV VA</li>
+            </ul>
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Valve mitrale et PTDVG",
+      html: `
+        <ul>
+          <li>Morphologie mitrale</li>
+          <li>PTDVG : E/A, E/E’, Vp, taille OG</li>
+          <li>Insuffisance mitrale : mécanisme, quantification</li>
+          <li>Sténose mitrale : gradient moyen, surface mitrale</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Fonction VD et HTAP",
+      html: `
+        <ul>
+          <li>Fonction VD :
+            <ul>
+              <li>FAC VD</li>
+              <li>TAPSE</li>
+              <li>Onde S tricuspide</li>
+              <li>Indice de Tei VD</li>
+              <li>Strain VD</li>
+            </ul>
+          </li>
+          <li>Pressions pulmonaires :
+            <ul>
+              <li>PAPs sur flux d'IT</li>
+              <li>PAPm / PAPd sur flux d’IP</li>
+              <li>ITV CCVD</li>
+            </ul>
+          </li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Épanchements et caillots péricardiques",
+      html: `
+        <ul>
+          <li>Vue bi-cave 90°</li>
+          <li>Petit axe du VG (0°)</li>
+          <li>Vue trans-gastrique profonde cavités droites (0°)</li>
+          <li>Recherche d’épanchement compressif et de caillots péricardiques.</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "ETO (hors assistances)",
+    sousTitre: "",
+    encadres,
+  });
 }
 
 // ===================== Réanimation – EER & échanges plasmatiques =====================
+//
+// Ici on a une vraie logique EP avec des formules explicites dans le tableau.
 
-function renderReanEerMenu() {
-  $app.innerHTML = `
-    <section>
-      <h2>EER et échanges plasmatiques</h2>
-      <div class="grid">
-        <button class="btn">EER post-opératoire</button>
-        <button class="btn">Echanges plasmatiques</button>
-      </div>
-    </section>
-  `;
+function renderReanEer() {
+  const encadres = [
+    {
+      titre: "Indications d’EER en réanimation chirurgicale",
+      html: `
+        <p><strong>Indications absolues :</strong></p>
+        <ul>
+          <li>Acidose métabolique &lt; 7,20 anurique</li>
+          <li>OAP anurique</li>
+          <li>Hyperkaliémie &gt; 6,5 mmol/L ou avec troubles du rythme</li>
+          <li>Complications urémiques (neurologiques, cardiaques…)</li>
+        </ul>
+        <p><strong>Indications relatives :</strong></p>
+        <ul>
+          <li>Urée &gt; 30 mmol/L, créatininémie &gt; 300 µmol/L</li>
+          <li>Acidose métabolique ou OAP sans critères absolus</li>
+          <li>Troubles ioniques sévères (Ca &gt; 4 mmol/L, hyponatrémie symptomatique…)</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Abord vasculaire",
+      html: `
+        <p><strong>Abord vasculaire :</strong></p>
+        <ul>
+          <li>Jugulaire interne droite (prioritaire)</li>
+          <li>Fémorale</li>
+          <li>Jugulaire interne gauche</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "EER continue (CVVH / Prismaflex)",
+      html: `
+        <p><strong>Prescription EER continue :</strong></p>
+        <ul>
+          <li>Réglages de débit sanguin, d’ultrafiltration, de réinjection.</li>
+          <li>Adaptés à l’état hémodynamique et aux objectifs métaboliques.</li>
+        </ul>
+        <p><strong>Anticoagulation régionale au citrate :</strong></p>
+        <ul>
+          <li>Contre-indications à vérifier (hépatopathie sévère, troubles du métabolisme du citrate).</li>
+          <li>Avant initiation : CaCl 2 g si Ca ionisé &lt; 1,1 mmol/L.</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Échanges plasmatiques – Volume à échanger (Calculateur)",
+      html: `
+        <div class="form">
+          <div class="row">
+            <label>Sexe
+              <select id="ep-sexe">
+                <option value="H">Homme</option>
+                <option value="F">Femme</option>
+              </select>
+            </label>
+            <label>Poids (kg)
+              <input type="number" id="ep-poids" min="30" max="200" step="1" />
+            </label>
+          </div>
+          <div class="row">
+            <label>Hématocrite (%) 
+              <input type="number" id="ep-ht" min="15" max="60" step="1" />
+            </label>
+            <label>Type d’EP
+              <select id="ep-type">
+                <option value="preventif">Préventif (1,3 × MS)</option>
+                <option value="curatif">Curatif (1,5 × MS)</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>TP (%)
+              <input type="number" id="ep-tp" min="0" max="150" step="1" />
+            </label>
+          </div>
+        </div>
+        <div id="ep-resultats"></div>
+        <p style="margin-top:8px;">
+          Rappel de l’algorithme (issu du tableau) :<br>
+          1/ Préventif = 1,3 × Masse sanguine (MS)<br>
+          2/ Curatif = 1,5 × MS<br>
+          3/ MS (mL) = (100 – Ht %) × 0,7 × poids (kg)<br>
+          4/ Volume à traiter réparti en 1/3 Albumine 5 % et 2/3 PFC,<br>
+             <em>sauf</em> EP curatif + TP &gt; 50 % : 1/2 Albumine, 1/2 PFC.
+        </p>
+      `,
+    },
+    {
+      titre: "Paramétrage & bilan des échanges plasmatiques",
+      html: `
+        <p><strong>Paramétrages (exemple) :</strong></p>
+        <ul>
+          <li>Débit sang = 400–450 mL/min</li>
+          <li>Débit de réinjection : ajusté pour garder FF &lt; 30 % et Hte post-filtre &lt; 55 %</li>
+          <li>Pré-pompe sang = 0 mL/h</li>
+          <li>Perte patient = 0 mL/h (EP isolé)</li>
+        </ul>
+        <p><strong>Bilan biologique :</strong></p>
+        <ul>
+          <li>Ionogramme sanguin avec Ca/Mg avant et après chaque séance d’EP</li>
+          <li>Hémostase (TP, fibrinogène principalement) avant et après chaque séance</li>
+          <li>Tube sec pour dosage des Ac anti-HLA après chaque série d’EP</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "EER et échanges plasmatiques",
+    sousTitre: "",
+    encadres,
+  });
+
+  setupReanEerLogic();
+}
+
+function setupReanEerLogic() {
+  const poidsInput = document.getElementById("ep-poids");
+  const htInput = document.getElementById("ep-ht");
+  const typeSelect = document.getElementById("ep-type");
+  const tpInput = document.getElementById("ep-tp");
+  const resultDiv = document.getElementById("ep-resultats");
+
+  function getNumber(el) {
+    if (!el) return null;
+    const v = parseFloat((el.value || "").replace(",", "."));
+    return isNaN(v) ? null : v;
+  }
+
+  function update() {
+    const poids = getNumber(poidsInput);
+    const ht = getNumber(htInput);
+    const tp = getNumber(tpInput);
+    const type = typeSelect ? typeSelect.value : "preventif";
+
+    if (!poids || !ht) {
+      if (resultDiv) {
+        resultDiv.innerHTML = "<p>Renseigner au minimum le poids et l'hématocrite.</p>";
+      }
+      return;
+    }
+
+    const masseSanguine = (100 - ht) * 0.7 * poids; // mL
+    const coef = type === "curatif" ? 1.5 : 1.3;
+    const volumeAEchanger = masseSanguine * coef; // mL
+
+    // Répartition Albumine / PFC
+    let fracAlb = 1 / 3;
+    let fracPFC = 2 / 3;
+    if (type === "curatif" && tp && tp > 50) {
+      fracAlb = 0.5;
+      fracPFC = 0.5;
+    }
+
+    const volAlb = volumeAEchanger * fracAlb;
+    const volPFC = volumeAEchanger * fracPFC;
+
+    if (resultDiv) {
+      resultDiv.innerHTML = `
+        <p><strong>Résultats :</strong></p>
+        <ul>
+          <li>Masse sanguine estimée : ~${(masseSanguine / 1000).toFixed(2)} L</li>
+          <li>Volume à échanger (${type === "curatif" ? "curatif 1,5 × MS" : "préventif 1,3 × MS"}) :
+              ~${(volumeAEchanger / 1000).toFixed(2)} L</li>
+          <li>Albumine 5 % : ~${(volAlb / 1000).toFixed(2)} L</li>
+          <li>PFC : ~${(volPFC / 1000).toFixed(2)} L</li>
+        </ul>
+      `;
+    }
+  }
+
+  [poidsInput, htInput, typeSelect, tpInput].forEach(el => {
+    if (el) el.addEventListener("input", update);
+  });
+  if (typeSelect) typeSelect.addEventListener("change", update);
+
+  update();
 }
 
 // ===================== Réanimation – Transplantation cardiaque =====================
+//
+// Ici, le tableau indique clairement un (Choix) ECMO VA oui/non.
 
-function renderReanTransplantMenu() {
-  $app.innerHTML = `
-    <section>
-      <h2>Transplantation cardiaque</h2>
-      <div class="grid">
-        <button class="btn">Gestion hémodynamique post-opératoire</button>
-        <button class="btn">Protocole d’immunosuppression</button>
-        <button class="btn">Rejet aigu de greffon</button>
-        <button class="btn">Infections et transplantation</button>
-        <button class="btn">Prévention de la maladie coronaire du greffon</button>
-      </div>
-    </section>
-  `;
+function renderReanTransplant() {
+  const encadres = [
+    {
+      titre: "Gestion hémodynamique post-opératoire (Choix ECMO VA)",
+      html: `
+        <div class="form">
+          <label>
+            <input type="checkbox" id="tx-ecmo" />
+            Patient sous ECMO VA
+          </label>
+        </div>
+        <div id="tx-gestion-noecmo">
+          <p><strong>En l’absence d’ECMO VA :</strong></p>
+          <ul>
+            <li>Monitorage Swan-Ganz systématique</li>
+            <li>NO inhalé systématique</li>
+            <li>Objectifs :
+              <ul>
+                <li>FC 90–110/min</li>
+                <li>PAM &gt; 65 mmHg</li>
+                <li>PVC &lt; 15 mmHg</li>
+                <li>Diurèse &gt; 0,5 mL/kg/min</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div id="tx-gestion-ecmo" style="display:none;">
+          <p><strong>Assistance par ECMO VA :</strong></p>
+          <ul>
+            <li>BCPIA souvent associée.</li>
+            <li>Objectif de débit ECMO suffisant pour perfusion systémique,
+                tout en conservant un certain flux trans-aortique.</li>
+            <li>HNF IVSE avec cible d’ACT / anti-Xa selon protocole.</li>
+            <li>Adaptation de la ventilation (ex : Vt 6–8 mL/kg, FR 15–20/min, PEP 8–10 cmH₂O).</li>
+          </ul>
+        </div>
+      `,
+    },
+    {
+      titre: "Immunosuppression",
+      html: `
+        <p><strong>Traitement immunosuppresseur :</strong></p>
+        <ul>
+          <li>Corticothérapie</li>
+          <li>Anti-calcineurines (Ciclosporine / Tacrolimus)</li>
+          <li>± Mycophénolate mofétil / Azathioprine selon protocole</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Infections opportunistes",
+      html: `
+        <p><strong>Prévention / traitement (extraits du tableau) :</strong></p>
+        <ul>
+          <li>Toxoplasmose : traitement préventif ou curatif selon statut donneur/receveur.</li>
+          <li>Pneumocystose : Bactrim forte, puis relais PO selon durée totale prévue.</li>
+          <li>Hépatite B : se référer au tableau VHB spécifique.</li>
+        </ul>
+      `,
+    },
+    {
+      titre: "Prévention de la maladie coronaire du greffon",
+      html: `
+        <ul>
+          <li>Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
+              en l’absence de thrombopénie.</li>
+          <li>Pravastatine 40 mg/j PO à partir de J10 (si bilan hépatique normal).</li>
+          <li>Coronarographie à 1 an puis tous les 2 ans.</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Transplantation cardiaque",
+    sousTitre: "",
+    encadres,
+  });
+
+  setupReanTransplantLogic();
+}
+
+function setupReanTransplantLogic() {
+  const cb = document.getElementById("tx-ecmo");
+  const blocNoEcm = document.getElementById("tx-gestion-noecmo");
+  const blocEcm = document.getElementById("tx-gestion-ecmo");
+
+  function update() {
+    const on = cb && cb.checked;
+    if (blocNoEcm) blocNoEcm.style.display = on ? "none" : "";
+    if (blocEcm) blocEcm.style.display = on ? "" : "none";
+  }
+
+  if (cb) cb.addEventListener("change", update);
+  update();
 }
 
 // ===================== Réanimation – Assistances circulatoires =====================
+//
+// Le tableau ne détaille pas encore les encadrés pour chaque type d’assistance.
 
-function renderReanAssistancesMenu() {
-  $app.innerHTML = `
-    <section>
-      <h2>Assistances circulatoires</h2>
-      <div class="grid">
-        <button class="btn">ECMO artério-veineuse</button>
-        <button class="btn">BCPIA</button>
-        <button class="btn">Impella</button>
-        <button class="btn">LVAD</button>
-        <button class="btn">Cardio-west</button>
-      </div>
-    </section>
-  `;
+function renderReanAssistances() {
+  const encadres = [
+    {
+      titre: "ECMO artério-veineuse",
+      html: `
+        <p>Prise en charge d’une ECMO VA (débit, anticoagulation, sevrage, interactions ventilatoires).
+        Contenu détaillé à compléter d’après un tableau dédié.</p>
+      `,
+    },
+    {
+      titre: "BCPIA",
+      html: `
+        <p>Prise en charge d’une contre-pulsion intra-aortique :
+        positionnement, synchronisation, réglages, sevrage. Contenu à compléter.</p>
+      `,
+    },
+    {
+      titre: "Impella",
+      html: `
+        <p>Prise en charge d’un dispositif Impella (positionnement, débits, anticoagulation).
+        Contenu à compléter.</p>
+      `,
+    },
+    {
+      titre: "LVAD",
+      html: `
+        <p>Prise en charge d’un LVAD (paramètres de pompe, anticoagulation, surveillance).
+        Contenu à compléter.</p>
+      `,
+    },
+    {
+      titre: "Cardio-west",
+      html: `
+        <p>Prise en charge d’un cœur artificiel total (Cardio-west).
+        Contenu à compléter.</p>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Assistances circulatoires",
+    sousTitre: "",
+    encadres,
+  });
 }
 
 // =====================================================================
@@ -5842,7 +8649,3 @@ function renderNotFound() {
     </section>
   `;
 }
-
-
-
-
