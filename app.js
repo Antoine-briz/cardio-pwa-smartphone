@@ -395,45 +395,34 @@ function renderInterventionPage({ titre, sousTitre, encadres }) {
     });
 }
 
-// =====================================================================
-//  EXEMPLE : INTERVENTION “PONTAGES CORONAIRES”
-// =====================================================================
-//
-//  ⚠️ Pour l’instant, je ne peux pas reconstituer 100 % de la logique
-//  fine (toutes les conditions, tous les calculs) uniquement à partir
-//  de l’extraction automatique du PPT, mais la structure est prête.
-//
-//  Tu pourras peaufiner les champs rouges (inputs), les calculs (vert)
-//  et les conditions (orange) directement dans le HTML ci-dessous.
-//
-
 function renderInterventionPontages() {
   const encadres = [
     {
       titre: "Caractéristiques patient",
       html: `
-        <p><strong>(Choix)</strong></p>
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="pontages-poids" min="20" max="250" step="1" />
+              <input type="number" id="pontages-poids" min="30" max="250" step="1" />
             </label>
+          </div>
+
+          <div class="row">
             <label>
               <input type="checkbox" id="pontages-imc50" />
               IMC > 50 kg/m²
             </label>
-          </div>
-          <div class="row">
             <label>
               <input type="checkbox" id="pontages-induction-risque" />
-              Induction à risque (FEVG &lt; 30%, valvulopathie sévère, HTAP)
+              Induction à risque (FEVG &lt; 35%, TC serré, HTAP)
             </label>
+          </div>
+
+          <div class="row">
             <label>
               <input type="checkbox" id="pontages-seq-rapide" />
               Séquence rapide
             </label>
-          </div>
-          <div class="row">
             <label>
               <input type="checkbox" id="pontages-allergie-bl" />
               Allergie aux bêta-lactamines
@@ -447,7 +436,7 @@ function renderInterventionPontages() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTA radial gauche, KTC 5 voies jugulaire interne droite,
-          température, diurèse. Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          BIS, NIRS si facteurs de risque, ETO possible, Swan-Ganz si FEVG &lt; 35% ou HTAP.
         </p>
         <p><strong>Objectif :</strong> lent, mou, fermé.</p>
       `,
@@ -455,31 +444,50 @@ function renderInterventionPontages() {
     {
       titre: "Anesthésie",
       html: `
-        <p>
-          Induction AIVOC propofol / sufentanil (ou équivalent) avec curare de type rocuronium.
+        <p id="pontages-induction-text">
+          <strong>Induction :</strong>
+          AIVOC Propofol / Sufentanil, Atracurium 0,5 mg/kg.
         </p>
         <p>
-          Possibilité d’analgésie locorégionale (bloc parasternale / érecteur du rachis) selon protocole, 
-          doses calculées en fonction du poids.
+          <strong>Entretien :</strong>
+          AIVOC Propofol / Sufentanil.
+        </p>
+        <p id="pontages-ketamine-text">
+          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        </p>
+        <p id="pontages-exacyl-text">
+          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf contre-indication).
+        </p>
+        <p>
+          <strong>ALR :</strong> bloc thoracique transverse,
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose maximale 3 mg/kg).
         </p>
       `,
     },
     {
       titre: "Antibioprophylaxie",
       html: `
-        <p>
-          Céfazoline 2 g (+ 1 g dans le priming CEC) puis 1 g toutes les 4 h.
-        </p>
-        <p>
-          En cas d’allergie aux bêta-lactamines : Vancomycine 30 mg/kg IVL, en une injection 30 minutes
-          avant l’incision.
-        </p>
+        <ul>
+          <li id="pontages-atb-cefazoline">
+            <strong>Céfazoline :</strong>
+            2 g (+ 1 g dans le priming CEC) puis 1 g toutes les 4 h.
+          </li>
+          <li id="pontages-atb-cefazoline-obese" style="display:none;">
+            <strong>Céfazoline (IMC &gt; 50) :</strong>
+            4 g (+ 2 g dans le priming CEC) puis 2 g toutes les 4 h.
+          </li>
+          <li id="pontages-atb-vancomycine" style="display:none;">
+            <strong>Allergie bêta-lactamines :</strong>
+            Vancomycine <span id="pontages-vanco-dose">30 mg/kg</span> IVL en une injection
+            30 minutes avant incision.
+          </li>
+        </ul>
       `,
     },
     {
       titre: "ETO (optionnelle)",
       html: `
-        <p><strong>Fonction VG :</strong> FEVG visuelle, méthode de Simpson biplan, ITV CCVG.</p>
+        <p><strong>Fonction VG :</strong> FEVG visuelle, Simpson biplan, ITV CCVG.</p>
         <p><strong>VD :</strong> TAPSE, onde S tricuspide, indice de Tei, strain VD.</p>
         <p>
           <span style="color:#0070C0;">Lien ETO fonction VG.png</span><br>
@@ -490,10 +498,21 @@ function renderInterventionPontages() {
     {
       titre: "CEC",
       html: `
-        <p>Canulation artérielle : aortique.</p>
-        <p>Canulation veineuse : atrio-cave.</p>
-        <p>Heparinisation, ACT, gestion du débit et de la pression selon protocole du service.</p>
-        <p>Sevrage de CEC : surveillance hémodynamique invasive, remplissage, inotropes si besoin.</p>
+        <p><strong>Canulation artérielle :</strong> aortique.</p>
+        <p><strong>Canulation veineuse :</strong> atrio-cave.</p>
+        <p>
+          Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.
+        </p>
+        <p>
+          Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.
+        </p>
+        <p>
+          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 minutes.
+          Custodiol si durée prévue &gt; 2 h.
+        </p>
+        <p>
+          Protamine 60–80 % de la dose initiale d’héparine.
+        </p>
       `,
     },
   ];
@@ -503,8 +522,109 @@ function renderInterventionPontages() {
     sousTitre: "",
     encadres,
   });
+
+  // ⚙️ Active la logique dynamique (poids, IMC, induction à risque, etc.)
+  setupPontagesLogic();
 }
 
+function setupPontagesLogic() {
+  const poidsInput = document.getElementById("pontages-poids");
+  const cbImc50 = document.getElementById("pontages-imc50");
+  const cbInductionRisque = document.getElementById("pontages-induction-risque");
+  const cbSeqRapide = document.getElementById("pontages-seq-rapide");
+  const cbAllergieBL = document.getElementById("pontages-allergie-bl");
+
+  const inductionText = document.getElementById("pontages-induction-text");
+  const liCefa = document.getElementById("pontages-atb-cefazoline");
+  const liCefaObese = document.getElementById("pontages-atb-cefazoline-obese");
+  const liVanco = document.getElementById("pontages-atb-vancomycine");
+  const spanVancoDose = document.getElementById("pontages-vanco-dose");
+
+  function getPoids() {
+    const v = parseFloat(poidsInput.value.replace(",", "."));
+    if (isNaN(v) || v <= 0) return null;
+    return v;
+  }
+
+  function updateInduction() {
+    const poids = getPoids();
+    let texte = "<strong>Induction :</strong> ";
+
+    // Hypnotique
+    if (cbInductionRisque.checked) {
+      if (poids) {
+        const doseMg = 0.3 * poids;
+        texte += `Etomidate 0,3 mg/kg (~${doseMg.toFixed(0)} mg) `;
+      } else {
+        texte += "Etomidate 0,3 mg/kg ";
+      }
+      texte += " + Sufentanil (AIVOC)";
+    } else {
+      texte += "AIVOC Propofol / Sufentanil";
+    }
+
+    texte += ", ";
+
+    // Curare
+    if (cbSeqRapide.checked) {
+      if (poids) {
+        const doseMg = 1.2 * poids;
+        texte += `Rocuronium 1,2 mg/kg (~${doseMg.toFixed(0)} mg).`;
+      } else {
+        texte += "Rocuronium 1,2 mg/kg.";
+      }
+    } else {
+      if (poids) {
+        const doseMg = 0.5 * poids;
+        texte += `Atracurium 0,5 mg/kg (~${doseMg.toFixed(0)} mg).`;
+      } else {
+        texte += "Atracurium 0,5 mg/kg.";
+      }
+    }
+
+    inductionText.innerHTML = texte;
+  }
+
+  function updateAntibioprophylaxie() {
+    const poids = getPoids();
+
+    // Céfazoline : dose standard vs obèse
+    if (cbImc50.checked) {
+      liCefa.style.display = "none";
+      liCefaObese.style.display = "";
+    } else {
+      liCefa.style.display = "";
+      liCefaObese.style.display = "none";
+    }
+
+    // Allergie BL => affiche Vancomycine
+    if (cbAllergieBL.checked) {
+      liVanco.style.display = "";
+      if (poids) {
+        const doseVanco = 30 * poids;
+        spanVancoDose.textContent = `30 mg/kg (~${doseVanco.toFixed(0)} mg)`;
+      } else {
+        spanVancoDose.textContent = "30 mg/kg";
+      }
+    } else {
+      liVanco.style.display = "none";
+    }
+  }
+
+  function updateAll() {
+    updateInduction();
+    updateAntibioprophylaxie();
+  }
+
+  if (poidsInput) poidsInput.addEventListener("input", updateAll);
+  if (cbImc50) cbImc50.addEventListener("change", updateAll);
+  if (cbInductionRisque) cbInductionRisque.addEventListener("change", updateAll);
+  if (cbSeqRapide) cbSeqRapide.addEventListener("change", updateAll);
+  if (cbAllergieBL) cbAllergieBL.addEventListener("change", updateAll);
+
+  // Premier calcul
+  updateAll();
+}
 
 function renderSensiblesPage() {
   const $app = document.getElementById("app");
