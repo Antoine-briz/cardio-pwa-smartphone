@@ -5683,11 +5683,6 @@ $btnRun.addEventListener("click", () => {
   $note.style.display = text ? "block" : "none";
 });
 }
-  
-function renderNotFound(){
-  $app.innerHTML = h("card", `<strong>Page introuvable</strong>`);
-}
-
 
 function decideDuree(infection, germe){
   if (infection==="Pneumonies" && germe==="Autres") return "5–7 jours (à affiner selon documentation).";
