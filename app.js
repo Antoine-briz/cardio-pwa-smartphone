@@ -4377,7 +4377,6 @@ function setupAblationGaucheLogic() {
   updateAll();
 }
 
-
 // =====================================================================
 //  RÉANIMATION 
 // =====================================================================
@@ -4391,7 +4390,7 @@ function renderReanMenu() {
       </div>
 
       <div class="grid">
-        <button class="btn" onclick="renderReanFormules()">
+        <button class="btn" onclick="location.hash = '#/reanimation/formules'">
           Formules
         </button>
 
@@ -4407,7 +4406,7 @@ function renderReanMenu() {
           FA post-opératoire
         </button>
 
-        <button class="btn" onclick="renderReanEto()">
+        <button class="btn" onclick="location.hash = '#/reanimation/eto'">
           ETO (hors assistances)
         </button>
 
@@ -4415,15 +4414,15 @@ function renderReanMenu() {
           Antibiothérapies
         </button>
 
-        <button class="btn" onclick="renderReanEer()">
+        <button class="btn" onclick="location.hash = '#/reanimation/eer'">
           EER et échanges plasmatiques
         </button>
 
-        <button class="btn" onclick="renderReanTransplant()">
+        <button class="btn" onclick="location.hash = '#/reanimation/transplantation'">
           Transplantation cardiaque
         </button>
 
-        <button class="btn" onclick="renderReanAssistances()">
+        <button class="btn" onclick="location.hash = '#/reanimation/assistances'">
           Assistances circulatoires
         </button>
       </div>
@@ -4431,14 +4430,37 @@ function renderReanMenu() {
   `;
 }
 
-// ===================== Réanimation – Formules =====================
-// NB : le tableau ne donne que les intitulés, pas les formules chiffrées.
-// Par respect de ta consigne "pas d'internet", je n'invente PAS les équations.
+/* ====================================================================
+   RÉANIMATION – FORMULES
+   (avec menu Ventilation / Cardio-vasculaire / Métabolique)
+   ==================================================================== */
 
-function renderReanFormules() {
+function renderReanFormulesMenu() {
+  $app.innerHTML = `
+    <section>
+      <h2>Formules</h2>
+      <div class="grid">
+        <button class="btn" onclick="renderReanFormulesVentilation()">
+          Ventilation
+        </button>
+        <button class="btn" onclick="renderReanFormulesCardio()">
+          Cardio-vasculaire
+        </button>
+        <button class="btn" onclick="renderReanFormulesMetabolique()">
+          Métabolique
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+// --- Formules – Ventilation
+
+function renderReanFormulesVentilation() {
   const encadres = [
     {
       titre: "Ventilation",
+      sousTitreEncadre: "",
       html: `
         <ul>
           <li><strong>Volume courant idéal</strong></li>
@@ -4448,17 +4470,43 @@ function renderReanFormules() {
         <p>Les formules exactes peuvent être ajoutées ici si tu veux les expliciter.</p>
       `,
     },
+  ];
+
+  renderInterventionPage({
+    titre: "Formules",
+    sousTitre: "Ventilation",
+    encadres,
+  });
+}
+
+// --- Formules – Cardio-vasculaire
+
+function renderReanFormulesCardio() {
+  const encadres = [
     {
       titre: "Cardio-vasculaire",
       html: `
         <ul>
           <li><strong>Débit cardiaque échographique</strong></li>
           <li><strong>Résistances vasculaires pulmonaires</strong></li>
-          <li><strong>Calcul masse sanguine :</strong><br>
+          <li><strong>Masse sanguine :</strong><br>
               Masse sanguine (mL) = (100 – Ht %) × 0,7 × poids (kg)</li>
         </ul>
       `,
     },
+  ];
+
+  renderInterventionPage({
+    titre: "Formules",
+    sousTitre: "Cardio-vasculaire",
+    encadres,
+  });
+}
+
+// --- Formules – Métabolique
+
+function renderReanFormulesMetabolique() {
+  const encadres = [
     {
       titre: "Métabolique",
       html: `
@@ -4475,12 +4523,14 @@ function renderReanFormules() {
 
   renderInterventionPage({
     titre: "Formules",
-    sousTitre: "",
+    sousTitre: "Métabolique",
     encadres,
   });
 }
 
-// ===================== Réanimation – Prescriptions post-op =====================
+/* ====================================================================
+   RÉANIMATION – PRESCRIPTIONS POST-OP (page directe)
+   ==================================================================== */
 
 function renderReanPrescriptionsPostOp() {
   const encadres = [
@@ -4581,7 +4631,9 @@ function renderReanPrescriptionsPostOp() {
   });
 }
 
-// ===================== Réanimation – Saignements post-op =====================
+/* ====================================================================
+   RÉANIMATION – SAIGNEMENTS POST-OP (page directe)
+   ==================================================================== */
 
 function renderReanSaignementsPostOp() {
   const encadres = [
@@ -4640,9 +4692,9 @@ function renderReanSaignementsPostOp() {
   });
 }
 
-// ===================== Réanimation – FA post-opératoire =====================
-//
-// Il y a clairement une logique conditionnelle (catécholamines ? BB pré-op ?)
+/* ====================================================================
+   RÉANIMATION – FA POST-OP (page directe + logique choix)
+   ==================================================================== */
 
 function renderReanFAPostOp() {
   const encadres = [
@@ -4736,12 +4788,42 @@ function setupReanFALogic() {
   update();
 }
 
-// ===================== Réanimation – ETO (hors assistances) =====================
+/* ====================================================================
+   RÉANIMATION – ETO (MENU + sous-pages)
+   ==================================================================== */
 
-function renderReanEto() {
+function renderReanEtoMenu() {
+  $app.innerHTML = `
+    <section>
+      <h2>ETO (hors assistances)</h2>
+      <div class="grid">
+        <button class="btn" onclick="renderReanEtoPrecharge()">
+          Pré-charge dépendance
+        </button>
+        <button class="btn" onclick="renderReanEtoFctVG()">
+          Fonction systolique VG et cinétique segmentaire
+        </button>
+        <button class="btn" onclick="renderReanEtoValveAo()">
+          Valve aortique et aorte ascendante
+        </button>
+        <button class="btn" onclick="renderReanEtoValveMit()">
+          Valve mitrale et PTDVG
+        </button>
+        <button class="btn" onclick="renderReanEtoVDHTAP()">
+          Fonction VD et HTAP
+        </button>
+        <button class="btn" onclick="renderReanEtoPericarde()">
+          Épanchements et caillots péricardiques
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+function renderReanEtoPrecharge() {
   const encadres = [
     {
-      titre: "Évaluation de la pré-charge dépendance",
+      titre: "Pré-charge dépendance",
       html: `
         <ul>
           <li>Variation respiratoire de l'ITV CCVG</li>
@@ -4750,6 +4832,16 @@ function renderReanEto() {
         </ul>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "ETO (hors assistances)",
+    sousTitre: "Pré-charge dépendance",
+    encadres,
+  });
+}
+
+function renderReanEtoFctVG() {
+  const encadres = [
     {
       titre: "Fonction systolique VG et cinétique segmentaire",
       html: `
@@ -4762,6 +4854,16 @@ function renderReanEto() {
         </ul>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "ETO (hors assistances)",
+    sousTitre: "Fonction systolique VG et cinétique segmentaire",
+    encadres,
+  });
+}
+
+function renderReanEtoValveAo() {
+  const encadres = [
     {
       titre: "Valve aortique et aorte ascendante",
       html: `
@@ -4779,6 +4881,16 @@ function renderReanEto() {
         </ul>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "ETO (hors assistances)",
+    sousTitre: "Valve aortique et aorte ascendante",
+    encadres,
+  });
+}
+
+function renderReanEtoValveMit() {
+  const encadres = [
     {
       titre: "Valve mitrale et PTDVG",
       html: `
@@ -4790,6 +4902,16 @@ function renderReanEto() {
         </ul>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "ETO (hors assistances)",
+    sousTitre: "Valve mitrale et PTDVG",
+    encadres,
+  });
+}
+
+function renderReanEtoVDHTAP() {
+  const encadres = [
     {
       titre: "Fonction VD et HTAP",
       html: `
@@ -4813,6 +4935,16 @@ function renderReanEto() {
         </ul>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "ETO (hors assistances)",
+    sousTitre: "Fonction VD et HTAP",
+    encadres,
+  });
+}
+
+function renderReanEtoPericarde() {
+  const encadres = [
     {
       titre: "Épanchements et caillots péricardiques",
       html: `
@@ -4825,19 +4957,36 @@ function renderReanEto() {
       `,
     },
   ];
-
   renderInterventionPage({
     titre: "ETO (hors assistances)",
-    sousTitre: "",
+    sousTitre: "Épanchements et caillots péricardiques",
     encadres,
   });
 }
 
-// ===================== Réanimation – EER & échanges plasmatiques =====================
-//
-// Ici on a une vraie logique EP avec des formules explicites dans le tableau.
+/* ====================================================================
+   RÉANIMATION – EER & ÉCHANGES PLASMATIQUES (MENU + sous-pages)
+   ==================================================================== */
 
-function renderReanEer() {
+function renderReanEerMenu() {
+  $app.innerHTML = `
+    <section>
+      <h2>EER et échanges plasmatiques</h2>
+      <div class="grid">
+        <button class="btn" onclick="renderReanEerPostOp()">
+          EER post-opératoire
+        </button>
+        <button class="btn" onclick="renderReanEchangesPlasmatiques()">
+          Échanges plasmatiques
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+// --- EER post-opératoire (indications, abord, CVVH)
+
+function renderReanEerPostOp() {
   const encadres = [
     {
       titre: "Indications d’EER en réanimation chirurgicale",
@@ -4883,8 +5032,21 @@ function renderReanEer() {
         </ul>
       `,
     },
+  ];
+
+  renderInterventionPage({
+    titre: "EER et échanges plasmatiques",
+    sousTitre: "EER post-opératoire",
+    encadres,
+  });
+}
+
+// --- Échanges plasmatiques (calculateur + paramétrage)
+
+function renderReanEchangesPlasmatiques() {
+  const encadres = [
     {
-      titre: "Échanges plasmatiques – Volume à échanger (Calculateur)",
+      titre: "Volume à échanger (Calculateur)",
       html: `
         <div class="form">
           <div class="row">
@@ -4948,14 +5110,14 @@ function renderReanEer() {
 
   renderInterventionPage({
     titre: "EER et échanges plasmatiques",
-    sousTitre: "",
+    sousTitre: "Échanges plasmatiques",
     encadres,
   });
 
-  setupReanEerLogic();
+  setupEchangesPlasmatiquesLogic();
 }
 
-function setupReanEerLogic() {
+function setupEchangesPlasmatiquesLogic() {
   const poidsInput = document.getElementById("ep-poids");
   const htInput = document.getElementById("ep-ht");
   const typeSelect = document.getElementById("ep-type");
@@ -4985,7 +5147,6 @@ function setupReanEerLogic() {
     const coef = type === "curatif" ? 1.5 : 1.3;
     const volumeAEchanger = masseSanguine * coef; // mL
 
-    // Répartition Albumine / PFC
     let fracAlb = 1 / 3;
     let fracPFC = 2 / 3;
     if (type === "curatif" && tp && tp > 50) {
@@ -5018,11 +5179,38 @@ function setupReanEerLogic() {
   update();
 }
 
-// ===================== Réanimation – Transplantation cardiaque =====================
-//
-// Ici, le tableau indique clairement un (Choix) ECMO VA oui/non.
+/* ====================================================================
+   RÉANIMATION – TRANSPLANTATION CARDIAQUE (MENU + sous-pages)
+   ==================================================================== */
 
-function renderReanTransplant() {
+function renderReanTransplantMenu() {
+  $app.innerHTML = `
+    <section>
+      <h2>Transplantation cardiaque – Réanimation</h2>
+      <div class="grid">
+        <button class="btn" onclick="renderReanTransplantHemodynamique()">
+          Gestion hémodynamique post-opératoire
+        </button>
+        <button class="btn" onclick="renderReanTransplantImmuno()">
+          Protocole d’immunosuppression
+        </button>
+        <button class="btn" onclick="renderReanTransplantRejet()">
+          Rejet aigu de greffon
+        </button>
+        <button class="btn" onclick="renderReanTransplantInfections()">
+          Infections et transplantation
+        </button>
+        <button class="btn" onclick="renderReanTransplantCoronaire()">
+          Prévention de la maladie coronaire du greffon
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+// — Hémodynamique
+
+function renderReanTransplantHemodynamique() {
   const encadres = [
     {
       titre: "Gestion hémodynamique post-opératoire (Choix ECMO VA)",
@@ -5060,51 +5248,18 @@ function renderReanTransplant() {
         </div>
       `,
     },
-    {
-      titre: "Immunosuppression",
-      html: `
-        <p><strong>Traitement immunosuppresseur :</strong></p>
-        <ul>
-          <li>Corticothérapie</li>
-          <li>Anti-calcineurines (Ciclosporine / Tacrolimus)</li>
-          <li>± Mycophénolate mofétil / Azathioprine selon protocole</li>
-        </ul>
-      `,
-    },
-    {
-      titre: "Infections opportunistes",
-      html: `
-        <p><strong>Prévention / traitement (extraits du tableau) :</strong></p>
-        <ul>
-          <li>Toxoplasmose : traitement préventif ou curatif selon statut donneur/receveur.</li>
-          <li>Pneumocystose : Bactrim forte, puis relais PO selon durée totale prévue.</li>
-          <li>Hépatite B : se référer au tableau VHB spécifique.</li>
-        </ul>
-      `,
-    },
-    {
-      titre: "Prévention de la maladie coronaire du greffon",
-      html: `
-        <ul>
-          <li>Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
-              en l’absence de thrombopénie.</li>
-          <li>Pravastatine 40 mg/j PO à partir de J10 (si bilan hépatique normal).</li>
-          <li>Coronarographie à 1 an puis tous les 2 ans.</li>
-        </ul>
-      `,
-    },
   ];
 
   renderInterventionPage({
-    titre: "Transplantation cardiaque",
-    sousTitre: "",
+    titre: "Transplantation cardiaque – Réanimation",
+    sousTitre: "Gestion hémodynamique post-opératoire",
     encadres,
   });
 
-  setupReanTransplantLogic();
+  setupReanTransplantHemodynamiqueLogic();
 }
 
-function setupReanTransplantLogic() {
+function setupReanTransplantHemodynamiqueLogic() {
   const cb = document.getElementById("tx-ecmo");
   const blocNoEcm = document.getElementById("tx-gestion-noecmo");
   const blocEcm = document.getElementById("tx-gestion-ecmo");
@@ -5119,19 +5274,145 @@ function setupReanTransplantLogic() {
   update();
 }
 
-// ===================== Réanimation – Assistances circulatoires =====================
-//
-// Le tableau ne détaille pas encore les encadrés pour chaque type d’assistance.
+// — Immunosuppression
 
-function renderReanAssistances() {
+function renderReanTransplantImmuno() {
+  const encadres = [
+    {
+      titre: "Protocole d’immunosuppression",
+      html: `
+        <p><strong>Traitement immunosuppresseur :</strong></p>
+        <ul>
+          <li>Corticothérapie</li>
+          <li>Anti-calcineurines (Ciclosporine / Tacrolimus)</li>
+          <li>± Mycophénolate mofétil / Azathioprine selon protocole</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Transplantation cardiaque – Réanimation",
+    sousTitre: "Protocole d’immunosuppression",
+    encadres,
+  });
+}
+
+// — Rejet
+
+function renderReanTransplantRejet() {
+  const encadres = [
+    {
+      titre: "Rejet aigu de greffon",
+      html: `
+        <p>Encadré à remplir à partir de ton tableau détaillé de rejet aigu (traitement, biopsies, etc.).</p>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Transplantation cardiaque – Réanimation",
+    sousTitre: "Rejet aigu de greffon",
+    encadres,
+  });
+}
+
+// — Infections
+
+function renderReanTransplantInfections() {
+  const encadres = [
+    {
+      titre: "Infections et transplantation",
+      html: `
+        <p><strong>Prévention / traitement (extraits du tableau) :</strong></p>
+        <ul>
+          <li>Toxoplasmose : traitement préventif ou curatif selon statut donneur/receveur.</li>
+          <li>Pneumocystose : Bactrim forte, puis relais PO selon durée totale prévue.</li>
+          <li>Hépatite B : se référer au tableau VHB spécifique.</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Transplantation cardiaque – Réanimation",
+    sousTitre: "Infections et transplantation",
+    encadres,
+  });
+}
+
+// — Prévention maladie coronaire du greffon
+
+function renderReanTransplantCoronaire() {
+  const encadres = [
+    {
+      titre: "Prévention de la maladie coronaire du greffon",
+      html: `
+        <ul>
+          <li>Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
+              en l’absence de thrombopénie.</li>
+          <li>Pravastatine 40 mg/j PO à partir de J10 (si bilan hépatique normal).</li>
+          <li>Coronarographie à 1 an puis tous les 2 ans.</li>
+        </ul>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Transplantation cardiaque – Réanimation",
+    sousTitre: "Prévention de la maladie coronaire du greffon",
+    encadres,
+  });
+}
+
+/* ====================================================================
+   RÉANIMATION – ASSISTANCES CIRCULATOIRES (MENU + sous-pages)
+   ==================================================================== */
+
+function renderReanAssistancesMenu() {
+  $app.innerHTML = `
+    <section>
+      <h2>Assistances circulatoires</h2>
+      <div class="grid">
+        <button class="btn" onclick="renderReanAssistECMO()">
+          ECMO artério-veineuse
+        </button>
+        <button class="btn" onclick="renderReanAssistBCPIA()">
+          BCPIA
+        </button>
+        <button class="btn" onclick="renderReanAssistImpella()">
+          Impella
+        </button>
+        <button class="btn" onclick="renderReanAssistLVAD()">
+          LVAD
+        </button>
+        <button class="btn" onclick="renderReanAssistCardioWest()">
+          Cardio-west
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+function renderReanAssistECMO() {
   const encadres = [
     {
       titre: "ECMO artério-veineuse",
       html: `
         <p>Prise en charge d’une ECMO VA (débit, anticoagulation, sevrage, interactions ventilatoires).
-        Contenu détaillé à compléter d’après un tableau dédié.</p>
+        Contenu détaillé à compléter à partir de ton tableau dédié.</p>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "Assistances circulatoires",
+    sousTitre: "ECMO artério-veineuse",
+    encadres,
+  });
+}
+
+function renderReanAssistBCPIA() {
+  const encadres = [
     {
       titre: "BCPIA",
       html: `
@@ -5139,6 +5420,16 @@ function renderReanAssistances() {
         positionnement, synchronisation, réglages, sevrage. Contenu à compléter.</p>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "Assistances circulatoires",
+    sousTitre: "BCPIA",
+    encadres,
+  });
+}
+
+function renderReanAssistImpella() {
+  const encadres = [
     {
       titre: "Impella",
       html: `
@@ -5146,6 +5437,16 @@ function renderReanAssistances() {
         Contenu à compléter.</p>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "Assistances circulatoires",
+    sousTitre: "Impella",
+    encadres,
+  });
+}
+
+function renderReanAssistLVAD() {
+  const encadres = [
     {
       titre: "LVAD",
       html: `
@@ -5153,6 +5454,16 @@ function renderReanAssistances() {
         Contenu à compléter.</p>
       `,
     },
+  ];
+  renderInterventionPage({
+    titre: "Assistances circulatoires",
+    sousTitre: "LVAD",
+    encadres,
+  });
+}
+
+function renderReanAssistCardioWest() {
+  const encadres = [
     {
       titre: "Cardio-west",
       html: `
@@ -5161,14 +5472,12 @@ function renderReanAssistances() {
       `,
     },
   ];
-
   renderInterventionPage({
     titre: "Assistances circulatoires",
-    sousTitre: "",
+    sousTitre: "Cardio-west",
     encadres,
   });
 }
-
 
 // =====================================================================
 //  RÉANIMATION – ANTIBIOTHÉRAPIE (5 sous-parties existantes ATB)
