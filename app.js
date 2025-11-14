@@ -5070,8 +5070,14 @@ function renderReanEto() {
 }
 
 function openImg(name) {
-  window.open(`img/${name}`, "_blank");
+  document.getElementById("popup-img").src = `img/${name}`;
+  document.getElementById("img-popup").style.display = "flex";
 }
+
+function closePopup() {
+  document.getElementById("img-popup").style.display = "none";
+}
+
 
 /* ====================================================================
    RÉANIMATION – EER & ÉCHANGES PLASMATIQUES (MENU + sous-pages)
