@@ -4792,24 +4792,37 @@ function renderReanFAPostOp() {
     {
       titre: "Traitement curatif de la FAPO",
       html: `
-        <p><strong>Traitement curatif de la FAPO :</strong></p>
-        <ul>
-          <li>Évaluer la tolérance hémodynamique.</li>
-          <li>Corriger facteurs favorisants.</li>
-          <li>CEE (cardioversion) selon tolérance et délai.</li>
-          <li>Amiodarone IV/PO (charge puis entretien) selon protocole.</li>
-        </ul>
+        <p><strong>Paramètres cliniques :</strong></p>
+        <div class="form">
+          <label>
+            <input type="checkbox" id="fa-instable" />
+            Instabilité hémodynamique (choc, ischémie, OAP…)
+          </label>
+          <label>
+            <input type="checkbox" id="fa-mal-toleree" />
+            FA mal tolérée (dyspnée, douleur, hypotension modérée)
+          </label>
+          <label>
+            <input type="checkbox" id="fa-ci-anticoag" />
+            Contre-indication à l'anticoagulation
+          </label>
+        </div>
+        <div id="fa-curatif-reco"></div>
       `,
     },
     {
       titre: "Anticoagulation",
       html: `
-        <p><strong>Anticoagulation :</strong></p>
+        <p><strong>Principes :</strong></p>
         <ul>
-          <li>Pendant les premières 48 h : discussion au cas par cas selon CHADS-VASc, risque hémorragique.</li>
-          <li>Après 48 h de FAPO : anticoagulation systématique (sauf contre-indication).</li>
+          <li>Pendant les premières 48 h : discussion au cas par cas selon CHADS-VASc et risque hémorragique.</li>
+          <li>Après 48 h de FA post-opératoire : anticoagulation systématique sauf contre-indication.</li>
           <li>Durée : au moins 4 à 6 semaines puis réévaluation.</li>
-          <li><span style="color:#0070C0;">Lien vers le score CHADS-VASc</span></li>
+          <li>
+            <button type="button" class="btn link" onclick="openChadsVascImage()">
+              Lien vers le score CHADS-VASc
+            </button>
+          </li>
         </ul>
       `,
     },
@@ -4827,35 +4840,119 @@ function renderReanFAPostOp() {
 function setupReanFALogic() {
   const cbCatechol = document.getElementById("fa-catecholamines");
   const cbBBpreop = document.getElementById("fa-bb-preop");
-  const reco = document.getElementById("fa-preventif-reco");
+  const recoPrev = document.getElementById("fa-preventif-reco");
+
+  const cbInstable = document.getElementById("fa-instable");
+  const cbMalTol = document.getElementById("fa-mal-toleree");
+  const cbCIAnticoag = document.getElementById("fa-ci-anticoag");
+  const recoCur = document.getElementById("fa-curatif-reco");
 
   function update() {
-    let html = "<p><strong>Proposition de prévention :</strong></p><ul>";
+    // === Préventif ===
+    if (recoPrev) {
+      let htmlPrev = "<p><strong>Proposition de prévention :</strong></p><ul>";
 
-    if (cbCatechol && cbCatechol.checked) {
-      html += `
-        <li>Catécholamines présentes : privilégier l'Amiodarone
-            (ex. 5 mg/kg x2/j PO ou ~10 mg/kg/j IVSE si PO impossible).</li>
-      `;
-    } else if (cbBBpreop && cbBBpreop.checked) {
-      html += `
-        <li>Patient déjà sous bêta-bloquant : reprise du bêta-bloquant habituel.</li>
-      `;
-    } else {
-      html += `
-        <li>Pas de BB pré-op ni catécholamines : envisager initiation d'un bêta-bloquant
-            (Carvédilol 6,25 mg x2/j ou Métoprolol 25 mg x2/j) si pas de contre-indication.</li>
-      `;
+      if (cbCatechol && cbCatechol.checked) {
+        htmlPrev += `
+          <li>Catécholamines présentes : privilégier l'Amiodarone
+              (ex. charge IV puis relais PO) plutôt qu'un bêta-bloquant.</li>
+        `;
+      } else if (cbBBpreop && cbBBpreop.checked) {
+        htmlPrev += `
+          <li>Patient déjà sous bêta-bloquant : reprendre le bêta-bloquant habituel
+              dès que possible (en l'absence de contre-indication).</li>
+        `;
+      } else {
+        htmlPrev += `
+          <li>Pas de catécholamines et pas de BB pré-op :
+              envisager l'introduction d'un bêta-bloquant (ex. Carvédilol ou Métoprolol)
+              en l'absence de contre-indication.</li>
+        `;
+      }
+
+      htmlPrev += "</ul>";
+      recoPrev.innerHTML = htmlPrev;
     }
 
-    html += "</ul>";
-    if (reco) reco.innerHTML = html;
+    // === Curatif ===
+    if (recoCur) {
+      const instable = cbInstable && cbInstable.checked;
+      const malTol = cbMalTol && cbMalTol.checked;
+      const ciAnticoag = cbCIAnticoag && cbCIAnticoag.checked;
+
+      let htmlCur = "<p><strong>Proposition de traitement curatif :</strong></p><ul>";
+
+      if (instable) {
+        htmlCur += `
+          <li>Instabilité hémodynamique : cardioversion électrique immédiate
+              après correction des facteurs favorisants et sous sédation/AG.</li>
+        `;
+        if (ciAnticoag) {
+          htmlCur += `
+            <li>Anticoagulation à discuter au cas par cas en raison d'une contre-indication
+                actuelle (surveillance rapprochée).</li>
+          `;
+        } else {
+          htmlCur += `
+            <li>Mettre en route une anticoagulation curative dès que possible,
+                en tenant compte du risque hémorragique.</li>
+          `;
+        }
+      } else if (malTol) {
+        htmlCur += `
+          <li>FA mal tolérée mais sans choc franc :
+              corriger les facteurs favorisants puis débuter Amiodarone IV
+              (charge puis entretien) et discuter une cardioversion rapide.</li>
+        `;
+        if (ciAnticoag) {
+          htmlCur += `
+            <li>Anticoagulation : évaluer le rapport bénéfice/risque,
+                et différer si contre-indication majeure.</li>
+          `;
+        } else {
+          htmlCur += `
+            <li>Anticoagulation curative à instaurer en l'absence de contre-indication,
+                en particulier si FA &gt; 48 h ou score CHADS-VASc élevé.</li>
+          `;
+        }
+      } else {
+        htmlCur += `
+          <li>FA bien tolérée : corriger les facteurs favorisants, contrôler la fréquence
+              (bêta-bloquant ou autres selon la fonction VG et les contre-indications).</li>
+          <li>Stratégie de contrôle du rythme (Amiodarone ± cardioversion) à discuter
+              en fonction de l'ancienneté de la FA et du contexte postopératoire.</li>
+        `;
+        if (ciAnticoag) {
+          htmlCur += `
+            <li>Contre-indication à l'anticoagulation : la décision d'AC doit être
+                réévaluée régulièrement.</li>
+          `;
+        } else {
+          htmlCur += `
+            <li>Anticoagulation à instaurer si FA &gt; 48 h ou score CHADS-VASc ≥ seuil
+                défini par le protocole de service.</li>
+          `;
+        }
+      }
+
+      htmlCur += "</ul>";
+      recoCur.innerHTML = htmlCur;
+    }
   }
 
   if (cbCatechol) cbCatechol.addEventListener("change", update);
   if (cbBBpreop) cbBBpreop.addEventListener("change", update);
+  if (cbInstable) cbInstable.addEventListener("change", update);
+  if (cbMalTol) cbMalTol.addEventListener("change", update);
+  if (cbCIAnticoag) cbCIAnticoag.addEventListener("change", update);
+
   update();
 }
+
+function openChadsVascImage() {
+  window.open("img/chadsvasc.png", "_blank");
+}
+
 
 /* ====================================================================
    RÉANIMATION – ETO (MENU + sous-pages)
