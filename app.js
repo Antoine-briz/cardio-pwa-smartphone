@@ -8320,7 +8320,7 @@ function buildAbces(p){
   return "Abcès cérébral (ATB idéalement après ponction-aspiration si possible) :\n• " + S + addImmuno;
 }
 
-function renderProbaDermohypodermiteForm(){
+function renderProbaDermohypoForm(){
   $app.innerHTML = `
     <div class="card"><strong>Caractéristiques de l’infection des parties molles</strong></div>
 
