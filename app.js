@@ -5002,21 +5002,6 @@ function renderReanEerPostOp() {
       `,
     },
     {
-      titre: "EER continue (CVVH / Prismaflex)",
-      html: `
-        <p><strong>Prescription EER continue :</strong></p>
-        <ul>
-          <li>Réglages de débit sanguin, d’ultrafiltration, de réinjection.</li>
-          <li>Adaptés à l’état hémodynamique et aux objectifs métaboliques.</li>
-        </ul>
-        <p><strong>Anticoagulation régionale au citrate :</strong></p>
-        <ul>
-          <li>Vérifier les contre-indications (hépatopathie sévère, troubles du métabolisme du citrate).</li>
-          <li>Avant initiation : CaCl 2 g si Ca ionisé &lt; 1,1 mmol/L.</li>
-        </ul>
-      `,
-    },
-    {
       titre: "Prescription CVVH Prismaflex (calculateur)",
       html: `
         <div class="form">
