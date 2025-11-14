@@ -189,18 +189,29 @@ function renderAnesthChirCecMenu() {
   `;
 }
 
-
 function renderAnesthCardioStructMenu() {
   $app.innerHTML = `
     <section>
-      <h2>Cardiologie structurelle et rythmologie</h2>
+      <h2>Cardiologie structurelle & rythmologie</h2>
       <div class="grid">
-        <button class="btn">TAVI</button>
-        <button class="btn">Mitra-clip</button>
-        <button class="btn">Fermeture FOP/CIA</button>
-        <button class="btn">Pacemaker / DAI</button>
-        <button class="btn">Ablations cœur droit</button>
-        <button class="btn">Ablations cœur gauche</button>
+        <button class="btn" onclick="renderInterventionTAVI()">
+          TAVI
+        </button>
+        <button class="btn" onclick="renderInterventionMitraClip()">
+          Mitra-clip
+        </button>
+        <button class="btn" onclick="renderInterventionFOPCIA()">
+          Fermeture FOP / CIA
+        </button>
+        <button class="btn" onclick="renderInterventionPacemakerDAI()">
+          Pacemaker & DAI
+        </button>
+        <button class="btn" onclick="renderInterventionAblationDroit()">
+          Ablations du cœur droit
+        </button>
+        <button class="btn" onclick="renderInterventionAblationGauche()">
+          Ablations du cœur gauche
+        </button>
       </div>
     </section>
   `;
@@ -3514,33 +3525,6 @@ function setupTransplantAnesthLogic() {
   updateAll();
 }
 
-function renderAnesthCardioStructMenu() {
-  $app.innerHTML = `
-    <section>
-      <h2>Cardiologie structurelle & rythmologie</h2>
-      <div class="grid">
-        <button class="btn" onclick="renderInterventionTAVI()">
-          TAVI
-        </button>
-        <button class="btn" onclick="renderInterventionMitraClip()">
-          Mitra-clip
-        </button>
-        <button class="btn" onclick="renderInterventionFOPCIA()">
-          Fermeture FOP / CIA
-        </button>
-        <button class="btn" onclick="renderInterventionPacemakerDAI()">
-          Pacemaker & DAI
-        </button>
-        <button class="btn" onclick="renderInterventionAblationDroit()">
-          Ablations du cœur droit
-        </button>
-        <button class="btn" onclick="renderInterventionAblationGauche()">
-          Ablations du cœur gauche
-        </button>
-      </div>
-    </section>
-  `;
-}
 
 function renderInterventionTAVI() {
   const encadres = [
