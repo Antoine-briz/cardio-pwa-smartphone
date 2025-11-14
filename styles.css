@@ -862,3 +862,17 @@ table.simple th, table.pheno th {
   font-size: 14px;
   opacity: .7;
 }
+
+.eto-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.eto-icon {
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
