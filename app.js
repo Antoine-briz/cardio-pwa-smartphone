@@ -4536,7 +4536,6 @@ function renderReanPrescriptionsPostOp() {
     {
       titre: "Intervention chirurgicale (Choix)",
       html: `
-        <p><strong>Type d’intervention :</strong></p>
         <div class="form">
           <label>Intervention
             <select id="presc-intervention">
@@ -4549,21 +4548,22 @@ function renderReanPrescriptionsPostOp() {
               <option value="plastie-ao">Plastie aortique</option>
               <option value="plastie-mit">Plastie mitrale</option>
               <option value="plastie-tric">Plastie tricuspide</option>
-              <option value="tsc">TSC</option>
+              <option value="tsc">TSC (tube sus-coronaire)</option>
               <option value="tirone">Tirone-David</option>
               <option value="bentall-bio">Bentall biologique</option>
               <option value="bentall-meca">Bentall mécanique</option>
-              <option value="crosse">Remplacement crosse</option>
+              <option value="crosse">Remplacement de crosse</option>
             </select>
           </label>
         </div>
-        <p>Cette sélection sert surtout à contextualiser les prescriptions ci-dessous.</p>
+        <p style="margin-top:8px;">
+          La sélection permet de contextualiser les prescriptions (anti-agrégants, anticoagulation, retrait des électrodes).
+        </p>
       `,
     },
     {
       titre: "Analgésie",
       html: `
-        <p><strong>Analgésie post-opératoire :</strong></p>
         <ul>
           <li>Paracétamol 1 g x4/j IVL ou PO</li>
           <li>Acupan 80–120 mg/j en IVSE</li>
@@ -4576,33 +4576,18 @@ function renderReanPrescriptionsPostOp() {
     {
       titre: "Anti-agrégants plaquettaires",
       html: `
-        <p><strong>Anti-agrégants :</strong></p>
-        <ul>
-          <li>Aspirine 100 mg IVL à H+6 puis Kardégic 75 mg/j PO selon l’indication.</li>
-          <li>Bi-AAP selon indication (stent récent, pontages, etc.).</li>
-          <li>Si électrodes épicardiques en place, adapter le timing de reprise.</li>
-        </ul>
+        <div id="presc-antiagg"></div>
       `,
     },
     {
       titre: "Anticoagulation",
       html: `
-        <p><strong>Anticoagulation :</strong></p>
-        <ul>
-          <li>Lovenox 4000 UI SC à H+6.</li>
-          <li>Ensuite :
-            <ul>
-              <li>Chirurgie coronaire simple : prophylaxie standard (ex : 4000 UI x1/j).</li>
-              <li>Chirurgie valvulaire (hors RVA bio) : Lovenox 100 UI/kg x2/j dès J1.</li>
-            </ul>
-          </li>
-        </ul>
+        <div id="presc-anticoag"></div>
       `,
     },
     {
       titre: "Retrait des drainages",
       html: `
-        <p><strong>Retrait des drainages :</strong></p>
         <ul>
           <li>Retrait dès 24 h post-op si &lt; 100 mL / 6 h et absence de bullage.</li>
           <li>Pas d’arrêt de l’anticoagulation, sauf surdosage.</li>
@@ -4612,13 +4597,7 @@ function renderReanPrescriptionsPostOp() {
     {
       titre: "Retrait des électrodes épicardiques",
       html: `
-        <p><strong>Retrait des électrodes épicardiques :</strong></p>
-        <ul>
-          <li>En l’absence de trouble de conduction :</li>
-          <li>Dès J1 pour PC et TSC.</li>
-          <li>Dès J4 pour les chirurgies valvulaires.</li>
-          <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
-        </ul>
+        <div id="presc-electrodes"></div>
       `,
     },
   ];
@@ -4628,6 +4607,98 @@ function renderReanPrescriptionsPostOp() {
     sousTitre: "",
     encadres,
   });
+
+  setupReanPrescLogic();
+}
+
+function setupReanPrescLogic() {
+  const select = document.getElementById("presc-intervention");
+  const antiaggDiv = document.getElementById("presc-antiagg");
+  const anticoagDiv = document.getElementById("presc-anticoag");
+  const electrodesDiv = document.getElementById("presc-electrodes");
+
+  // Groupe "coronaire / tube / RVA bio" :
+  // - Aspirine puis Kardégic systématiques
+  // - Anticoagulation préventive
+  // - Retrait électrodes J1
+  const groupePréventif = new Set(["pc", "tsc", "rva-bio"]);
+
+  function update() {
+    const val = select ? select.value : "pc";
+    const estGroupePréventif = groupePréventif.has(val);
+
+    // === 1/ Anti-agrégants plaquettaires ===
+    if (antiaggDiv) {
+      if (estGroupePréventif) {
+        // Pontages, TSC, RVA bio → Aspirine/Kardégic systématiques
+        antiaggDiv.innerHTML = `
+          <ul>
+            <li>Aspirine 100 mg IVL à H+6 puis Kardégic 75 mg/j PO.</li>
+            <li>Bi-antiagrégation plaquettaire selon indication (stent récent, NSTEMI, etc.) à reprendre après retrait des électrodes.</li>
+          </ul>
+        `;
+      } else {
+        // Autres interventions → À mettre si coronarien ou déjà présent pré-op
+        antiaggDiv.innerHTML = `
+          <ul>
+            <li>Aspirine 100mg IVL H+6 puis Kardégic 75mg/j PO si patient coronarien
+                ou si déjà présent en pré-opératoire.</li>
+            <li>Bi-antiagrégation plaquettaire uniquement selon indication
+                (stent récent, NSTEMI, etc.), à reprendre après retrait des électrodes.</li>
+          </ul>
+        `;
+      }
+    }
+
+    // === 2/ Anticoagulation ===
+    if (anticoagDiv) {
+      if (estGroupePréventif) {
+        // Pontages, TSC, RVA bio → anticoag préventive
+        anticoagDiv.innerHTML = `
+          <ul>
+            <li>Lovenox 4000 UI SC à H+6.</li>
+            <li>Ensuite : Poursuite anticoagulation préventive: Lovenox 4000 UI x1/j SC (HNF ou calciparine si DFG < 15 mL/min/1,73m2).</li>
+          </ul>
+        `;
+      } else {
+        // Autres (valvulaires, aorte…) → schéma thérapeutique
+        anticoagDiv.innerHTML = `
+          <ul>
+            <li>Lovenox 4000 UI SC à H+6.</li>
+            <li>Ensuite : Anticoagulation efficace: Lovenox 100 UI/kg x2/j dès J1 (HNF IVSE si DFG < 15 mL/min/1,73m2).</li>
+          </ul>
+        `;
+      }
+    }
+
+    // === 3/ Retrait des électrodes épicardiques ===
+    if (electrodesDiv) {
+      if (estGroupePréventif) {
+        // Pontages + TSC → J1
+        electrodesDiv.innerHTML = `
+          <ul>
+            <li>En l’absence de trouble de conduction :</li>
+            <li>Retrait possible dès J1</li>
+            <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
+          </ul>
+        `;
+      } else {
+        // Tout le reste (valvules / aorte) → J4
+        electrodesDiv.innerHTML = `
+          <ul>
+            <li>En l’absence de trouble de conduction :</li>
+            <li>Retrait à partir de J4 (car chirurgie valvulaire).</li>
+            <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
+          </ul>
+        `;
+      }
+    }
+  }
+
+  if (select) {
+    select.addEventListener("change", update);
+  }
+  update();
 }
 
 /* ====================================================================
