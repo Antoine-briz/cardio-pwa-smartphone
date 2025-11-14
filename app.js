@@ -59,24 +59,24 @@ function renderHome() {
   $app.innerHTML = `
     <section class="home">
       <div class="hero">
-        <img src="titre.png" alt="Titre" />
+        <img src="img/titre.png" alt="Titre" />
         <h2>Protocoles d’anesthésie & réanimation</h2>
       </div>
 
       <div class="grid">
         <div class="card" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
-          <img src="anesthesie.png" alt="Anesthésie" class="menu-section-img" />
+          <img src="img/anesthesie.png" alt="Anesthésie" class="menu-section-img" />
         </div>
 
         <div class="card" onclick="location.hash = '#/reanimation'">
           <h3>Réanimation</h3>
-          <img src="reanimation.png" alt="Réanimation" class="menu-section-img" />
+          <img src="img/reanimation.png" alt="Réanimation" class="menu-section-img" />
         </div>
 
         <div class="card" onclick="location.hash = '#/cec'">
           <h3>Circulation extra-corporelle</h3>
-          <img src="cec.png" alt="CEC" class="menu-section-img" />
+          <img src="img/cec.png" alt="CEC" class="menu-section-img" />
         </div>
       </div>
 
@@ -100,7 +100,7 @@ function renderAnesthMenu() {
   $app.innerHTML = `
     <section>
       <div class="hero">
-        <img src="titre.png" alt="Protocoles d’anesthésie" />
+        <img src="img/titre.png" alt="Protocoles d’anesthésie" />
         <h2>Protocoles d’anesthésie</h2>
       </div>
 
@@ -4369,7 +4369,7 @@ function renderReanMenu() {
   $app.innerHTML = `
     <section>
       <div class="hero">
-        <img src="titre.png" alt="Réanimation" />
+        <img src="img/titre.png" alt="Réanimation" />
         <h2>Réanimation</h2>
       </div>
 
