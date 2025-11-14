@@ -12,7 +12,7 @@ const routes = {
   // Anesthésie
   "#/anesthesie": renderAnesthMenu,
   "#/anesthesie/consultations": renderAnesthConsultations,
-  "#/anesthesie/antibiopro": renderAnesthAntibiopro,
+  "#/anesthesie/antibiopro": renderAntibioproForm,
   "#/anesthesie/chir-cec": renderAnesthChirCecMenu,
   "#/anesthesie/cardio-struct": renderAnesthCardioStructMenu,
   "#/anesthesie/vasculaire": renderAnesthVasculaire,
@@ -5169,6 +5169,7 @@ function renderReanAssistances() {
   });
 }
 
+
 // =====================================================================
 //  RÉANIMATION – ANTIBIOTHÉRAPIE (5 sous-parties existantes ATB)
 // =====================================================================
@@ -5191,20 +5192,6 @@ function renderReanAntibiotherapieMenu() {
 
 // Les 5 fonctions suivantes se contentent de déléguer à tes fonctions
 // existantes de pwa-atb-rules (renderProbaMenu, renderAdapteeMenu, etc.)
-
-function renderAnesthAntibiopro() {
-  $app.innerHTML = `
-    <section>
-      <h2>Antibioprophylaxie</h2>
-      <div id="antibiopro-root"></div>
-    </section>
-  `;
-
-  const root = document.getElementById("antibiopro-root");
-
-  // Appel réel de ton ancienne logique :
-  renderAntibioproForm(root);
-}
 
 function renderAtbProbabilisteMenu() {
   const root = document.getElementById("atb-section-root");
