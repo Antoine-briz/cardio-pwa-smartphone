@@ -30,6 +30,17 @@ const routes = {
   "#/reanimation/transplantation": renderReanTransplantMenu,
   "#/reanimation/assistances": renderReanAssistancesMenu,
 
+// Antibiothérapies
+"#/proba/pneumonies": renderProbaPneumonieForm,
+"#/proba/iu": renderProbaIUForm,
+"#/proba/abdo": renderProbaAbdoForm,
+"#/proba/neuro": renderProbaNeuroForm,
+"#/proba/dermohypo": renderProbaDermohypoForm,
+"#/proba/endocardite": renderProbaEndocarditeForm,
+"#/proba/mediastinite": renderProbaMediastiniteForm,
+"#/proba/scarpa": renderProbaScarpaForm,
+"#/proba/sepsis": renderProbaSepsisForm,
+  
   // CEC
   "#/cec": renderCecMenu,
 
