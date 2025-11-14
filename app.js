@@ -4959,109 +4959,119 @@ function openChadsVascImage() {
    ==================================================================== */
 
 function renderReanEto() {
-  $app.innerHTML = `
-    <section>
-      <h2>ETO (hors assistances)</h2>
+  const encadres = [
 
-      <!-- 1. Pré-charge dépendance -->
-      <details class="card" open>
-        <summary><strong>Évaluation de la pré-charge dépendance</strong></summary>
-        <div class="card-body">
-          <ul class="eto-list">
-            <li><button class="btn link" onclick="openEto('vcs')">Variation respi. VCS</button></li>
-            <li><button class="btn link" onclick="openEto('itv_ccvg')">Variation respi. ITV CCVG</button></li>
-            <li><button class="btn link" onclick="openEto('vmax_va')">Variation respi. Vmax VA</button></li>
-            <li><button class="btn link" onclick="openEto('vmax_va2')">Variation respi. Vmax VA (2)</button></li>
+    // 1 — Pré-charge dépendance
+    {
+      titre: "Évaluation de la pré-charge dépendance",
+      html: `
+        <ul class="eto-list">
+          <li>
+            Variation respi. VCS
+            <span class="eto-icon" onclick="openImg('image1.png')">🖥️</span>
+          </li>
+          <li>
+            Variation respi. ITV CCVG
+            <span class="eto-icon" onclick="openImg('image2.png')">🖥️</span>
+          </li>
+          <li>
+            Variation respi. Vmax VA
+            <span class="eto-icon" onclick="openImg('image3.png')">🖥️</span>
+          </li>
+          <li>
+            Variation respi. Vmax VA (2)
+            <span class="eto-icon" onclick="openImg('image4.png')">🖥️</span>
+          </li>
+        </ul>
+      `,
+    },
+
+    // 2 — Fonction systolique VG
+    {
+      titre: "Fonction systolique VG et cinétique segmentaire",
+      html: `
+        <ul class="eto-list">
+          <li>FEVG visuelle <span class="eto-icon" onclick="openImg('image5.png')">🖥️</span></li>
+          <li>Méthode de Simpson biplan <span class="eto-icon" onclick="openImg('image6.png')">🖥️</span></li>
+          <li>Indice de Tei <span class="eto-icon" onclick="openImg('image7.png')">🖥️</span></li>
+          <li>Cinétique segmentaire (17 segments) <span class="eto-icon" onclick="openImg('image8.png')">🖥️</span></li>
+          <li>Strain VG <span class="eto-icon" onclick="openImg('image9.png')">🖥️</span></li>
+        </ul>
+      `,
+    },
+
+    // 3 — Valve aortique
+    {
+      titre: "Valve aortique et aorte ascendante",
+      html: `
+        <ul class="eto-list">
+          <li>Morphologie <span class="eto-icon" onclick="openImg('image10.png')">🖥️</span></li>
+          <li>Insuffisance aortique <span class="eto-icon" onclick="openImg('image11.png')">🖥️</span></li>
+          <li>Sténose aortique :</li>
+          <ul class="eto-list sub">
+            <li>Gradient moyen / max <span class="eto-icon" onclick="openImg('image12.png')">🖥️</span></li>
+            <li>Vmax VA <span class="eto-icon" onclick="openImg('image13.png')">🖥️</span></li>
+            <li>Surface valvulaire <span class="eto-icon" onclick="openImg('image14.png')">🖥️</span></li>
+            <li>ITV CCVG / ITV VA <span class="eto-icon" onclick="openImg('image15.png')">🖥️</span></li>
           </ul>
-        </div>
-      </details>
+        </ul>
+      `,
+    },
 
-      <!-- 2. VG & cinétique -->
-      <details class="card">
-        <summary><strong>Fonction systolique VG et cinétique segmentaire</strong></summary>
-        <div class="card-body">
-          <ul class="eto-list">
-            <li><button class="btn link" onclick="openEto('fegv')">FEVG visuelle</button></li>
-            <li><button class="btn link" onclick="openEto('simpson')">Méthode de Simpson biplan</button></li>
-            <li><button class="btn link" onclick="openEto('tei_vg')">Indice de Tei</button></li>
-            <li><button class="btn link" onclick="openEto('kinetic_vg')">Cinétique segmentaire (17 segments du VG)</button></li>
-            <li><button class="btn link" onclick="openEto('strain_vg')">Strain VG</button></li>
-          </ul>
-        </div>
-      </details>
+    // 4 — Valve mitrale
+    {
+      titre: "Valve mitrale et PTDVG",
+      html: `
+        <ul class="eto-list">
+          <li>Morphologie mitrale <span class="eto-icon" onclick="openImg('image16.png')">🖥️</span></li>
+          <li>PTDVG : E/A, E/E’, Vp, OG <span class="eto-icon" onclick="openImg('image17.png')">🖥️</span></li>
+          <li>Insuffisance mitrale <span class="eto-icon" onclick="openImg('image18.png')">🖥️</span></li>
+          <li>Sténose mitrale <span class="eto-icon" onclick="openImg('image19.png')">🖥️</span></li>
+        </ul>
+      `,
+    },
 
-      <!-- 3. Valve aortique -->
-      <details class="card">
-        <summary><strong>Valve aortique et aorte ascendante</strong></summary>
-        <div class="card-body">
-          <ul class="eto-list">
-            <li><button class="btn link" onclick="openEto('va_morpho')">Morphologie : cuspides, calcifications, aorte ascendante</button></li>
-            <li><button class="btn link" onclick="openEto('ia_quantif')">Insuffisance aortique : quantification standard</button></li>
-            <li><strong>Sténose aortique :</strong></li>
-            <ul class="eto-sub">
-              <li><button class="btn link" onclick="openEto('sa_gradient')">Gradient moyen / maximum</button></li>
-              <li><button class="btn link" onclick="openEto('sa_vmax')">Vmax VA</button></li>
-              <li><button class="btn link" onclick="openEto('sa_sva')">Surface valvulaire aortique</button></li>
-              <li><button class="btn link" onclick="openEto('sa_itv_ratio')">ITV CCVG / ITV VA</button></li>
-            </ul>
-          </ul>
-        </div>
-      </details>
+    // 5 — Fonction VD
+    {
+      titre: "Fonction VD et HTAP",
+      html: `
+        <ul class="eto-list">
+          <li>FAC VD <span class="eto-icon" onclick="openImg('image20.png')">🖥️</span></li>
+          <li>TAPSE <span class="eto-icon" onclick="openImg('image21.png')">🖥️</span></li>
+          <li>Onde S tricuspide <span class="eto-icon" onclick="openImg('image22.png')">🖥️</span></li>
+          <li>Indice de Tei VD <span class="eto-icon" onclick="openImg('image23.png')">🖥️</span></li>
+          <li>Strain VD <span class="eto-icon" onclick="openImg('image24.png')">🖥️</span></li>
+          <li>PAPS, PAPm, PAPd <span class="eto-icon" onclick="openImg('image25.png')">🖥️</span></li>
+          <li>ITV CCVD <span class="eto-icon" onclick="openImg('image26.png')">🖥️</span></li>
+        </ul>
+      `,
+    },
 
-      <!-- 4. Valve mitrale -->
-      <details class="card">
-        <summary><strong>Valve mitrale et PTDVG</strong></summary>
-        <div class="card-body">
-          <ul class="eto-list">
-            <li><button class="btn link" onclick="openEto('mitrale_morpho')">Morphologie mitrale</button></li>
-            <li><button class="btn link" onclick="openEto('ptdvg')">PTDVG : E/A, E/E’, Vp, taille OG</button></li>
-            <li><button class="btn link" onclick="openEto('im_quantif')">Insuffisance mitrale : mécanisme, quantification</button></li>
-            <li><button class="btn link" onclick="openEto('sm_gradient')">Sténose mitrale : gradient moyen</button></li>
-            <li><button class="btn link" onclick="openEto('sm_surface')">Surface mitrale</button></li>
-          </ul>
-        </div>
-      </details>
+    // 6 — Péricarde
+    {
+      titre: "Épanchements et caillots péricardiques",
+      html: `
+        <ul class="eto-list">
+          <li>Vue bi-cave 90° <span class="eto-icon" onclick="openImg('image27.png')">🖥️</span></li>
+          <li>Petit axe VG 0° <span class="eto-icon" onclick="openImg('image28.png')">🖥️</span></li>
+          <li>Vue trans-gastrique profonde VD <span class="eto-icon" onclick="openImg('image29.png')">🖥️</span></li>
+          <li>Recherche caillot/péricarde <span class="eto-icon" onclick="openImg('image30.png')">🖥️</span></li>
+        </ul>
+      `,
+    },
 
-      <!-- 5. VD et HTAP -->
-      <details class="card">
-        <summary><strong>Fonction VD et HTAP</strong></summary>
-        <div class="card-body">
-          <ul class="eto-list">
-            <li><strong>Fonction VD :</strong></li>
-            <ul class="eto-sub">
-              <li><button class="btn link" onclick="openEto('fac_vd')">FAC VD</button></li>
-              <li><button class="btn link" onclick="openEto('tapse')">TAPSE</button></li>
-              <li><button class="btn link" onclick="openEto('onde_s')">Onde S tricuspide</button></li>
-              <li><button class="btn link" onclick="openEto('tei_vd')">Indice de Tei VD</button></li>
-              <li><button class="btn link" onclick="openEto('strain_vd')">Strain VD</button></li>
-            </ul>
+  ];
 
-            <li><strong>Pressions pulmonaires :</strong></li>
-            <ul class="eto-sub">
-              <li><button class="btn link" onclick="openEto('pap_it')">PAPs sur flux IT</button></li>
-              <li><button class="btn link" onclick="openEto('pap_ip')">PAPm / PAPd sur flux IP</button></li>
-              <li><button class="btn link" onclick="openEto('itv_ccvd')">ITV CCVD</button></li>
-            </ul>
-          </ul>
-        </div>
-      </details>
-
-      <!-- 6. Péricarde -->
-      <details class="card">
-        <summary><strong>Épanchements et caillots péricardiques</strong></summary>
-        <div class="card-body">
-          <ul class="eto-list">
-            <li><button class="btn link" onclick="openEto('bicave')">Vue bi-cave 90°</button></li>
-            <li><button class="btn link" onclick="openEto('vg_petit_axe')">Petit axe du VG (0°)</button></li>
-            <li><button class="btn link" onclick="openEto('tg_cavites_droites')">Vue trans-gastrique profonde cavités droites</button></li>
-            <li><button class="btn link" onclick="openEto('pericarde')">Recherche d’épanchement compressif / caillots péricardiques</button></li>
-          </ul>
-        </div>
-      </details>
-    </section>
-  `;
+  renderInterventionPage({
+    titre: "ETO (hors assistances)",
+    sousTitre: "",
+    encadres,
+  });
 }
 
+function openImg(name) {
+  window.open(`img/${name}`, "_blank");
+}
 
 /* ====================================================================
    RÉANIMATION – EER & ÉCHANGES PLASMATIQUES (MENU + sous-pages)
