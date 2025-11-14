@@ -4991,10 +4991,11 @@ function renderReanEtoPrecharge() {
     {
       titre: "Pré-charge dépendance",
       html: `
-        <ul>
-          <li>Variation respiratoire de l'ITV CCVG</li>
-          <li>Variation respiratoire de Vmax aortique</li>
-          <li>Variation respiratoire de la veine cave supérieure (collapsibilité VCS)</li>
+        <ul class="eto-list">
+          <li><button class="btn link" onclick="openEtoImg1()">Variation respi. VCS</button></li>
+          <li><button class="btn link" onclick="openEtoImg2()">Variation respi. ITV CCVG</button></li>
+          <li><button class="btn link" onclick="openEtoImg3()">Variation respi. Vmax VA</button></li>
+          <li><button class="btn link" onclick="openEtoImg4()">Variation respi. Vmax VA (2)</button></li>
         </ul>
       `,
     },
