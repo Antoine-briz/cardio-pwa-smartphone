@@ -5122,16 +5122,33 @@ function renderReanEerPostOp() {
       `,
     },
     {
-      titre: "Abord vasculaire",
-      html: `
-        <p><strong>Abord vasculaire :</strong></p>
-        <ul>
-          <li>Jugulaire interne droite (prioritaire)</li>
-          <li>Fémorale</li>
-          <li>Jugulaire interne gauche</li>
-        </ul>
-      `,
-    },
+      {
+  titre: "Abord vasculaire",
+  html: `
+    <p><strong>Abord vasculaire :</strong></p>
+    <ul>
+      <li>Jugulaire interne droite (prioritaire)</li>
+      <li>Fémorale</li>
+      <li>Jugulaire interne gauche</li>
+    </ul>
+
+    <p style="margin-top:8px;">
+      <strong>Si ECMO VA :</strong>
+    </p>
+    <ul>
+      <li>
+        Possibilité de branchement entre la pompe centrifuge et l’oxygénateur
+        (<span class="img-link" onclick="openImg('eerecmo.png')">
+          Cf schéma 🖼️️
+        </span>).
+      </li>
+      <li>
+        Attention : <strong>pas de restitution totale du volume sanguin</strong>
+        (risque de bullage).
+      </li>
+    </ul>
+  `,
+},
     {
       titre: "Prescription CVVH Prismaflex (calculateur)",
       html: `
