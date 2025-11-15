@@ -905,3 +905,13 @@ table.simple th, table.pheno th {
   box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
+.img-link {
+  color: #0070C0;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 600;
+}
+.img-link:hover {
+  opacity: 0.7;
+}
+
