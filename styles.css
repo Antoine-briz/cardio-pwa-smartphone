@@ -1002,3 +1002,158 @@ details.card .card-body {
   padding: 16px;             /* uniformise l'intérieur */
 }
 
+/* ============================
+   BASE GLOBALE MOBILE-FRIENDLY
+   ============================ */
+
+html, body {
+  -webkit-text-size-adjust: 100%;  /* Pour éviter les zooms automatiques sur iOS */
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent; /* Supprime le flash bleu sur iOS */
+  background-color: #f5f5f7;
+}
+
+/* Gestion des encoches / bords arrondis iPhone */
+body,
+section {
+  padding-left: calc(env(safe-area-inset-left, 0px));
+  padding-right: calc(env(safe-area-inset-right, 0px));
+}
+
+/* ============================
+   IMAGES RESPONSIVES
+   ============================ */
+
+/* Hero : image sous le titre, full largeur */
+.hero img {
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* Images dans les cartes / contenus */
+.card-body img {
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Images dans les modales (ETO, algos, etc.) */
+.img-modal-content,
+.img-overlay-content img {
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================
+   ESPACEMENT ENTRE ENCADRÉS
+   ============================ */
+
+details.card {
+  margin-bottom: 14px;          /* espace entre les encadrés */
+}
+
+details.card:last-of-type {
+  margin-bottom: 24px;          /* un peu plus de marge en bas */
+}
+
+details.card summary {
+  padding: 12px 16px;           /* zone cliquable confortable au doigt */
+}
+
+details.card .card-body {
+  padding: 16px;
+}
+
+/* ============================
+   GRID & BOUTONS SUR MOBILE
+   ============================ */
+
+@media (max-width: 768px) {
+  /* Les grids deviennent une seule colonne sur petit écran */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  /* Boutons pleine largeur */
+  .btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Sections un peu plus aérées */
+  section {
+    padding: 12px 12px 24px 12px;
+  }
+
+  .hero h2 {
+    font-size: 1.3rem;
+  }
+
+  .hero h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* ============================
+   MODALES D’IMAGES (ETO, QUANTRA, CHADSVASC…)
+   ============================ */
+
+.img-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.img-overlay-content {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.img-overlay-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.img-overlay-content .close-btn {
+  margin-top: 8px;
+  display: inline-block;
+  border: none;
+  background: #e0e0e0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* ============================
+   PETITES AMÉLIORATIONS FORMULAIRES
+   ============================ */
+
+.form input[type="number"],
+.form select {
+  font-size: 16px;  /* évite le zoom iOS sur les champs */
+}
+
