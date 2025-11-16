@@ -5496,56 +5496,52 @@ function renderReanTransplantMenu() {
 }
 
 function renderReanTransplantHemodynamique() {
-  const encadres = [
-    {
-      titre: "Gestion hémodynamique post-opératoire (Choix ECMO VA)",
-      html: `
-        <div class="form">
-          <label>
-            <input type="checkbox" id="tx-ecmo" />
-            Patient sous ECMO VA
-          </label>
-        </div>
+  $app.innerHTML = `
+    <section>
+      ${sectionHeader("Transplantation cardiaque – Réanimation", "transplantation.png")}
 
-        <div id="tx-gestion-noecmo">
-          <p><strong>En l’absence d’ECMO VA :</strong></p>
-          <ul>
-            <li>Monitorage par Swan-Ganz systématique.</li>
-            <li>NO inhalé systématique.</li>
-            <li>Objectifs hémodynamiques :
-              <ul>
-                <li>FC 90–110/min</li>
-                <li>PAM &gt; 65 mmHg</li>
-                <li>PVC &lt; 15 mmHg</li>
-                <li>Diurèse &gt; 0,5 mL/kg/h</li>
-              </ul>
-            </li>
-            <li>Si PVC &gt; 15 mmHg en l’absence de tamponnade :
-              déplétion possible dès J1.</li>
-          </ul>
-        </div>
+      <h3>Gestion hémodynamique post-opératoire</h3>
 
-        <div id="tx-gestion-ecmo" style="display:none;">
-          <p><strong>Assistance par ECMO VA (souvent avec BCPIA) :</strong></p>
-          <ul>
-            <li>HNF IVSE avec objectif anti-Xa 0,2–0,4 UI/L.</li>
-            <li>Faibles doses de Dobutamine (≤ 5 µg/kg/min)
-                pour préserver un flux trans-aortique.</li>
-            <li>Débit d’ECMO minimal pour limiter le risque d’OAP,
-                tout en assurant une bonne perfusion systémique.</li>
-            <li>Ventilation mécanique :
-              <ul>
-                <li>Vt ~ 6 mL/kg</li>
-                <li>FR 15–20/min</li>
-                <li>PEP 8–10 cmH₂O</li>
-                <li>FiO₂ minimale pour SpO₂ 95–98 %</li>
-              </ul>
-            </li>
-          </ul>
+      <div class="card">
+        <div class="card-body">
+          <div class="form" style="margin-bottom:12px;">
+            <label>
+              <input type="checkbox" id="tx-ecmo" />
+              Patient sous ECMO VA
+            </label>
+          </div>
+
+          <div id="tx-gestion-noecmo">
+            <p><strong>En l’absence d’ECMO VA :</strong></p>
+            <ul>
+              <li>Monitorage Swan-Ganz systématique.</li>
+              <li>NO inhalé systématique.</li>
+              <li>Objectifs hémodynamiques :
+                <ul>
+                  <li>FC 90–110/min</li>
+                  <li>PAM &gt; 65 mmHg</li>
+                  <li>PVC &lt; 15 mmHg</li>
+                  <li>Diurèse &gt; 0,5 mL/kg/h</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div id="tx-gestion-ecmo" style="display:none;">
+            <p><strong>Assistance par ECMO VA :</strong></p>
+            <ul>
+              <li>BCPIA souvent associée.</li>
+              <li>Objectif de débit ECMO suffisant pour perfusion systémique,
+                  tout en conservant un certain flux trans-aortique.</li>
+              <li>HNF IVSE avec cible d’ACT / anti-Xa selon protocole.</li>
+              <li>Adaptation de la ventilation
+                  (Vt 6–8 mL/kg, FR 15–20/min, PEP 8–10 cmH₂O selon contexte).</li>
+            </ul>
+          </div>
         </div>
-      `,
-    },
-  ];
+      </div>
+    </section>
+  `;
 
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
@@ -6290,21 +6286,25 @@ function openHepatiteImage() {
   window.open("img/hepatite.PNG", "_blank");
 }
 
-function renderReanTransplantCoronaire() {
-  const encadres = [
-    {
-      titre: "Prévention de la maladie coronaire du greffon",
-      html: `
-        <ul>
-          <li>Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
-              en l’absence de thrombopénie.</li>
-          <li>Pravastatine 40 mg/j PO à partir de J10
-              (si bilan hépatique normalisé).</li>
-          <li>Coronarographie à 1 an puis tous les 2 ans.</li>
-        </ul>
-      `,
-    },
-  ];
+function renderReanTransplantCoronaires() {
+  $app.innerHTML = `
+    <section>
+      ${sectionHeader("Transplantation cardiaque – Réanimation", "transplantation.png")}
+
+      <h3>Prévention de la maladie coronaire du greffon</h3>
+
+      <div class="card">
+        <div class="card-body">
+          <ul>
+            <li>Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
+                en l’absence de thrombopénie.</li>
+            <li>Pravastatine 40 mg/j PO à partir de J10 (si bilan hépatique normal).</li>
+            <li>Coronarographie à 1 an puis tous les 2 ans.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  `;
 
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
