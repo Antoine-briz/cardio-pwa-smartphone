@@ -4021,6 +4021,7 @@ function renderInterventionTAVI() {
               <input type="number" id="tavi-poids" min="30" max="200" step="1" />
             </label>
           </div>
+
           <div class="row">
             <label>
               <input type="checkbox" id="tavi-imc50" />
@@ -4031,12 +4032,16 @@ function renderInterventionTAVI() {
               Allergie aux bêta-lactamines
             </label>
           </div>
+
           <div class="row">
-            <label>
-              <input type="checkbox" id="tavi-ag" />
-              Anesthésie générale
+            <label>Mode d’anesthésie:
+              <select id="tavi-mode">
+                <option value="sedation">Sédation</option>
+                <option value="ag">Anesthésie générale</option>
+              </select>
             </label>
           </div>
+
           <div class="row" id="tavi-ag-options" style="display:none;">
             <label>
               <input type="checkbox" id="tavi-induction-risque" />
@@ -4065,17 +4070,17 @@ function renderInterventionTAVI() {
       titre: "Anesthésie",
       html: `
         <p id="tavi-anesth-text">
-          <strong>Mode par défaut :</strong>
-          Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
-          + anesthésie locale fémorale (Lidocaïne/Ropivacaïne).
+          <!-- sera rempli dynamiquement par setupTaviLogic -->
         </p>
         <p>
-          <strong>En cas d’anesthésie générale :</strong> voir adaptation automatique ci-dessus
-          (Etomidate si induction à risque, Rocuronium si séquence rapide).
+          <strong>Héparine</strong> 80–100 UI/kg
+          (~<span data-per-kg="80" data-unit="UI"></span> à
+             <span data-per-kg="100" data-unit="UI"></span>),
+          ACT cible 200–300 s.
         </p>
         <p>
-          Héparine 80–100 UI/kg (ACT cible 200–300 s).<br>
-          Protamine = 50 % de la dose d’héparine (à discuter avec l’opérateur).
+          <strong>Protamine</strong> = 50 % de la dose d’héparine
+          (à discuter avec l’opérateur).
         </p>
         <p>
           <strong>ALR :</strong> Aucune si voie fémorale.
@@ -4124,6 +4129,7 @@ function renderInterventionTAVI() {
     encadres,
   });
 
+  // calculs doses (Héparine etc.)
   setupAnesthGlobalDoseLogic();
   setupTaviLogic();
 }
@@ -4132,7 +4138,7 @@ function setupTaviLogic() {
   const poidsId = "tavi-poids";
   const cbImc = document.getElementById("tavi-imc50");
   const cbAllergie = document.getElementById("tavi-allergie-bl");
-  const cbAG = document.getElementById("tavi-ag");
+  const selMode = document.getElementById("tavi-mode");
   const cbRisk = document.getElementById("tavi-induction-risque");
   const cbSeq = document.getElementById("tavi-seq-rapide");
 
@@ -4145,26 +4151,29 @@ function setupTaviLogic() {
 
   function updateAnesth() {
     const poids = parseKg(poidsId);
+    const mode = selMode ? selMode.value : "sedation";
 
-    if (!cbAG || !cbAG.checked) {
+    // Sédation
+    if (mode === "sedation") {
       if (agOptions) agOptions.style.display = "none";
       if (anesthText) {
         anesthText.innerHTML = `
-          <strong>Mode par défaut :</strong>
-          Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
-          + anesthésie locale fémorale (Lidocaïne/Ropivacaïne).
+          <strong>Mode :</strong> Sédation AIVOC Rémifentanil
+          (cibles 0,8–2 ng/mL) + anesthésie locale fémorale
+          (Lidocaïne/Ropivacaïne).
         `;
       }
       return;
     }
 
+    // Anesthésie générale
     if (agOptions) agOptions.style.display = "";
 
     const etoDose = formatDoseMgPerKg(poids, 0.3);
     const atrDose = formatDoseMgPerKg(poids, 0.5);
     const rocDose = formatDoseMgPerKg(poids, 1.2);
 
-    let txt = "<strong>Anesthésie générale :</strong> ";
+    let txt = "<strong>Mode :</strong> Anesthésie générale : ";
 
     if (cbRisk && cbRisk.checked) {
       txt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
@@ -4184,6 +4193,7 @@ function setupTaviLogic() {
   function updateATB() {
     const poids = parseKg(poidsId);
 
+    // Augmentin : standard vs obèse
     if (cbImc && cbImc.checked) {
       if (liAugmStd) liAugmStd.style.display = "none";
       if (liAugmObese) liAugmObese.style.display = "";
@@ -4192,6 +4202,7 @@ function setupTaviLogic() {
       if (liAugmObese) liAugmObese.style.display = "none";
     }
 
+    // Vancomycine si allergie BL
     if (cbAllergie && cbAllergie.checked) {
       if (liVanco) liVanco.style.display = "";
       if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
@@ -4207,9 +4218,11 @@ function setupTaviLogic() {
 
   const poidsEl = document.getElementById(poidsId);
   if (poidsEl) poidsEl.addEventListener("input", updateAll);
-  [cbImc, cbAllergie, cbAG, cbRisk, cbSeq].forEach(el => {
+
+  [cbImc, cbAllergie, cbRisk, cbSeq].forEach((el) => {
     if (el) el.addEventListener("change", updateAll);
   });
+  if (selMode) selMode.addEventListener("change", updateAll);
 
   updateAll();
 }
@@ -4253,7 +4266,7 @@ function renderInterventionMitraClip() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, VVP x2 de bon calibre, PNI
-          (remplacer par KTa radial si induction à risque),
+          (remplacée par KTa radial si induction à risque),
           BIS ± NIRS, ETO.
         </p>
         <p><strong>Objectif IM :</strong> Plein, rapide, ouvert.</p>
@@ -4267,8 +4280,12 @@ function renderInterventionMitraClip() {
           AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
         <p>
-          Héparine 100 UI/kg (ACT cible 300–350 s).<br>
-          Protamine : généralement non indiquée
+          <strong>Héparine</strong> 100 UI/kg
+          (~<span data-per-kg="100" data-unit="UI"></span>),
+          ACT cible 300–350 s.
+        </p>
+        <p>
+          <strong>Protamine</strong> : généralement non indiquée
           (parfois 50 % de la dose d’héparine à la demande de l’opérateur).
         </p>
         <p><strong>ALR :</strong> Aucune.</p>
@@ -4299,18 +4316,49 @@ function renderInterventionMitraClip() {
       html: `
         <p><strong>Caractérisation de l’IM :</strong></p>
         <ul>
-          <li>Vena contracta</li>
-          <li>PISA</li>
-          <li>SOR, volume régurgité</li>
-          <li>Mécanisme de l’IM</li>
-          <li>Diamètre anneau mitral</li>
+          <li>
+            Vena contracta
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_vena_contracta.png')">🖥️</span>
+          </li>
+          <li>
+            PISA
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_pisa.png')">🖥️</span>
+          </li>
+          <li>
+            SOR, volume régurgité
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_sor_volume.png')">🖥️</span>
+          </li>
+          <li>
+            Mécanisme de l’IM
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_mecanisme.png')">🖥️</span>
+          </li>
+          <li>
+            Diamètre anneau mitral
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_anneau.png')">🖥️</span>
+          </li>
         </ul>
         <p><strong>Points complémentaires :</strong></p>
         <ul>
-          <li>Vacuité auriculaire</li>
-          <li>Echo-guidage de la ponction trans-septale</li>
-          <li>Contrôle post-op :
-            persistance de l’IM ? FEVG ? épanchement péricardique ?</li>
+          <li>
+            Vacuité auriculaire
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_vacuite_og.png')">🖥️</span>
+          </li>
+          <li>
+            Echo-guidage de la ponction trans-septale
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_pontion_septale.png')">🖥️</span>
+          </li>
+          <li>
+            Contrôle post-op (IM résiduelle, FEVG, épanchement péricardique)
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('mitra_controle_postop.png')">🖥️</span>
+          </li>
         </ul>
       `,
     },
@@ -4323,6 +4371,7 @@ function renderInterventionMitraClip() {
     encadres,
   });
 
+  // met à jour les spans data-per-kg (Héparine) en fonction du poids
   setupAnesthGlobalDoseLogic();
   setupMitraClipLogic();
 }
@@ -4366,6 +4415,7 @@ function setupMitraClipLogic() {
   function updateATB() {
     const poids = parseKg(poidsId);
 
+    // Augmentin standard vs obèse
     if (cbImc && cbImc.checked) {
       if (liAugmStd) liAugmStd.style.display = "none";
       if (liAugmObese) liAugmObese.style.display = "";
@@ -4374,6 +4424,7 @@ function setupMitraClipLogic() {
       if (liAugmObese) liAugmObese.style.display = "none";
     }
 
+    // Vancomycine si allergie BL
     if (cbAllergie && cbAllergie.checked) {
       if (liVanco) liVanco.style.display = "";
       if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
@@ -4389,12 +4440,13 @@ function setupMitraClipLogic() {
 
   const poidsEl = document.getElementById(poidsId);
   if (poidsEl) poidsEl.addEventListener("input", updateAll);
-  [cbImc, cbAllergie, cbRisk, cbSeq].forEach(el => {
+  [cbImc, cbAllergie, cbRisk, cbSeq].forEach((el) => {
     if (el) el.addEventListener("change", updateAll);
   });
 
   updateAll();
 }
+
 
 function renderInterventionFOPCIA() {
   const encadres = [
