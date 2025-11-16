@@ -4806,7 +4806,6 @@ function renderReanFAPostOp() {
       `,
     },
     {
-      {
   titre: "Traitement curatif de la FAPO",
   html: `
         <p><strong>Stratégie de traitement de la FAPO :</strong></p>
