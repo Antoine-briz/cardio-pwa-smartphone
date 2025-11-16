@@ -1997,16 +1997,6 @@ function renderInterventionPage({ titre, sousTitre, encadres }) {
   `;
 }
 
-  document
-    .querySelectorAll(".accordion-header")
-    .forEach((header) => {
-      header.addEventListener("click", () => {
-        const acc = header.parentElement;
-        acc.classList.toggle("open");
-      });
-    });
-}
-
 // Helpers génériques pour les calculs poids / mg/kg
 
 function parseKg(inputId) {
