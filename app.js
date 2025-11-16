@@ -1996,25 +1996,18 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
 }
 
 function expandPatientCharacteristics() {
-  // Sélectionne tous les encadrés dont le titre contient exactement
-  // "Caractéristiques patient" ou une variante (insensible à la casse)
-  const blocks = Array.from(document.querySelectorAll('.encadre'));
+  // On cible tous les <details class="card">
+  const blocks = document.querySelectorAll("details.card");
 
-  blocks.forEach(block => {
-    const titleEl = block.querySelector('.encadre-title');
-    if (!titleEl) return;
+  blocks.forEach((block) => {
+    const summary = block.querySelector("summary");
+    if (!summary) return;
 
-    const titleText = titleEl.textContent.trim().toLowerCase();
+    const titleText = summary.textContent.trim().toLowerCase();
 
+    // On ouvre seulement ceux dont le titre contient "caractéristiques patient"
     if (titleText.includes("caractéristiques patient")) {
-      // Ajoute la classe "open" si ton système utilise une classe CSS,
-      // OU simule un clic si ton accordion fonctionne au clic.
-      block.classList.add("open");
-
-      // Si ton ouverture repose sur un clic sur le titre :
-      if (typeof titleEl.click === "function") {
-        titleEl.click();
-      }
+      block.open = true;   // ← clé : ouvre le <details>
     }
   });
 }
