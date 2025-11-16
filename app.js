@@ -5182,6 +5182,20 @@ function renderReanEerPostOp() {
         </p>
       `,
     },
+    {
+  titre: "Adaptation posologique des antibiotiques sous CVVH",
+  html: `
+    <p>
+      Pour adapter la posologie des antibiotiques chez un patient sous CVVH,
+      tu peux utiliser directement l’outil d’<strong>adaptation rénale des antibiotiques</strong>.
+    </p>
+    <p style="margin-top:8px;">
+      <button class="btn outline" type="button" onclick="openAtbReinCVVH()">
+        Ouvrir l’outil "Adaptation rénale" (CVVH pré-sélectionné)
+      </button>
+    </p>
+  `,
+},
   ];
 
   renderInterventionPage({
@@ -5192,6 +5206,25 @@ function renderReanEerPostOp() {
   });
 
   setupCvvhPrismaflexLogic();
+}
+
+function openAtbReinCVVH() {
+  // 1) On va sur le module "Antibiothérapie en réanimation"
+  renderReanAntibiotherapieMenu();
+
+  // 2) On ouvre directement la partie "Adaptation rénale"
+  if (typeof renderReinForm === "function") {
+    renderReinForm();
+  }
+
+  // 3) On pré-sélectionne CVVH dans la liste (adapter l'id/valeur si besoin)
+  setTimeout(() => {
+    const select = document.getElementById("rein-fonction");
+    if (select) {
+      select.value = "cvvh";       // valeur de l’option CVVH dans ton formulaire
+      select.dispatchEvent(new Event("change"));
+    }
+  }, 0);
 }
 
 function setupCvvhPrismaflexLogic() {
@@ -5290,6 +5323,7 @@ function setupCvvhPrismaflexLogic() {
 
   update();
 }
+
 
 
 // --- Échanges plasmatiques (calculateur + paramétrage)
