@@ -190,22 +190,14 @@ function renderAnesthChirCecMenu() {
         </button>
       </div>
 
-      <h3 style="margin-top:24px;">Dissection aortique</h3>
+      <h3 style="margin-top:24px;">Chirurgies urgentes et assistances circulatoires</h3>
       <div class="grid">
         <button class="btn" onclick="renderInterventionDissectionAo()">
           Dissection aortique
         </button>
-      </div>
-
-      <h3 style="margin-top:24px;">Transplantation cardiaque</h3>
-      <div class="grid">
         <button class="btn" onclick="renderInterventionTransplantAnesth()">
           Transplantation cardiaque
         </button>
-      </div>
-
-      <h3 style="margin-top:24px;">Assistances circulatoires</h3>
-      <div class="grid">
         <button class="btn" onclick="renderInterventionAssistancesCEC()">
           Assistances circulatoires (implantation / explantation)
         </button>
