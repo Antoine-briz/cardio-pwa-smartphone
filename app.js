@@ -4312,7 +4312,7 @@ function renderInterventionMitraClip() {
       `,
     },
     {
-      titre: "ETO",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>Caractérisation de l’IM :</strong></p>
         <ul>
@@ -4447,7 +4447,6 @@ function setupMitraClipLogic() {
   updateAll();
 }
 
-
 function renderInterventionFOPCIA() {
   const encadres = [
     {
@@ -4492,16 +4491,16 @@ function renderInterventionFOPCIA() {
       `,
     },
     {
-      titre: "Anesthésie",
+      titre: "Anesthésie (anesthésie générale)",
       html: `
         <p id="fop-induction-text">
           <strong>Induction :</strong>
           AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
         <p>
-          Héparine 100 UI/kg (ACT cible 300–350 s).<br>
-          Protamine : généralement non indiquée
-          (parfois 50 % de la dose d’héparine à la demande de l’opérateur).
+          <strong>Héparine</strong> 100 UI/kg (ACT cible 300–350 s).<br>
+          <strong>Protamine</strong> : généralement non indiquée
+          (parfois 50&nbsp;% de la dose d’héparine à la demande de l’opérateur).
         </p>
         <p><strong>ALR :</strong> Aucune.</p>
       `,
@@ -4511,8 +4510,33 @@ function renderInterventionFOPCIA() {
       html: `<p>Non indiquée.</p>`,
     },
     {
-      titre: "ETO",
-      html: `<p>Non indiquée.</p>`,
+      titre: "Coupes et mesures ETO",
+      html: `
+        <p><strong>Évaluation ETO :</strong></p>
+        <ul>
+          <li>
+            Visualisation du FOP / CIA, shunt droite-gauche, test aux microbulles
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('fop_bulles.png')">🖥️</span>
+          </li>
+          <li>
+            Taille et morphologie du défect (localisation, bords, rapport avec les veines pulmonaires)
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('fop_defaut.png')">🖥️</span>
+          </li>
+          <li>
+            Echo-guidage de la ponction / du positionnement du dispositif
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('fop_guidage.png')">🖥️</span>
+          </li>
+          <li>
+            Contrôle final : shunt résiduel, épanchement péricardique,
+            fonction VG/VD
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('fop_controle_postop.png')">🖥️</span>
+          </li>
+        </ul>
+      `,
     },
   ];
 
@@ -4523,7 +4547,7 @@ function renderInterventionFOPCIA() {
     encadres,
   });
 
-  setupAnesthGlobalDoseLogic();
+  setupAnesthGlobalDoseLogic(); // si tu l’utilises pour d’autres doses
   setupFOPLogic();
 }
 
@@ -4651,7 +4675,7 @@ function renderInterventionPacemakerDAI() {
       `,
     },
     {
-      titre: "ETO",
+      titre: "Coupes et mesures ETO",
       html: `<p>Non indiquée.</p>`,
     },
   ];
@@ -4759,7 +4783,7 @@ function renderInterventionAblationDroit() {
       html: `<p>Non indiquée.</p>`,
     },
     {
-      titre: "ETO",
+      titre: "Coupes et mesures ETO",
       html: `<p>Non indiquée.</p>`,
     },
   ];
@@ -4806,16 +4830,16 @@ function renderInterventionAblationGauche() {
       `,
     },
     {
-      titre: "Anesthésie",
+      titre: "Anesthésie (anesthésie générale)",
       html: `
         <p id="ablg-induction-text">
           <strong>Induction :</strong>
           AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
         <p>
-          Héparine 100 UI/kg (ACT cible 300–350 s).<br>
-          Protamine : généralement non indiquée
-          (parfois 50 % de la dose d’héparine à la demande de l’opérateur).
+          <strong>Héparine</strong> 100 UI/kg (ACT cible 300–350 s).<br>
+          <strong>Protamine</strong> : généralement non indiquée
+          (parfois 50&nbsp;% de la dose d’héparine à la demande de l’opérateur).
         </p>
         <p><strong>ALR :</strong> Aucune.</p>
       `,
@@ -4825,15 +4849,26 @@ function renderInterventionAblationGauche() {
       html: `<p>Non indiquée.</p>`,
     },
     {
-      titre: "ETO",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>ETO :</strong></p>
         <ul>
-          <li>Vacuité auriculaire</li>
-          <li>Echo-guidage de la trans-septale</li>
-          <li>Contrôle post-opératoire :
-            épanchement péricardique, fonction systolique VG
-            (risque de choc cardiogénique si ablation de TV)</li>
+          <li>
+            Vacuité auriculaire
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('ablg_vacuite.png')">🖥️</span>
+          </li>
+          <li>
+            Echo-guidage de la ponction / trans-septale
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('ablg_transseptale.png')">🖥️</span>
+          </li>
+          <li>
+            Contrôle post-opératoire : épanchement péricardique, fonction systolique VG
+            (risque de choc cardiogénique si ablation de TV)
+            <span style="font-size:20px; cursor:pointer;"
+                  onclick="openImg('ablg_postop.png')">🖥️</span>
+          </li>
         </ul>
       `,
     },
@@ -4907,6 +4942,7 @@ function setupAblationGaucheLogic() {
 
   updateAll();
 }
+
 
 // =====================================================================
 //  RÉANIMATION 
