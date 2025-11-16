@@ -169,7 +169,7 @@ function renderAnesthConsultations() {
 function renderAnesthChirCecMenu() {
   $app.innerHTML = `
     <section>
-      <h2>Chirurgies cardiaques sous CEC</h2>
+      ${sectionHeader("Chirurgie cardiaque sous CEC", "chircec.png")}
 
       <h3>Chirurgies programmées</h3>
       <div class="grid">
@@ -217,7 +217,7 @@ function renderAnesthChirCecMenu() {
 function renderAnesthCardioStructMenu() {
   $app.innerHTML = `
     <section>
-      <h2>Cardiologie structurelle & rythmologie</h2>
+      ${sectionHeader("Cardiologie structurelle et rythmologie", "cardiostruct.png")}
       <div class="grid">
         <button class="btn" onclick="renderInterventionTAVI()">
           TAVI
@@ -245,7 +245,7 @@ function renderAnesthCardioStructMenu() {
 function renderAnesthVasculaire() {
   $app.innerHTML = `
     <section>
-      <h2>Chirurgie vasculaire</h2>
+      ${sectionHeader("Chirurgie vasculaire", "vasculaire.png")}
       <p>Contenu à insérer à partir du tableau “Chirurgie vasculaire”.</p>
     </section>
   `;
@@ -254,7 +254,7 @@ function renderAnesthVasculaire() {
 function renderAnesthRadioVasculaire() {
   $app.innerHTML = `
     <section>
-      <h2>Radio-vasculaire</h2>
+      ${sectionHeader("Radiologie interventionnelle", "radiovasc.png")}
       <p>Contenu à insérer à partir du tableau “Radio-vasculaire”.</p>
     </section>
   `;
@@ -2140,6 +2140,7 @@ function renderInterventionPontages() {
   renderInterventionPage({
     titre: "Pontages coronaires",
     sousTitre: "Chirurgie programmée sous CEC",
+    image: "chircec.png",
     encadres,
   });
 
@@ -2337,6 +2338,7 @@ function renderInterventionRVA() {
   renderInterventionPage({
     titre: "RVA ou plastie aortique",
     sousTitre: "Chirurgie programmée sous CEC",
+    image: "chircec.png",
     encadres,
   });
 
@@ -2550,6 +2552,7 @@ function renderInterventionRVM() {
   renderInterventionPage({
     titre: "RVM ou plastie mitrale",
     sousTitre: "Chirurgie programmée sous CEC",
+    image: "chircec.png",
     encadres,
   });
 
@@ -2770,6 +2773,7 @@ function renderInterventionRVT() {
   renderInterventionPage({
     titre: "RVT ou plastie tricuspide",
     sousTitre: "Chirurgie programmée sous CEC",
+    image: "chircec.png",
     encadres,
   });
 
@@ -2978,6 +2982,7 @@ function renderInterventionAorteAsc() {
   renderInterventionPage({
     titre: "Chirurgie de l’aorte ascendante (hors dissection Ao)",
     sousTitre: "Chirurgie programmée sous CEC",
+    image: "chircec.png",
     encadres,
   });
 
@@ -3190,6 +3195,7 @@ function renderInterventionDissectionAo() {
   renderInterventionPage({
     titre: "Dissection aortique",
     sousTitre: "Chirurgie sous CEC",
+    image: "chircec.png",
     encadres,
   });
 
@@ -3447,6 +3453,7 @@ function renderInterventionTransplantAnesth() {
   renderInterventionPage({
     titre: "Transplantation cardiaque",
     sousTitre: "Anesthésie – chirurgie sous CEC",
+    image: "chircec.png",
     encadres,
   });
 
@@ -3651,6 +3658,7 @@ function renderInterventionTAVI() {
   renderInterventionPage({
     titre: "TAVI",
     sousTitre: "Cardiologie structurelle",
+    image: "cardiostruct.png",
     encadres,
   });
 
@@ -3848,6 +3856,7 @@ function renderInterventionMitraClip() {
   renderInterventionPage({
     titre: "Mitra-clip",
     sousTitre: "Cardiologie structurelle",
+    image: "cardiostruct.png",
     encadres,
   });
 
@@ -3994,6 +4003,7 @@ function renderInterventionFOPCIA() {
   renderInterventionPage({
     titre: "Fermeture FOP / CIA",
     sousTitre: "Cardiologie structurelle",
+    image: "cardiostruct.png",
     encadres,
   });
 
@@ -4132,6 +4142,7 @@ function renderInterventionPacemakerDAI() {
   renderInterventionPage({
     titre: "Pacemaker & DAI",
     sousTitre: "Rythmologie",
+    image: "cardiostruct.png",
     encadres,
   });
 
@@ -4238,6 +4249,7 @@ function renderInterventionAblationDroit() {
   renderInterventionPage({
     titre: "Ablations du cœur droit",
     sousTitre: "Flutter commun, ESV / TV droites",
+    image: "cardiostruct.png",
     encadres,
   });
 }
@@ -4312,6 +4324,7 @@ function renderInterventionAblationGauche() {
   renderInterventionPage({
     titre: "Ablations du cœur gauche",
     sousTitre: "Flutter gauche, FA, ESV / TV gauches",
+    image: "cardiostruct.png",
     encadres,
   });
 
