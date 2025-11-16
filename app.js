@@ -136,6 +136,16 @@ function renderHome() {
       </div>
     </section>
   `;
+  // Initialisation de l’état des radios en fonction du thème courant
+  const currentTheme = localStorage.getItem(THEME_KEY) || "dark";
+  const radios = document.querySelectorAll('input[name="theme"]');
+
+  radios.forEach((radio) => {
+    radio.checked = radio.value === currentTheme;
+    radio.addEventListener("change", () => {
+      applyTheme(radio.value);
+    });
+  });
 }
 
 // =====================================================================
