@@ -105,24 +105,50 @@ window.addEventListener("load", navigate);
 function renderHome() {
   $app.innerHTML = `
     <section>
-      <h1>Cardio PWA</h1>
 
-      <div class="grid home-menu">
-        <button class="btn" onclick="location.hash='#/anesthesie'">
-          Anesthésie
+      <!-- ========= ENTÊTE ========= -->
+      <div class="hero">
+        <h2>Application d’anesthésie cardiaque</h2>
+        <p>Accès rapide aux protocoles – Anesthésie, Réanimation et CEC</p>
+      </div>
+
+      <!-- ========= 3 BOUTONS PRINCIPAUX ========= -->
+      <div class="home-grid">
+
+        <button class="home-btn" onclick="renderAnesthesieMenu()">
+          <img src="img/home_anesth.png" class="home-icon" alt="Anesthésie">
+          <span>Anesthésie</span>
         </button>
-        <button class="btn" onclick="location.hash='#/reanimation'">
-          Réanimation
+
+        <button class="home-btn" onclick="renderReaMenu()">
+          <img src="img/home_rea.png" class="home-icon" alt="Réanimation">
+          <span>Réanimation</span>
         </button>
-        <button class="btn" onclick="location.hash='#/cec'">
-          CEC
+
+        <button class="home-btn" onclick="renderAnesthChirCecMenu()">
+          <img src="img/home_cec.png" class="home-icon" alt="CEC">
+          <span>Chirurgie sous CEC</span>
+        </button>
+
+      </div>
+
+      <!-- ========= ESPACEMENT ========= -->
+      <div style="height:20px;"></div>
+
+      <!-- ========= ACCÈS BAS (Planning / Annuaire) ========= -->
+      <div class="home-bottom-links">
+        <button class="btn" onclick="renderPlanning()">
+          Accès Planning
+        </button>
+
+        <button class="btn" onclick="renderAnnuaire()">
+          Annuaire du service
         </button>
       </div>
 
-      <!-- Autres éléments de ta home éventuellement... -->
-
+      <!-- ========= SWITCH DE THÈME (NOUVEAU) ========= -->
       <section class="theme-switcher">
-        <p>Choix du thème :</p>
+        <p><strong>Choix du thème :</strong></p>
         <label>
           <input type="radio" name="theme" value="dark">
           Sombre
@@ -132,10 +158,11 @@ function renderHome() {
           Clair
         </label>
       </section>
+
     </section>
   `;
 
-  // Initialisation de l’état des radios en fonction du thème courant
+  /* === Activation du switch de thème === */
   const currentTheme = localStorage.getItem(THEME_KEY) || "dark";
   const radios = document.querySelectorAll('input[name="theme"]');
 
