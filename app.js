@@ -104,38 +104,37 @@ window.addEventListener("load", navigate);
 
 function renderHome() {
   $app.innerHTML = `
-    <section class="home">
-      <div class="hero">
-        <img src="img/titre.PNG" alt="Titre" />
-      </div>
+    <section>
+      <h1>Cardio PWA</h1>
 
-      <div class="grid">
-        <div class="card" onclick="location.hash = '#/anesthesie'">
-          <h3>Protocoles d’anesthésie</h3>
-          <img src="img/anesthesie.png" alt="Anesthésie" class="menu-section-img" />
-        </div>
-
-        <div class="card" onclick="location.hash = '#/reanimation'">
-          <h3>Protocoles de réanimation</h3>
-          <img src="img/reanimation.png" alt="Réanimation" class="menu-section-img" />
-        </div>
-
-        <div class="card" onclick="location.hash = '#/cec'">
-          <h3>Circulation extra-corporelle</h3>
-          <img src="img/cec.png" alt="CEC" class="menu-section-img" />
-        </div>
-      </div>
-
-      <div style="margin-top:24px;">
-        <button class="btn outline" onclick="location.hash = '#/planning'">
-          Planning médical
+      <div class="grid home-menu">
+        <button class="btn" onclick="location.hash='#/anesthesie'">
+          Anesthésie
         </button>
-        <button class="btn ghost" style="margin-top:8px;" onclick="location.hash = '#/annuaire'">
-          Annuaire
+        <button class="btn" onclick="location.hash='#/reanimation'">
+          Réanimation
+        </button>
+        <button class="btn" onclick="location.hash='#/cec'">
+          CEC
         </button>
       </div>
+
+      <!-- Autres éléments de ta home éventuellement... -->
+
+      <section class="theme-switcher">
+        <p>Choix du thème :</p>
+        <label>
+          <input type="radio" name="theme" value="dark">
+          Sombre
+        </label>
+        <label>
+          <input type="radio" name="theme" value="light">
+          Clair
+        </label>
+      </section>
     </section>
   `;
+
   // Initialisation de l’état des radios en fonction du thème courant
   const currentTheme = localStorage.getItem(THEME_KEY) || "dark";
   const radios = document.querySelectorAll('input[name="theme"]');
@@ -147,6 +146,7 @@ function renderHome() {
     });
   });
 }
+
 
 // =====================================================================
 //  ANESTHÉSIE – MENU PRINCIPAL
