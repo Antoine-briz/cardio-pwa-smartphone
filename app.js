@@ -5093,7 +5093,7 @@ function closePopup() {
 function renderReanEerMenu() {
   $app.innerHTML = `
     <section>
-      ${sectionHeader("EER et échanges plasmatiques", "eer.png")}
+      ${sectionHeader("EER et échanges plasmatiques", "dialyse.png")}
 
       <div class="grid">
         <button class="btn" onclick="renderReanEerPostOp()">EER post-opératoire</button>
@@ -5201,7 +5201,7 @@ function renderReanEerPostOp() {
   renderInterventionPage({
     titre: "EER et échanges plasmatiques",
     sousTitre: "EER post-opératoire",
-    image: "eer.png",
+    image: "dialyse.png",
     encadres,
   });
 
@@ -5396,7 +5396,7 @@ function renderReanEchangesPlasmatiques() {
   renderInterventionPage({
     titre: "EER et échanges plasmatiques",
     sousTitre: "Échanges plasmatiques",
-    image: "eer.png",
+    image: "dialyse.png",
     encadres,
   });
 
