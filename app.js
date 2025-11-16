@@ -5135,7 +5135,6 @@ function renderReanEerPostOp() {
       `,
     },
     {
-      {
   titre: "Abord vasculaire",
   html: `
     <p><strong>Abord vasculaire :</strong></p>
