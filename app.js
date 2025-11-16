@@ -2005,9 +2005,12 @@ function expandPatientCharacteristics() {
 
     const titleText = summary.textContent.trim().toLowerCase();
 
-    // On ouvre seulement ceux dont le titre contient "caractéristiques patient"
-    if (titleText.includes("caractéristiques patient")) {
-      block.open = true;   // ← clé : ouvre le <details>
+    // On ouvre si le titre contient l’une des expressions suivantes
+    if (
+      titleText.includes("caractéristiques patient") ||
+      titleText.includes("intervention chirurgicale")
+    ) {
+      block.open = true;
     }
   });
 }
@@ -5138,31 +5141,39 @@ function renderReanFormulesMetabolique() {
 function renderReanPrescriptionsPostOp() {
   const encadres = [
     {
-      titre: "Intervention chirurgicale (Choix)",
-      html: `
-        <div class="form">
-          <label>Intervention
-            <select id="presc-intervention">
-              <option value="pc">Pontages coronaires</option>
-              <option value="rva-bio">RVA biologique</option>
-              <option value="rva-meca">RVA mécanique</option>
-              <option value="rvm-bio">RVM biologique</option>
-              <option value="rvm-meca">RVM mécanique</option>
-              <option value="rvt-bio">RVT biologique</option>
-              <option value="plastie-ao">Plastie aortique</option>
-              <option value="plastie-mit">Plastie mitrale</option>
-              <option value="plastie-tric">Plastie tricuspide</option>
-              <option value="tsc">TSC (tube sus-coronaire)</option>
-              <option value="tirone">Tirone-David</option>
-              <option value="bentall-bio">Bentall biologique</option>
-              <option value="bentall-meca">Bentall mécanique</option>
-              <option value="crosse">Remplacement de crosse</option>
-            </select>
-          </label>
-        </div>
-        <p style="margin-top:8px;">
-          La sélection permet de contextualiser les prescriptions (anti-agrégants, anticoagulation, retrait des électrodes).
-        </p>
+      titre: "Intervention chirurgicale",
+  html: `
+    <div class="form">
+      <label>Intervention
+        <select id="presc-intervention">
+          <option value="pc">Pontages coronaires</option>
+          <option value="rva">RVA</option>
+          <option value="rvm">RVM</option>
+          <option value="rvt-bio">RVT biologique</option>
+          <option value="plastie-ao">Plastie aortique</option>
+          <option value="plastie-mit">Plastie mitrale</option>
+          <option value="plastie-tric">Plastie tricuspide</option>
+          <option value="tsc">TSC (tube sus-coronaire)</option>
+          <option value="tirone">Tirone-David</option>
+          <option value="bentall">Bentall</option>
+          <option value="crosse">Remplacement de crosse</option>
+        </select>
+      </label>
+
+      <div class="row" id="presc-type-valve-row" style="margin-top:8px; display:none;">
+        <label>Type de prothèse
+          <select id="presc-type-valve">
+            <option value="bio">Biologique</option>
+            <option value="meca">Mécanique</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <p style="margin-top:8px;">
+      La sélection permet de contextualiser les prescriptions
+      (anti-agrégants, anticoagulation, retrait des électrodes).
+    </p>
       `,
     },
     {
@@ -5213,6 +5224,7 @@ function renderReanPrescriptionsPostOp() {
     encadres,
   });
 
+  expandPatientCharacteristics();  
   setupReanPrescLogic();
 }
 
