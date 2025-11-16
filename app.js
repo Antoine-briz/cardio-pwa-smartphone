@@ -6,6 +6,28 @@
 
 const $app = document.getElementById("app");
 
+// =========================================================
+//  GESTION DU THÈME SOMBRE / CLAIR
+// =========================================================
+
+const THEME_KEY = "cardioTheme";
+
+function applyTheme(theme) {
+  const isLight = theme === "light";
+  document.body.classList.toggle("theme-light", isLight);
+  // on mémorise le choix
+  localStorage.setItem(THEME_KEY, isLight ? "light" : "dark");
+}
+
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || "dark";
+  applyTheme(saved);
+}
+
+// On initialise le thème dès le chargement du script
+initTheme();
+
+
 function h(cls, html) {
   return `<div class="${cls}">${html}</div>`;
 }
