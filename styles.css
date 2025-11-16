@@ -1157,3 +1157,70 @@ details.card .card-body {
   font-size: 16px;  /* évite le zoom iOS sur les champs */
 }
 
+/* === THÈME SOMBRE GLOBAL ÉPURÉ === */
+
+body {
+  background: #111;         /* arrière-plan sombre */
+  color: #f2f2f2;           /* texte clair */
+  font-family: Inter, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cartes / encadrés */
+.card {
+  background: #1d1d1d;      /* fond sombre homogène */
+  color: #f2f2f2;
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin: 14px 0;           /* espace entre les encadrés */
+  padding: 0;
+  overflow: hidden;
+}
+
+.card summary {
+  background: #252525;
+  padding: 12px 14px;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.card-body {
+  padding: 14px;
+  background: #1d1d1d;
+}
+
+.hero img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 14px auto;
+  border-radius: 8px;
+}
+
+/* Boutons du menu principal */
+.btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 10px;        /* réduit */
+  height: auto;         /* empêche les gros pavés */
+  min-height: 90px;     /* hauteur contrôlée */
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 10px;
+  color: #f2f2f2;
+  font-size: 0.95rem;
+  gap: 6px;             /* espace texte/image */
+}
+
+/* Images des boutons */
+.btn img {
+  width: 45px;          /* plus petit */
+  height: auto;
+  display: block;
+  opacity: 0.85;
+}
+
