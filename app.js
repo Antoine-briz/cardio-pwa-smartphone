@@ -1995,6 +1995,30 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
   `;
 }
 
+function expandPatientCharacteristics() {
+  // Sélectionne tous les encadrés dont le titre contient exactement
+  // "Caractéristiques patient" ou une variante (insensible à la casse)
+  const blocks = Array.from(document.querySelectorAll('.encadre'));
+
+  blocks.forEach(block => {
+    const titleEl = block.querySelector('.encadre-title');
+    if (!titleEl) return;
+
+    const titleText = titleEl.textContent.trim().toLowerCase();
+
+    if (titleText.includes("caractéristiques patient")) {
+      // Ajoute la classe "open" si ton système utilise une classe CSS,
+      // OU simule un clic si ton accordion fonctionne au clic.
+      block.classList.add("open");
+
+      // Si ton ouverture repose sur un clic sur le titre :
+      if (typeof titleEl.click === "function") {
+        titleEl.click();
+      }
+    }
+  });
+}
+
 function setupAnesthGlobalDoseLogic() {
   const poidsInput = document.getElementById("anesth-poids"); // ← adapte à l’id réel de ton champ poids
   if (!poidsInput) return;
@@ -2269,6 +2293,7 @@ function renderInterventionPontages() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   // Calculs mg/kg globaux (Kétamine, Exacyl, Ropivacaïne, Héparine…)
   setupAnesthGlobalDoseLogic();
 
@@ -2542,6 +2567,7 @@ function renderInterventionRVA() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   // Calcul Kétamine / Exacyl / Ropivacaïne / Héparine à partir du poids
   setupAnesthGlobalDoseLogic();
 
@@ -2842,6 +2868,7 @@ function renderInterventionRVM() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   // Calcul global des doses (Kétamine / Exacyl / Ropi max / Héparine…)
   setupAnesthGlobalDoseLogic();
 
@@ -3128,6 +3155,7 @@ function renderInterventionRVT() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   // Calcul global poids → Kétamine / Exacyl / Ropivacaïne / Héparine
   setupAnesthGlobalDoseLogic();
 
@@ -3379,6 +3407,7 @@ function renderInterventionAorteAsc() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupAorteAscLogic();
 }
@@ -3629,6 +3658,7 @@ function renderInterventionDissectionAo() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupDissectionAoLogic();
 }
@@ -3918,6 +3948,7 @@ function renderInterventionTransplantAnesth() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   // Met à jour tous les spans [data-per-kg] éventuels de la partie Anesthésie
   setupAnesthGlobalDoseLogic();
   setupTransplantAnesthLogic();
@@ -4129,6 +4160,7 @@ function renderInterventionTAVI() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   // calculs doses (Héparine etc.)
   setupAnesthGlobalDoseLogic();
   setupTaviLogic();
@@ -4371,6 +4403,7 @@ function renderInterventionMitraClip() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   // met à jour les spans data-per-kg (Héparine) en fonction du poids
   setupAnesthGlobalDoseLogic();
   setupMitraClipLogic();
@@ -4547,6 +4580,7 @@ function renderInterventionFOPCIA() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic(); // si tu l’utilises pour d’autres doses
   setupFOPLogic();
 }
@@ -4687,6 +4721,7 @@ function renderInterventionPacemakerDAI() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupPacemakerLogic();
 }
@@ -4881,6 +4916,7 @@ function renderInterventionAblationGauche() {
     encadres,
   });
 
+  expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupAblationGaucheLogic();
 }
@@ -4942,7 +4978,6 @@ function setupAblationGaucheLogic() {
 
   updateAll();
 }
-
 
 // =====================================================================
 //  RÉANIMATION 
