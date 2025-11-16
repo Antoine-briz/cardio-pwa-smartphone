@@ -5543,13 +5543,6 @@ function renderReanTransplantHemodynamique() {
     </section>
   `;
 
-  renderInterventionPage({
-    titre: "Transplantation cardiaque – Réanimation",
-    sousTitre: "Gestion hémodynamique post-opératoire",
-    image: "transplantation.png",
-    encadres,
-  });
-
   setupReanTransplantHemodynamiqueLogic();
 }
 
@@ -5567,6 +5560,7 @@ function setupReanTransplantHemodynamiqueLogic() {
   if (cb) cb.addEventListener("change", update);
   update();
 }
+
 
 function renderReanTransplantImmuno() {
   const encadres = [
