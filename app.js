@@ -5230,39 +5230,56 @@ function renderReanPrescriptionsPostOp() {
 
 function setupReanPrescLogic() {
   const select = document.getElementById("presc-intervention");
+  const typeRow = document.getElementById("presc-type-valve-row");
+  const typeSelect = document.getElementById("presc-type-valve");
+
   const antiaggDiv = document.getElementById("presc-antiagg");
   const anticoagDiv = document.getElementById("presc-anticoag");
   const electrodesDiv = document.getElementById("presc-electrodes");
 
   // Groupe "coronaire / tube / RVA bio" :
-  // - Aspirine puis Kardégic systématiques
+  // - Aspirine + Kardégic systématiques
   // - Anticoagulation préventive
+  // - Retrait électrodes J1
   const groupePréventif = new Set(["pc", "tsc", "rva-bio"]);
 
-  // Groupe J1 pour les électrodes : pontages, TSC, remplacement de crosse
-  const electrodesJ1 = new Set(["pc", "tsc", "crosse"]);
-
   function update() {
-    const val = select ? select.value : "pc";
+    // 1) valeur brute du select
+    let val = select ? select.value : "pc";
+
+    // 2) Afficher ou non le choix Bio/Méca
+    const besoinTypeValve =
+      val === "rva" || val === "rvm" || val === "bentall";
+
+    if (typeRow) {
+      typeRow.style.display = besoinTypeValve ? "" : "none";
+    }
+
+    // 3) Si RVA / RVM / Bentall → on fabrique une clé "rva-bio" / "rva-meca"…
+    if (besoinTypeValve) {
+      const t = typeSelect ? typeSelect.value : "bio"; // défaut bio
+      val = `${val}-${t}`;                             // ex: "rva-bio"
+    }
+
     const estGroupePréventif = groupePréventif.has(val);
-    const estElectrodesJ1 = electrodesJ1.has(val);
 
     // === 1/ Anti-agrégants plaquettaires ===
     if (antiaggDiv) {
       if (estGroupePréventif) {
-        // Pontages, TSC, RVA bio → Aspirine/Kardégic systématiques
+        // Pontages, TSC, RVA biologique → Aspirine/Kardégic systématiques
         antiaggDiv.innerHTML = `
           <ul>
             <li>Aspirine 100 mg IVL à H+6 puis Kardégic 75 mg/j PO.</li>
-            <li>Bi-antiagrégation plaquettaire selon indication (stent récent, NSTEMI, etc.) à reprendre après retrait des électrodes.</li>
+            <li>Bi-antiagrégation plaquettaire selon indication
+                (stent récent, NSTEMI, etc.) à reprendre après retrait des électrodes.</li>
           </ul>
         `;
       } else {
-        // Autres interventions → À mettre si coronarien ou déjà présent pré-op
+        // Autres interventions → à mettre si coronarien ou présent en pré-op
         antiaggDiv.innerHTML = `
           <ul>
-            <li>Aspirine 100 mg IVL H+6 puis Kardégic 75 mg/j PO si patient coronarien
-                ou si déjà présent en pré-opératoire.</li>
+            <li>Aspirine 100 mg IVL H+6 puis Kardégic 75 mg/j PO
+                si patient coronarien ou si déjà présent en pré-opératoire.</li>
             <li>Bi-antiagrégation plaquettaire uniquement selon indication
                 (stent récent, NSTEMI, etc.), à reprendre après retrait des électrodes.</li>
           </ul>
@@ -5277,7 +5294,8 @@ function setupReanPrescLogic() {
         anticoagDiv.innerHTML = `
           <ul>
             <li>Lovenox 4000 UI SC à H+6.</li>
-            <li>Ensuite : Poursuite anticoagulation préventive : Lovenox 4000 UI x1/j SC
+            <li>Ensuite : anticoagulation préventive :
+                Lovenox 4000 UI x1/j SC
                 (HNF ou Calciparine si DFG &lt; 15 mL/min/1,73m²).</li>
           </ul>
         `;
@@ -5286,7 +5304,8 @@ function setupReanPrescLogic() {
         anticoagDiv.innerHTML = `
           <ul>
             <li>Lovenox 4000 UI SC à H+6.</li>
-            <li>Ensuite : Anticoagulation efficace : Lovenox 100 UI/kg x2/j dès J1
+            <li>Ensuite : anticoagulation efficace :
+                Lovenox 100 UI/kg x2/j dès J1
                 (HNF IVSE si DFG &lt; 15 mL/min/1,73m²).</li>
           </ul>
         `;
@@ -5295,31 +5314,32 @@ function setupReanPrescLogic() {
 
     // === 3/ Retrait des électrodes épicardiques ===
     if (electrodesDiv) {
-      if (estElectrodesJ1) {
-        // Pontages + TSC + crosse → J1
+      if (estGroupePréventif) {
+        // Pontages + TSC + RVA bio → J1
         electrodesDiv.innerHTML = `
           <ul>
             <li>En l’absence de trouble de conduction :</li>
-            <li>Retrait possible dès J1 (pontages, TSC, remplacement de crosse).</li>
-            <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
+            <li>Retrait possible dès J1.</li>
+            <li>Arrêt systématique des anticoagulants
+                (même préventifs) pour le retrait.</li>
           </ul>
         `;
       } else {
-        // Tout le reste (valvulaires dont RVA bio, aorte ascendante/valvulaire…) → J4
+        // Tout le reste (valvules mécaniques / aorte…) → J4
         electrodesDiv.innerHTML = `
           <ul>
             <li>En l’absence de trouble de conduction :</li>
-            <li>Retrait à partir de J4 (chirurgies valvulaires, RVA biologique, autres chirurgies à risque).</li>
-            <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
+            <li>Retrait à partir de J4 (chirurgie valvulaire / aortique).</li>
+            <li>Arrêt systématique des anticoagulants
+                (même préventifs) pour le retrait.</li>
           </ul>
         `;
       }
     }
   }
 
-  if (select) {
-    select.addEventListener("change", update);
-  }
+  if (select) select.addEventListener("change", update);
+  if (typeSelect) typeSelect.addEventListener("change", update);
   update();
 }
 
