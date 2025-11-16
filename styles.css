@@ -956,3 +956,49 @@ table.simple th, table.pheno th {
   line-height: 28px;
   text-align: center;
 }
+
+/* --- RESPONSIVE IMAGES (smartphone & desktop) --- */
+
+/* Images de la zone "hero" (haut de page) */
+.hero img {
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Images ouvertes dans les modales (ETO, algorithmes…) */
+.img-modal-content {
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Sécurité : images internes dans card-body */
+.card-body img {
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- ESPACEMENT ENTRE LES ENCADRÉS (details.card) --- */
+
+details.card {
+  margin-bottom: 14px;       /* espace entre les encadrés */
+}
+
+details.card:last-of-type {
+  margin-bottom: 24px;       /* un peu plus de marge en bas */
+}
+
+/* --- CONFORT LECTURE (optionnel mais recommandé) --- */
+
+details.card summary {
+  padding: 12px 16px;        /* améliore le confort tactile */
+}
+
+details.card .card-body {
+  padding: 16px;             /* uniformise l'intérieur */
+}
+
