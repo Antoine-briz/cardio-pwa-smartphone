@@ -3649,7 +3649,7 @@ function renderInterventionDissectionAo() {
 
   renderInterventionPage({
     titre: "Dissection aortique",
-    sousTitre: "Chirurgie sous CEC",
+    sousTitre: "",
     image: "chircec.png",
     encadres,
   });
@@ -3939,7 +3939,7 @@ function renderInterventionTransplantAnesth() {
 
   renderInterventionPage({
     titre: "Transplantation cardiaque",
-    sousTitre: "Anesthésie – chirurgie sous CEC",
+    sousTitre: "",
     image: "chircec.png",
     encadres,
   });
