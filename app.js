@@ -6324,7 +6324,7 @@ function renderReanAssistECMO() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "ECMO artério-veineuse",
-    image: "assistance.png",
+    image: "assistances.png",
     encadres,
   });
 }
@@ -6342,7 +6342,7 @@ function renderReanAssistBCPIA() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "BCPIA",
-    image: "assistance.png",
+    image: "assistances.png",
     encadres,
   });
 }
@@ -6360,7 +6360,7 @@ function renderReanAssistImpella() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "Impella",
-    image: "assistance.png",
+    image: "assistances.png",
     encadres,
   });
 }
@@ -6378,7 +6378,7 @@ function renderReanAssistLVAD() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "LVAD",
-    image: "assistance.png",
+    image: "assistances.png",
     encadres,
   });
 }
@@ -6396,7 +6396,7 @@ function renderReanAssistCardioWest() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "Cardio-west",
-    image: "assistance.png",
+    image: "assistances.png",
     encadres,
   });
 }
