@@ -956,3 +956,29 @@ table.simple th, table.pheno th {
   line-height: 28px;
   text-align: center;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Réduction de la hauteur des 3 grands encadrés de l’accueil */
+#home-menu .card-home {
+  padding: 8px 10px;       /* moins de marge interne */
+  margin: 8px 0;           /* encadrés plus proches */
+  min-height: auto;        /* on supprime toute hauteur forcée */
+}
+
+#home-menu .card-home img {
+  max-height: 90px;        /* image plus compacte */
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+#home-menu .card-home h2,
+#home-menu .card-home h3 {
+  margin: 4px 0;           /* réduit l’espace titre */
+  line-height: 1.2;
+}
+
