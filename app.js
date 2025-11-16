@@ -2150,7 +2150,7 @@ function renderInterventionPontages() {
       `,
     },
     {
-      titre: "ETO (optionnelle)",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>Fonction VG :</strong></p>
         <ul>
@@ -2440,7 +2440,7 @@ function renderInterventionRVA() {
       `,
     },
     {
-      titre: "ETO (optionnelle)",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>Insuffisance aortique :</strong></p>
         <ul>
@@ -2615,7 +2615,6 @@ function setupRvaLogic() {
   updateAll();
 }
 
-
 function renderInterventionRVM() {
   const encadres = [
     {
@@ -2632,7 +2631,8 @@ function renderInterventionRVM() {
           </div>
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="rvm-poids" min="30" max="250" step="1" />
+              <!-- ID commun pour toute l'anesthésie -->
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
             </label>
           </div>
           <div class="row">
@@ -2683,15 +2683,20 @@ function renderInterventionRVM() {
         <p>
           <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
         </p>
-        <p>
-          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        <p id="rvm-keta-text">
+          Kétamine 0,5 mg/kg
+          (<span data-per-kg="0.5" data-unit="mg"></span> en bolus)
+          puis 0,125 mg/kg/h.
         </p>
-        <p>
-          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+        <p id="rvm-exacyl-text">
+          Exacyl 20 mg/kg
+          (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
         <p>
           <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (max 3 mg/kg).
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2
+          (dose max 3 mg/kg ≈
+            <span data-per-kg="3" data-unit="mg"></span>).
         </p>
       `,
     },
@@ -2716,29 +2721,94 @@ function renderInterventionRVM() {
       `,
     },
     {
-      titre: "ETO (optionnelle)",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>Insuffisance mitrale :</strong></p>
         <ul>
-          <li>Vena contracta</li>
-          <li>SOR, volume régurgité</li>
-          <li>PISA</li>
-          <li>Mécanisme IM</li>
-          <li>Diamètre anneau mitral</li>
-          <li>Longueur valvules</li>
-          <li>Dilatation OG/VG</li>
-          <li>PAPs sur IT</li>
-          <li>PAPm/d sur IP</li>
-          <li>Risque de SAM</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_vc_im.png')">
+              Vena contracta <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_sor_vr_im.png')">
+              SOR, volume régurgité <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_pisa_im.png')">
+              PISA <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_mecanisme_im.png')">
+              Mécanisme IM <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_anneau_mitral.png')">
+              Diamètre anneau mitral <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_longueur_valvules.png')">
+              Longueur valvules <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_dilatation_og_vg.png')">
+              Dilatation OG/VG <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_paps_it.png')">
+              PAPs sur IT <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_papm_d_ip.png')">
+              PAPm/d sur IP <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_risque_sam.png')">
+              Risque de SAM <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
+
         <p><strong>Rétrécissement mitral :</strong></p>
         <ul>
-          <li>Gradient moyen</li>
-          <li>Surface mitrale</li>
-          <li>Dilatation OG</li>
-          <li>PAPs sur IT</li>
-          <li>PAPm/d sur IP</li>
-          <li>Fonction VD</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_gradient_moyen_rm.png')">
+              Gradient moyen <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_surface_mitrale.png')">
+              Surface mitrale <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_dilatation_og_rm.png')">
+              Dilatation OG <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_paps_it_rm.png')">
+              PAPs sur IT <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_papm_d_ip_rm.png')">
+              PAPm/d sur IP <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvm_fonction_vd_rm.png')">
+              Fonction VD <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
       `,
     },
@@ -2747,10 +2817,20 @@ function renderInterventionRVM() {
       html: `
         <p><strong>Canulation artérielle :</strong> Aortique.</p>
         <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
-        <p>Héparine 300–400 UI/kg, ACT &gt; 400 s.</p>
+        <p>
+          <strong>Héparine</strong> 300–400 UI/kg
+          (~<span data-per-kg="300" data-unit="UI"></span> à
+             <span data-per-kg="400" data-unit="UI"></span>),
+          ACT &gt; 400 s.
+        </p>
         <p>Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
-        <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min (Custodiol si durée prévue &gt; 2 h).</p>
-        <p>Protamine 60–80 % de la dose d’héparine.</p>
+        <p>
+          <strong>Cardioplégie</strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min
+          (Custodiol si durée prévue &gt; 2 h).
+        </p>
+        <p>
+          <strong>Protamine</strong> 60–80 % de la dose d’héparine.
+        </p>
       `,
     },
   ];
@@ -2762,12 +2842,15 @@ function renderInterventionRVM() {
     encadres,
   });
 
+  // Calcul global des doses (Kétamine / Exacyl / Ropi max / Héparine…)
   setupAnesthGlobalDoseLogic();
+
+  // Logique spécifique RVM / plastie (induction, ATB, vidéo…)
   setupRvmLogic();
 }
 
 function setupRvmLogic() {
-  const poidsId = "rvm-poids";
+  const poidsId = "anesth-poids";
   const cbImc = document.getElementById("rvm-imc50");
   const cbRisk = document.getElementById("rvm-induction-risque");
   const cbSeq = document.getElementById("rvm-seq-rapide");
@@ -2841,6 +2924,7 @@ function setupRvmLogic() {
   updateAll();
 }
 
+
 function renderInterventionRVT() {
   const encadres = [
     {
@@ -2849,7 +2933,8 @@ function renderInterventionRVT() {
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="rvt-poids" min="30" max="250" step="1" />
+              <!-- ID commun pour toute la partie Anesthésie -->
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
             </label>
           </div>
 
@@ -2898,15 +2983,20 @@ function renderInterventionRVT() {
         <p>
           <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
         </p>
-        <p>
-          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        <p id="rvt-keta-text">
+          Kétamine 0,5 mg/kg
+          (<span data-per-kg="0.5" data-unit="mg"></span> en bolus)
+          puis 0,125 mg/kg/h.
         </p>
-        <p>
-          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+        <p id="rvt-exacyl-text">
+          Exacyl 20 mg/kg
+          (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
         <p>
           <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (Max 3 mg/kg).
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2
+          (Max 3 mg/kg ≈
+            <span data-per-kg="3" data-unit="mg"></span>).
         </p>
         <p style="font-size: 0.9em; opacity: 0.8;">
           (Remplacement par Etomidate si induction à risque, Rocuronium 1,2 mg/kg si séquence rapide,
@@ -2935,25 +3025,74 @@ function renderInterventionRVT() {
       `,
     },
     {
-      titre: "ETO (optionnelle)",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>Insuffisance tricuspide :</strong></p>
         <ul>
-          <li>Vena contracta</li>
-          <li>SOR, volume régurgité</li>
-          <li>PISA</li>
-          <li>Mécanisme IT</li>
-          <li>Diamètre anneau tricuspide</li>
-          <li>Dilatation OD/VD</li>
-          <li>PAPs sur IT</li>
-          <li>TAPSE</li>
-          <li>Onde S tricuspide</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_vc_it.png')">
+              Vena contracta <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_sor_vr_it.png')">
+              SOR, volume régurgité <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_pisa_it.png')">
+              PISA <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_mecanisme_it.png')">
+              Mécanisme IT <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_anneau_tricuspide.png')">
+              Diamètre anneau tricuspide <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_dilatation_od_vd.png')">
+              Dilatation OD/VD <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_paps_it.png')">
+              PAPs sur IT <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_tapse.png')">
+              TAPSE <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_s_tricuspide.png')">
+              Onde S tricuspide <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
+
         <p><strong>Rétrécissement tricuspide :</strong></p>
         <ul>
-          <li>Gradient moyen</li>
-          <li>Surface tricuspide</li>
-          <li>Dilatation OD/VCI</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_gradient_moyen_rt.png')">
+              Gradient moyen <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_surface_tricuspide.png')">
+              Surface tricuspide <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rvt_dilatation_od_vci.png')">
+              Dilatation OD/VCI <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
       `,
     },
@@ -2963,12 +3102,17 @@ function renderInterventionRVT() {
         <p><strong>Canulation artérielle :</strong> Aortique.</p>
         <p><strong>Canulation veineuse :</strong> Bi-cave
            (risque de « lackage » du KTC).</p>
-        <p>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.</p>
         <p>
-          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min.
+          <strong>Héparine</strong> 300–400 UI/kg
+          (~<span data-per-kg="300" data-unit="UI"></span> à
+             <span data-per-kg="400" data-unit="UI"></span>),
+          objectif ACT &gt; 400 s.
         </p>
         <p>
-          Protamine 60–80 % de la dose initiale d’héparine.
+          <strong>Cardioplégie</strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min.
+        </p>
+        <p>
+          <strong>Protamine</strong> 60–80 % de la dose initiale d’héparine.
         </p>
         <p>
           <strong>Sevrage CEC :</strong> Dobutamine/NO si dysfonction VD pré-opératoire.
@@ -2984,12 +3128,15 @@ function renderInterventionRVT() {
     encadres,
   });
 
+  // Calcul global poids → Kétamine / Exacyl / Ropivacaïne / Héparine
   setupAnesthGlobalDoseLogic();
+
+  // Logique spécifique RVT (induction, ATB…)
   setupRvtLogic();
 }
 
 function setupRvtLogic() {
-  const poidsId = "rvt-poids";
+  const poidsId = "anesth-poids";
   const cbImc = document.getElementById("rvt-imc50");
   const cbRisk = document.getElementById("rvt-induction-risque");
   const cbSeq = document.getElementById("rvt-seq-rapide");
@@ -3025,7 +3172,7 @@ function setupRvtLogic() {
   function updateAtb() {
     const poids = parseKg(poidsId);
 
-    // Céfazoline dose standard vs obèse
+    // Céfazoline standard vs obèse
     if (cbImc && cbImc.checked) {
       if (liCefaStd) liCefaStd.style.display = "none";
       if (liCefaObese) liCefaObese.style.display = "";
@@ -3065,7 +3212,8 @@ function renderInterventionAorteAsc() {
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="aoasc-poids" min="30" max="250" step="1" />
+              <!-- Id commun pour toute la partie Anesthésie -->
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
             </label>
           </div>
 
@@ -3115,15 +3263,19 @@ function renderInterventionAorteAsc() {
         <p>
           <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
         </p>
-        <p>
-          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+        <p id="aoasc-keta-text">
+          Kétamine 0,5 mg/kg
+          (<span data-per-kg="0.5" data-unit="mg"></span> en bolus)
+          puis 0,125 mg/kg/h.
         </p>
-        <p>
-          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+        <p id="aoasc-exacyl-text">
+          Exacyl 20 mg/kg
+          (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
         <p>
           <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (Max 3 mg/kg).
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (Max 3 mg/kg ≈
+            <span data-per-kg="3" data-unit="mg"></span>).
         </p>
         <p style="font-size:0.9em;opacity:0.8;">
           (Remplacement par Etomidate si induction à risque, Rocuronium 1,2 mg/kg si séquence rapide cochée,
@@ -3152,16 +3304,46 @@ function renderInterventionAorteAsc() {
       `,
     },
     {
-      titre: "ETO (optionnelle)",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>Aorte ascendante et valve aortique :</strong></p>
         <ul>
-          <li>Diamètres aortiques (anneau, sinus, jonction sino-tubulaire, aorte ascendante)</li>
-          <li>Recherche d’insuffisance aortique</li>
-          <li>Gradient max VA</li>
-          <li>Vmax VA</li>
-          <li>Surface valvulaire aortique</li>
-          <li>ITV CCVG/VA</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_aoasc_diametres_aorte.png')">
+              Diamètres aortiques (anneau, sinus, JST, aorte ascendante)
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_aoasc_ia.png')">
+              Recherche d’insuffisance aortique
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_aoasc_gradient_max_va.png')">
+              Gradient max VA
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_aoasc_vmax_va.png')">
+              Vmax VA
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_aoasc_surface_va.png')">
+              Surface valvulaire aortique
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_aoasc_itv_ccvg_va.png')">
+              ITV CCVG/VA
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
       `,
     },
@@ -3171,17 +3353,20 @@ function renderInterventionAorteAsc() {
         <p><strong>Canulation artérielle :</strong> Aortique.</p>
         <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
         <p>
-          Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.
+          <strong>Héparine</strong> 300–400 UI/kg
+          (~<span data-per-kg="300" data-unit="UI"></span> à
+             <span data-per-kg="400" data-unit="UI"></span>),
+          objectif ACT &gt; 400 s.
         </p>
         <p>
-          Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.
+          <strong>Bêta-bloquant<strong> (Esmolol ou Landiolol) si SIV &gt; 18 mm.
         </p>
         <p>
-          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min
+          <strong>Cardioplégie</strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min
           (Custodiol si durée prévue &gt; 2 h).
         </p>
         <p>
-          Protamine 60–80 % de la dose initiale d’héparine.
+          <strong>Protamine</strong> 60–80 % de la dose initiale d’héparine.
         </p>
       `,
     },
@@ -3199,7 +3384,7 @@ function renderInterventionAorteAsc() {
 }
 
 function setupAorteAscLogic() {
-  const poidsId = "aoasc-poids";
+  const poidsId = "anesth-poids";
   const cbImc = document.getElementById("aoasc-imc50");
   const cbRisk = document.getElementById("aoasc-induction-risque");
   const cbSeq = document.getElementById("aoasc-seq-rapide");
@@ -3235,7 +3420,7 @@ function setupAorteAscLogic() {
   function updateAtb() {
     const poids = parseKg(poidsId);
 
-    // Céfazoline : dose standard vs obèse
+    // Céfazoline standard vs obèse
     if (cbImc && cbImc.checked) {
       if (liCefaStd) liCefaStd.style.display = "none";
       if (liCefaObese) liCefaObese.style.display = "";
@@ -3275,7 +3460,7 @@ function renderInterventionDissectionAo() {
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="dissec-poids" min="30" max="250" step="1" />
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
             </label>
           </div>
 
@@ -3308,9 +3493,9 @@ function renderInterventionDissectionAo() {
       titre: "Monitorage",
       html: `
         <p>
-          Scope ECG 5 branches, SpO₂, KTa radial droit (gauche si canulation
-          artère sous-clavière droite ou TSA droite), KTC 5 voies, BIS,
-          NIRS <strong>systématique</strong>, ETO.
+          Scope ECG 5 branches, SpO₂, KTa radial droit
+          (gauche si canulation artère sous-clavière droite ou TSA droite),
+          KTC 5 voies, BIS, NIRS <strong>systématique</strong>, ETO.
         </p>
         <p>
           <strong>Objectif :</strong> Plein, mou, ouvert, lent.
@@ -3329,13 +3514,16 @@ function renderInterventionDissectionAo() {
           AIVOC Propofol/Sufentanil.
         </p>
         <p>
-          +/- Thiopental 5–10 mg/kg avant arrêt circulatoire à 28 °C.
+          ± Thiopental 5–10 mg/kg avant arrêt circulatoire à 28 °C.
         </p>
-        <p>
-          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h IVSE.
+        <p id="dissec-keta-text">
+          Kétamine 0,5 mg/kg
+          (<span data-per-kg="0.5" data-unit="mg"></span> en bolus)
+          puis 0,125 mg/kg/h IVSE.
         </p>
-        <p>
-          Exacyl 20 mg/kg puis 2 mg/kg/h IVSE (sauf CI).
+        <p id="dissec-exacyl-text">
+          Exacyl 20 mg/kg
+          (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h IVSE (sauf CI).
         </p>
       `,
     },
@@ -3364,27 +3552,53 @@ function renderInterventionDissectionAo() {
       html: `
         <p><strong>ETO :</strong></p>
         <ul>
-          <li>Recherche d’insuffisance aortique</li>
-          <li>Aorte ascendante</li>
-          <li>Crosse aortique / TSA</li>
-          <li>Aorte descendante</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_dissection_ia.png')">
+              Recherche d’insuffisance aortique <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_dissection_ao_asc.png')">
+              Aorte ascendante <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_dissection_crosse_tsa.png')">
+              Crosse aortique / TSA <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_dissection_ao_descendante.png')">
+              Aorte descendante <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
       `,
     },
     {
       titre: "CEC",
       html: `
-        <p><strong>Canulation artérielle :</strong> Aortique, fémorale ou axillaire/sous-clavière droite.</p>
-        <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
-        <p>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.</p>
         <p>
-          Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min
+          <strong>Canulation artérielle :</strong>
+          Aortique, fémorale ou axillaire/sous-clavière droite.
+        </p>
+        <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
+        <p>
+          <strong>Héparine</strong> 300–400 UI/kg
+          (~<span data-per-kg="300" data-unit="UI"></span> à
+             <span data-per-kg="400" data-unit="UI"></span>),
+          objectif ACT &gt; 400 s.
+        </p>
+        <p>
+          <strong>Cardioplégie</strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min
           (Custodiol si durée prévue &gt; 2 h).
         </p>
         <p>
           Cérébroplégie à 28 °C si arrêt circulatoire. Réchauffement 1 °C/5 min.
         </p>
-        <p>Protamine 60–80 % de la dose initiale d’héparine.</p>
+        <p>
+          <strong>Protamine</strong> 60–80 % de la dose initiale d’héparine.
+        </p>
       `,
     },
     {
@@ -3392,8 +3606,15 @@ function renderInterventionDissectionAo() {
       html: `
         <p><strong>Correction agressive de l’hémostase :</strong></p>
         <ul>
-          <li>PFC, CUP, fibrinogène guidés par Quantra
-              (<em>voir algorithme Quantra</em>)</li>
+          <li>
+            PFC, CUP, fibrinogène guidés par Quantra
+            (
+              <span class="img-link" onclick="openImg('quantra.png')">
+                Afficher algorithme du Quantra
+                <span style="font-size:18px;">🖼️️ </span>
+              </span>
+            )
+          </li>
           <li>Correction de l’hypothermie</li>
           <li>Correction de l’hypocalcémie</li>
         </ul>
@@ -3413,7 +3634,7 @@ function renderInterventionDissectionAo() {
 }
 
 function setupDissectionAoLogic() {
-  const poidsId = "dissec-poids";
+  const poidsId = "anesth-poids";
   const cbImc = document.getElementById("dissec-imc50");
   const cbAllergie = document.getElementById("dissec-allergie-bl");
 
@@ -3443,17 +3664,13 @@ function setupDissectionAoLogic() {
     }
   }
 
-  function updateAll() {
-    updateAtb();
-  }
-
   const poidsEl = document.getElementById(poidsId);
-  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+  if (poidsEl) poidsEl.addEventListener("input", updateAtb);
   [cbImc, cbAllergie].forEach(el => {
-    if (el) el.addEventListener("change", updateAll);
+    if (el) el.addEventListener("change", updateAtb);
   });
 
-  updateAll();
+  updateAtb();
 }
 
 function renderInterventionTransplantAnesth() {
@@ -3464,7 +3681,8 @@ function renderInterventionTransplantAnesth() {
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="txa-poids" min="30" max="250" step="1" />
+              <!-- Poids commun à toute la partie Anesthésie -->
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
             </label>
           </div>
 
@@ -3506,7 +3724,8 @@ function renderInterventionTransplantAnesth() {
         <p><strong>Traitements à administrer :</strong></p>
         <ul>
           <li>
-            Solumédrol <span id="txa-solumedrol-preop-dose">4 mg/kg</span> IVL sur 1 h.
+            Solumédrol
+            <span id="txa-solumedrol-preop-dose">4 mg/kg</span> IVL sur 1 h.
           </li>
           <li>
             Si AVK : Vitamine K 10 mg + prévoir PPSB
@@ -3578,7 +3797,7 @@ function renderInterventionTransplantAnesth() {
         <ul>
           <li id="txa-cefazoline-standard">
             <strong>Céfazoline :</strong>
-            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h.
+            2 g (+ 1 g priming CEC) puis 1 g toutes les 4 h (Attention: Avis infectieux si colonisation BMR/BHRe ou si patient hospitalisé en réanimation).
           </li>
           <li id="txa-cefazoline-obese" style="display:none;">
             <strong>Céfazoline (IMC &gt; 50) :</strong>
@@ -3587,22 +3806,46 @@ function renderInterventionTransplantAnesth() {
           <li id="txa-vancomycine" style="display:none;">
             <strong>Allergie BL :</strong>
             Vancomycine <span id="txa-vanco-dose">30 mg/kg</span> IVL,
-            une injection 30 min avant incision.
+            une injection 30 min avant incision (Attention: Avis infectieux si colonisation BMR/BHRe ou si patient hospitalisé en réanimation).
           </li>
         </ul>
       `,
     },
     {
-      titre: "ETO – Fonction VD",
+      titre: "Coupes et mesures ETO",
       html: `
         <p><strong>Recherche de dysfonction VD :</strong></p>
         <ul>
-          <li>FEVD visuelle</li>
-          <li>ITV CCVD</li>
-          <li>TAPSE</li>
-          <li>Onde S tricuspide</li>
-          <li>Indice de Tei</li>
-          <li>Strain VD</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_tx_vd_fevd.png')">
+              FEVD visuelle <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_tx_vd_itv_ccvd.png')">
+              ITV CCVD <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_tx_vd_tapse.png')">
+              TAPSE <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_tx_vd_onde_s.png')">
+              Onde S tricuspide <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_tx_vd_tei.png')">
+              Indice de Tei <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_tx_vd_strain.png')">
+              Strain VD <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
         <p><strong>Gestion hémodynamique (rappel) :</strong></p>
         <ul>
@@ -3623,16 +3866,18 @@ function renderInterventionTransplantAnesth() {
         </ul>
         <p><strong>Anticoagulation :</strong></p>
         <ul>
-          <li>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s</li>
+          <li>
+            <strong>Héparine</strong> 300–400 UI/kg,
+            objectif ACT &gt; 400 s.
+          </li>
+          <li>
+            <strong>Protamine</strong> 60–80 % de la dose initiale d’héparine
+          </li>
         </ul>
         <p><strong>Spécificités :</strong></p>
         <ul>
           <li>Pas de cardioplégie</li>
           <li>Temps d’assistance = ~25 % de la durée d’ischémie</li>
-        </ul>
-        <p><strong>Décanulation :</strong></p>
-        <ul>
-          <li>Protamine 60–80 % de la dose initiale d’héparine</li>
           <li>PPSB 25 UI/kg si AVK pré-opératoire</li>
         </ul>
       `,
@@ -3642,8 +3887,14 @@ function renderInterventionTransplantAnesth() {
       html: `
         <p><strong>Correction agressive de l’hémostase :</strong></p>
         <ul>
-          <li>PFC, CUP, fibrinogène guidés par Quantra
-              (<em>voir algorithme Quantra</em>)</li>
+          <li>
+            PFC, CUP, fibrinogène guidés par Quantra
+            (
+              <span class="img-link" onclick="openImg('quantra.png')">
+                afficher algorithme du Quantra <span style="font-size:18px;">🖼️</span>
+              </span>
+            )
+          </li>
           <li>Correction de l’hypothermie</li>
           <li>Correction de l’hypocalcémie</li>
         </ul>
@@ -3667,12 +3918,13 @@ function renderInterventionTransplantAnesth() {
     encadres,
   });
 
+  // Met à jour tous les spans [data-per-kg] éventuels de la partie Anesthésie
   setupAnesthGlobalDoseLogic();
   setupTransplantAnesthLogic();
 }
 
 function setupTransplantAnesthLogic() {
-  const poidsId = "txa-poids";
+  const poidsId = "anesth-poids";
   const cbImc = document.getElementById("txa-imc50");
   const cbSeq = document.getElementById("txa-seq-rapide");
   const cbAllergie = document.getElementById("txa-allergie-bl");
@@ -3757,7 +4009,6 @@ function setupTransplantAnesthLogic() {
 
   updateAll();
 }
-
 
 function renderInterventionTAVI() {
   const encadres = [
