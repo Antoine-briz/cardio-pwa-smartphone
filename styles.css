@@ -1002,225 +1002,408 @@ details.card .card-body {
   padding: 16px;             /* uniformise l'intérieur */
 }
 
-/* ============================
-   BASE GLOBALE MOBILE-FRIENDLY
-   ============================ */
+/* =========================================================
+   RESET SIMPLE & LAYOUT GLOBAL
+   ========================================================= */
 
-html, body {
-  -webkit-text-size-adjust: 100%;  /* Pour éviter les zooms automatiques sur iOS */
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 body {
-  -webkit-tap-highlight-color: transparent; /* Supprime le flash bleu sur iOS */
-  background-color: #f5f5f7;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0c0c10;      /* FOND FONCÉ ✅ */
+  color: #f5f5f5;
 }
 
-/* Gestion des encoches / bords arrondis iPhone */
-body,
-section {
-  padding-left: calc(env(safe-area-inset-left, 0px));
-  padding-right: calc(env(safe-area-inset-right, 0px));
+/* Conteneur principal de l'app */
+#app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 10px 60px;
 }
 
-/* ============================
-   IMAGES RESPONSIVES
-   ============================ */
+/* Scroll fluide sur mobile */
+html {
+  scroll-behavior: smooth;
+}
 
-/* Hero : image sous le titre, full largeur */
-.hero img {
-  width: 100% !important;
+/* =========================================================
+   TITRES / TEXTES
+   ========================================================= */
+
+h1, h2, h3, h4 {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 1.7rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+/* Paragraphe */
+p {
+  margin: 6px 0;
+  line-height: 1.4;
+}
+
+/* Listes */
+ul {
+  margin: 6px 0 6px 18px;
+  padding: 0;
+}
+
+/* =========================================================
+   HERO (titre + image en haut des pages)
+   ========================================================= */
+
+.hero {
+  margin-bottom: 12px;
+}
+
+.hero h2 {
+  margin-bottom: 6px;
+}
+
+.hero h3 {
+  font-weight: 500;
+  color: #bbbbbb;
+}
+
+/* Images (menus, pages, ETO, etc.) -> pleine largeur sur mobile ✅ */
+.hero img,
+.card-body img {
   max-width: 100%;
   height: auto;
   display: block;
+  margin: 8px auto;
   border-radius: 8px;
 }
 
-/* Images dans les cartes / contenus */
-.card-body img {
-  width: 100% !important;
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* =========================================================
+   GRILLE / LAYOUT DES BOUTONS
+   ========================================================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
 }
 
-/* Images dans les modales (ETO, algos, etc.) */
-.img-modal-content,
-.img-overlay-content img {
-  width: 100% !important;
-  max-width: 100%;
-  height: auto;
+/* Sur petits écrans : un peu plus d'air mais pas de perte d’espace */
+@media (max-width: 480px) {
+  #app {
+    padding: 10px 8px 40px;
+  }
 }
 
-/* ============================
-   ESPACEMENT ENTRE ENCADRÉS
-   ============================ */
+/* =========================================================
+   BOUTONS – BLEUS (TOUS LES MENUS SAUF CAS SPÉCIAL ACCUEIL)
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  background: #0d6efd;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.15s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.btn:hover {
+  background: #0b5ed7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Variantes éventuellement existantes */
+.btn.outline {
+  background: transparent;
+  color: #0d6efd;
+  border: 1px solid #0d6efd;
+  box-shadow: none;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: #f5f5f5;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+/* =========================================================
+   SPÉCIFIQUE PAGE D’ACCUEIL – 3 GROS BOUTONS PLUS COMPACTS ✅
+   ========================================================= */
+
+/* Conteneur qui regroupe Anesthésie / Réanimation / CEC.
+   → Assure-toi d’avoir <div class="grid home-menu"> ... </div> dans renderHome() */
+.home-menu {
+  margin-top: 10px;
+}
+
+/* UNIQUEMENT les boutons de l’accueil plus compacts */
+.home-menu .btn {
+  padding: 8px 8px;
+  min-height: 70px;          /* hauteur réduite */
+  font-size: 0.95rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* Si tu as des images dans les boutons d’accueil */
+.home-menu .btn img {
+  width: 42px;
+  height: auto;
+  margin-top: 4px;
+}
+
+/* =========================================================
+   CARTES (ENCADRÉS) – CONTENU DES PAGES
+   ========================================================= */
 
 details.card {
-  margin-bottom: 14px;          /* espace entre les encadrés */
-}
-
-details.card:last-of-type {
-  margin-bottom: 24px;          /* un peu plus de marge en bas */
-}
-
-details.card summary {
-  padding: 12px 16px;           /* zone cliquable confortable au doigt */
-}
-
-details.card .card-body {
-  padding: 16px;
-}
-
-/* ============================
-   GRID & BOUTONS SUR MOBILE
-   ============================ */
-
-@media (max-width: 768px) {
-  /* Les grids deviennent une seule colonne sur petit écran */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr !important;
-    gap: 10px;
-  }
-
-  /* Boutons pleine largeur */
-  .btn {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Sections un peu plus aérées */
-  section {
-    padding: 12px 12px 24px 12px;
-  }
-
-  .hero h2 {
-    font-size: 1.3rem;
-  }
-
-  .hero h3 {
-    font-size: 1.1rem;
-  }
-}
-
-/* ============================
-   MODALES D’IMAGES (ETO, QUANTRA, CHADSVASC…)
-   ============================ */
-
-.img-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 16px;
-}
-
-.img-overlay-content {
-  background: #fff;
-  border-radius: 12px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
-  overflow: auto;
-  padding: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-.img-overlay-content img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.img-overlay-content .close-btn {
-  margin-top: 8px;
-  display: inline-block;
-  border: none;
-  background: #e0e0e0;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-/* ============================
-   PETITES AMÉLIORATIONS FORMULAIRES
-   ============================ */
-
-.form input[type="number"],
-.form select {
-  font-size: 16px;  /* évite le zoom iOS sur les champs */
-}
-
-/* === THÈME SOMBRE GLOBAL ÉPURÉ === */
-
-body {
-  background: #111;         /* arrière-plan sombre */
-  color: #f2f2f2;           /* texte clair */
-  font-family: Inter, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-/* Cartes / encadrés */
-.card {
-  background: #1d1d1d;      /* fond sombre homogène */
-  color: #f2f2f2;
-  border: 1px solid #333;
+  background: #18181f;
+  color: #f5f5f5;
   border-radius: 10px;
-  margin: 14px 0;           /* espace entre les encadrés */
-  padding: 0;
+  border: 1px solid #272733;
+  margin: 10px 0;       /* petit espace entre chaque encadré ✅ */
   overflow: hidden;
 }
 
-.card summary {
-  background: #252525;
-  padding: 12px 14px;
-  font-size: 1.05rem;
+details.card > summary {
+  list-style: none;
   cursor: pointer;
+  padding: 10px 12px;
+  background: #20202a;
+  font-size: 0.98rem;
 }
 
-.card-body {
-  padding: 14px;
-  background: #1d1d1d;
+details.card > summary::marker,
+details.card > summary::-webkit-details-marker {
+  display: none;
 }
 
-.hero img {
+details.card .card-body {
+  padding: 10px 12px 12px;
+  background: #18181f;
+}
+
+/* Option : ouvrir un encadré par défaut en CSS si tu rajoutes l’attribut open dans le HTML :
+   <details class="card" open> … </details> */
+
+/* =========================================================
+   FORMULAIRES / INPUTS
+   ========================================================= */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  gap: 3px;
+}
+
+.form input[type="number"],
+.form select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #111;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+}
+
+/* Checkbox horizontalement */
+.form input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+/* =========================================================
+   LIENS D’IMAGES (ETO, EER, HÉPATITE, CHADSVASC, etc.)
+   ========================================================= */
+
+.img-link {
+  cursor: pointer;
+  color: #4ea3ff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.img-link:hover {
+  text-decoration: underline;
+}
+
+/* Overlay quand tu ouvres une image en plein écran */
+.img-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-overlay-content {
+  max-width: 95vw;
+  max-height: 90vh;
+  position: relative;
+}
+
+.img-overlay-content img {
   max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 14px auto;
+  max-height: 100%;
   border-radius: 8px;
 }
 
-/* Boutons du menu principal */
-.btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-
-  padding: 10px;        /* réduit */
-  height: auto;         /* empêche les gros pavés */
-  min-height: 90px;     /* hauteur contrôlée */
+.img-overlay-content .close-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  border: none;
+  border-radius: 50%;
   background: #222;
-  border: 1px solid #444;
-  border-radius: 10px;
-  color: #f2f2f2;
-  font-size: 0.95rem;
-  gap: 6px;             /* espace texte/image */
+  color: #f5f5f5;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
 }
 
-/* Images des boutons */
-.btn img {
-  width: 45px;          /* plus petit */
-  height: auto;
-  display: block;
-  opacity: 0.85;
+/* =========================================================
+   PETITS DÉTAILS
+   ========================================================= */
+
+a {
+  color: #4ea3ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Pour éviter que certains éléments collent au bord sur mobile */
+section {
+  margin-bottom: 18px;
+}
+
+/* =========================================================
+   THÈME CLAIR / SOMBRE
+   ========================================================= */
+
+/* Par défaut ton CSS actuel correspond au thème sombre.
+   On ajoute seulement des overrides quand body.theme-light est présent. */
+
+body.theme-light {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* Encadrés (details.card) en clair */
+body.theme-light details.card {
+  background: #ffffff;
+  color: #111;
+  border-color: #dddddd;
+}
+
+body.theme-light details.card > summary {
+  background: #f3f3f3;
+}
+
+body.theme-light details.card .card-body {
+  background: #ffffff;
+}
+
+/* Inputs / selects en clair */
+body.theme-light .form input[type="number"],
+body.theme-light .form select {
+  background: #ffffff;
+  color: #111;
+  border-color: #cccccc;
+}
+
+/* Bouton ghost en clair */
+body.theme-light .btn.ghost {
+  color: #111;
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+/* Liens d’images, liens en général : on garde le bleu */
+body.theme-light a,
+body.theme-light .img-link {
+  color: #0d6efd;
+}
+
+/* Overlay d’image : identique dans les deux thèmes (fond noir semi-transparent) */
+body.theme-light .img-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Bloc "Choix du thème" en bas de la home */
+.theme-switcher {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.9rem;
+}
+
+body.theme-light .theme-switcher {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.theme-switcher p {
+  margin-bottom: 6px;
+}
+
+.theme-switcher label {
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
