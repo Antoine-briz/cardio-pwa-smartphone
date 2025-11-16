@@ -1313,21 +1313,3 @@ details.card .card-body {
   width: 28px;
   height: 28px;
 }
-
-/* =========================================================
-   PETITS DÉTAILS
-   ========================================================= */
-
-a {
-  color: #4ea3ff;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Pour éviter que certains éléments collent au bord sur mobile */
-section {
-  margin-bottom: 18px;
-}
