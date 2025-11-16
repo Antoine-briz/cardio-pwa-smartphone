@@ -5093,14 +5093,11 @@ function closePopup() {
 function renderReanEerMenu() {
   $app.innerHTML = `
     <section>
-      <h2>EER et échanges plasmatiques</h2>
+      ${sectionHeader("EER et échanges plasmatiques", "eer.png")}
+
       <div class="grid">
-        <button class="btn" onclick="renderReanEerPostOp()">
-          EER post-opératoire
-        </button>
-        <button class="btn" onclick="renderReanEchangesPlasmatiques()">
-          Échanges plasmatiques
-        </button>
+        <button class="btn" onclick="renderReanEerPostOp()">EER post-opératoire</button>
+        <button class="btn" onclick="renderReanEerEp()">Echanges plasmatiques</button>
       </div>
     </section>
   `;
@@ -5441,7 +5438,7 @@ function setupEchangesPlasmatiquesLogic() {
 function renderReanTransplantMenu() {
   $app.innerHTML = `
     <section>
-      <h2>Transplantation cardiaque – Réanimation</h2>
+      ${sectionHeader("Transplantation cardiaque", "transplantation.png")}
       <div class="grid">
         <button class="btn" onclick="renderReanTransplantHemodynamique()">
           Gestion hémodynamique post-opératoire
@@ -6289,7 +6286,7 @@ function renderReanTransplantCoronaire() {
 function renderReanAssistancesMenu() {
   $app.innerHTML = `
     <section>
-      <h2>Assistances circulatoires</h2>
+      ${sectionHeader("Assistances circulatoires", "assistances.png")}
       <div class="grid">
         <button class="btn" onclick="renderReanAssistECMO()">
           ECMO artério-veineuse
