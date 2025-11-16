@@ -2251,13 +2251,13 @@ function renderInterventionPontages() {
         <p><strong>Canulation artérielle :</strong> Aortique.</p>
         <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
         <p>
-          Héparine 300–400 UI/kg
+          <strong>Héparine<strong> 300–400 UI/kg
           (~<span data-per-kg="300" data-unit="UI"></span> à
              <span data-per-kg="400" data-unit="UI"></span>),
           objectif ACT &gt; 400 s.
         </p>
-        <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min.</p>
-        <p>Protamine 60–80 % de la dose initiale d’héparine.</p>
+        <p><strong>Cardioplégie<strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min.</p>
+        <p><strong>Protamine<strong> 60–80 % de la dose initiale d’héparine.</p>
       `,
     },
   ];
@@ -2523,14 +2523,14 @@ function renderInterventionRVA() {
         <p><strong>Canulation artérielle :</strong> Aortique.</p>
         <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
         <p>
-          Héparine 300–400 UI/kg
+          <strong>Héparine<strong> 300–400 UI/kg
           (~<span data-per-kg="300" data-unit="UI"></span> à
              <span data-per-kg="400" data-unit="UI"></span>),
           ACT &gt; 400 s.
         </p>
-        <p>Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
-        <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min (Custodiol si durée prévue &gt; 2 h).</p>
-        <p>Protamine 60–80 % de la dose d’héparine.</p>
+        <p><strong>Bêta-bloquant<strong> (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
+        <p><strong>Cardioplégie<strong> froide (K) ou chaude (K, Mg) toutes les 20–30 min (Custodiol si durée prévue &gt; 2 h).</p>
+        <p><strong>Protamine<strong> 60–80 % de la dose d’héparine.</p>
       `,
     },
   ];
