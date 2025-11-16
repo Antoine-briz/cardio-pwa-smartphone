@@ -4629,12 +4629,15 @@ function setupReanPrescLogic() {
   // Groupe "coronaire / tube / RVA bio" :
   // - Aspirine puis Kardégic systématiques
   // - Anticoagulation préventive
-  // - Retrait électrodes J1
   const groupePréventif = new Set(["pc", "tsc", "rva-bio"]);
+
+  // Groupe J1 pour les électrodes : pontages, TSC, remplacement de crosse
+  const electrodesJ1 = new Set(["pc", "tsc", "crosse"]);
 
   function update() {
     const val = select ? select.value : "pc";
     const estGroupePréventif = groupePréventif.has(val);
+    const estElectrodesJ1 = electrodesJ1.has(val);
 
     // === 1/ Anti-agrégants plaquettaires ===
     if (antiaggDiv) {
@@ -4650,7 +4653,7 @@ function setupReanPrescLogic() {
         // Autres interventions → À mettre si coronarien ou déjà présent pré-op
         antiaggDiv.innerHTML = `
           <ul>
-            <li>Aspirine 100mg IVL H+6 puis Kardégic 75mg/j PO si patient coronarien
+            <li>Aspirine 100 mg IVL H+6 puis Kardégic 75 mg/j PO si patient coronarien
                 ou si déjà présent en pré-opératoire.</li>
             <li>Bi-antiagrégation plaquettaire uniquement selon indication
                 (stent récent, NSTEMI, etc.), à reprendre après retrait des électrodes.</li>
@@ -4666,7 +4669,8 @@ function setupReanPrescLogic() {
         anticoagDiv.innerHTML = `
           <ul>
             <li>Lovenox 4000 UI SC à H+6.</li>
-            <li>Ensuite : Poursuite anticoagulation préventive: Lovenox 4000 UI x1/j SC (HNF ou calciparine si DFG < 15 mL/min/1,73m2).</li>
+            <li>Ensuite : Poursuite anticoagulation préventive : Lovenox 4000 UI x1/j SC
+                (HNF ou Calciparine si DFG &lt; 15 mL/min/1,73m²).</li>
           </ul>
         `;
       } else {
@@ -4674,7 +4678,8 @@ function setupReanPrescLogic() {
         anticoagDiv.innerHTML = `
           <ul>
             <li>Lovenox 4000 UI SC à H+6.</li>
-            <li>Ensuite : Anticoagulation efficace: Lovenox 100 UI/kg x2/j dès J1 (HNF IVSE si DFG < 15 mL/min/1,73m2).</li>
+            <li>Ensuite : Anticoagulation efficace : Lovenox 100 UI/kg x2/j dès J1
+                (HNF IVSE si DFG &lt; 15 mL/min/1,73m²).</li>
           </ul>
         `;
       }
@@ -4682,21 +4687,21 @@ function setupReanPrescLogic() {
 
     // === 3/ Retrait des électrodes épicardiques ===
     if (electrodesDiv) {
-      if (estGroupePréventif) {
-        // Pontages + TSC → J1
+      if (estElectrodesJ1) {
+        // Pontages + TSC + crosse → J1
         electrodesDiv.innerHTML = `
           <ul>
             <li>En l’absence de trouble de conduction :</li>
-            <li>Retrait possible dès J1</li>
+            <li>Retrait possible dès J1 (pontages, TSC, remplacement de crosse).</li>
             <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
           </ul>
         `;
       } else {
-        // Tout le reste (valvules / aorte) → J4
+        // Tout le reste (valvulaires dont RVA bio, aorte ascendante/valvulaire…) → J4
         electrodesDiv.innerHTML = `
           <ul>
             <li>En l’absence de trouble de conduction :</li>
-            <li>Retrait à partir de J4 (car chirurgie valvulaire).</li>
+            <li>Retrait à partir de J4 (chirurgies valvulaires, RVA biologique, autres chirurgies à risque).</li>
             <li>Arrêt systématique des anticoagulants (même préventifs) pour le retrait.</li>
           </ul>
         `;
@@ -4709,6 +4714,7 @@ function setupReanPrescLogic() {
   }
   update();
 }
+
 
 /* ====================================================================
    RÉANIMATION – SAIGNEMENTS POST-OP (page directe)
