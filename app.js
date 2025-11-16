@@ -1995,6 +1995,44 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
   `;
 }
 
+function setupAnesthGlobalDoseLogic() {
+  const poidsInput = document.getElementById("anesth-poids"); // ← adapte à l’id réel de ton champ poids
+  if (!poidsInput) return;
+
+  function parseNumber(el) {
+    if (!el) return null;
+    const v = parseFloat((el.value || "").replace(",", "."));
+    return isNaN(v) ? null : v;
+  }
+
+  function updateDoses() {
+    const poids = parseNumber(poidsInput);
+
+    const doseSpans = document.querySelectorAll("[data-per-kg]");
+    if (!poids) {
+      doseSpans.forEach(span => {
+        span.textContent = "—";
+      });
+      return;
+    }
+
+    doseSpans.forEach(span => {
+      const perKg = parseFloat(span.getAttribute("data-per-kg"));
+      const unit = span.getAttribute("data-unit") || "";
+      if (isNaN(perKg)) {
+        span.textContent = "—";
+        return;
+      }
+      const dose = poids * perKg;
+      // arrondi simple, tu peux adapter (Math.round, toFixed(1), etc.)
+      span.textContent = `${Math.round(dose)} ${unit}`;
+    });
+  }
+
+  poidsInput.addEventListener("input", updateDoses);
+  updateDoses();
+}
+
 
 // Helpers génériques pour les calculs poids / mg/kg
 
@@ -2144,6 +2182,7 @@ function renderInterventionPontages() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupPcLogic();
 }
 
@@ -2342,6 +2381,7 @@ function renderInterventionRVA() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupRvaLogic();
 }
 
@@ -2556,6 +2596,7 @@ function renderInterventionRVM() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupRvmLogic();
 }
 
@@ -2777,6 +2818,7 @@ function renderInterventionRVT() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupRvtLogic();
 }
 
@@ -2986,6 +3028,7 @@ function renderInterventionAorteAsc() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupAorteAscLogic();
 }
 
@@ -3199,6 +3242,7 @@ function renderInterventionDissectionAo() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupDissectionAoLogic();
 }
 
@@ -3457,6 +3501,7 @@ function renderInterventionTransplantAnesth() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupTransplantAnesthLogic();
 }
 
@@ -3662,6 +3707,7 @@ function renderInterventionTAVI() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupTaviLogic();
 }
 
@@ -3860,6 +3906,7 @@ function renderInterventionMitraClip() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupMitraClipLogic();
 }
 
@@ -4007,6 +4054,7 @@ function renderInterventionFOPCIA() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupFOPLogic();
 }
 
@@ -4146,6 +4194,7 @@ function renderInterventionPacemakerDAI() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupPacemakerLogic();
 }
 
@@ -4328,6 +4377,7 @@ function renderInterventionAblationGauche() {
     encadres,
   });
 
+  setupAnesthGlobalDoseLogic();
   setupAblationGaucheLogic();
 }
 
