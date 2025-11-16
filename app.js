@@ -4831,12 +4831,10 @@ function renderReanFAPostOp() {
           <li>Après 48 h de FA post-opératoire : anticoagulation systématique sauf contre-indication.</li>
           <li>Durée : au moins 4 à 6 semaines puis réévaluation.</li>
           <li>
-            <p>
   <span style="cursor:pointer; color:#0077cc;" onclick="openChadsVascImage()">
-    Voir le score CHA₂DS₂-VASc <span style="font-size:18px;">🖼️️</span>
+    Voir le score CHA₂DS₂-VASc <span style="font-size:18px;">🖼️</span>
   </span>
-</p>
-          </li>
+</li>
         </ul>
       `,
     },
