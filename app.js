@@ -6,28 +6,6 @@
 
 const $app = document.getElementById("app");
 
-// =========================================================
-//  GESTION DU THÈME SOMBRE / CLAIR
-// =========================================================
-
-const THEME_KEY = "cardioTheme";
-
-function applyTheme(theme) {
-  const isLight = theme === "light";
-  document.body.classList.toggle("theme-light", isLight);
-  // on mémorise le choix
-  localStorage.setItem(THEME_KEY, isLight ? "light" : "dark");
-}
-
-function initTheme() {
-  const saved = localStorage.getItem(THEME_KEY) || "dark";
-  applyTheme(saved);
-}
-
-// On initialise le thème dès le chargement du script
-initTheme();
-
-
 function h(cls, html) {
   return `<div class="${cls}">${html}</div>`;
 }
@@ -102,76 +80,42 @@ window.addEventListener("load", navigate);
 //  PAGE D’ACCUEIL
 // =====================================================================
 
+
 function renderHome() {
   $app.innerHTML = `
-    <section>
-
-      <!-- ========= ENTÊTE ========= -->
+    <section class="home">
       <div class="hero">
-        <h2>Application d’anesthésie cardiaque</h2>
-        <p>Accès rapide aux protocoles – Anesthésie, Réanimation et CEC</p>
+        <img src="img/titre.png" alt="Titre" />
+        <h2>Protocoles d’anesthésie & réanimation</h2>
       </div>
 
-      <!-- ========= 3 BOUTONS PRINCIPAUX ========= -->
-      <div class="home-grid">
+      <div class="grid">
+        <div class="card" onclick="location.hash = '#/anesthesie'">
+          <h3>Protocoles d’anesthésie</h3>
+          <img src="img/anesthesie.png" alt="Anesthésie" class="menu-section-img" />
+        </div>
 
-        <button class="home-btn" onclick="renderAnesthesieMenu()">
-          <img src="img/home_anesth.png" class="home-icon" alt="Anesthésie">
-          <span>Anesthésie</span>
-        </button>
+        <div class="card" onclick="location.hash = '#/reanimation'">
+          <h3>Réanimation</h3>
+          <img src="img/reanimation.png" alt="Réanimation" class="menu-section-img" />
+        </div>
 
-        <button class="home-btn" onclick="renderReaMenu()">
-          <img src="img/home_rea.png" class="home-icon" alt="Réanimation">
-          <span>Réanimation</span>
-        </button>
-
-        <button class="home-btn" onclick="renderAnesthChirCecMenu()">
-          <img src="img/home_cec.png" class="home-icon" alt="CEC">
-          <span>Chirurgie sous CEC</span>
-        </button>
-
+        <div class="card" onclick="location.hash = '#/cec'">
+          <h3>Circulation extra-corporelle</h3>
+          <img src="img/cec.png" alt="CEC" class="menu-section-img" />
+        </div>
       </div>
 
-      <!-- ========= ESPACEMENT ========= -->
-      <div style="height:20px;"></div>
-
-      <!-- ========= ACCÈS BAS (Planning / Annuaire) ========= -->
-      <div class="home-bottom-links">
-        <button class="btn" onclick="renderPlanning()">
-          Accès Planning
+      <div style="margin-top:24px;">
+        <button class="btn outline" onclick="location.hash = '#/planning'">
+          Planning médical
         </button>
-
-        <button class="btn" onclick="renderAnnuaire()">
-          Annuaire du service
+        <button class="btn ghost" style="margin-top:8px;" onclick="location.hash = '#/annuaire'">
+          Annuaire
         </button>
       </div>
-
-      <!-- ========= SWITCH DE THÈME (NOUVEAU) ========= -->
-      <section class="theme-switcher">
-        <p><strong>Choix du thème :</strong></p>
-        <label>
-          <input type="radio" name="theme" value="dark">
-          Sombre
-        </label>
-        <label>
-          <input type="radio" name="theme" value="light">
-          Clair
-        </label>
-      </section>
-
     </section>
   `;
-
-  /* === Activation du switch de thème === */
-  const currentTheme = localStorage.getItem(THEME_KEY) || "dark";
-  const radios = document.querySelectorAll('input[name="theme"]');
-
-  radios.forEach((radio) => {
-    radio.checked = radio.value === currentTheme;
-    radio.addEventListener("change", () => {
-      applyTheme(radio.value);
-    });
-  });
 }
 
 
