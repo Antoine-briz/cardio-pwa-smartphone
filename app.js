@@ -4841,7 +4841,7 @@ function renderReanFAPostOp() {
           <li>Durée : au moins 4 à 6 semaines puis réévaluation.</li>
           <li>
             <button type="button" class="btn link" onclick="openChadsVascImage()">
-              Lien vers le score CHADS-VASc
+              Lien vers le score CHADS-VASc 🖼️️
             </button>
           </li>
         </ul>
@@ -6112,7 +6112,7 @@ function renderReanTransplantInfections() {
         <p>Se référer au protocole spécifique.</p>
         <p>
           <li>
-  VHB : <span class="img-link" onclick="openImg('hepatite.PNG')">🖥️ Tableau hépatite B</span>
+  VHB : <span class="img-link" onclick="openImg('hepatite.PNG')">🖼️️ Tableau hépatite B</span>
 </li>
         </p>
       `,
