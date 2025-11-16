@@ -4151,7 +4151,7 @@ function renderInterventionTAVI() {
 
   renderInterventionPage({
     titre: "TAVI",
-    sousTitre: "Cardiologie structurelle",
+    sousTitre: "",
     image: "cardiostruct.png",
     encadres,
   });
@@ -4394,7 +4394,7 @@ function renderInterventionMitraClip() {
 
   renderInterventionPage({
     titre: "Mitra-clip",
-    sousTitre: "Cardiologie structurelle",
+    sousTitre: "",
     image: "cardiostruct.png",
     encadres,
   });
@@ -4571,7 +4571,7 @@ function renderInterventionFOPCIA() {
 
   renderInterventionPage({
     titre: "Fermeture FOP / CIA",
-    sousTitre: "Cardiologie structurelle",
+    sousTitre: "",
     image: "cardiostruct.png",
     encadres,
   });
