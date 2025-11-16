@@ -5209,23 +5209,24 @@ function renderReanEerPostOp() {
 }
 
 function openAtbReinCVVH() {
-  // 1) On va sur le module "Antibiothérapie en réanimation"
+  // 1) Menu principal ATB
   renderReanAntibiotherapieMenu();
 
-  // 2) On ouvre directement la partie "Adaptation rénale"
+  // 2) Section "Adaptation rénale"
   if (typeof renderReinForm === "function") {
     renderReinForm();
   }
 
-  // 3) On pré-sélectionne CVVH dans la liste (adapter l'id/valeur si besoin)
+  // 3) On attend la fin du rendu AVANT de sélectionner CVVH
   setTimeout(() => {
     const select = document.getElementById("rein-fonction");
     if (select) {
-      select.value = "cvvh";       // valeur de l’option CVVH dans ton formulaire
+      select.value = "cvvh";       // valeur exacte que tu m'as confirmée
       select.dispatchEvent(new Event("change"));
     }
-  }, 0);
+  }, 150);  // ⬅ garanti que le DOM est prêt
 }
+
 
 function setupCvvhPrismaflexLogic() {
   const sexeEl = document.getElementById("cvvh-sexe");
