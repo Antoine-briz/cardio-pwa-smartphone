@@ -85,7 +85,7 @@ function renderHome() {
   $app.innerHTML = `
     <section class="home">
       <div class="hero">
-        <img src="img/titre.png" alt="Titre" />
+        <img src="img/titre.PNG" alt="Titre" />
         <h2>Protocoles d’anesthésie & réanimation</h2>
       </div>
 
