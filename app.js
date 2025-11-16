@@ -5487,7 +5487,7 @@ function renderReanTransplantMenu() {
         <button class="btn" onclick="renderReanTransplantInfections()">
           Infections et transplantation
         </button>
-        <button class="btn" onclick="renderReanTransplantCoronaire()">
+        <button class="btn" onclick="renderReanTransplantCoronaires()">
           Prévention maladie coronaire du greffon
         </button>
       </div>
@@ -6291,7 +6291,7 @@ function renderReanTransplantCoronaires() {
         <div class="card-body">
           <ul>
             <li>Kardégic 75 mg/j PO ou Aspirine 100 mg/j IVL dès que possible
-                en l’absence de thrombopénie.</li>
+              en l’absence de thrombopénie.</li>
             <li>Pravastatine 40 mg/j PO à partir de J10 (si bilan hépatique normal).</li>
             <li>Coronarographie à 1 an puis tous les 2 ans.</li>
           </ul>
@@ -6299,13 +6299,6 @@ function renderReanTransplantCoronaires() {
       </div>
     </section>
   `;
-
-  renderInterventionPage({
-    titre: "Transplantation cardiaque – Réanimation",
-    sousTitre: "Prévention de la maladie coronaire du greffon",
-    image: "transplantation.png",
-    encadres,
-  });
 }
 
 /* ====================================================================
