@@ -13,8 +13,8 @@ function h(cls, html) {
 function sectionHeader(title, imageFile) {
   return `
     <div class="hero">
-      <img src="img/${imageFile}" alt="${title}">
       <h2>${title}</h2>
+      <img src="img/${imageFile}" alt="${title}">
     </div>
   `;
 }
