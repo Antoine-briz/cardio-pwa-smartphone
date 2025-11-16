@@ -1970,14 +1970,12 @@ $btnRun.addEventListener("click", () => {
 });
 }
 
-
-
-function renderInterventionPage({ titre, sousTitre, encadres }) {
+function renderInterventionPage({ titre, sousTitre = "", encadres, image = null }) {
   $app.innerHTML = `
     <section>
       <div class="hero">
-        ${image ? `<img src="img/${image}" alt="${titre}">` : ""}
         <h2>${titre}</h2>
+        ${image ? `<img src="img/${image}" alt="${titre}">` : ""}
         ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
       </div>
 
@@ -1996,6 +1994,7 @@ function renderInterventionPage({ titre, sousTitre, encadres }) {
     </section>
   `;
 }
+
 
 // Helpers génériques pour les calculs poids / mg/kg
 
