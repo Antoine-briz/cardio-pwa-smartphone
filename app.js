@@ -2058,7 +2058,8 @@ function renderInterventionPontages() {
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="pc-poids" min="30" max="250" step="1" />
+              <!-- ID standard pour toute la section Anesthésie -->
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
             </label>
           </div>
 
@@ -2103,18 +2104,27 @@ function renderInterventionPontages() {
           <strong>Induction :</strong>
           AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
+
         <p>
           <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
         </p>
+
         <p id="pc-keta-text">
-          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+          Kétamine 0,5 mg/kg
+          (<span data-per-kg="0.5" data-unit="mg"></span> en bolus)
+          puis 0,125 mg/kg/h.
         </p>
+
         <p id="pc-exacyl-text">
-          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+          Exacyl 20 mg/kg
+          (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
+
         <p>
           <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose max 3 mg/kg).
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2
+          (dose max 3 mg/kg ≈
+            <span data-per-kg="3" data-unit="mg"></span>).
         </p>
       `,
     },
@@ -2132,7 +2142,8 @@ function renderInterventionPontages() {
           </li>
           <li id="pc-vancomycine" style="display:none;">
             <strong>Allergie BL :</strong>
-            Vancomycine <span id="pc-vanco-dose">30 mg/kg</span> IVL,
+            Vancomycine
+            <span id="pc-vanco-dose">30 mg/kg</span> IVL,
             en une injection 30 min avant incision.
           </li>
         </ul>
@@ -2143,23 +2154,94 @@ function renderInterventionPontages() {
       html: `
         <p><strong>Fonction VG :</strong></p>
         <ul>
-          <li>FEVG visuelle et Simpson biplan</li>
-          <li>ITV CCVG</li>
-          <li>FR de surface</li>
-          <li>dP/dt sur IM</li>
-          <li>Onde S mitrale</li>
-          <li>Indice de Tei</li>
-          <li>Cinétique segmentaire (17 segments du VG)</li>
-          <li>Strain VG</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_fevg.png')">
+              FEVG visuelle et Simpson biplan
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_itv_ccvg.png')">
+              ITV CCVG
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_fr_surface.png')">
+              FR de surface
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_dpdt_im.png')">
+              dP/dt sur IM
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_ondes_mitrales.png')">
+              Onde S mitrale
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_tei_vg.png')">
+              Indice de Tei
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_cinetique_vg.png')">
+              Cinétique segmentaire (17 segments du VG)
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_strain_vg.png')">
+              Strain VG
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
+
         <p><strong>Fonction VD :</strong></p>
         <ul>
-          <li>FEVD visuelle</li>
-          <li>ITV CCVD</li>
-          <li>TAPSE</li>
-          <li>Onde S tricuspide</li>
-          <li>Indice de Tei</li>
-          <li>Strain VD</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_fevd.png')">
+              FEVD visuelle
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_itv_ccvd.png')">
+              ITV CCVD
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_tapse.png')">
+              TAPSE
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_s_tricuspide.png')">
+              Onde S tricuspide
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_tei_vd.png')">
+              Indice de Tei
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_pontages_strain_vd.png')">
+              Strain VD
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
       `,
     },
@@ -2168,7 +2250,12 @@ function renderInterventionPontages() {
       html: `
         <p><strong>Canulation artérielle :</strong> Aortique.</p>
         <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
-        <p>Héparine 300–400 UI/kg, objectif ACT &gt; 400 s.</p>
+        <p>
+          Héparine 300–400 UI/kg
+          (~<span data-per-kg="300" data-unit="UI"></span> à
+             <span data-per-kg="400" data-unit="UI"></span>),
+          objectif ACT &gt; 400 s.
+        </p>
         <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min.</p>
         <p>Protamine 60–80 % de la dose initiale d’héparine.</p>
       `,
@@ -2182,12 +2269,15 @@ function renderInterventionPontages() {
     encadres,
   });
 
+  // Calculs mg/kg globaux (Kétamine, Exacyl, Ropivacaïne, Héparine…)
   setupAnesthGlobalDoseLogic();
+
+  // Logique spécifique pontages (induction, ATB…)
   setupPcLogic();
 }
 
 function setupPcLogic() {
-  const poidsInputId = "pc-poids";
+  const poidsInputId = "anesth-poids";
   const cbImc = document.getElementById("pc-imc50");
   const cbRisk = document.getElementById("pc-induction-risque");
   const cbSeq = document.getElementById("pc-seq-rapide");
@@ -2242,16 +2332,16 @@ function setupPcLogic() {
     updateAtb();
   }
 
-  ["pc-poids"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener("input", updateAll);
-  });
+  const poidsEl = document.getElementById(poidsInputId);
+  if (poidsEl) poidsEl.addEventListener("input", updateAll);
+
   [cbImc, cbRisk, cbSeq, cbAllergie].forEach(el => {
     if (el) el.addEventListener("change", updateAll);
   });
 
   updateAll();
 }
+
 
 function renderInterventionRVA() {
   const encadres = [
