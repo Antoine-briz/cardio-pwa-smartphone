@@ -2342,7 +2342,6 @@ function setupPcLogic() {
   updateAll();
 }
 
-
 function renderInterventionRVA() {
   const encadres = [
     {
@@ -2351,7 +2350,8 @@ function renderInterventionRVA() {
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="rva-poids" min="30" max="250" step="1" />
+              <!-- ID standard pour toute la section Anesthésie -->
+              <input type="number" id="anesth-poids" min="30" max="250" step="1" />
             </label>
           </div>
           <div class="row">
@@ -2394,18 +2394,27 @@ function renderInterventionRVA() {
           <strong>Induction :</strong>
           AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
+
         <p>
           <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
         </p>
-        <p>
-          Kétamine 0,5 mg/kg puis 0,125 mg/kg/h.
+
+        <p id="rva-keta-text">
+          Kétamine 0,5 mg/kg
+          (<span data-per-kg="0.5" data-unit="mg"></span> en bolus)
+          puis 0,125 mg/kg/h.
         </p>
-        <p>
-          Exacyl 20 mg/kg puis 2 mg/kg/h (sauf CI).
+
+        <p id="rva-exacyl-text">
+          Exacyl 20 mg/kg
+          (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
+
         <p>
           <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (max 3 mg/kg).
+          Ropivacaïne 3,75 mg/mL 15–20 mL x2
+          (dose max 3 mg/kg ≈
+            <span data-per-kg="3" data-unit="mg"></span>).
         </p>
       `,
     },
@@ -2423,7 +2432,8 @@ function renderInterventionRVA() {
           </li>
           <li id="rva-vancomycine" style="display:none;">
             <strong>Allergie BL :</strong>
-            Vancomycine <span id="rva-vanco-dose">30 mg/kg</span> IVL,
+            Vancomycine
+            <span id="rva-vanco-dose">30 mg/kg</span> IVL,
             une injection 30 min avant incision.
           </li>
         </ul>
@@ -2434,20 +2444,76 @@ function renderInterventionRVA() {
       html: `
         <p><strong>Insuffisance aortique :</strong></p>
         <ul>
-          <li>Vena contracta</li>
-          <li>PHT</li>
-          <li>SOR, volume régurgité</li>
-          <li>DTDVG / VTDVG</li>
-          <li>Diamètres aorte ascendante</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_vc_ia.png')">
+              Vena contracta
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_pht_ia.png')">
+              PHT
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_sor_vr_ia.png')">
+              SOR, volume régurgité
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_vtdvg_ia.png')">
+              DTDVG / VTDVG
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_diam_aoasc.png')">
+              Diamètres aorte ascendante
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
+
         <p><strong>Rétrécissement aortique :</strong></p>
         <ul>
-          <li>Épaisseur SIV</li>
-          <li>Gradient max VA</li>
-          <li>Vmax VA</li>
-          <li>Surface VA</li>
-          <li>ITV CCVG/VA</li>
-          <li>Morphologie (uni/bicuspidie)</li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_epaisseur_siv.png')">
+              Épaisseur SIV
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_gradient_max_va.png')">
+              Gradient max VA
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_vmax_va.png')">
+              Vmax VA
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_surface_va.png')">
+              Surface VA
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_itv_ccvg_va.png')">
+              ITV CCVG/VA
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
+          <li>
+            <span class="img-link" onclick="openImg('eto_rva_morpho_valve.png')">
+              Morphologie (uni/bicuspidie)
+              <span style="font-size:18px;">🖥️</span>
+            </span>
+          </li>
         </ul>
       `,
     },
@@ -2456,7 +2522,12 @@ function renderInterventionRVA() {
       html: `
         <p><strong>Canulation artérielle :</strong> Aortique.</p>
         <p><strong>Canulation veineuse :</strong> Atrio-cave.</p>
-        <p>Héparine 300–400 UI/kg, ACT &gt; 400 s.</p>
+        <p>
+          Héparine 300–400 UI/kg
+          (~<span data-per-kg="300" data-unit="UI"></span> à
+             <span data-per-kg="400" data-unit="UI"></span>),
+          ACT &gt; 400 s.
+        </p>
         <p>Bêta-bloquant (Esmolol ou Landiolol) si SIV &gt; 18 mm.</p>
         <p>Cardioplégie froide (K) ou chaude (K, Mg) toutes les 20–30 min (Custodiol si durée prévue &gt; 2 h).</p>
         <p>Protamine 60–80 % de la dose d’héparine.</p>
@@ -2471,12 +2542,15 @@ function renderInterventionRVA() {
     encadres,
   });
 
+  // Calcul Kétamine / Exacyl / Ropivacaïne / Héparine à partir du poids
   setupAnesthGlobalDoseLogic();
+
+  // Logique spécifique RVA (induction, ATB…)
   setupRvaLogic();
 }
 
 function setupRvaLogic() {
-  const poidsId = "rva-poids";
+  const poidsId = "anesth-poids";
   const cbImc = document.getElementById("rva-imc50");
   const cbRisk = document.getElementById("rva-induction-risque");
   const cbSeq = document.getElementById("rva-seq-rapide");
@@ -2533,12 +2607,14 @@ function setupRvaLogic() {
 
   const poidsEl = document.getElementById(poidsId);
   if (poidsEl) poidsEl.addEventListener("input", updateAll);
+
   [cbImc, cbRisk, cbSeq, cbAllergie].forEach(el => {
     if (el) el.addEventListener("change", updateAll);
   });
 
   updateAll();
 }
+
 
 function renderInterventionRVM() {
   const encadres = [
