@@ -2284,7 +2284,7 @@ function renderInterventionPontages() {
 
   renderInterventionPage({
     titre: "Pontages coronaires",
-    sousTitre: "Chirurgie programmée sous CEC",
+    sousTitre: "",
     image: "chircec.png",
     encadres,
   });
@@ -2558,7 +2558,7 @@ function renderInterventionRVA() {
 
   renderInterventionPage({
     titre: "RVA ou plastie aortique",
-    sousTitre: "Chirurgie programmée sous CEC",
+    sousTitre: "",
     image: "chircec.png",
     encadres,
   });
@@ -2859,7 +2859,7 @@ function renderInterventionRVM() {
 
   renderInterventionPage({
     titre: "RVM ou plastie mitrale",
-    sousTitre: "Chirurgie programmée sous CEC",
+    sousTitre: "",
     image: "chircec.png",
     encadres,
   });
@@ -3146,7 +3146,7 @@ function renderInterventionRVT() {
 
   renderInterventionPage({
     titre: "RVT ou plastie tricuspide",
-    sousTitre: "Chirurgie programmée sous CEC",
+    sousTitre: "",
     image: "chircec.png",
     encadres,
   });
@@ -3398,7 +3398,7 @@ function renderInterventionAorteAsc() {
 
   renderInterventionPage({
     titre: "Chirurgie de l’aorte ascendante (hors dissection Ao)",
-    sousTitre: "Chirurgie programmée sous CEC",
+    sousTitre: "",
     image: "chircec.png",
     encadres,
   });
