@@ -85,7 +85,6 @@ function renderHome() {
     <section class="home">
       <div class="hero">
         <img src="img/titre.PNG" alt="Titre" />
-        <h2>Protocoles d’anesthésie & réanimation</h2>
       </div>
 
       <div class="grid">
@@ -95,7 +94,7 @@ function renderHome() {
         </div>
 
         <div class="card" onclick="location.hash = '#/reanimation'">
-          <h3>Réanimation</h3>
+          <h3>Protocoles de réanimation</h3>
           <img src="img/reanimation.png" alt="Réanimation" class="menu-section-img" />
         </div>
 
