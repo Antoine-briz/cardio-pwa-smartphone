@@ -4806,17 +4806,14 @@ function renderReanFAPostOp() {
       `,
     },
     {
-      titre: "Traitement curatif de la FAPO",
-      html: `
-        <p><strong>Paramètres cliniques :</strong></p>
+      {
+  titre: "Traitement curatif de la FAPO",
+  html: `
+        <p><strong>Stratégie de traitement de la FAPO :</strong></p>
         <div class="form">
           <label>
-            <input type="checkbox" id="fa-instable" />
-            Instabilité hémodynamique (choc, ischémie, OAP…)
-          </label>
-          <label>
-            <input type="checkbox" id="fa-mal-toleree" />
-            FA mal tolérée (dyspnée, douleur, hypotension modérée)
+            <input type="checkbox" id="fa-mauvaise-tolerance" />
+            Mauvaise tolérance (hémodynamique, neurologique, respiratoire…)
           </label>
           <label>
             <input type="checkbox" id="fa-ci-anticoag" />
@@ -4825,7 +4822,7 @@ function renderReanFAPostOp() {
         </div>
         <div id="fa-curatif-reco"></div>
       `,
-    },
+},
     {
       titre: "Anticoagulation",
       html: `
@@ -4835,9 +4832,11 @@ function renderReanFAPostOp() {
           <li>Après 48 h de FA post-opératoire : anticoagulation systématique sauf contre-indication.</li>
           <li>Durée : au moins 4 à 6 semaines puis réévaluation.</li>
           <li>
-            <button type="button" class="btn link" onclick="openChadsVascImage()">
-              Lien vers le score CHADS-VASc 🖼️️
-            </button>
+            <p>
+  <span style="cursor:pointer; color:#0077cc;" onclick="openChadsVascImage()">
+    Voir le score CHA₂DS₂-VASc <span style="font-size:18px;">🖼️️</span>
+  </span>
+</p>
           </li>
         </ul>
       `,
@@ -4855,119 +4854,112 @@ function renderReanFAPostOp() {
 }
 
 function setupReanFALogic() {
+  // Prévention (déjà existant)
   const cbCatechol = document.getElementById("fa-catecholamines");
   const cbBBpreop = document.getElementById("fa-bb-preop");
   const recoPrev = document.getElementById("fa-preventif-reco");
 
-  const cbInstable = document.getElementById("fa-instable");
-  const cbMalTol = document.getElementById("fa-mal-toleree");
-  const cbCIAnticoag = document.getElementById("fa-ci-anticoag");
+  // Curatif (nouveaux critères)
+  const cbMauvaiseTol = document.getElementById("fa-mauvaise-tolerance");
+  const cbCiAnticoag = document.getElementById("fa-ci-anticoag");
   const recoCur = document.getElementById("fa-curatif-reco");
 
-  function update() {
-    // === Préventif ===
-    if (recoPrev) {
-      let htmlPrev = "<p><strong>Proposition de prévention :</strong></p><ul>";
+  // --- Préventif : inchangé dans l'esprit ---
+  function updatePreventif() {
+    if (!recoPrev) return;
 
-      if (cbCatechol && cbCatechol.checked) {
-        htmlPrev += `
-          <li>Catécholamines présentes : privilégier l'Amiodarone
-              (ex. charge IV puis relais PO) plutôt qu'un bêta-bloquant.</li>
-        `;
-      } else if (cbBBpreop && cbBBpreop.checked) {
-        htmlPrev += `
-          <li>Patient déjà sous bêta-bloquant : reprendre le bêta-bloquant habituel
-              dès que possible (en l'absence de contre-indication).</li>
-        `;
-      } else {
-        htmlPrev += `
-          <li>Pas de catécholamines et pas de BB pré-op :
-              envisager l'introduction d'un bêta-bloquant (ex. Carvédilol ou Métoprolol)
-              en l'absence de contre-indication.</li>
-        `;
-      }
+    let html = "<p><strong>Proposition de prévention :</strong></p><ul>";
 
-      htmlPrev += "</ul>";
-      recoPrev.innerHTML = htmlPrev;
+    if (cbCatechol && cbCatechol.checked) {
+      html += `
+        <li>Catécholamines en cours : privilégier l'Amiodarone
+            (ex. 5 mg/kg x2/j PO ou ≈ 10 mg/kg/j IVSE si PO impossible).</li>
+      `;
+    } else if (cbBBpreop && cbBBpreop.checked) {
+      html += `
+        <li>Patient déjà sous bêta-bloquant : reprise du bêta-bloquant habituel
+            dès que possible (en l’absence de contre-indication).</li>
+      `;
+    } else {
+      html += `
+        <li>Pas de BB pré-op ni catécholamines :
+          envisager l’initiation d’un bêta-bloquant
+          (ex. Carvédilol 6,25 mg x2/j ou Métoprolol 25 mg x2/j)
+          si pas de contre-indication.</li>
+      `;
     }
 
-    // === Curatif ===
-    if (recoCur) {
-      const instable = cbInstable && cbInstable.checked;
-      const malTol = cbMalTol && cbMalTol.checked;
-      const ciAnticoag = cbCIAnticoag && cbCIAnticoag.checked;
-
-      let htmlCur = "<p><strong>Proposition de traitement curatif :</strong></p><ul>";
-
-      if (instable) {
-        htmlCur += `
-          <li>Instabilité hémodynamique : cardioversion électrique immédiate
-              après correction des facteurs favorisants et sous sédation/AG.</li>
-        `;
-        if (ciAnticoag) {
-          htmlCur += `
-            <li>Anticoagulation à discuter au cas par cas en raison d'une contre-indication
-                actuelle (surveillance rapprochée).</li>
-          `;
-        } else {
-          htmlCur += `
-            <li>Mettre en route une anticoagulation curative dès que possible,
-                en tenant compte du risque hémorragique.</li>
-          `;
-        }
-      } else if (malTol) {
-        htmlCur += `
-          <li>FA mal tolérée mais sans choc franc :
-              corriger les facteurs favorisants puis débuter Amiodarone IV
-              (charge puis entretien) et discuter une cardioversion rapide.</li>
-        `;
-        if (ciAnticoag) {
-          htmlCur += `
-            <li>Anticoagulation : évaluer le rapport bénéfice/risque,
-                et différer si contre-indication majeure.</li>
-          `;
-        } else {
-          htmlCur += `
-            <li>Anticoagulation curative à instaurer en l'absence de contre-indication,
-                en particulier si FA &gt; 48 h ou score CHADS-VASc élevé.</li>
-          `;
-        }
-      } else {
-        htmlCur += `
-          <li>FA bien tolérée : corriger les facteurs favorisants, contrôler la fréquence
-              (bêta-bloquant ou autres selon la fonction VG et les contre-indications).</li>
-          <li>Stratégie de contrôle du rythme (Amiodarone ± cardioversion) à discuter
-              en fonction de l'ancienneté de la FA et du contexte postopératoire.</li>
-        `;
-        if (ciAnticoag) {
-          htmlCur += `
-            <li>Contre-indication à l'anticoagulation : la décision d'AC doit être
-                réévaluée régulièrement.</li>
-          `;
-        } else {
-          htmlCur += `
-            <li>Anticoagulation à instaurer si FA &gt; 48 h ou score CHADS-VASc ≥ seuil
-                défini par le protocole de service.</li>
-          `;
-        }
-      }
-
-      htmlCur += "</ul>";
-      recoCur.innerHTML = htmlCur;
-    }
+    html += "</ul>";
+    recoPrev.innerHTML = html;
   }
 
-  if (cbCatechol) cbCatechol.addEventListener("change", update);
-  if (cbBBpreop) cbBBpreop.addEventListener("change", update);
-  if (cbInstable) cbInstable.addEventListener("change", update);
-  if (cbMalTol) cbMalTol.addEventListener("change", update);
-  if (cbCIAnticoag) cbCIAnticoag.addEventListener("change", update);
+  // --- Curatif : nouvelle logique FAPO ---
+  function updateCuratif() {
+    if (!recoCur) return;
 
-  update();
+    const mauvaiseTol = cbMauvaiseTol && cbMauvaiseTol.checked;
+    const ciAnticoag = cbCiAnticoag && cbCiAnticoag.checked;
+
+    let html = "<p><strong>1) Stratégie de traitement :</strong></p><ul>";
+
+    if (!mauvaiseTol && !ciAnticoag) {
+      // Cas simple : aucune case cochée → contrôle de la fréquence
+      html += `
+        <li>
+          Stratégie de contrôle de la fréquence (&lt; 110/min) :
+          bêta-bloquant, inhibiteur calcique
+          (CI si FEVG altérée), ou Digoxine.
+        </li>
+      `;
+    } else {
+      // Au moins un critère → contrôle du rythme
+      html += `
+        <li>
+          Stratégie de contrôle du rythme :
+          réduction de la FAPO (CEE et/ou Amiodarone selon la tolérance)
+          et entretien par Amiodarone PO ou IVSE.
+        </li>
+      `;
+    }
+
+    html += "</ul>";
+
+    // Bloc commun : contrôle des facteurs favorisants
+    html += `
+      <p><strong>2) Contrôle systématique des facteurs favorisants :</strong></p>
+      <ul>
+        <li>Hypovolémie, troubles ioniques, hypoxémie, infections.</li>
+        <li>Inotropes positifs : arrêt ou réduction si non indispensables.</li>
+      </ul>
+    `;
+
+    recoCur.innerHTML = html;
+  }
+
+  // Listeners
+  if (cbCatechol) cbCatechol.addEventListener("change", updatePreventif);
+  if (cbBBpreop) cbBBpreop.addEventListener("change", updatePreventif);
+
+  if (cbMauvaiseTol) cbMauvaiseTol.addEventListener("change", updateCuratif);
+  if (cbCiAnticoag) cbCiAnticoag.addEventListener("change", updateCuratif);
+
+  // Init
+  updatePreventif();
+  updateCuratif();
 }
 
 function openChadsVascImage() {
-  window.open("img/chadsvasc.png", "_blank");
+  const overlay = document.createElement("div");
+  overlay.className = "img-overlay";
+
+  overlay.innerHTML = `
+    <div class="img-overlay-content">
+      <img src="img/chadsvasc.png" alt="Score CHA2DS2-VASc 🖼️️" />
+      <button class="close-btn" onclick="this.parentElement.parentElement.remove()">✖</button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
 }
 
 
