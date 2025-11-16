@@ -4620,14 +4620,11 @@ function renderReanPrescriptionsPostOp() {
       `,
     },
   ];
-
-$app.innerHTML = `
-    ${sectionHeader("Prescriptions post-opératoires (hors transplant. et assistances)", "prescription.png")}
-  `;
   
   renderInterventionPage({
     titre: "Prescriptions post-opératoires (hors transplant. et assistances)",
     sousTitre: "",
+    image: "prescription.png", 
     encadres,
   });
 
@@ -4780,6 +4777,7 @@ function renderReanSaignementsPostOp() {
   renderInterventionPage({
     titre: "Saignements post-opératoires",
     sousTitre: "",
+    image: "saignement.png", 
     encadres,
   });
 }
@@ -4854,6 +4852,7 @@ function renderReanFAPostOp() {
   renderInterventionPage({
     titre: "Prise en charge de la FA post-opératoire",
     sousTitre: "",
+    image: "fa.png",   // 👈 nouvelle ligne : image juste sous le titre
     encadres,
   });
 
@@ -5088,6 +5087,7 @@ function renderReanEto() {
   renderInterventionPage({
     titre: "ETO (hors assistances)",
     sousTitre: "",
+    image: "eto.png", 
     encadres,
   });
 }
@@ -5207,6 +5207,7 @@ function renderReanEerPostOp() {
   renderInterventionPage({
     titre: "EER et échanges plasmatiques",
     sousTitre: "EER post-opératoire",
+    image: "eer.png",
     encadres,
   });
 
@@ -5381,6 +5382,7 @@ function renderReanEchangesPlasmatiques() {
   renderInterventionPage({
     titre: "EER et échanges plasmatiques",
     sousTitre: "Échanges plasmatiques",
+    image: "eer.png",
     encadres,
   });
 
@@ -5533,6 +5535,7 @@ function renderReanTransplantHemodynamique() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Gestion hémodynamique post-opératoire",
+    image: "transplantation.png",
     encadres,
   });
 
@@ -5618,6 +5621,7 @@ function renderReanTransplantImmuno() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Protocole d’immunosuppression",
+    image: "transplantation.png",
     encadres,
   });
 
@@ -5931,6 +5935,7 @@ function renderReanTransplantRejet() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Rejet aigu de greffon",
+    image: "transplantation.png",
     encadres,
   });
 
@@ -6117,6 +6122,7 @@ function renderReanTransplantInfections() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Infections et transplantation",
+    image: "transplantation.png",
     encadres,
   });
 
@@ -6288,6 +6294,7 @@ function renderReanTransplantCoronaire() {
   renderInterventionPage({
     titre: "Transplantation cardiaque – Réanimation",
     sousTitre: "Prévention de la maladie coronaire du greffon",
+    image: "transplantation.png",
     encadres,
   });
 }
@@ -6334,6 +6341,7 @@ function renderReanAssistECMO() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "ECMO artério-veineuse",
+    image: "assistance.png",
     encadres,
   });
 }
@@ -6351,6 +6359,7 @@ function renderReanAssistBCPIA() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "BCPIA",
+    image: "assistance.png",
     encadres,
   });
 }
@@ -6368,6 +6377,7 @@ function renderReanAssistImpella() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "Impella",
+    image: "assistance.png",
     encadres,
   });
 }
@@ -6385,6 +6395,7 @@ function renderReanAssistLVAD() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "LVAD",
+    image: "assistance.png",
     encadres,
   });
 }
@@ -6402,6 +6413,7 @@ function renderReanAssistCardioWest() {
   renderInterventionPage({
     titre: "Assistances circulatoires",
     sousTitre: "Cardio-west",
+    image: "assistance.png",
     encadres,
   });
 }
@@ -6414,6 +6426,7 @@ function renderReanAntibiotherapieMenu() {
   $app.innerHTML = `
     <section>
       <h2>Antibiothérapie en Réanimation</h2>
+      <img src="img/antibiotherapie.png" alt="Antibiothérapie en réanimation">
       <div class="grid">
         <button class="btn" onclick="renderProbaMenu()">Probabiliste</button>
         <button class="btn" onclick="renderAdapteeMenu()">Adaptée</button>
