@@ -3921,7 +3921,7 @@ function renderInterventionTransplantAnesth() {
             PFC, CUP, fibrinogène guidés par Quantra
             (
               <span class="img-link" onclick="openImg('quantra.png')">
-                afficher algorithme du Quantra <span style="font-size:18px;">🖼️</span>
+                Afficher algorithme du Quantra <span style="font-size:18px;">🖼️</span>
               </span>
             )
           </li>
