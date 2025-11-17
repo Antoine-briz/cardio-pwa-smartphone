@@ -1093,3 +1093,45 @@ body.theme-light .btn.ghost {
   border-color: #555;
   color: #111;
 }
+
+/* =========================
+   FIX CONTRASTE HEADER
+   ========================= */
+
+/* En thème sombre : texte du header bien blanc */
+header h1,
+header h2,
+header .header-title,
+.app-header h1,
+.app-header h2 {
+  color: #f5f5f5 !important;
+}
+
+/* En thème clair : texte du header bien foncé */
+body.theme-light header h1,
+body.theme-light header h2,
+body.theme-light header .header-title,
+body.theme-light .app-header h1,
+body.theme-light .app-header h2 {
+  color: #111 !important;
+}
+
+/* =========================
+   FIX CONTRASTE BOUTONS OUTLINE
+   (ex : "Planning médical")
+   ========================= */
+
+/* Thème sombre : texte clair + bord bleu visible */
+.btn.outline {
+  background: transparent;
+  border: 1px solid #4da3ff;
+  color: #f5f5f5;
+}
+
+/* Thème clair : texte foncé + bord bleu foncé */
+body.theme-light .btn.outline {
+  background: transparent;
+  border: 1px solid #0056b3;
+  color: #111;
+}
+
