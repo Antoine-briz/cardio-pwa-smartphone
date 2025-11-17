@@ -25,11 +25,17 @@
   </main>
 
   <footer id="app-footer">
-  <label for="theme-toggle">Thème :</label>
-  <select id="theme-toggle">
-    <option value="dark">Sombre</option>
-    <option value="light">Clair</option>
-  </select>
+  <div class="theme-switcher">
+    <span>Thème :</span>
+    <label>
+      <input type="radio" name="theme" id="theme-dark" value="dark">
+      Sombre
+    </label>
+    <label>
+      <input type="radio" name="theme" id="theme-light" value="light">
+      Clair
+    </label>
+  </div>
 </footer>
 
 
