@@ -963,22 +963,24 @@ img {
   display: block;
 }
 
-/* Réduction de la hauteur des 3 grands encadrés de l’accueil */
-#home-menu .card-home {
-  padding: 8px 10px;       /* moins de marge interne */
-  margin: 8px 0;           /* encadrés plus proches */
-  min-height: auto;        /* on supprime toute hauteur forcée */
+/* Images dans les pages d'interventions */
+.hero img,
+.img-modal-content,
+.card-body img {
+  width: 100% !important;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-#home-menu .card-home img {
-  max-height: 90px;        /* image plus compacte */
-  object-fit: contain;
-  margin-bottom: 6px;
+/* Espacement entre chaque encadré */
+details.card {
+  margin-bottom: 14px;   /* ajustable */
 }
 
-#home-menu .card-home h2,
-#home-menu .card-home h3 {
-  margin: 4px 0;           /* réduit l’espace titre */
-  line-height: 1.2;
+/* Pour éviter que le dernier ne colle au bas */
+details.card:last-of-type {
+  margin-bottom: 24px;
 }
+
 
