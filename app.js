@@ -34,6 +34,34 @@ function loadTheme() {
 }
 loadTheme();
 
+// --- THEME HANDLER ---
+function setupThemeSelector() {
+  const select = document.getElementById("theme-toggle");
+  if (!select) return;
+
+  // Charger le thème sauvegardé
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") {
+    document.body.classList.add("light");
+    select.value = "light";
+  }
+
+  select.addEventListener("change", () => {
+    if (select.value === "light") {
+      document.body.classList.add("light");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.body.classList.remove("light");
+      localStorage.setItem("theme", "dark");
+    }
+  });
+}
+
+// Toujours activer le sélecteur après mise à jour du DOM
+const observer = new MutationObserver(() => setupThemeSelector());
+observer.observe(document.getElementById("app"), { childList: true });
+
+
 const routes = {
   "#/": renderHome,
 
