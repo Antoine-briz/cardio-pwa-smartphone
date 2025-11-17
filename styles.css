@@ -983,4 +983,8 @@ details.card:last-of-type {
   margin-bottom: 24px;
 }
 
+.menu-card h3 {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
 
