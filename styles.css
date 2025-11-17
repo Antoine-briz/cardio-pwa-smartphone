@@ -988,3 +988,42 @@ details.card:last-of-type {
   padding-top: 0 !important;
 }
 
+/* --- Gestion des thèmes --- */
+:root {
+  --bg-color: #111;
+  --text-color: #fff;
+  --card-bg: #1e1e1e;
+  --btn-bg: #007bff;
+  --btn-text: #ffffff;
+}
+
+/* Thème clair */
+.theme-light {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --card-bg: #f3f3f3;
+  --btn-bg: #0066cc;
+  --btn-text: #ffffff;
+}
+
+/* Application des variables */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.card,
+.card-home {
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+button.btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+summary {
+  color: var(--text-color);
+}
+
