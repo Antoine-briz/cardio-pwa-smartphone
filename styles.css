@@ -983,10 +983,17 @@ details.card:last-of-type {
   margin-bottom: 24px;
 }
 
-.menu-card h3 {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+/* Cartes du menu d’accueil : réduire l’espace en haut */
+.home .card {
+  padding-top: 8px;         /* réduit le "coussin" interne en haut */
 }
+
+/* Titre à l’intérieur des cartes d’accueil */
+.home .card h3 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
 
 /* --- Gestion des thèmes --- */
 :root {
