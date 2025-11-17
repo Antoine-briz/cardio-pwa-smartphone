@@ -18,48 +18,42 @@ function sectionHeader(title, imageFile) {
     </div>
   `;
 }
+// ==========================
+//  GESTION DU THÈME GLOBAL
+// ==========================
+const THEME_KEY = "theme"; // "dark" ou "light"
 
 function applyTheme(theme) {
-  if (theme === "light") {
-    document.body.classList.add("theme-light");
-  } else {
-    document.body.classList.remove("theme-light");
+  const isLight = theme === "light";
+
+  // On ne garde qu'UNE seule classe pour le thème clair
+  document.body.classList.toggle("theme-light", isLight);
+
+  // Sauvegarde
+  localStorage.setItem(THEME_KEY, theme);
+
+  // Mettre à jour la valeur du select si présent
+  const select = document.getElementById("theme-toggle");
+  if (select) {
+    select.value = theme;
   }
-  localStorage.setItem("theme", theme);
 }
 
-function loadTheme() {
-  const saved = localStorage.getItem("theme") || "dark";
+function setupTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || "dark";
   applyTheme(saved);
-}
-loadTheme();
 
-// --- THEME HANDLER ---
-function setupThemeSelector() {
   const select = document.getElementById("theme-toggle");
   if (!select) return;
 
-  // Charger le thème sauvegardé
-  const saved = localStorage.getItem("theme");
-  if (saved === "light") {
-    document.body.classList.add("light");
-    select.value = "light";
-  }
-
-  select.addEventListener("change", () => {
-    if (select.value === "light") {
-      document.body.classList.add("light");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.body.classList.remove("light");
-      localStorage.setItem("theme", "dark");
-    }
+  select.addEventListener("change", (e) => {
+    const value = e.target.value === "light" ? "light" : "dark";
+    applyTheme(value);
   });
 }
 
-// Toujours activer le sélecteur après mise à jour du DOM
-const observer = new MutationObserver(() => setupThemeSelector());
-observer.observe(document.getElementById("app"), { childList: true });
+// Quand tout le DOM est prêt, on initialise le thème
+document.addEventListener("DOMContentLoaded", setupTheme);
 
 
 const routes = {
