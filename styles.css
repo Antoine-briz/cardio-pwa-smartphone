@@ -1027,6 +1027,11 @@ summary {
   color: var(--text-color);
 }
 
+
+/* =========================
+   THÈME GLOBAL
+   ========================= */
+
 /* Thème sombre par défaut */
 body {
   background: #050b10;
@@ -1039,23 +1044,47 @@ body.theme-light {
   color: #111;
 }
 
-/* Cartes / encadrés principaux */
-details.card,
-.menu-card {
-  background: #111821;
+/* =========================
+   HEADER ("Protocoles SARIC")
+   ========================= */
+
+header,
+.app-header {
+  background: #050b10;
   color: #f5f5f5;
 }
 
-body.theme-light details.card,
-body.theme-light .menu-card {
-  background: #ffffff;
+body.theme-light header,
+body.theme-light .app-header {
+  background: #f5f5f5;
   color: #111;
 }
 
-/* Boutons "ghost" (souvent utilisés pour Planning / Annuaire) */
+/* Le texte du titre prend la couleur héritée (donc visible dans les 2 thèmes) */
+header h1,
+header h2,
+.header-title {
+  color: inherit;
+}
+
+/* =========================
+   LIENS (Planning médical, Annuaire, etc.)
+   ========================= */
+
+a,
+a:visited {
+  color: #4da3ff;        /* bien contrasté sur fond sombre */
+}
+
+body.theme-light a,
+body.theme-light a:visited {
+  color: #0056b3;        /* bleu foncé sur fond clair */
+}
+
+/* Si Planning / Annuaire sont des boutons "ghost" */
 .btn.ghost {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   color: #f5f5f5;
 }
 
@@ -1063,15 +1092,4 @@ body.theme-light .btn.ghost {
   background: transparent;
   border-color: #555;
   color: #111;
-}
-
-/* Si Planning / Annuaire sont dans un wrapper dédié, par ex. .home-shortcuts */
-.home-shortcuts .btn.ghost {
-  font-weight: 500;
-}
-
-/* Thème clair : liens Planning / Annuaire bien visibles */
-body.theme-light .home-shortcuts .btn.ghost {
-  color: #0056b3;
-  border-color: #0056b3;
 }
