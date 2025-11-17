@@ -124,7 +124,6 @@ window.addEventListener("load", navigate);
 //  PAGE D’ACCUEIL
 // =====================================================================
 
-
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
@@ -157,26 +156,6 @@ function renderHome() {
           Annuaire
         </button>
       </div>
-      <div style="margin-top:20px; padding:10px; text-align:center;">
-  <p style="margin-bottom:6px;">Choix du thème :</p>
-
-  <label style="margin-right:12px;">
-    <input type="radio" name="theme" value="dark"
-      onclick="applyTheme('dark')" checked> Sombre
-  </label>
-
-  <label>
-    <input type="radio" name="theme" value="light"
-      onclick="applyTheme('light')"> Clair
-  </label>
-</div>
-
-<script>
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  document.querySelectorAll('input[name="theme"]').forEach(r => {
-    r.checked = (r.value === savedTheme);
-  });
-</script>
     </section>
   `;
 }
