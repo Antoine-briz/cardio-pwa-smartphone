@@ -1027,3 +1027,74 @@ summary {
   color: var(--text-color);
 }
 
+/* Thème sombre par défaut */
+body {
+  background: #050b10;
+  color: #f5f5f5;
+}
+
+/* Cards, menus, etc. en sombre */
+details.card,
+.menu-card {
+  background: #111821;
+  color: #f5f5f5;
+}
+
+/* Liens "Planning médical" / "Annuaire" sur la home */
+.home-shortcuts a {
+  color: #f5f5f5;
+}
+
+/* FOOTER */
+#app-footer {
+  width: 100%;
+  padding: 10px 15px;
+  text-align: center;
+  background: #111;
+  color: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #333;
+  z-index: 999;
+}
+
+#app-footer select {
+  margin-left: 6px;
+  padding: 6px;
+  background: #222;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+}
+
+/* ========= THÈME CLAIR ========= */
+
+body.theme-light {
+  background: #f3f3f3;
+  color: #111;
+}
+
+body.theme-light details.card,
+body.theme-light .menu-card {
+  background: #ffffff;
+  color: #111;
+}
+
+/* Liens bas de page (Planning / Annuaire) en thème clair */
+body.theme-light .home-shortcuts a {
+  color: #0056b3; /* bleu lisible sur fond clair */
+}
+
+/* Footer en clair */
+body.theme-light #app-footer {
+  background: #eeeeee;
+  color: #111;
+}
+
+body.theme-light #app-footer select {
+  background: #ffffff;
+  color: #111;
+  border-color: #aaa;
+}
+
