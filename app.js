@@ -18,42 +18,68 @@ function sectionHeader(title, imageFile) {
     </div>
   `;
 }
+
 // ==========================
 //  GESTION DU THÈME GLOBAL
 // ==========================
 const THEME_KEY = "theme"; // "dark" ou "light"
 
+// Applique le thème au <body> + synchronise le select s’il existe
 function applyTheme(theme) {
   const isLight = theme === "light";
 
-  // On ne garde qu'UNE seule classe pour le thème clair
+  // Une seule classe pour le thème clair
   document.body.classList.toggle("theme-light", isLight);
 
   // Sauvegarde
   localStorage.setItem(THEME_KEY, theme);
 
-  // Mettre à jour la valeur du select si présent
+  // Met à jour le select si présent
   const select = document.getElementById("theme-toggle");
   if (select) {
     select.value = theme;
   }
 }
 
-function setupTheme() {
+// Initialise le thème au chargement de la page
+function initTheme() {
   const saved = localStorage.getItem(THEME_KEY) || "dark";
   applyTheme(saved);
+}
 
+// Active le select dans le footer (s’il existe)
+function bindThemeSelector() {
   const select = document.getElementById("theme-toggle");
-  if (!select) return;
+  if (!select || select.dataset.bound === "1") return;
 
-  select.addEventListener("change", (e) => {
-    const value = e.target.value === "light" ? "light" : "dark";
+  // Marqueur pour éviter de rajouter 10 fois le même listener
+  select.dataset.bound = "1";
+
+  // On synchronise sa valeur avec le thème actuel
+  const saved = localStorage.getItem(THEME_KEY) || "dark";
+  select.value = saved;
+
+  select.addEventListener("change", () => {
+    const value = select.value === "light" ? "light" : "dark";
     applyTheme(value);
   });
 }
 
-// Quand tout le DOM est prêt, on initialise le thème
-document.addEventListener("DOMContentLoaded", setupTheme);
+// Au chargement initial
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+  bindThemeSelector();
+
+  // Si le contenu de #app change (changement de page), on re-binde le select du footer
+  const appRoot = document.getElementById("app");
+  if (!appRoot) return;
+
+  const observer = new MutationObserver(() => {
+    bindThemeSelector();
+  });
+
+  observer.observe(appRoot, { childList: true, subtree: true });
+});
 
 
 const routes = {
