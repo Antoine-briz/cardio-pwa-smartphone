@@ -18,13 +18,12 @@ function sectionHeader(title, imageFile) {
     </div>
   `;
 }
-
 // ==========================
 //  GESTION DU THÈME GLOBAL
 // ==========================
 const THEME_KEY = "theme"; // "dark" ou "light"
 
-// Applique le thème au <body> + synchronise le select s’il existe
+// Applique le thème au <body> + synchronise les radios si elles existent
 function applyTheme(theme) {
   const isLight = theme === "light";
 
@@ -34,53 +33,35 @@ function applyTheme(theme) {
   // Sauvegarde
   localStorage.setItem(THEME_KEY, theme);
 
-  // Met à jour le select si présent
-  const select = document.getElementById("theme-toggle");
-  if (select) {
-    select.value = theme;
+  // Synchronise les radios si présentes
+  const darkRadio = document.getElementById("theme-dark");
+  const lightRadio = document.getElementById("theme-light");
+  if (darkRadio && lightRadio) {
+    darkRadio.checked = !isLight;
+    lightRadio.checked = isLight;
   }
 }
 
-// Initialise le thème au chargement de la page
+// Initialise le thème + branche les radios du footer
 function initTheme() {
   const saved = localStorage.getItem(THEME_KEY) || "dark";
   applyTheme(saved);
+
+  const darkRadio = document.getElementById("theme-dark");
+  const lightRadio = document.getElementById("theme-light");
+
+  if (darkRadio && lightRadio) {
+    darkRadio.addEventListener("change", () => {
+      if (darkRadio.checked) applyTheme("dark");
+    });
+    lightRadio.addEventListener("change", () => {
+      if (lightRadio.checked) applyTheme("light");
+    });
+  }
 }
 
-// Active le select dans le footer (s’il existe)
-function bindThemeSelector() {
-  const select = document.getElementById("theme-toggle");
-  if (!select || select.dataset.bound === "1") return;
-
-  // Marqueur pour éviter de rajouter 10 fois le même listener
-  select.dataset.bound = "1";
-
-  // On synchronise sa valeur avec le thème actuel
-  const saved = localStorage.getItem(THEME_KEY) || "dark";
-  select.value = saved;
-
-  select.addEventListener("change", () => {
-    const value = select.value === "light" ? "light" : "dark";
-    applyTheme(value);
-  });
-}
-
-// Au chargement initial
-document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
-  bindThemeSelector();
-
-  // Si le contenu de #app change (changement de page), on re-binde le select du footer
-  const appRoot = document.getElementById("app");
-  if (!appRoot) return;
-
-  const observer = new MutationObserver(() => {
-    bindThemeSelector();
-  });
-
-  observer.observe(appRoot, { childList: true, subtree: true });
-});
-
+// Lance tout après chargement du DOM
+document.addEventListener("DOMContentLoaded", initTheme);
 
 const routes = {
   "#/": renderHome,
