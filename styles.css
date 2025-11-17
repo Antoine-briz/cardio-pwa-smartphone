@@ -1135,3 +1135,15 @@ body.theme-light .btn.outline {
   color: #111;
 }
 
+/* =========================
+   PROTOCOLES SARIC TOUJOURS EN NOIR
+   ========================= */
+
+header h1,
+header h2,
+.app-header h1,
+.app-header h2,
+.header-title {
+  color: #000 !important;
+}
+
