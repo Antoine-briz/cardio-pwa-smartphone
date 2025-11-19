@@ -5749,6 +5749,22 @@ function closePopup() {
   document.getElementById("img-popup").style.display = "none";
 }
 
+function openVideo(src) {
+  const modal = document.createElement("div");
+  modal.className = "img-modal";
+
+  modal.innerHTML = `
+    <div class="img-modal-content">
+      <video class="eto-video" autoplay muted loop controls playsinline>
+        <source src="img/${src}" type="video/mp4">
+      </video>
+    </div>
+  `;
+
+  modal.onclick = () => modal.remove();
+  document.body.appendChild(modal);
+}
+
 
 /* ====================================================================
    RÉANIMATION – EER & ÉCHANGES PLASMATIQUES (MENU + sous-pages)
