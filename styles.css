@@ -1154,3 +1154,26 @@ header h2,
   color: #000 !important;
 }
 
+/* Vidéos dans les sections ETO */
+.eto-video {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin-top: 8px;
+  object-fit: cover;
+}
+
+/* Icône cliquable (le même style que tes images ETO) */
+.eto-link {
+  cursor: pointer;
+  color: var(--text-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.eto-link span.icon {
+  font-size: 18px;
+}
