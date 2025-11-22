@@ -10486,9 +10486,278 @@ function decideDuree(infection, germe){
 }
 
 
+/* ============================================================
+   HELPERS ETO
+   ============================================================ */
+
+// Toggle des sous-listes (lignes bleues)
+function toggleEtoSub(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const visible = window.getComputedStyle(el).display !== "none";
+  el.style.display = visible ? "none" : "block";
+}
 
 
+/* ============================================================
+   BLOCS ETO RÉUTILISABLES
+   ============================================================ */
 
+/* --- Fonction systolique VG --- */
+function etoBlockFonctionVG() {
+  return {
+    titre: "Fonction systolique VG",
+    html: `
+      <ul>
+        <li><span class="img-link" onclick="openImg('eto_vg_fr_surface.png')">
+          FR de surface VG <span style="font-size:18px;">🖥️</span>
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vg_fe_simpson_biplan.png')">
+          FEVG (Simpson biplan) <span style="font-size:18px;">🖥️</span>
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vg_duree_acc_syst_ccvg.png')">
+          Durée d’accélération systolique CCVG <span style="font-size:18px;">🖥️</span>
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vg_dpdt_im.png')">
+          dP/dt d’une IM <span style="font-size:18px;">🖥️</span>
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vg_onde_s_mitrale.png')">
+          Onde S’ de l’anneau mitral <span style="font-size:18px;">🖥️</span>
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vg_indice_tei.png')">
+          Indice de Tei du VG <span style="font-size:18px;">🖥️</span>
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vg_gls.png')">
+          Global longitudinal strain (GLS) du VG <span style="font-size:18px;">🖥️</span>
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vg_cinetique_segmentaire.png')">
+          Cinétique segmentaire du VG <span style="font-size:18px;">🖥️</span>
+        </span></li>
+      </ul>
+    `,
+  };
+}
+
+
+/* --- Valve aortique --- */
+function etoBlockValveAortique() {
+  return {
+    titre: "Valve aortique",
+    html: `
+      <ul>
+        <li>
+          <span class="img-link" onclick="openImg('eto_ao_morphologie.png')">
+            Morphologie aortique <span style="font-size:18px;">🖥️</span>
+          </span>
+        </li>
+
+        <li>
+          <span class="img-link eto-main" onclick="toggleEtoSub('eto-ao-ia-sub')">
+            Insuffisance aortique (détails) <span style="font-size:18px;">🖥️</span>
+          </span>
+          <ul id="eto-ao-ia-sub" style="display:none; margin-top:4px;">
+            <li>
+              <span class="img-link" onclick="openImg('eto_ao_ia_classification.png')">
+                Classification des IA <span style="font-size:18px;">🖥️</span>
+              </span>
+            </li>
+            <li>
+              <span class="img-link" onclick="openImg('eto_ao_ia_pisa.png')">
+                PISA IA <span style="font-size:18px;">🖥️</span>
+              </span>
+            </li>
+            <li>
+              <span class="img-link" onclick="openImg('eto_ao_ia_vena_contracta.png')">
+                Vena contracta IA <span style="font-size:18px;">🖥️</span>
+              </span>
+            </li>
+            <li>
+              <span class="img-link" onclick="openImg('eto_ao_ia_pht.png')">
+                PHT IA <span style="font-size:18px;">🖥️</span>
+              </span>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <span class="img-link" onclick="openImg('eto_ao_ra.png')">
+            Rétrécissement aortique (RA) <span style="font-size:18px;">🖥️</span>
+          </span>
+        </li>
+      </ul>
+    `,
+  };
+}
+
+
+/* --- Valve mitrale --- */
+function etoBlockValveMitrale() {
+  return {
+    titre: "Valve mitrale",
+    html: `
+      <ul>
+        <li>
+          <span class="img-link" onclick="openImg('eto_mit_morphologie.png')">
+            Morphologie mitrale <span style="font-size:18px;">🖥️</span>
+          </span>
+        </li>
+
+        <!-- IM -->
+        <li>
+          <span class="img-link eto-main" onclick="toggleEtoSub('eto-mit-im-sub')">
+            Insuffisance mitrale (IM) <span style="font-size:18px;">🖥️</span>
+          </span>
+          <ul id="eto-mit-im-sub" style="display:none; margin-top:4px;">
+            <li><span class="img-link" onclick="openImg('eto_mit_im_classification.png')">
+              Classification IM 🖥️
+            </span></li>
+            <li><span class="img-link" onclick="openImg('eto_mit_im_pisa.png')">
+              PISA IM 🖥️
+            </span></li>
+            <li><span class="img-link" onclick="openImg('eto_mit_im_vena_contracta.png')">
+              Vena contracta IM 🖥️
+            </span></li>
+            <li><span class="img-link" onclick="openImg('eto_mit_im_pht.png')">
+              PHT IM 🖥️
+            </span></li>
+          </ul>
+        </li>
+
+        <!-- RM -->
+        <li>
+          <span class="img-link eto-main" onclick="toggleEtoSub('eto-mit-rm-sub')">
+            Rétrécissement mitral (RM) <span style="font-size:18px;">🖥️</span>
+          </span>
+          <ul id="eto-mit-rm-sub" style="display:none; margin-top:4px;">
+            <li><span class="img-link" onclick="openImg('eto_mit_rm_planimetrie.png')">
+              Planimétrie RM 🖥️
+            </span></li>
+            <li><span class="img-link" onclick="openImg('eto_mit_rm_pht.png')">
+              PHT RM 🖥️
+            </span></li>
+            <li><span class="img-link" onclick="openImg('eto_mit_rm_continuite.png')">
+              Continuité RM 🖥️
+            </span></li>
+            <li><span class="img-link" onclick="openImg('eto_mit_rm_gradient_moyen.png')">
+              Gradient moyen RM 🖥️
+            </span></li>
+          </ul>
+        </li>
+      </ul>
+    `,
+  };
+}
+
+
+/* --- Fonction diastolique / PTDVG --- */
+function etoBlockPTDVG() {
+  return {
+    titre: "PTDVG / Fonction diastolique VG",
+    html: `
+      <ul>
+        <li>
+          <span class="img-link" onclick="openImg('eto_vg_diastolique_ptdvg.png')">
+            Critères diastoliques VG <span style="font-size:18px;">🖥️</span>
+          </span>
+        </li>
+      </ul>
+    `,
+  };
+}
+
+
+/* --- Fonction systolique VD --- */
+function etoBlockFonctionVD() {
+  return {
+    titre: "Fonction systolique VD",
+    html: `
+      <ul>
+        <li><span class="img-link" onclick="openImg('eto_vd_fr_surface.png')">
+          FR surface VD 🖥️
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vd_tapse.png')">
+          TAPSE 🖥️
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vd_onde_s_tricuspide.png')">
+          Onde S’ tricuspide 🖥️
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vd_indice_tei.png')">
+          Indice de Tei VD 🖥️
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vd_gls.png')">
+          GLS VD 🖥️
+        </span></li>
+
+        <li><span class="img-link" onclick="openImg('eto_vd_tapse_paps.png')">
+          TAPSE / PAPs 🖥️
+        </span></li>
+      </ul>
+    `,
+  };
+}
+
+
+/* --- HTAP --- */
+function etoBlockHTAP() {
+  return {
+    titre: "Évaluation d’une HTAP",
+    html: `
+      <ul>
+        <li>
+          <span class="img-link" onclick="openImg('eto_htap_paps.png')">
+            PAPs (TR) 🖥️
+          </span>
+        </li>
+
+        <li>
+          <span class="img-link" onclick="openImg('eto_htap_papm_papd.png')">
+            PAPm / PAPd 🖥️
+          </span>
+        </li>
+
+        <li>
+          <span class="img-link" onclick="openImg('eto_htap_ralentissement_mesosystolique.png')">
+            Ralentissement méso-systolique 🖥️
+          </span>
+        </li>
+      </ul>
+    `,
+  };
+}
+
+
+/* ============================================================
+   PAGE OPTIONNELLE : BIBLIOTHÈQUE ETO
+   ============================================================ */
+
+function renderEtoBibliotheque() {
+  const encadres = [
+    etoBlockFonctionVG(),
+    etoBlockValveAortique(),
+    etoBlockValveMitrale(),
+    etoBlockPTDVG(),
+    etoBlockFonctionVD(),
+    etoBlockHTAP(),
+  ];
+
+  renderInterventionPage({
+    titre: "Bibliothèque ETO",
+    sousTitre: "",
+    image: "eto_bibliotheque.png",
+    encadres,
+  });
+}
 
 // =====================================================================
 //  CEC
