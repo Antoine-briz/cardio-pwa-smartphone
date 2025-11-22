@@ -5300,19 +5300,11 @@ function renderReanEto() {
   renderInterventionPage({
     titre: "Échocardiographie trans-œsophagienne",
     sousTitre: "Réanimation",
-    image: "reanimation.png",
+    image: "eto.png",
     encadres,
   });
 }
 
-
-  renderInterventionPage({
-    titre: "ETO (hors assistances)",
-    sousTitre: "",
-    image: "eto.png", 
-    encadres,
-  });
-}
 
 function openImg(name) {
   document.getElementById("popup-img").src = `img/${name}`;
