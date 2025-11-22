@@ -1177,3 +1177,12 @@ header h2,
 .eto-link span.icon {
   font-size: 18px;
 }
+
+/* Champ de saisie du poids (2–3 chiffres) */
+input[type="number"] {
+  width: 70px !important;   /* réduit */
+  padding: 6px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 6px;
+}
