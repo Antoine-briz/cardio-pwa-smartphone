@@ -3462,7 +3462,9 @@ function setupDissectionAoLogic() {
     }
   }
 }
-
+updateAll();
+}
+  
 function renderInterventionTransplantAnesth() {
   const encadres = [
     {
