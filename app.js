@@ -2281,37 +2281,38 @@ function setupPcLogic() {
     if (indText) indText.innerHTML = txt;
   }
 
-  function updateAtb() {
-    const poids = parseKg(poidsId);
+function updateAtb() {
+  const poids = parseKg(poidsId);
 
   // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)  liCefaStd.style.display  = "none";
     if (liCefaObese) liCefaObese.style.display = "";
   } else {
-    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaStd)  liCefaStd.style.display  = "";
     if (liCefaObese) liCefaObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)   liCefaStd.style.display   = "none";
     if (liCefaObese) liCefaObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de la Céfazoline selon IMC
+    // Réafficher la bonne Céfazoline selon IMC
     if (cbImc && cbImc.checked) {
-      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaStd)  liCefaStd.style.display  = "none";
       if (liCefaObese) liCefaObese.style.display = "";
     } else {
-      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaStd)  liCefaStd.style.display  = "";
       if (liCefaObese) liCefaObese.style.display = "none";
     }
   }
 }
+
 
   function updateAll() {
     updateInduction();
@@ -2503,32 +2504,32 @@ function setupRvaLogic() {
   }
 
   function updateAtb() {
-    const poids = parseKg(poidsId);
+  const poids = parseKg(poidsId);
 
   // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)  liCefaStd.style.display  = "none";
     if (liCefaObese) liCefaObese.style.display = "";
   } else {
-    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaStd)  liCefaStd.style.display  = "";
     if (liCefaObese) liCefaObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)   liCefaStd.style.display   = "none";
     if (liCefaObese) liCefaObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de la Céfazoline selon IMC
+    // Réafficher la bonne Céfazoline selon IMC
     if (cbImc && cbImc.checked) {
-      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaStd)  liCefaStd.style.display  = "none";
       if (liCefaObese) liCefaObese.style.display = "";
     } else {
-      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaStd)  liCefaStd.style.display  = "";
       if (liCefaObese) liCefaObese.style.display = "none";
     }
   }
@@ -2738,33 +2739,33 @@ function setupRvmLogic() {
     if (indText) indText.innerHTML = txt;
   }
 
-  function updateAtb() {
-    const poids = parseKg(poidsId);
+ function updateAtb() {
+  const poids = parseKg(poidsId);
 
   // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)  liCefaStd.style.display  = "none";
     if (liCefaObese) liCefaObese.style.display = "";
   } else {
-    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaStd)  liCefaStd.style.display  = "";
     if (liCefaObese) liCefaObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)   liCefaStd.style.display   = "none";
     if (liCefaObese) liCefaObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de la Céfazoline selon IMC
+    // Réafficher la bonne Céfazoline selon IMC
     if (cbImc && cbImc.checked) {
-      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaStd)  liCefaStd.style.display  = "none";
       if (liCefaObese) liCefaObese.style.display = "";
     } else {
-      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaStd)  liCefaStd.style.display  = "";
       if (liCefaObese) liCefaObese.style.display = "none";
     }
   }
@@ -2979,36 +2980,37 @@ function setupRvtLogic() {
   }
 
   function updateAtb() {
-    const poids = parseKg(poidsId);
+  const poids = parseKg(poidsId);
 
   // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)  liCefaStd.style.display  = "none";
     if (liCefaObese) liCefaObese.style.display = "";
   } else {
-    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaStd)  liCefaStd.style.display  = "";
     if (liCefaObese) liCefaObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)   liCefaStd.style.display   = "none";
     if (liCefaObese) liCefaObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de la Céfazoline selon IMC
+    // Réafficher la bonne Céfazoline selon IMC
     if (cbImc && cbImc.checked) {
-      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaStd)  liCefaStd.style.display  = "none";
       if (liCefaObese) liCefaObese.style.display = "";
     } else {
-      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaStd)  liCefaStd.style.display  = "";
       if (liCefaObese) liCefaObese.style.display = "none";
     }
   }
 }
+
 
   function updateAll() {
     updateInduction();
@@ -3207,36 +3209,37 @@ function setupAorteAscLogic() {
   }
 
   function updateAtb() {
-    const poids = parseKg(poidsId);
+  const poids = parseKg(poidsId);
 
   // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)  liCefaStd.style.display  = "none";
     if (liCefaObese) liCefaObese.style.display = "";
   } else {
-    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaStd)  liCefaStd.style.display  = "";
     if (liCefaObese) liCefaObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)   liCefaStd.style.display   = "none";
     if (liCefaObese) liCefaObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de la Céfazoline selon IMC
+    // Réafficher la bonne Céfazoline selon IMC
     if (cbImc && cbImc.checked) {
-      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaStd)  liCefaStd.style.display  = "none";
       if (liCefaObese) liCefaObese.style.display = "";
     } else {
-      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaStd)  liCefaStd.style.display  = "";
       if (liCefaObese) liCefaObese.style.display = "none";
     }
   }
 }
+
 
   function updateAll() {
     updateInduction();
@@ -3428,38 +3431,37 @@ function setupDissectionAoLogic() {
   const liVanco = document.getElementById("dissec-vancomycine");
   const spanVanco = document.getElementById("dissec-vanco-dose");
 
-  function updateAtb() {
-    const poids = parseKg(poidsId);
+ function updateAtb() {
+  const poids = parseKg(poidsId);
 
   // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)  liCefaStd.style.display  = "none";
     if (liCefaObese) liCefaObese.style.display = "";
   } else {
-    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaStd)  liCefaStd.style.display  = "";
     if (liCefaObese) liCefaObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaStd)   liCefaStd.style.display   = "none";
     if (liCefaObese) liCefaObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de la Céfazoline selon IMC
+    // Réafficher la bonne Céfazoline selon IMC
     if (cbImc && cbImc.checked) {
-      if (liCefaStd) liCefaStd.style.display = "none";
+      if (liCefaStd)  liCefaStd.style.display  = "none";
       if (liCefaObese) liCefaObese.style.display = "";
     } else {
-      if (liCefaStd) liCefaStd.style.display = "";
+      if (liCefaStd)  liCefaStd.style.display  = "";
       if (liCefaObese) liCefaObese.style.display = "none";
     }
   }
 }
-
 
 function renderInterventionTransplantAnesth() {
   const encadres = [
@@ -3956,33 +3958,33 @@ function setupTaviLogic() {
     if (anesthText) anesthText.innerHTML = txt;
   }
 
-  function updateATB() {
+function updateATB() {
   const poids = parseKg(poidsId);
 
-  // --- Gestion IMC ---
+  // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liAugmStd) liAugmStd.style.display = "none";
+    if (liAugmStd)   liAugmStd.style.display   = "none";
     if (liAugmObese) liAugmObese.style.display = "";
   } else {
-    if (liAugmStd) liAugmStd.style.display = "";
+    if (liAugmStd)   liAugmStd.style.display   = "";
     if (liAugmObese) liAugmObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liAugmStd) liAugmStd.style.display = "none";
+    if (liAugmStd)   liAugmStd.style.display   = "none";
     if (liAugmObese) liAugmObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
     // Réafficher la bonne version de l’Augmentin selon IMC
     if (cbImc && cbImc.checked) {
-      if (liAugmStd) liAugmStd.style.display = "none";
+      if (liAugmStd)   liAugmStd.style.display   = "none";
       if (liAugmObese) liAugmObese.style.display = "";
     } else {
-      if (liAugmStd) liAugmStd.style.display = "";
+      if (liAugmStd)   liAugmStd.style.display   = "";
       if (liAugmObese) liAugmObese.style.display = "none";
     }
   }
@@ -4190,33 +4192,33 @@ function setupMitraClipLogic() {
     if (indText) indText.innerHTML = txt;
   }
 
-  function updateATB() {
+ function updateATB() {
   const poids = parseKg(poidsId);
 
-  // --- Gestion IMC ---
+  // --- Gestion IMC (si pas allergique) ---
   if (cbImc && cbImc.checked) {
-    if (liAugmStd) liAugmStd.style.display = "none";
+    if (liAugmStd)   liAugmStd.style.display   = "none";
     if (liAugmObese) liAugmObese.style.display = "";
   } else {
-    if (liAugmStd) liAugmStd.style.display = "";
+    if (liAugmStd)   liAugmStd.style.display   = "";
     if (liAugmObese) liAugmObese.style.display = "none";
   }
 
   // --- Allergie BL : remplace totalement par Vancomycine ---
   if (cbAllergie && cbAllergie.checked) {
-    if (liAugmStd) liAugmStd.style.display = "none";
+    if (liAugmStd)   liAugmStd.style.display   = "none";
     if (liAugmObese) liAugmObese.style.display = "none";
-    if (liVanco) liVanco.style.display = "";
-    if (spanVanco) spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
   } else {
     if (liVanco) liVanco.style.display = "none";
 
     // Réafficher la bonne version de l’Augmentin selon IMC
     if (cbImc && cbImc.checked) {
-      if (liAugmStd) liAugmStd.style.display = "none";
+      if (liAugmStd)   liAugmStd.style.display   = "none";
       if (liAugmObese) liAugmObese.style.display = "";
     } else {
-      if (liAugmStd) liAugmStd.style.display = "";
+      if (liAugmStd)   liAugmStd.style.display   = "";
       if (liAugmObese) liAugmObese.style.display = "none";
     }
   }
@@ -4296,7 +4298,23 @@ function renderInterventionFOPCIA() {
     },
     {
       titre: "Antibioprophylaxie",
-      html: `<p>Non indiquée.</p>`,
+      html: `
+        <ul>
+          <li id="mitra-augm-standard">
+            <strong>Augmentin :</strong>
+            2 g IVL, puis 1 g après 2 h (1 g toutes les 2 h).
+          </li>
+          <li id="mitra-augm-obese" style="display:none;">
+            <strong>Augmentin (IMC &gt; 50) :</strong>
+            4 g IVL, puis 2 g après 2 h (2 g toutes les 2 h).
+          </li>
+          <li id="mitra-vanco" style="display:none;">
+            <strong>Allergie BL :</strong>
+            Vancomycine <span id="mitra-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
+          </li>
+        </ul>
+      `,
     },
     {
       titre: "Coupes et mesures ETO",
@@ -4372,6 +4390,38 @@ function setupFOPLogic() {
     if (indText) indText.innerHTML = txt;
   }
 
+function updateATB() {
+  const poids = parseKg(poidsId);
+
+  // --- Gestion IMC (si pas allergique) ---
+  if (cbImc && cbImc.checked) {
+    if (liAugmStd)   liAugmStd.style.display   = "none";
+    if (liAugmObese) liAugmObese.style.display = "";
+  } else {
+    if (liAugmStd)   liAugmStd.style.display   = "";
+    if (liAugmObese) liAugmObese.style.display = "none";
+  }
+
+  // --- Allergie BL : remplace totalement par Vancomycine ---
+  if (cbAllergie && cbAllergie.checked) {
+    if (liAugmStd)   liAugmStd.style.display   = "none";
+    if (liAugmObese) liAugmObese.style.display = "none";
+    if (liVanco)     liVanco.style.display     = "";
+    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
+  } else {
+    if (liVanco) liVanco.style.display = "none";
+
+    // Réafficher la bonne version de l’Augmentin selon IMC
+    if (cbImc && cbImc.checked) {
+      if (liAugmStd)   liAugmStd.style.display   = "none";
+      if (liAugmObese) liAugmObese.style.display = "";
+    } else {
+      if (liAugmStd)   liAugmStd.style.display   = "";
+      if (liAugmObese) liAugmObese.style.display = "none";
+    }
+  }
+}
+
   function updateMonitor() {
     if (!monitorText) return;
     if (cbRisk && cbRisk.checked) {
@@ -4388,6 +4438,7 @@ function setupFOPLogic() {
   function updateAll() {
     updateInduction();
     updateMonitor();
+    updateATB();
   }
 
   const poidsEl = document.getElementById(poidsId);
