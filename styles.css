@@ -1211,3 +1211,12 @@ img[src*="antibiotherapie"] {
   display: block;
   margin: 8px 0 16px;
 }
+
+/* Coins arrondis pour l'image d'antibiothérapie */
+img[src*="antibiotherapie"] {
+  border-radius: 12px;   /* arrondi propre et visible */
+  overflow: hidden;
+  display: block;
+}
+
+
