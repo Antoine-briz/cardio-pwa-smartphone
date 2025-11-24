@@ -1212,8 +1212,10 @@ img[src*="antibiotherapie"] {
   margin: 8px 0 16px;
 }
 
-/* Titres de pages (dans .hero) : adaptent la couleur au thème */
-.hero h2,
-.hero h3 {
-  color: var(--text-color) !important;
+/* Forcer certains titres à être noirs en thème clair */
+body.theme-light h2[data-title="Antibioprophylaxies per-opératoire"],
+body.theme-light h2[data-title="Caractéristiques de l'infection de scarpa"],
+body.theme-light h2[data-title="Caractéristiques de la médiastinite post-opératoire"] {
+    color: #000 !important;
 }
+
