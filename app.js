@@ -4060,6 +4060,10 @@ function renderInterventionMitraClip() {
           <strong>Induction :</strong>
           AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
+        <p id="fop-entretien-text">
+          <strong>Entretien :</strong>
+          AIVOC Propofol/Sufentanil
+        </p>
         <p>
           <strong>Héparine</strong> 100 UI/kg
           (~<span data-per-kg="100" data-unit="UI"></span>),
@@ -4098,47 +4102,31 @@ function renderInterventionMitraClip() {
         <p><strong>Caractérisation de l’IM :</strong></p>
         <ul>
           <li>
-            Vena contracta
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_vena_contracta.png')">🖥️</span>
+            Description et mécanisme de l’IM
           </li>
           <li>
-            PISA
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_pisa.png')">🖥️</span>
+            Quantification par Vena contracta
           </li>
           <li>
-            SOR, volume régurgité
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_sor_volume.png')">🖥️</span>
+            Quantification par méthode PISA: SOR et VR
           </li>
           <li>
-            Mécanisme de l’IM
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_mecanisme.png')">🖥️</span>
+            Quantification par PHT (temps de 1/2 pression)
           </li>
           <li>
-            Diamètre anneau mitral
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_anneau.png')">🖥️</span>
+            Mesure du diamètre anneau mitral
           </li>
         </ul>
         <p><strong>Points complémentaires :</strong></p>
         <ul>
           <li>
             Vacuité auriculaire
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_vacuite_og.png')">🖥️</span>
           </li>
           <li>
             Echo-guidage de la ponction trans-septale
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_pontion_septale.png')">🖥️</span>
           </li>
           <li>
-            Contrôle post-op (IM résiduelle, FEVG, épanchement péricardique)
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('mitra_controle_postop.png')">🖥️</span>
+            Contrôle post-opératoire (IM résiduelle, FEVG, épanchement péricardique)
           </li>
         </ul>
       `,
@@ -4290,6 +4278,10 @@ function renderInterventionFOPCIA() {
           <strong>Induction :</strong>
           AIVOC Propofol/Sufentanil + Atracurium 0,5 mg/kg.
         </p>
+        <p id="fop-entretien-text">
+          <strong>Entretien :</strong>
+          AIVOC Propofol/Sufentanil
+        </p>
         <p>
           <strong>Héparine</strong> 100 UI/kg (ACT cible 300–350 s).<br>
           <strong>Protamine</strong> : généralement non indiquée
@@ -4325,24 +4317,16 @@ function renderInterventionFOPCIA() {
         <ul>
           <li>
             Visualisation du FOP / CIA, shunt droite-gauche, test aux microbulles
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('fop_bulles.png')">🖥️</span>
           </li>
           <li>
             Taille et morphologie du défect (localisation, bords, rapport avec les veines pulmonaires)
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('fop_defaut.png')">🖥️</span>
           </li>
           <li>
             Echo-guidage de la ponction / du positionnement du dispositif
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('fop_guidage.png')">🖥️</span>
           </li>
           <li>
             Contrôle final : shunt résiduel, épanchement péricardique,
             fonction VG/VD
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('fop_controle_postop.png')">🖥️</span>
           </li>
         </ul>
       `,
