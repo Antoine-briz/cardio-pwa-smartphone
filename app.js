@@ -3905,45 +3905,46 @@ function renderInterventionTAVI() {
 }
 
 function setupTaviLogic() {
-  const poidsId = "tavi-poids";
-  const cbImc = document.getElementById("tavi-imc50");
-  const cbAllergie = document.getElementById("tavi-allergie-bl");
-  const selMode = document.getElementById("tavi-mode");
-  const cbRisk = document.getElementById("tavi-induction-risque");
-  const cbSeq = document.getElementById("tavi-seq-rapide");
+  const poidsId     = "tavi-poids";
+  const cbImc       = document.getElementById("tavi-imc50");
+  const cbAllergie  = document.getElementById("tavi-allergie-bl");
+  const cbAG        = document.getElementById("tavi-ag");
+  const cbRisk      = document.getElementById("tavi-induction-risque");
+  const cbSeq       = document.getElementById("tavi-seq-rapide");
 
-  const agOptions = document.getElementById("tavi-ag-options");
-  const anesthText = document.getElementById("tavi-anesth-text");
-  const liAugmStd = document.getElementById("tavi-augm-standard");
+  const agOptions   = document.getElementById("tavi-ag-options");
+  const anesthText  = document.getElementById("tavi-anesth-text");
+  const liAugmStd   = document.getElementById("tavi-augm-standard");
   const liAugmObese = document.getElementById("tavi-augm-obese");
-  const liVanco = document.getElementById("tavi-vanco");
-  const spanVanco = document.getElementById("tavi-vanco-dose");
+  const liVanco     = document.getElementById("tavi-vanco");
+  const spanVanco   = document.getElementById("tavi-vanco-dose");
 
+  // --- Anesthésie : sédation par défaut, AG si case cochée ---
   function updateAnesth() {
     const poids = parseKg(poidsId);
-    const mode = selMode ? selMode.value : "sedation";
 
-    // Sédation
-    if (mode === "sedation") {
+    // Pas d'AG cochée -> SÉDATION
+    if (!cbAG || !cbAG.checked) {
       if (agOptions) agOptions.style.display = "none";
+
       if (anesthText) {
         anesthText.innerHTML = `
-          <strong>Mode :</strong> Sédation AIVOC Rémifentanil
-          (cibles 0,8–2 ng/mL) + anesthésie locale fémorale
-          (Lidocaïne/Ropivacaïne).
+          <strong>Sédation :</strong>
+          AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
+          + anesthésie locale fémorale (Lidocaïne/Ropivacaïne).
         `;
       }
       return;
     }
 
-    // Anesthésie générale
+    // Si AG cochée -> afficher les options + détailler l’induction
     if (agOptions) agOptions.style.display = "";
 
     const etoDose = formatDoseMgPerKg(poids, 0.3);
     const atrDose = formatDoseMgPerKg(poids, 0.5);
     const rocDose = formatDoseMgPerKg(poids, 1.2);
 
-    let txt = "<strong>Mode :</strong> Anesthésie générale : ";
+    let txt = "<strong>Induction :</strong> ";
 
     if (cbRisk && cbRisk.checked) {
       txt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
