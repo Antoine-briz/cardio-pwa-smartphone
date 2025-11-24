@@ -3836,28 +3836,30 @@ function renderInterventionTAVI() {
       `,
     },
     {
-      titre: "Anesthésie",
-      html: `
-        <p id="tavi-anesth-text">
-          <!-- sera rempli dynamiquement par setupTaviLogic -->
-        </p>
-        <p>
-          <strong>Héparine</strong> 80–100 UI/kg
-          (~<span data-per-kg="80" data-unit="UI"></span> à
-             <span data-per-kg="100" data-unit="UI"></span>),
-          ACT cible 200–300 s.
-        </p>
-        <p>
-          <strong>Protamine</strong> = 50 % de la dose d’héparine
-          (à discuter avec l’opérateur).
-        </p>
-        <p>
-          <strong>ALR :</strong> Aucune si voie fémorale.
-          Discuter bloc cervical pour voie carotidienne,
-          bloc serratus antérieur pour voie apicale.
-        </p>
-      `,
-    },
+  titre: "Anesthésie",
+  html: `
+    <p id="tavi-induction-line"></p>
+    <p id="tavi-entretien-line"></p>
+
+    <p>
+      <strong>Héparine</strong> 80–100 UI/kg
+      (~<span data-per-kg="80" data-unit="UI"></span> à
+         <span data-per-kg="100" data-unit="UI"></span>),
+      ACT cible 200–300 s.
+    </p>
+
+    <p>
+      <strong>Protamine</strong> = 50 % de la dose d’héparine
+      (à discuter avec l’opérateur).
+    </p>
+
+    <p>
+      <strong>ALR :</strong> Aucune si voie fémorale.
+      Discuter bloc cervical pour voie carotidienne,
+      bloc serratus antérieur pour voie apicale.
+    </p>
+  `,
+},
     {
       titre: "Antibioprophylaxie",
       html: `
@@ -3921,45 +3923,59 @@ function setupTaviLogic() {
 
   // --- Anesthésie : sédation par défaut, AG si case cochée ---
   function updateAnesth() {
-    const poids = parseKg(poidsId);
+  const poids = parseKg(poidsId);
+  const lineInduction = document.getElementById("tavi-induction-line");
+  const lineEntretien = document.getElementById("tavi-entretien-line");
 
-    // Pas d'AG cochée -> SÉDATION
-    if (!cbAG || !cbAG.checked) {
-      if (agOptions) agOptions.style.display = "none";
+  // ➤ Cas par défaut : sédation
+  if (!cbAG || !cbAG.checked) {
 
-      if (anesthText) {
-        anesthText.innerHTML = `
-          <strong>Sédation :</strong>
-          AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
-          + anesthésie locale fémorale (Lidocaïne/Ropivacaïne).
-        `;
-      }
-      return;
+    if (agOptions) agOptions.style.display = "none";
+
+    if (lineInduction) {
+      lineInduction.innerHTML = `
+        <strong>Sédation :</strong> 
+        AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
+        + anesthésie locale fémorale (Lidocaïne / Ropivacaïne).
+      `;
     }
 
-    // Si AG cochée -> afficher les options + détailler l’induction
-    if (agOptions) agOptions.style.display = "";
+    if (lineEntretien) lineEntretien.innerHTML = ""; // pas d'entretien en sédation
 
-    const etoDose = formatDoseMgPerKg(poids, 0.3);
-    const atrDose = formatDoseMgPerKg(poids, 0.5);
-    const rocDose = formatDoseMgPerKg(poids, 1.2);
-
-    let txt = "<strong>Induction :</strong> ";
-
-    if (cbRisk && cbRisk.checked) {
-      txt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
-    } else {
-      txt += "AIVOC Propofol/Sufentanil, ";
-    }
-
-    if (cbSeq && cbSeq.checked) {
-      txt += `Rocuronium ${rocDose} (séquence rapide).`;
-    } else {
-      txt += `Atracurium ${atrDose}.`;
-    }
-
-    if (anesthText) anesthText.innerHTML = txt;
+    return;
   }
+
+  // ➤ Si AG cochée
+  if (agOptions) agOptions.style.display = "";
+
+  const etoDose = formatDoseMgPerKg(poids, 0.3);
+  const atrDose = formatDoseMgPerKg(poids, 0.5);
+  const rocDose = formatDoseMgPerKg(poids, 1.2);
+
+  // --- Induction ---
+  let txtInduction = "<strong>Induction :</strong> ";
+
+  if (cbRisk && cbRisk.checked) {
+    txtInduction += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
+  } else {
+    txtInduction += "AIVOC Propofol/Sufentanil, ";
+  }
+
+  if (cbSeq && cbSeq.checked) {
+    txtInduction += `Rocuronium ${rocDose} (séquence rapide).`;
+  } else {
+    txtInduction += `Atracurium ${atrDose}.`;
+  }
+
+  if (lineInduction) lineInduction.innerHTML = txtInduction;
+
+  // --- Entretien ---
+  if (lineEntretien) {
+    lineEntretien.innerHTML = `
+      <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
+    `;
+  }
+}
 
 function updateATB() {
   const poids = parseKg(poidsId);
