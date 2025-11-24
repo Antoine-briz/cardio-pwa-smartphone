@@ -1186,3 +1186,47 @@ input[type="number"] {
   text-align: center;
   border-radius: 6px;
 }
+
+/* =======================================================
+   1) Boutons bleus → bleu foncé / bleu marine
+   ======================================================= */
+
+.btn:not(.ghost):not(.outline),
+button.btn:not(.ghost):not(.outline) {
+  background-color: #0b3c6d;   /* bleu marine */
+  border-color: #0b3c6d;
+  color: #ffffff;
+}
+
+.btn:not(.ghost):not(.outline):hover,
+button.btn:not(.ghost):not(.outline):hover {
+  filter: brightness(1.1);
+}
+
+
+/* =======================================================
+   2) Images de menu / antibiotherapie.png
+      → même affichage que les autres images
+   ======================================================= */
+
+/* On homogénéise les images "de tête" */
+.hero img,
+.img-modal-content,
+.card-body img,
+.menu-section-img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* =======================================================
+   3) Titres d’encadrés (Antibioprophylaxie, médiastinite,
+      Scarpa, etc.) → suivent bien le thème
+   ======================================================= */
+
+details.card > summary,
+details.card > summary strong {
+  color: var(--text-color) !important;
+}
