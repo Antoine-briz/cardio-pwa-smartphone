@@ -658,7 +658,7 @@ table.simple th, table.pheno th {
   margin: 0 auto 8px;
   padding: 14px 18px;
   background: #1e3a8a;    /* bleu marine profond */
-  color: #ffffff !important; /* texte blanc dans le bandeau */
+  color: #ffffff; /* texte blanc dans le bandeau */
   font-family: 'Segoe UI', Roboto, system-ui, -apple-system, Arial, sans-serif;
   font-weight: 800;
   font-size: 22px;
@@ -1211,11 +1211,3 @@ img[src*="antibiotherapie"] {
   display: block;
   margin: 8px 0 16px;
 }
-
-/* Forcer certains titres à être noirs en thème clair */
-body.theme-light h2[data-title="Antibioprophylaxies per-opératoire"],
-body.theme-light h2[data-title="Caractéristiques de l'infection de scarpa"],
-body.theme-light h2[data-title="Caractéristiques de la médiastinite post-opératoire"] {
-    color: #000 !important;
-}
-
