@@ -5482,7 +5482,7 @@ function renderReanEerMenu() {
 
       <div class="grid">
         <button class="btn" onclick="renderReanEerPostOp()">EER post-opératoire</button>
-        <button class="btn" onclick="renderReanEerEp()">Echanges plasmatiques</button>
+        <button class="btn" onclick="renderReanEchangesPlasmatiques()">Echanges plasmatiques</button>
       </div>
     </section>
   `;
