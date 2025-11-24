@@ -1203,30 +1203,17 @@ button.btn:not(.ghost):not(.outline):hover {
   filter: brightness(1.1);
 }
 
-
-/* =======================================================
-   2) Images de menu / antibiotherapie.png
-      → même affichage que les autres images
-   ======================================================= */
-
-/* On homogénéise les images "de tête" */
-.hero img,
-.img-modal-content,
-.card-body img,
-.menu-section-img {
+/* Image d'antibiothérapie : même comportement que les autres illustrations */
+img[src*="antibiotherapie"] {
   width: 100%;
   max-width: 100%;
   height: auto;
   display: block;
+  margin: 8px 0 16px;
 }
 
-
-/* =======================================================
-   3) Titres d’encadrés (Antibioprophylaxie, médiastinite,
-      Scarpa, etc.) → suivent bien le thème
-   ======================================================= */
-
-details.card > summary,
-details.card > summary strong {
+/* Titres de pages (dans .hero) : adaptent la couleur au thème */
+.hero h2,
+.hero h3 {
   color: var(--text-color) !important;
 }
