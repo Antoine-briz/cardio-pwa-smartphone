@@ -2010,7 +2010,7 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
   $app.innerHTML = `
     <section>
       <div class="hero">
-        <h2>${titre}</h2>
+        <h2 data-title="${titre}">${titre}</h2>
         ${image ? `<img src="img/${image}" alt="${titre}">` : ""}
         ${sousTitre ? `<h3>${sousTitre}</h3>` : ""}
       </div>
