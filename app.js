@@ -4681,19 +4681,13 @@ function renderInterventionAblationGauche() {
         <ul>
           <li>
             Vacuité auriculaire
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('ablg_vacuite.png')">🖥️</span>
           </li>
           <li>
             Echo-guidage de la ponction / trans-septale
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('ablg_transseptale.png')">🖥️</span>
           </li>
           <li>
             Contrôle post-opératoire : épanchement péricardique, fonction systolique VG
             (risque de choc cardiogénique si ablation de TV)
-            <span style="font-size:20px; cursor:pointer;"
-                  onclick="openImg('ablg_postop.png')">🖥️</span>
           </li>
         </ul>
       `,
