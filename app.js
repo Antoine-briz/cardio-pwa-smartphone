@@ -164,261 +164,270 @@ function renderHome() {
 // =====================================================================
 //  ANESTHÉSIE – MENU PRINCIPAL
 // =====================================================================
+/* ====================================================================
+   ANESTHÉSIE – CONSULTATIONS
+   ==================================================================== */
 
-function renderAnesthMenu() {
+// Page "Consultations" : 2 boutons bleus
+function renderAnesthConsultations() {
   $app.innerHTML = `
     <section>
-      <div class="hero">
-        <img src="img/titre.PNG" alt="Protocoles d’anesthésie" />
-        <h2>Protocoles d’anesthésie</h2>
-      </div>
+      ${sectionHeader("Consultations d’anesthésie", "consultations.png")}
 
       <div class="grid">
-        <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
-          Consultations
+        <button class="btn" onclick="window.open('https://www.euroscore.org/index.php?id=17', '_blank')">
+          Calcul de l’EuroScore II
         </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
-          Antibioprophylaxie
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/chir-cec'">
-          Chirurgies cardiaques sous CEC
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/cardio-struct'">
-          Cardiologie structurelle et rythmologie
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/vasculaire'">
-          Chirurgie vasculaire
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire'">
-          Radio-vasculaire
+
+        <button class="btn" onclick="renderAnesthConsultTraitements()">
+          Gestion pré-opératoire des traitements
         </button>
       </div>
     </section>
   `;
 }
 
-// =====================================================================
-//  ANESTHÉSIE – SOUS-PAGES (SQUELETTE)
-// =====================================================================
-
-function renderAnesthConsultations() {
+// Page "Gestion pré-opératoire des traitements"
+function renderAnesthConsultTraitements() {
   const encadres = [
-    {
-      titre: "Calcul de l’EuroScore II",
-      html: `
-        <p>
-          <button
-            class="btn outline"
-            type="button"
-            onclick="window.open('https://www.euroscore.org/index.php?id=17', '_blank')"
-          >
-            Calcul de l’EuroScore II (euroscore.org)
-          </button>
-        </p>
-        <p style="font-size:0.9em; opacity:0.8;">
-          (Nécessite une connexion internet.)
-        </p>
-      `,
-    },
-
     {
       titre: "Anti-coagulants",
       html: `
-        <details class="subcard">
-          <summary><strong>Héparine non fractionnée</strong></summary>
-          <p>Calciparine curatif: Dernière injection 8h avant l’intervention</p>
-          <p>HNF IVSE curatif: Poursuivre jusqu’à l’intervention</p>
-        </details>
+        <div class="info-content">
+          <!-- Héparine non fractionnée -->
+          <details>
+            <summary>
+              <span style="color:#b91c1c; font-weight:600;">
+                Héparine non fractionnée
+              </span>
+            </summary>
+            <ul>
+              <li>Calciparine curatif&nbsp;: Dernière injection 8h avant l’intervention.</li>
+              <li>HNF IVSE curatif&nbsp;: Poursuivre jusqu’à l’intervention.</li>
+            </ul>
+          </details>
 
-        <details class="subcard">
-          <summary><strong>Héparines de bas poids moléculaire</strong></summary>
-          <p>Préventif: arrêt 12h avant l’intervention</p>
-          <p>Curatif: arrêt 24h avant l’intervention</p>
-        </details>
+          <!-- Héparines de bas poids moléculaire -->
+          <details>
+            <summary>
+              <span style="color:#b91c1c; font-weight:600;">
+                Héparines de bas poids moléculaire
+              </span>
+            </summary>
+            <ul>
+              <li>Préventif&nbsp;: arrêt 12h avant l’intervention.</li>
+              <li>Curatif&nbsp;: arrêt 24h avant l’intervention.</li>
+            </ul>
+          </details>
 
-        <details class="subcard">
-          <summary><strong>Anticoagulants oraux directs</strong></summary>
-          <p>Si absence de relai:</p>
-          <ul>
-            <li>Dabigatran (Pradaxa): Arrêt 3 jours pleins avant intervention (4 jours si DFG 30–50 mL/min/1,73m²)</li>
-            <li>Rivaroxaban (Xarelto): Arrêt 2 jours pleins avant intervention</li>
-            <li>Apixaban (Eliquis): Arrêt 2 jours pleins avant intervention</li>
-          </ul>
-          <p><strong>Relai AOD vers HBPM:</strong></p>
-          <p>Indications: A discuter au cas par cas (uniquement si risque thrombotique majeur)</p>
-          <p>
-            Modalités: Arrêt de l’AOD idem (2 à 4 jours pleins selon molécule / fonction rénale).
-            HBPM 12h après dernière prise pour Rivaroxaban / Apixaban, 24h après dernière prise pour Dabigatran.
-            Dernière dose d’HBPM 24h avant l’intervention.
-          </p>
-        </details>
+          <!-- Anticoagulants oraux directs -->
+          <details>
+            <summary>
+              <span style="color:#b91c1c; font-weight:600;">
+                Anticoagulants oraux directs
+              </span>
+            </summary>
+            <p><strong>Si absence de relai :</strong></p>
+            <ul>
+              <li>Dabigatran (Pradaxa)&nbsp;: Arrêt 3 jours pleins avant intervention (4 jours si DFG 30–50 mL/min/1,73m²).</li>
+              <li>Rivaroxaban (Xarelto)&nbsp;: Arrêt 2 jours pleins avant intervention.</li>
+              <li>Apixaban (Eliquis)&nbsp;: Arrêt 2 jours pleins avant intervention.</li>
+            </ul>
+            <p><strong>Relai AOD vers HBPM :</strong></p>
+            <p>Indications&nbsp;: À discuter au cas par cas (uniquement si risque thrombotique majeur).</p>
+            <p>
+              Modalités&nbsp;: Arrêt de l’AOD idem (2 à 4 jours pleins selon molécule/fonction rénale).<br>
+              HBPM 12h après dernière prise pour Rivaroxaban/Apixaban, 24h après dernière prise pour Dabigatran.<br>
+              Dernière dose d’HBPM 24h avant l’intervention.
+            </p>
+          </details>
 
-        <details class="subcard">
-          <summary><strong>Anti-vitamines K</strong></summary>
-          <p>Si absence de relai:</p>
-          <ul>
-            <li>Fluindione (Previscan): Arrêt 5 jours pleins avant intervention</li>
-            <li>Warfarine (Coumadine): Arrêt 5 jours pleins avant intervention</li>
-            <li>Acénocoumarol (Sintrom): Arrêt 3 jours pleins avant intervention</li>
-          </ul>
-          <p>
-            <strong>Relai AVK vers HBPM (ou Calciparine si &lt; 30 mL/min/1,73m²):</strong>
-          </p>
-          <p>
-            Indications: Valve mécanique, EP/TVP &lt; 3 mois (ou MTEV récidivante),
-            FA emboligène &lt; 3 mois, thrombus intra-cardiaque.
-          </p>
-          <p>
-            Modalités: Arrêt de l’AVK idem (3 à 5 jours pleins).
-            Première injection HBPM / Calciparine 48h après la dernière prise de Fluindione (Previscan)
-            / Warfarine (Coumadine), 24h après dernière prise d’Acénocoumarol (Sintrom).
-          </p>
-          <p>INR la veille de l’intervention:</p>
-          <ul>
-            <li>INR &lt; 1,2: Intervention autorisée</li>
-            <li>INR 1,2–1,5: Vitamine K 5 mg + contrôle J0 (intervention autorisée pour TAVI)</li>
-            <li>
-              INR &gt; 1,5: Vitamine K 5 mg + repousser intervention
-              (intervention autorisée pour assistances et valve mitrale mécanique)
-            </li>
-          </ul>
-        </details>
-      `,
-    },
+          <!-- Anti-vitamines K -->
+          <details>
+            <summary>
+              <span style="color:#b91c1c; font-weight:600;">
+                Anti-vitamines K
+              </span>
+            </summary>
+            <p><strong>Si absence de relai :</strong></p>
+            <ul>
+              <li>Fluindione (Previscan)&nbsp;: Arrêt 5 jours pleins avant intervention.</li>
+              <li>Warfarine (Coumadine)&nbsp;: Arrêt 5 jours pleins avant intervention.</li>
+              <li>Acénocoumarol (Sintrom)&nbsp;: Arrêt 3 jours pleins avant intervention.</li>
+            </ul>
 
-    {
-      titre: "Anti-agrégants plaquettaires",
-      html: `
-        <p>Aspirine (Kardégic): Ne pas arrêter</p>
-        <p>Clopidogrel (Plavix): Arrêt 5 jours pleins avant l’intervention.</p>
-        <p>Ticagrélor (Brilique): Arrêt 3 jours pleins avant l’intervention</p>
-        <p>Prasugrel (Efient): Arrêt 7 jours pleins avant l’intervention</p>
-        <p>AntiGpIIbIIIa: Arrêt à H-4 de l’intervention</p>
-
-        <p><strong>Indications de relai:</strong></p>
-        <ul>
-          <li>
-            Si traitement par inhibiteur de P2Y12 en monothérapie:
-            Envisager un relai par Aspirine (Kardégic) dès 24h après la dernière prise de P2Y12
-            en cas de risque thrombotique significatif (stent &lt; 12 mois, maladie coronarienne active…)
-          </li>
-          <li>
-            Relai par inhibiteur de P2Y12 IVSE (Cangrelor) à discuter si
-            risque thrombotique majeur et risque hémorragique:
-            Arrêt à H-1 de l’intervention.
-          </li>
-        </ul>
+            <p>
+              <strong>Relai AVK vers HBPM</strong>
+              (ou Calciparine si &lt; 30 mL/min/1,73m²)&nbsp;:
+            </p>
+            <p>
+              <em>Indications :</em> Valve mécanique, EP/TVP &lt; 3 mois (ou MTEV récidivante),
+              FA emboligène &lt; 3 mois, thrombus intra-cardiaque.
+            </p>
+            <p>
+              <em>Modalités :</em> Arrêt de l’AVK idem (3 à 5 jours pleins).<br>
+              Première injection HBPM/Calciparine 48h après la dernière prise
+              de Fluindione (Previscan) / Warfarine (Coumadine),
+              24h après dernière prise d’Acénocoumarol (Sintrom).
+            </p>
+            <p><strong>INR la veille de l’intervention :</strong></p>
+            <ul>
+              <li>INR &lt; 1,2&nbsp;: Intervention autorisée.</li>
+              <li>INR 1,2–1,5&nbsp;: Vitamine K 5 mg + contrôle J0
+                  (intervention autorisée pour TAVI).</li>
+              <li>INR &gt; 1,5&nbsp;: Vitamine K 5 mg + repousser intervention
+                  (intervention autorisée pour assistances et valve mitrale mécanique).</li>
+            </ul>
+          </details>
+        </div>
       `,
     },
 
     {
       titre: "Anti-hypertenseurs",
       html: `
-        <p><strong>A poursuivre jusqu’à l’intervention:</strong></p>
-        <ul>
-          <li>
-            Bêtabloquants: propranolol, aténolol, bisoprolol, métoprolol…
-            (augmentation du risque d’ischémie myocardique ou d’arythmie en cas d’arrêt)
-          </li>
-          <li>
-            Inhibiteurs calciques: amlodipine, lercanidipine, nifédipine,
-            vérapamil, diltiazem (pas / peu de risque per-anesthésique notable)
-          </li>
-          <li>
-            Anti-HTA centraux: Urapidil, Rilménidine, Clonidine
-            (pas / peu de risque per-anesthésique notable)
-          </li>
-        </ul>
+        <div class="info-content">
+          <p><strong>A poursuivre jusqu’à l’intervention :</strong></p>
+          <ul>
+            <li>
+              Bêtabloquants (propranolol, aténolol, bisoprolol, métoprolol…) :
+              augmentation du risque d’ischémie myocardique ou d’arythmie en cas d’arrêt.
+            </li>
+            <li>
+              Inhibiteurs calciques (amlodipine, lercanidipine, nifédipine,
+              vérapamil, diltiazem)&nbsp;: pas/peu de risque per-anesthésique notable.
+            </li>
+            <li>
+              Anti-HTA centraux (Urapidil, Rilménidine, Clonidine)&nbsp;:
+              pas/peu de risque per-anesthésique notable.
+            </li>
+          </ul>
 
-        <p><strong>A arrêter avant l’intervention:</strong></p>
-        <ul>
-          <li>
-            IEC (Enalapril, périndopril, ramipril…):
-            Dernière prise 48h avant l’intervention (J-2)
-          </li>
-          <li>
-            ARA II / sartans (Irbesartan, losartan, valsartan…):
-            Dernière prise 48h avant l’intervention (J-2)
-          </li>
-          <li>
-            Diurétiques de l’anse (Furosémide, bumétanide):
-            Dernière prise 24h avant l’intervention
-          </li>
-          <li>
-            Diurétiques thiazidiques (hydrochlorothiazide…):
-            Dernière prise 24h avant l’intervention
-          </li>
-        </ul>
+          <p><strong>A arrêter avant l’intervention :</strong></p>
+          <ul>
+            <li>
+              IEC (Enalapril, périndopril, ramipril…)&nbsp;:
+              Dernière prise 48h avant l’intervention (J-2).
+            </li>
+            <li>
+              ARA II / sartans (Irbesartan, losartan, valsartan…)&nbsp;:
+              Dernière prise 48h avant l’intervention (J-2).
+            </li>
+            <li>
+              Diurétiques de l’anse (Furosémide, bumétanide)&nbsp;:
+              Dernière prise 24h avant l’intervention.
+            </li>
+          </ul>
+        </div>
       `,
     },
 
     {
-      titre: "Anti-diabétiques",
+      titre: "Anti-agrégants plaquettaires",
       html: `
-        <p>Metformine: Dernière prise à 24h de l’intervention (risque d’acidose lactique)</p>
-        <p>
-          Sulfamides hypoglycémiants (glimépiride, gliclazide…):
-          Arrêt à 24h de l’intervention (risque d’hypoglycémie)
-        </p>
-        <p>
-          Inhibiteurs DPP-4 (sitagliptine, vildagliptine…):
-          Poursuivre jusqu’au matin de l’intervention (risque d’hypoglycémie faible)
-        </p>
-        <p>
-          Inhibiteurs SGLT2 (gliflozines: dapagliflozine, empagliflozine…):
-          Arrêt à 72h de l’intervention (risque d’acidocétose euglycémique)
-        </p>
+        <div class="info-content">
+          <ul>
+            <li>Aspirine (Kardégic)&nbsp;: Ne pas arrêter.</li>
+            <li>Clopidogrel (Plavix)&nbsp;: Arrêt 5 jours pleins avant l’intervention.</li>
+            <li>Ticagrélor (Brilique)&nbsp;: Arrêt 3 jours pleins avant l’intervention.</li>
+            <li>Prasugrel (Efient)&nbsp;: Arrêt 7 jours pleins avant l’intervention.</li>
+            <li>AntiGpIIbIIIa&nbsp;: Arrêt à H-4 de l’intervention.</li>
+          </ul>
 
-        <p><strong>Insuline SC:</strong></p>
-        <ul>
-          <li>
-            Schéma basal / bolus (lente / rapide):
-            Maintenir 50–80 % de la dose habituelle de lente jusqu’à la veille de l’intervention.
-            Pas de dose rapide le jour de l’intervention.
-          </li>
-          <li>
-            Schéma bolus seul (rapide sans lente):
-            Pas de dose rapide le jour de l’intervention.
-          </li>
-        </ul>
+          <p><strong>Indications de relai :</strong></p>
+          <ul>
+            <li>
+              Si traitement par inhibiteur de P2Y12 en monothérapie&nbsp;:
+              envisager un relai par Aspirine (Kardégic) dès 24h après la dernière prise
+              de P2Y12 en cas de risque thrombotique significatif
+              (stent &lt; 12 mois, maladie coronarienne active…).
+            </li>
+            <li>
+              Relai par inhibiteur de P2Y12 IVSE (Cangrelor) à discuter si risque
+              thrombotique majeur et risque hémorragique&nbsp;:
+              arrêt à H-1 de l’intervention.
+            </li>
+          </ul>
+        </div>
+      `,
+    },
+
+    {
+      titre: "Traitements du diabète",
+      html: `
+        <div class="info-content">
+          <ul>
+            <li>Metformine (Glucophage…)&nbsp;: Arrêt 48h avant l’intervention.</li>
+            <li>
+              Sulfamides hypoglycémiants (glimépiride, gliclazide…)&nbsp;:
+              Arrêt à 24h de l’intervention (risque d’hypoglycémie).
+            </li>
+            <li>
+              Inhibiteurs DPP-4 (sitagliptine, vildagliptine…)&nbsp;:
+              Poursuivre jusqu’au matin de l’intervention (risque d’hypoglycémie faible).
+            </li>
+            <li>
+              Inhibiteurs SGLT2 (gliflozines&nbsp;: dapagliflozine, empagliflozine…)&nbsp;:
+              Arrêt à 72h de l’intervention (risque d’acidocétose euglycémique).
+            </li>
+          </ul>
+
+          <p><strong>Insuline SC :</strong></p>
+          <ul>
+            <li>
+              Schéma basal/bolus (lente/rapide)&nbsp;:
+              Maintenir 50–80&nbsp;% de la dose habituelle de lente jusqu’à la veille
+              de l’intervention. Pas de dose rapide le jour de l’intervention.
+            </li>
+            <li>
+              Schéma bolus seul (rapide sans lente)&nbsp;:
+              Pas de dose rapide le jour de l’intervention.
+            </li>
+          </ul>
+        </div>
       `,
     },
 
     {
       titre: "Traitements de l’insuffisance cardiaque",
       html: `
-        <p>
-          Bêtabloquants (aténolol, bisoprolol, métoprolol, propranolol):
-          à poursuivre absolument
-        </p>
-        <p>
-          IEC (Enalapril, périndopril, ramipril…):
-          Dernière prise 48h avant l’intervention (J-2)
-        </p>
-        <p>
-          Sacubitril/valsartan (Entresto):
-          Dernière prise 48h avant l’intervention (J-2)
-        </p>
-        <p>
-          Dapagliflozine (Forxiga):
-          Arrêt 72h avant l’intervention
-        </p>
-        <p>
-          Diurétiques de l’anse (Furosémide, bumétanide):
-          Dernière prise 24h avant l’intervention ou poursuivre jusqu’au matin de l’intervention
-          si risque important d’OAP
-        </p>
+        <div class="info-content">
+          <ul>
+            <li>
+              Bêtabloquants (aténolol, bisoprolol, métoprolol, propranolol)&nbsp;:
+              à poursuivre absolument.
+            </li>
+            <li>
+              IEC (Enalapril, périndopril, ramipril…)&nbsp;:
+              Dernière prise 48h avant l’intervention (J-2).
+            </li>
+            <li>
+              Sacubitril/valsartan (Entresto)&nbsp;:
+              Dernière prise 48h avant l’intervention (J-2).
+            </li>
+            <li>
+              Dapagliflozine (Forxiga)&nbsp;: Arrêt 72h avant l’intervention.
+            </li>
+            <li>
+              Diurétiques de l’anse (Furosémide, bumétanide)&nbsp;:
+              Dernière prise 24h avant l’intervention
+              ou poursuivre jusqu’au matin de l’intervention
+              si risque important d’OAP.
+            </li>
+          </ul>
+        </div>
       `,
     },
   ];
 
   renderInterventionPage({
-    titre: "Consultations d’anesthésie",
-    sousTitre: "EuroScore II et adaptation des traitements pré-opératoires",
-    image: "anesthesie.png", // adapte si tu veux une autre image ou null
+    titre: "Gestion pré-opératoire des traitements",
+    sousTitre: "",
+    image: "consultations.png",
     encadres,
   });
 }
+
 
 function renderAnesthChirCecMenu() {
   $app.innerHTML = `
