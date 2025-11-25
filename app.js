@@ -164,6 +164,40 @@ function renderHome() {
 // =====================================================================
 //  ANESTHÉSIE – MENU PRINCIPAL
 // =====================================================================
+
+function renderAnesthMenu() {
+  $app.innerHTML = `
+    <section>
+      <div class="hero">
+        <img src="img/titre.PNG" alt="Protocoles d’anesthésie" />
+        <h2>Protocoles d’anesthésie</h2>
+      </div>
+
+      <div class="grid">
+        <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
+          Consultations
+        </button>
+        <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
+          Antibioprophylaxie
+        </button>
+        <button class="btn" onclick="location.hash = '#/anesthesie/chir-cec'">
+          Chirurgies cardiaques sous CEC
+        </button>
+        <button class="btn" onclick="location.hash = '#/anesthesie/cardio-struct'">
+          Cardiologie structurelle et rythmologie
+        </button>
+        <button class="btn" onclick="location.hash = '#/anesthesie/vasculaire'">
+          Chirurgie vasculaire
+        </button>
+        <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire'">
+          Radio-vasculaire
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+
 /* ====================================================================
    ANESTHÉSIE – CONSULTATIONS
    ==================================================================== */
