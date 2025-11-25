@@ -60,65 +60,6 @@ function initTheme() {
   }
 }
 
-// Lance tout après chargement du DOM
-document.addEventListener("DOMContentLoaded", initTheme);
-
-const routes = {
-  "#/": renderHome,
-
-  // Anesthésie
-  "#/anesthesie": renderAnesthMenu,
-  "#/anesthesie/consultations": renderAnesthConsultations,
-  "#/anesthesie/antibiopro": renderAntibioproForm,
-  "#/anesthesie/chir-cec": renderAnesthChirCecMenu,
-  "#/anesthesie/cardio-struct": renderAnesthCardioStructMenu,
-  "#/anesthesie/vasculaire": renderAnesthVasculaire,
-  "#/anesthesie/radiovasculaire": renderAnesthRadioVasculaire,
-
-  // Réanimation
-  "#/reanimation": renderReanMenu,
-  "#/reanimation/formules": renderReanFormulesMenu,
-  "#/reanimation/prescriptions": renderReanPrescriptionsPostOp,
-  "#/reanimation/saignements": renderReanSaignementsPostOp,
-  "#/reanimation/fa": renderReanFAPostOp,
-  "#/reanimation/eto": renderReanEto,
-  "#/reanimation/antibiotherapie": renderReanAntibiotherapieMenu,
-  "#/reanimation/eer": renderReanEerMenu,
-  "#/reanimation/transplantation": renderReanTransplantMenu,
-  "#/reanimation/assistances": renderReanAssistancesMenu,
-
-  // Antibiothérapie probabiliste (menus Proba)
-  "#/proba": renderProbaMenu,
-"#/proba/pneumonies": renderProbaPneumonieForm,
-"#/proba/iu": renderProbaIUForm,
-"#/proba/abdo": renderProbaAbdoForm,
-"#/proba/neuro": renderProbaNeuroForm,
-"#/proba/dermohypo": renderProbaDermohypoForm,
-"#/proba/endocardite": renderProbaEndocarditeForm,
-"#/proba/mediastinite": renderProbaMediastiniteForm,
-"#/proba/scarpa": renderProbaScarpaForm,
-"#/proba/sepsis": renderProbaSepsisForm,
-  
-  // CEC
-  "#/cec": renderCecMenu,
-
-  // Divers
-  "#/planning": renderPlanning,
-  "#/annuaire": renderAnnuaire,
-};
-
-function navigate() {
-  const hash = window.location.hash || "#/";
-  const view = routes[hash];
-  if (view) {
-    view();
-  } else {
-    renderNotFound();
-  }
-}
-
-window.addEventListener("hashchange", navigate);
-window.addEventListener("load", navigate);
 
 // =====================================================================
 //  PAGE D’ACCUEIL
@@ -197,6 +138,65 @@ function renderAnesthMenu() {
   `;
 }
 
+// Lance tout après chargement du DOM
+document.addEventListener("DOMContentLoaded", initTheme);
+
+const routes = {
+  "#/": renderHome,
+
+  // Anesthésie
+  "#/anesthesie": renderAnesthMenu,
+  "#/anesthesie/consultations": renderAnesthConsultations,
+  "#/anesthesie/antibiopro": renderAntibioproForm,
+  "#/anesthesie/chir-cec": renderAnesthChirCecMenu,
+  "#/anesthesie/cardio-struct": renderAnesthCardioStructMenu,
+  "#/anesthesie/vasculaire": renderAnesthVasculaire,
+  "#/anesthesie/radiovasculaire": renderAnesthRadioVasculaire,
+
+  // Réanimation
+  "#/reanimation": renderReanMenu,
+  "#/reanimation/formules": renderReanFormulesMenu,
+  "#/reanimation/prescriptions": renderReanPrescriptionsPostOp,
+  "#/reanimation/saignements": renderReanSaignementsPostOp,
+  "#/reanimation/fa": renderReanFAPostOp,
+  "#/reanimation/eto": renderReanEto,
+  "#/reanimation/antibiotherapie": renderReanAntibiotherapieMenu,
+  "#/reanimation/eer": renderReanEerMenu,
+  "#/reanimation/transplantation": renderReanTransplantMenu,
+  "#/reanimation/assistances": renderReanAssistancesMenu,
+
+  // Antibiothérapie probabiliste (menus Proba)
+  "#/proba": renderProbaMenu,
+"#/proba/pneumonies": renderProbaPneumonieForm,
+"#/proba/iu": renderProbaIUForm,
+"#/proba/abdo": renderProbaAbdoForm,
+"#/proba/neuro": renderProbaNeuroForm,
+"#/proba/dermohypo": renderProbaDermohypoForm,
+"#/proba/endocardite": renderProbaEndocarditeForm,
+"#/proba/mediastinite": renderProbaMediastiniteForm,
+"#/proba/scarpa": renderProbaScarpaForm,
+"#/proba/sepsis": renderProbaSepsisForm,
+  
+  // CEC
+  "#/cec": renderCecMenu,
+
+  // Divers
+  "#/planning": renderPlanning,
+  "#/annuaire": renderAnnuaire,
+};
+
+function navigate() {
+  const hash = window.location.hash || "#/";
+  const view = routes[hash];
+  if (view) {
+    view();
+  } else {
+    renderNotFound();
+  }
+}
+
+window.addEventListener("hashchange", navigate);
+window.addEventListener("load", navigate);
 
 /* ====================================================================
    ANESTHÉSIE – CONSULTATIONS
