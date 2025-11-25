@@ -3807,7 +3807,7 @@ function renderInterventionTAVI() {
           <div class="row">
             <label>
               <input type="checkbox" id="tavi-ag" />
-              Anesthésie générale prévue
+              Anesthésie générale prévue (Dyspnée stade IV, agitation, voies autres que fémorale/carotidienne)
             </label>
           </div>
 
