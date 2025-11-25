@@ -3805,11 +3805,11 @@ function renderInterventionTAVI() {
           </div>
 
           <div class="row">
-  <label>
-    <input type="checkbox" id="tavi-ag" />
-    Anesthésie générale prévue
-  </label>
-</div>
+            <label>
+              <input type="checkbox" id="tavi-ag" />
+              Anesthésie générale prévue
+            </label>
+          </div>
 
           <div class="row" id="tavi-ag-options" style="display:none;">
             <label>
@@ -3836,30 +3836,28 @@ function renderInterventionTAVI() {
       `,
     },
     {
-  titre: "Anesthésie",
-  html: `
-    <p id="tavi-induction-line"></p>
-    <p id="tavi-entretien-line"></p>
+      titre: "Anesthésie",
+      html: `
+        <p id="tavi-induction-line"></p>
+        <p id="tavi-entretien-line"></p>
 
-    <p>
-      <strong>Héparine</strong> 80–100 UI/kg
-      (~<span data-per-kg="80" data-unit="UI"></span> à
-         <span data-per-kg="100" data-unit="UI"></span>),
-      ACT cible 200–300 s.
-    </p>
-
-    <p>
-      <strong>Protamine</strong> = 50 % de la dose d’héparine
-      (à discuter avec l’opérateur).
-    </p>
-
-    <p>
-      <strong>ALR :</strong> Aucune si voie fémorale.
-      Discuter bloc cervical pour voie carotidienne,
-      bloc serratus antérieur pour voie apicale.
-    </p>
-  `,
-},
+        <p>
+          <strong>Héparine</strong> 80–100 UI/kg
+          (~<span data-per-kg="80" data-unit="UI"></span> à
+             <span data-per-kg="100" data-unit="UI"></span>),
+          ACT cible 200–300 s.
+        </p>
+        <p>
+          <strong>Protamine</strong> = 50 % de la dose d’héparine
+          (à discuter avec l’opérateur).
+        </p>
+        <p>
+          <strong>ALR :</strong> Aucune si voie fémorale.
+          Discuter bloc cervical pour voie carotidienne,
+          bloc serratus antérieur pour voie apicale.
+        </p>
+      `,
+    },
     {
       titre: "Antibioprophylaxie",
       html: `
@@ -3900,8 +3898,7 @@ function renderInterventionTAVI() {
     encadres,
   });
 
-  expandPatientCharacteristics(); 
-  // calculs doses (Héparine etc.)
+  expandPatientCharacteristics();
   setupAnesthGlobalDoseLogic();
   setupTaviLogic();
 }
@@ -3915,7 +3912,9 @@ function setupTaviLogic() {
   const cbSeq       = document.getElementById("tavi-seq-rapide");
 
   const agOptions   = document.getElementById("tavi-ag-options");
-  const anesthText  = document.getElementById("tavi-anesth-text");
+  const lineInduction = document.getElementById("tavi-induction-line");
+  const lineEntretien = document.getElementById("tavi-entretien-line");
+
   const liAugmStd   = document.getElementById("tavi-augm-standard");
   const liAugmObese = document.getElementById("tavi-augm-obese");
   const liVanco     = document.getElementById("tavi-vanco");
@@ -3923,91 +3922,74 @@ function setupTaviLogic() {
 
   // --- Anesthésie : sédation par défaut, AG si case cochée ---
   function updateAnesth() {
-  const poids = parseKg(poidsId);
-  const lineInduction = document.getElementById("tavi-induction-line");
-  const lineEntretien = document.getElementById("tavi-entretien-line");
+    const poids = parseKg(poidsId);
 
-  // ➤ Cas par défaut : sédation
-  if (!cbAG || !cbAG.checked) {
+    if (!lineInduction || !lineEntretien) return;
 
-    if (agOptions) agOptions.style.display = "none";
+    // Sédation (AG non cochée)
+    if (!cbAG || !cbAG.checked) {
+      if (agOptions) agOptions.style.display = "none";
 
-    if (lineInduction) {
       lineInduction.innerHTML = `
-        <strong>Sédation :</strong> 
-        AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
-        + anesthésie locale fémorale (Lidocaïne / Ropivacaïne).
+        <strong>Induction :</strong>
+        — (anesthésie générale non prévue, procédure sous sédation).
       `;
+      lineEntretien.innerHTML = `
+        <strong>Entretien :</strong>
+        Sédation AIVOC Rémifentanil (cibles 0,8–2 ng/mL)
+        + anesthésie locale fémorale (Lidocaïne/Ropivacaïne).
+      `;
+      return;
     }
 
-    if (lineEntretien) lineEntretien.innerHTML = ""; // pas d'entretien en sédation
+    // Anesthésie générale
+    if (agOptions) agOptions.style.display = "";
 
-    return;
-  }
+    const etoDose = formatDoseMgPerKg(poids, 0.3);
+    const atrDose = formatDoseMgPerKg(poids, 0.5);
+    const rocDose = formatDoseMgPerKg(poids, 1.2);
 
-  // ➤ Si AG cochée
-  if (agOptions) agOptions.style.display = "";
+    let inductionTxt = "<strong>Induction :</strong> ";
+    if (cbRisk && cbRisk.checked) {
+      inductionTxt += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
+    } else {
+      inductionTxt += "AIVOC Propofol/Sufentanil, ";
+    }
+    if (cbSeq && cbSeq.checked) {
+      inductionTxt += `Rocuronium ${rocDose} (séquence rapide).`;
+    } else {
+      inductionTxt += `Atracurium ${atrDose}.`;
+    }
 
-  const etoDose = formatDoseMgPerKg(poids, 0.3);
-  const atrDose = formatDoseMgPerKg(poids, 0.5);
-  const rocDose = formatDoseMgPerKg(poids, 1.2);
-
-  // --- Induction ---
-  let txtInduction = "<strong>Induction :</strong> ";
-
-  if (cbRisk && cbRisk.checked) {
-    txtInduction += `Etomidate ${etoDose} + Sufentanil (AIVOC), `;
-  } else {
-    txtInduction += "AIVOC Propofol/Sufentanil, ";
-  }
-
-  if (cbSeq && cbSeq.checked) {
-    txtInduction += `Rocuronium ${rocDose} (séquence rapide).`;
-  } else {
-    txtInduction += `Atracurium ${atrDose}.`;
-  }
-
-  if (lineInduction) lineInduction.innerHTML = txtInduction;
-
-  // --- Entretien ---
-  if (lineEntretien) {
+    lineInduction.innerHTML = inductionTxt;
     lineEntretien.innerHTML = `
-      <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
+      <strong>Entretien :</strong>
+      AIVOC Propofol/Sufentanil.
     `;
   }
-}
 
-function updateATB() {
-  const poids = parseKg(poidsId);
+  // --- ATB : IMC + Allergie BL (remplacement complet par Vancomycine) ---
+  function updateATB() {
+    const poids = parseKg(poidsId);
 
-  // --- Gestion IMC (si pas allergique) ---
-  if (cbImc && cbImc.checked) {
-    if (liAugmStd)   liAugmStd.style.display   = "none";
-    if (liAugmObese) liAugmObese.style.display = "";
-  } else {
-    if (liAugmStd)   liAugmStd.style.display   = "";
-    if (liAugmObese) liAugmObese.style.display = "none";
-  }
+    if (cbAllergie && cbAllergie.checked) {
+      if (liAugmStd)   liAugmStd.style.display = "none";
+      if (liAugmObese) liAugmObese.style.display = "none";
+      if (liVanco)     liVanco.style.display = "";
+      if (spanVanco)   spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+      return;
+    }
 
-  // --- Allergie BL : remplace totalement par Vancomycine ---
-  if (cbAllergie && cbAllergie.checked) {
-    if (liAugmStd)   liAugmStd.style.display   = "none";
-    if (liAugmObese) liAugmObese.style.display = "none";
-    if (liVanco)     liVanco.style.display     = "";
-    if (spanVanco)   spanVanco.textContent     = formatDoseMgPerKg(poids, 30);
-  } else {
     if (liVanco) liVanco.style.display = "none";
 
-    // Réafficher la bonne version de l’Augmentin selon IMC
     if (cbImc && cbImc.checked) {
-      if (liAugmStd)   liAugmStd.style.display   = "none";
+      if (liAugmStd)   liAugmStd.style.display = "none";
       if (liAugmObese) liAugmObese.style.display = "";
     } else {
-      if (liAugmStd)   liAugmStd.style.display   = "";
+      if (liAugmStd)   liAugmStd.style.display = "";
       if (liAugmObese) liAugmObese.style.display = "none";
     }
   }
-}
 
   function updateAll() {
     updateAnesth();
@@ -4017,10 +3999,9 @@ function updateATB() {
   const poidsEl = document.getElementById(poidsId);
   if (poidsEl) poidsEl.addEventListener("input", updateAll);
 
-  [cbImc, cbAllergie, cbRisk, cbSeq].forEach((el) => {
+  [cbImc, cbAllergie, cbAG, cbRisk, cbSeq].forEach(el => {
     if (el) el.addEventListener("change", updateAll);
   });
-  if (selMode) selMode.addEventListener("change", updateAll);
 
   updateAll();
 }
