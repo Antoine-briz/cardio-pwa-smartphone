@@ -1250,4 +1250,23 @@ body:not(.theme-light) .card {
   border-color: #253140 !important;      /* bordure un peu plus lumineuse */
 }
 
+/* ===================================================================
+   CHAMPS DE SAISIE — VISIBILITÉ EN THÈME SOMBRE
+   =================================================================== */
+
+/* Thème sombre : bordure blanche + fond légèrement plus clair */
+body:not(.theme-light) input[type="number"],
+body:not(.theme-light) input[type="text"],
+body:not(.theme-light) select,
+body:not(.theme-light) textarea {
+  border: 1px solid #ffffff !important;     /* bordure blanche */
+  background-color: #11161f !important;     /* fond légèrement contrasté */
+  color: #ffffff !important;                /* texte blanc lisible */
+}
+
+/* Ajuste la couleur du placeholder */
+body:not(.theme-light) input::placeholder,
+body:not(.theme-light) textarea::placeholder {
+  color: #cfd5dd !important;                /* gris clair visible */
+}
 
