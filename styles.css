@@ -1230,4 +1230,24 @@ details.subcard summary {
   cursor: pointer;
 }
 
+/* ===================================================================
+   CONTRASTE DES ENCADRÉS (light + dark) – Ajustement doux
+   =================================================================== */
+
+/* Thème clair : encadrés légèrement plus foncés */
+body.theme-light .info-card,
+body.theme-light details.card,
+body.theme-light .card {
+  background-color: #e7e7e7 !important;  /* gris un peu plus soutenu */
+  border-color: #cfcfcf !important;      /* bordure légèrement plus visible */
+}
+
+/* Thème sombre : encadrés légèrement plus clairs */
+body:not(.theme-light) .info-card,
+body:not(.theme-light) details.card,
+body:not(.theme-light) .card {
+  background-color: #141c26 !important;  /* gris-bleu plus clair */
+  border-color: #253140 !important;      /* bordure un peu plus lumineuse */
+}
+
 
