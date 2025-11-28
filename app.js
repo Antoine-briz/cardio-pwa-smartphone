@@ -5463,7 +5463,7 @@ function renderReanFAPostOp() {
           <li>Corriger hypovolémie, troubles ioniques, hypoxémie, infections.</li>
           <li>Limiter les inotropes positifs au strict nécessaire.</li>
         </ul>
-        <p><strong>Traitement anti-arythmique (prévention) :</strong></p>
+        <p><strong>Traitement anti-arythmique:</strong></p>
         <div class="form">
           <label>
             <input type="checkbox" id="fa-catecholamines" />
