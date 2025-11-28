@@ -5993,7 +5993,7 @@ function renderReanEchangesPlasmatiques() {
     {
       titre: "Paramétrage & bilan des échanges plasmatiques",
       html: `
-        <p><strong>Paramétrages (exemple) :</strong></p>
+        <p><strong>Paramétrages habituels :</strong></p>
         <ul>
           <li>Débit sang = 400–450 mL/min</li>
           <li>Débit de réinjection : ajusté pour garder FF &lt; 30 % et Hte post-filtre &lt; 55 %</li>
