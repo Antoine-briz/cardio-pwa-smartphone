@@ -1270,3 +1270,25 @@ body:not(.theme-light) textarea::placeholder {
   color: #cfd5dd !important;                /* gris clair visible */
 }
 
+/* =========================================================
+   FIX : COULEUR DU TITRE "Protocoles du SARIC"
+   ========================================================= */
+
+/* Thème sombre → texte blanc */
+body:not(.theme-light) header h1,
+body:not(.theme-light) header h2,
+body:not(.theme-light) .app-header h1,
+body:not(.theme-light) .app-header h2,
+body:not(.theme-light) .header-title {
+  color: #ffffff !important;
+}
+
+/* Thème clair → texte noir (inchangé) */
+body.theme-light header h1,
+body.theme-light header h2,
+body.theme-light .app-header h1,
+body.theme-light .app-header h2,
+body.theme-light .header-title {
+  color: #000000 !important;
+}
+
