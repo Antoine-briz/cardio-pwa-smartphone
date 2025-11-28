@@ -5028,7 +5028,7 @@ function renderReanMenu() {
     <section>
       <div class="hero">
         <img src="img/titre.PNG" alt="Réanimation" />
-        <h2>Réanimation</h2>
+        <h2>Protocoles de réanimation</h2>
       </div>
 
       <div class="grid">
