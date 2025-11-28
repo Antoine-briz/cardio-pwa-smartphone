@@ -391,6 +391,8 @@ function renderAnesthConsultTraitements() {
       html: `
         <div class="info-content">
           <ul>
+          <p><strong>Antidiabétiques oraux :</strong></p>
+           <ul>
             <li>Metformine (Glucophage…)&nbsp;: Arrêt 48h avant l’intervention.</li>
             <li>
               Sulfamides hypoglycémiants (glimépiride, gliclazide…)&nbsp;:
