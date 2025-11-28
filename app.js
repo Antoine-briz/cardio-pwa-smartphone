@@ -206,7 +206,7 @@ window.addEventListener("load", navigate);
 function renderAnesthConsultations() {
   $app.innerHTML = `
     <section>
-      ${sectionHeader("Consultations d’anesthésie", "consultations.png")}
+      ${sectionHeader("Consultations d’anesthésie", "consultation.png")}
 
       <div class="grid">
         <button class="btn" onclick="window.open('https://www.euroscore.org/index.php?id=17', '_blank')">
@@ -459,7 +459,7 @@ function renderAnesthConsultTraitements() {
   renderInterventionPage({
     titre: "Gestion pré-opératoire des traitements",
     sousTitre: "",
-    image: "consultations.png",
+    image: "consultation.png",
     encadres,
   });
 }
