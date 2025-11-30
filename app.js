@@ -5304,6 +5304,7 @@ function renderReanFormulesVentilation() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcVT6Compact()">
+        <div style="height:6px;"></div>
   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
     <label>Sexe</label>
@@ -5327,6 +5328,7 @@ function renderReanFormulesVentilation() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcEspaceMortCompact()">
+        <div style="height:6px;"></div>
   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
     <label>PaCO₂</label>
@@ -5350,6 +5352,7 @@ function renderReanFormulesVentilation() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcNOCompact()">
+        <div style="height:6px;"></div>
   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
     <label>[NO] bouteil.</label>
