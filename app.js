@@ -7649,7 +7649,7 @@ function renderReanTransplantInfections() {
         <p>Se référer au protocole spécifique.</p>
         <p>
           <li>
-  VHB : <span class="img-link" onclick="openImg('hepatite.PNG')">🖼️️ Tableau hépatite B</span>
+  VHB : <span class="img-link" onclick="openImg('hepatite.png')">🖼️️ Tableau hépatite B</span>
 </li>
         </p>
       `,
