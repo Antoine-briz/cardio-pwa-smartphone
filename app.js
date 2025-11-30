@@ -5752,7 +5752,7 @@ function renderReanFormulesMetabolique() {
     <form class="form" oninput="calcCVVH()">
       <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-        <label>Qₛang (mL/min)</label>
+        <label>Qsang (mL/min)</label>
         <input id="cvvhQs" type="number" step="1" style="width:70px;">
 
         <label>Qpré (mL/h)</label>
