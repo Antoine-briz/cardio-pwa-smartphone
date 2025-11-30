@@ -209,7 +209,7 @@ window.addEventListener("load", navigate);
 function renderAnesthConsultations() {
   $app.innerHTML = `
     <section>
-      ${sectionHeader("Consultations d’anesthésie", "consultation.png")}
+      ${sectionHeader("Consultation d’anesthésie", "consultation.png")}
 
       <div class="grid">
         <button class="btn" onclick="window.open('https://www.euroscore.org/index.php?id=17', '_blank')">
