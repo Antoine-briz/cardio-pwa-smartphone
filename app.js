@@ -5405,7 +5405,7 @@ function calcNO() {
 }
 
 
-function renderReanFormuleHemodynamique() {
+function renderFormuleHemodynamique() {
   const encadres = [
     {
       titre: "Cardio-vasculaire",
@@ -5430,7 +5430,7 @@ function renderReanFormuleHemodynamique() {
 
 // --- Formules – Métabolique
 
-function renderReanFormuleMetabolique() {
+function renderFormuleMetabolique() {
   const encadres = [
     {
       titre: "Métabolique",
