@@ -6180,23 +6180,27 @@ function renderReanEchangesPlasmatiques() {
       `,
     },
     {
-      titre: "Paramétrage & bilan des échanges plasmatiques",
-      html: `
-        <p><strong>Paramétrages habituels :</strong></p>
-        <ul>
-          <li>Débit sang = 400–450 mL/min</li>
-          <li>Débit de réinjection : ajusté pour garder FF &lt; 30 % et Hte post-filtre &lt; 55 %</li>
-          <li>Pré-pompe sang = 0 mL/h</li>
-          <li>Perte patient = 0 mL/h (EP isolé)</li>
-        </ul>
-        <p><strong>Bilan biologique :</strong></p>
-        <ul>
-          <li>Ionogramme sanguin avec Ca/Mg avant et après chaque séance d’EP</li>
-          <li>Hémostase (TP, fibrinogène principalement) avant et après chaque séance</li>
-          <li>Tube sec pour dosage des Ac anti-HLA après chaque série d’EP</li>
-        </ul>
-      `,
-    },
+  titre: "Paramétrage habituel",
+  html: `
+    <ul>
+      <li>Débit sang = 400–450 mL/min</li>
+      <li>Débit de réinjection : ajusté pour garder FF &lt; 30 % et Hte post-filtre &lt; 55 %</li>
+      <li>Pré-pompe sang = 0 mL/h</li>
+      <li>Perte patient = 0 mL/h (EP isolé)</li>
+    </ul>
+  `,
+},
+{
+  titre: "Bilans biologiques à prévoir",
+  html: `
+    <ul>
+      <li>Ionogramme sanguin avec Ca/Mg avant et après chaque séance d’EP</li>
+      <li>Hémostase (TP, fibrinogène principalement) avant et après chaque séance</li>
+      <li>Tube sec pour dosage des Ac anti-HLA après chaque série d’EP</li>
+    </ul>
+  `,
+},
+
   ];
 
   renderInterventionPage({
