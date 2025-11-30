@@ -69,7 +69,7 @@ function renderHome() {
   $app.innerHTML = `
     <section class="home">
       <div class="hero">
-        <img src="img/titre.PNG" alt="Titre" />
+        <img src="img/titre.png" alt="Titre" />
       </div>
 
       <div class="grid">
@@ -110,7 +110,7 @@ function renderAnesthMenu() {
   $app.innerHTML = `
     <section>
       <div class="hero">
-        <img src="img/titre.PNG" alt="Protocoles d’anesthésie" />
+        <img src="img/titre.png" alt="Protocoles d’anesthésie" />
         <h2>Protocoles d’anesthésie</h2>
       </div>
 
@@ -5223,7 +5223,7 @@ function renderReanMenu() {
   $app.innerHTML = `
     <section>
       <div class="hero">
-        <img src="img/titre.PNG" alt="Réanimation" />
+        <img src="img/titre.png" alt="Réanimation" />
         <h2>Protocoles de réanimation</h2>
       </div>
 
