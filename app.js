@@ -5301,6 +5301,10 @@ function renderReanFormulesMenu() {
   `;
 }
 
+/* ============================================================
+   FORMULES – VENTILATION
+   ============================================================ */
+
 function renderReanFormulesVentilation() {
   const encadres = [
     {
@@ -5308,22 +5312,25 @@ function renderReanFormulesVentilation() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcVT6Compact()">
-        <div style="height:6px;"></div>
-  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="height:6px;"></div>
 
-    <label>Sexe</label>
-    <select id="vtSexe" style="width:70px;">
-      <option value="H">H</option>
-      <option value="F">F</option>
-    </select>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div>
+              <label>Sexe</label><br>
+              <select id="vtSexe" style="width:100px;">
+                <option value="H">H</option>
+                <option value="F">F</option>
+              </select>
+            </div>
 
-    <label>Taille (cm)</label>
-    <input id="vtTaille" type="number" min="120" max="230" style="width:70px;"> 
+            <div>
+              <label>Taille (cm)</label><br>
+              <input id="vtTaille" type="number" min="120" max="230" style="width:120px;">
+            </div>
 
-    <span>=</span>
-    <span id="vtResult" style="font-weight:bold;">—</span>
-  </div>
-</form>
+            <p id="vtResult" style="margin-top:8px; font-weight:bold;">Volume courant = —</p>
+          </div>
+        </form>
       `,
     },
 
@@ -5332,46 +5339,56 @@ function renderReanFormulesVentilation() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcEspaceMortCompact()">
-        <div style="height:6px;"></div>
-  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="height:6px;"></div>
 
-    <label>PaCO₂ (mmHg)</label>
-    <input id="evPaCO2" type="number" step="0.1" style="width:70px;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div>
+              <label>PaCO₂ (mmHg)</label><br>
+              <input id="evPaCO2" type="number" step="0.1" style="width:120px;">
+            </div>
 
-    <label>EtCO₂ (mmHg)</label>
-    <input id="evEtCO2" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>EtCO₂ (mmHg)</label><br>
+              <input id="evEtCO2" type="number" step="0.1" style="width:120px;">
+            </div>
 
-    <label>VT (mL)</label>
-    <input id="evVt" type="number" step="1" style="width:70px;"> 
+            <div>
+              <label>VT (mL)</label><br>
+              <input id="evVt" type="number" step="1" style="width:120px;">
+            </div>
 
-    <span>=</span>
-    <span id="evResult" style="font-weight:bold;">—</span>
-  </div>
-</form>
+            <p id="evResult" style="margin-top:8px; font-weight:bold;">Espace mort = —</p>
+          </div>
+        </form>
       `,
     },
 
     {
-      titre: "Conversion du NO (ppm en L/min)",
+      titre: "Conversion du NO (ppm → L/min)",
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcNOCompact()">
-        <div style="height:6px;"></div>
-  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="height:6px;"></div>
 
-    <label>[NO] bouteille (ppm)</label>
-    <input id="noBottle" type="number" min="1" max="5000" style="width:70px;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div>
+              <label>[NO] bouteille (ppm)</label><br>
+              <input id="noBottle" type="number" min="1" max="5000" style="width:140px;">
+            </div>
 
-    <label>[NO] souhaité patient (ppm)</label>
-    <input id="noPatient" type="number" min="1" max="200" style="width:70px;">
+            <div>
+              <label>[NO] souhaité patient (ppm)</label><br>
+              <input id="noPatient" type="number" min="1" max="200" style="width:140px;">
+            </div>
 
-    <label>VM (L/min)</label>
-    <input id="noVM" type="number" step="0.1" min="1" max="20" style="width:70px;">
+            <div>
+              <label>VM (L/min)</label><br>
+              <input id="noVM" type="number" step="0.1" min="1" max="20" style="width:120px;">
+            </div>
 
-    <span>=</span>
-    <span id="noResult" style="font-weight:bold;">—</span>
-  </div>
-</form>
+            <p id="noResult" style="margin-top:8px; font-weight:bold;">Débit de NO = —</p>
+          </div>
+        </form>
       `,
     },
   ];
@@ -5390,7 +5407,7 @@ function calcVT6Compact() {
   const $res = document.getElementById("vtResult");
 
   if (!taille) {
-    $res.textContent = "—";
+    $res.textContent = "Volume courant = —";
     return;
   }
 
@@ -5401,7 +5418,7 @@ function calcVT6Compact() {
 
   const vt = poidsIdeal * 6;
 
-  $res.textContent = vt.toFixed(0) + " mL";
+  $res.textContent = "Volume courant = " + vt.toFixed(0) + " mL";
 }
 
 function calcEspaceMortCompact() {
@@ -5411,14 +5428,14 @@ function calcEspaceMortCompact() {
   const $res = document.getElementById("evResult");
 
   if (!pa || !et || !vt) {
-    $res.textContent = "—";
+    $res.textContent = "Espace mort = —";
     return;
   }
 
   const ratio = (pa - et) / pa;
   const espaceMort = ratio * vt;
 
-  $res.textContent = espaceMort.toFixed(0) + " mL";
+  $res.textContent = "Espace mort = " + espaceMort.toFixed(0) + " mL";
 }
 
 function calcNOCompact() {
@@ -5428,14 +5445,19 @@ function calcNOCompact() {
   const $res = document.getElementById("noResult");
 
   if (!bottle || !patient || !VM) {
-    $res.textContent = "—";
+    $res.textContent = "Débit de NO = —";
     return;
   }
 
   const debitNO = (patient * VM) / bottle;
 
-  $res.textContent = debitNO.toFixed(3) + " L/min";
+  $res.textContent = "Débit de NO = " + debitNO.toFixed(3) + " L/min";
 }
+
+
+/* ============================================================
+   FORMULES – CARDIO-VASCULAIRES
+   ============================================================ */
 
 function renderReanFormulesCardio() {
   const encadres = [
@@ -5444,20 +5466,26 @@ function renderReanFormulesCardio() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcDCEcho()">
-        <div style="height:6px;"></div>
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="height:6px;"></div>
 
-            <label>Diamètre CCVG (mm)</label>
-            <input id="dcDiam" type="number" step="0.1" style="width:70px;"> 
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>ITV CCVG (cm)</label>
-            <input id="dcITV" type="number" step="0.1" style="width:70px;"> 
+            <div>
+              <label>Diamètre CCVG (mm)</label><br>
+              <input id="dcDiam" type="number" step="0.1" style="width:140px;">
+            </div>
 
-            <label>FC (/min)</label>
-            <input id="dcFC" type="number" style="width:70px;"> 
+            <div>
+              <label>ITV CCVG (cm)</label><br>
+              <input id="dcITV" type="number" step="0.1" style="width:140px;">
+            </div>
 
-            <span>=</span>
-            <span id="dcResult" style="font-weight:bold;">—</span>
+            <div>
+              <label>FC (/min)</label><br>
+              <input id="dcFC" type="number" style="width:120px;">
+            </div>
+
+            <p id="dcResult" style="margin-top:8px; font-weight:bold;">Débit cardiaque = —</p>
           </div>
         </form>
       `,
@@ -5467,20 +5495,26 @@ function renderReanFormulesCardio() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcPVR()">
-        <div style="height:6px;"></div>
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="height:6px;"></div>
 
-            <label>PAPm (mmHg)</label>
-            <input id="pvrPAPm" type="number" step="0.1" style="width:70px;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>PAPO (mmHg)</label>
-            <input id="pvrPOAP" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>PAPm (mmHg)</label><br>
+              <input id="pvrPAPm" type="number" step="0.1" style="width:140px;">
+            </div>
 
-            <label>DC (L/min)</label>
-            <input id="pvrDC" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>PAPO (mmHg)</label><br>
+              <input id="pvrPOAP" type="number" step="0.1" style="width:140px;">
+            </div>
 
-            <span>=</span>
-            <span id="pvrResult" style="font-weight:bold;">—</span>
+            <div>
+              <label>DC (L/min)</label><br>
+              <input id="pvrDC" type="number" step="0.1" style="width:140px;">
+            </div>
+
+            <p id="pvrResult" style="margin-top:8px; font-weight:bold;">RVP = —</p>
           </div>
         </form>
       `,
@@ -5490,23 +5524,31 @@ function renderReanFormulesCardio() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcDO2()">
-        <div style="height:6px;"></div>
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="height:6px;"></div>
 
-            <label>Hb (g/dL)</label>
-            <input id="doHb" type="number" step="0.1" style="width:70px;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>SaO₂</label>
-            <input id="doSaO2" type="number" step="0.01" style="width:70px;" placeholder="0.97">
+            <div>
+              <label>Hb (g/dL)</label><br>
+              <input id="doHb" type="number" step="0.1" style="width:120px;">
+            </div>
 
-            <label>PaO₂ (mmHg) </label>
-            <input id="doPaO2" type="number" step="1" style="width:70px;">
+            <div>
+              <label>SaO₂</label><br>
+              <input id="doSaO2" type="number" step="0.01" style="width:120px;" placeholder="0.97">
+            </div>
 
-            <label>DC (L/min)</label>
-            <input id="doDC" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>PaO₂ (mmHg)</label><br>
+              <input id="doPaO2" type="number" step="1" style="width:120px;">
+            </div>
 
-            <span>=</span>
-            <span id="doResult" style="font-weight:bold;">—</span>
+            <div>
+              <label>DC (L/min)</label><br>
+              <input id="doDC" type="number" step="0.1" style="width:120px;">
+            </div>
+
+            <p id="doResult" style="margin-top:8px; font-weight:bold;">DO₂ = —</p>
           </div>
         </form>
       `,
@@ -5521,8 +5563,6 @@ function renderReanFormulesCardio() {
   });
 }
 
-/* ---------- Logique des 3 formules cardio-vasculaires ---------- */
-
 // 1) Débit cardiaque échographique (ITV CCVG + diamètre CCVG + FC)
 function calcDCEcho() {
   const Dmm = parseFloat(document.getElementById("dcDiam").value);
@@ -5531,23 +5571,16 @@ function calcDCEcho() {
   const $res = document.getElementById("dcResult");
 
   if (!Dmm || !ITV || !FC) {
-    $res.textContent = "—";
+    $res.textContent = "Débit cardiaque = —";
     return;
   }
 
-  // Convertir diamètre mm → cm
   const Dcm = Dmm / 10;
-
-  // Surface CCVG = π × (D/2)^2 (cm²)
   const surface = Math.PI * Math.pow(Dcm / 2, 2);
-
-  // Volume d'éjection systolique (mL) : surface (cm²) × ITV (cm) = cm³ ≈ mL
   const VES = surface * ITV;
-
-  // Débit cardiaque = VES × FC / 1000 → L/min
   const DC = (VES * FC) / 1000;
 
-  $res.textContent = DC.toFixed(2) + " L/min";
+  $res.textContent = "Débit cardiaque = " + DC.toFixed(2) + " L/min";
 }
 
 // 2) Résistances vasculaires pulmonaires (Wood et dyn·s·cm⁻⁵)
@@ -5558,25 +5591,22 @@ function calcPVR() {
   const $res = document.getElementById("pvrResult");
 
   if (!PAPm || !POAP || !DC) {
-    $res.textContent = "—";
+    $res.textContent = "RVP = —";
     return;
   }
 
   const gradient = PAPm - POAP;
 
   if (gradient <= 0 || DC <= 0) {
-    $res.textContent = "—";
+    $res.textContent = "RVP = —";
     return;
   }
 
-  // RVP en unités Wood
   const wood = gradient / DC;
-
-  // Conversion en dyn·s·cm⁻⁵
   const dynes = wood * 80;
 
   $res.textContent =
-    wood.toFixed(2) + " UW (" + dynes.toFixed(0) + " dyn·s·cm⁻⁵)";
+    "RVP = " + wood.toFixed(2) + " UW (" + dynes.toFixed(0) + " dyn·s·cm⁻⁵)";
 }
 
 // 3) DO₂ (apport d'oxygène, mL/min)
@@ -5588,191 +5618,213 @@ function calcDO2() {
   const $res = document.getElementById("doResult");
 
   if (!Hb || !SaO2 || !PaO2 || !DC) {
-    $res.textContent = "—";
+    $res.textContent = "DO₂ = —";
     return;
   }
 
-  // Contenu artériel en O2 (CaO2, mL O2/dL)
-  // CaO2 = 1.34×Hb×SaO2 + 0.0031×PaO2
   const CaO2 = 1.34 * Hb * SaO2 + 0.0031 * PaO2;
-
-  // DO2 = DC (L/min) × CaO2 (mL/dL) × 10 (dL/L) → mL/min
   const DO2 = DC * CaO2 * 10;
 
-  $res.textContent = DO2.toFixed(0) + " mL/min";
+  $res.textContent = "DO₂ = " + DO2.toFixed(0) + " mL/min";
 }
+
+
+/* ============================================================
+   FORMULES – MÉTABOLIQUES
+   ============================================================ */
 
 function renderReanFormulesMetabolique() {
   const encadres = [
-    /* ---------- 1) DFG mesuré U × V / P ---------- */
     {
       titre: "DFG (clairance mesurée)",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcDFG()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>Créat. urinaire (mmol/L)</label>
-            <input id="dfgU" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>Créat. urinaire (mmol/L)</label><br>
+              <input id="dfgU" type="number" step="0.1" style="width:160px;">
+            </div>
 
-            <label>Volume des 24h (mL)</label>
-            <input id="dfgV" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>Volume des 24h (mL)</label><br>
+              <input id="dfgV" type="number" step="1" style="width:160px;">
+            </div>
 
-            <label>Créat. plasmatique (µmol/L)</label>
-            <input id="dfgP" type="number" step="0.01" style="width:70px;">
+            <div>
+              <label>Créat. plasmatique (µmol/L)</label><br>
+              <input id="dfgP" type="number" step="1" style="width:160px;">
+            </div>
 
-            <span>=</span>
-            <span id="dfgResult" style="font-weight:bold;">—</span>
+            <p id="dfgResult" style="margin-top:8px; font-weight:bold;">DFG = —</p>
           </div>
         </form>
       `,
     },
 
-    /* ---------- 2) Osmolarité plasmatique ---------- */
     {
       titre: "Osmolarité plasmatique",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcOsm()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>Na (mmol/L)</label>
-            <input id="osmNa" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Na (mmol/L)</label><br>
+              <input id="osmNa" type="number" step="1" style="width:140px;">
+            </div>
 
-            <label>Glycémie (g/L)</label>
-            <input id="osmGly" type="number" step="0.01" style="width:70px;">
+            <div>
+              <label>Glycémie (g/L)</label><br>
+              <input id="osmGly" type="number" step="0.01" style="width:140px;">
+            </div>
 
-            <label>Urée (mmol/L)</label>
-            <input id="osmUrea" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>Urée (mmol/L)</label><br>
+              <input id="osmUrea" type="number" step="0.1" style="width:140px;">
+            </div>
 
-            <span>=</span>
-            <span id="osmResult" style="font-weight:bold;">—</span>
+            <p id="osmResult" style="margin-top:8px; font-weight:bold;">Osmolarité = —</p>
           </div>
         </form>
       `,
     },
 
-    /* ---------- 3) Déficit/Excès eau intracellulaire ---------- */
     {
-  titre: "Variation de volume intra-cellulaire (ICW)",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-    <form class="form" oninput="calcICW()">
-      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-      
-        <label>Na (mmol/L)</label>
-        <input id="icwNa" type="number" step="1" style="width:70px;">
+      titre: "Variation de volume intra-cellulaire (ICW)",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcICW()">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-        <label>Poids (kg)</label>
-        <input id="icwPoids" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>Na (mmol/L)</label><br>
+              <input id="icwNa" type="number" step="1" style="width:140px;">
+            </div>
 
-        <span>=</span>
-        <span id="icwResult" style="font-weight:bold;">—</span>
+            <div>
+              <label>Poids (kg)</label><br>
+              <input id="icwPoids" type="number" step="0.1" style="width:140px;">
+            </div>
 
-      </div>
-    </form>
-  `,
-},
+            <p id="icwResult" style="margin-top:8px; font-weight:bold;">ΔICW = —</p>
+          </div>
+        </form>
+      `,
+    },
 
-    /* ---------- 4) Déficit/Excès eau extracellulaire ---------- */
     {
-  titre: "Variation de volume plasmatique (Hte)",
-  sousTitreEncadre: "",
-  html: `
-    <div style="height:6px;"></div>
-    <form class="form" oninput="calcPV()">
-      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+      titre: "Variation de volume plasmatique (Hte)",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcPV()">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-        <label>Poids actuel (kg)</label>
-        <input id="pvPoids" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>Poids actuel (kg)</label><br>
+              <input id="pvPoids" type="number" step="0.1" style="width:140px;">
+            </div>
 
-        <label>Hématocrite (%)</label>
-        <input id="pvHte" type="number" step="0.1" style="width:70px;">
+            <div>
+              <label>Hématocrite (%)</label><br>
+              <input id="pvHte" type="number" step="0.1" style="width:140px;">
+            </div>
 
-        <span>=</span>
-        <span id="pvResult" style="font-weight:bold;">—</span>
+            <p id="pvResult" style="margin-top:8px; font-weight:bold;">ΔVP = —</p>
+          </div>
+        </form>
+      `,
+    },
 
-      </div>
-    </form>
-  `,
-},
-
-    /* ---------- 5) Sodium corrigé ---------- */
     {
       titre: "Sodium corrigé (hyperglycémie)",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcNaCorr()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>Na (mmol/L)</label>
-            <input id="naCorrNa" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Na (mmol/L)</label><br>
+              <input id="naCorrNa" type="number" step="1" style="width:140px;">
+            </div>
 
-            <label>Glycémie (g/L)</label>
-            <input id="naCorrGly" type="number" step="0.01" style="width:70px;">
+            <div>
+              <label>Glycémie (g/L)</label><br>
+              <input id="naCorrGly" type="number" step="0.01" style="width:140px;">
+            </div>
 
-            <span>=</span>
-            <span id="naCorrResult" style="font-weight:bold;">—</span>
+            <p id="naCorrResult" style="margin-top:8px; font-weight:bold;">Na corrigé = —</p>
           </div>
         </form>
       `,
     },
 
-    /* ---------- 6) Calcium corrigé ---------- */
     {
       titre: "Calcium corrigé",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcCaCorr()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>Ca total (mmol/L)</label>
-            <input id="caTot" type="number" step="0.01" style="width:70px;">
+            <div>
+              <label>Ca total (mmol/L)</label><br>
+              <input id="caTot" type="number" step="0.01" style="width:140px;">
+            </div>
 
-            <label>Albumine (g/L)</label>
-            <input id="alb" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Albumine (g/L)</label><br>
+              <input id="alb" type="number" step="1" style="width:140px;">
+            </div>
 
-            <label>Protidémie (g/L)</label>
-            <input id="prot" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Protidémie (g/L)</label><br>
+              <input id="prot" type="number" step="1" style="width:140px;">
+            </div>
 
-            <span>=</span>
-            <span id="caCorrResult" style="font-weight:bold;">—</span>
+            <p id="caCorrResult" style="margin-top:8px; font-weight:bold;">Ca corrigé = —</p>
           </div>
         </form>
       `,
     },
 
-    /* ---------- 7) CVVH — Fraction de filtration ---------- */
     {
       titre: "CVVH – Fraction de filtration",
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
-    <form class="form" oninput="calcCVVH()">
-      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+        <form class="form" oninput="calcCVVH()">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-        <label>Qsang (mL/min)</label>
-        <input id="cvvhQs" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Qsang (mL/min)</label><br>
+              <input id="cvvhQs" type="number" step="1" style="width:140px;">
+            </div>
 
-        <label>Qpré (mL/h)</label>
-        <input id="cvvhQpre" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Qpré (mL/h)</label><br>
+              <input id="cvvhQpre" type="number" step="1" style="width:140px;">
+            </div>
 
-        <label>Qpost (mL/h)</label>
-        <input id="cvvhQpost" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Qpost (mL/h)</label><br>
+              <input id="cvvhQpost" type="number" step="1" style="width:140px;">
+            </div>
 
-        <label>Pertes (mL/h)</label>
-        <input id="cvvhPerte" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Pertes (mL/h)</label><br>
+              <input id="cvvhPerte" type="number" step="1" style="width:140px;">
+            </div>
 
-        <span>=</span>
-        <span id="cvvhResult" style="font-weight:bold;">—</span>
-
-      </div>
-    </form>
+            <p id="cvvhResult" style="margin-top:8px; font-weight:bold;">FF = —</p>
+          </div>
+        </form>
       `,
     },
   ];
@@ -5785,30 +5837,22 @@ function renderReanFormulesMetabolique() {
   });
 }
 
-
-
-/* ============================================================
-   LOGIQUE DES FORMULES — Métabolique
-   ============================================================ */
-
 /* ---------- 1) DFG = U × V / P ---------- */
 function calcDFG() {
-  const U = parseFloat(document.getElementById("dfgU").value);       // mmol/L
-  const V = parseFloat(document.getElementById("dfgV").value);       // mL sur 24h
-  const P = parseFloat(document.getElementById("dfgP").value);       // µmol/L
+  const U = parseFloat(document.getElementById("dfgU").value);
+  const V = parseFloat(document.getElementById("dfgV").value);
+  const P = parseFloat(document.getElementById("dfgP").value);
   const $res = document.getElementById("dfgResult");
 
   if (!U || !V || !P) {
-    $res.textContent = "—";
+    $res.textContent = "DFG = —";
     return;
   }
 
-  // DFG = (U × V × 1000) / (1440 × P)
   const dfg = (U * V * 1000) / (1440 * P);
 
-  $res.textContent = dfg.toFixed(1) + " mL/min";
+  $res.textContent = "DFG = " + dfg.toFixed(1) + " mL/min";
 }
-
 
 /* ---------- 2) Osmolarité plasmatique ---------- */
 function calcOsm() {
@@ -5817,13 +5861,15 @@ function calcOsm() {
   const Urea = parseFloat(document.getElementById("osmUrea").value);
   const $res = document.getElementById("osmResult");
 
-  if (!Na || !Gly || !Urea) return ($res.textContent = "—");
+  if (!Na || !Gly || !Urea) {
+    $res.textContent = "Osmolarité = —";
+    return;
+  }
 
-  const osm = 2 * Na + (Gly * 18) / 1 + Urea; // Gly (g/L) convertie en mg/dL ×1/18
+  const osm = 2 * Na + (Gly * 18) + Urea;
 
-  $res.textContent = osm.toFixed(0) + " mOsm/L";
+  $res.textContent = "Osmolarité = " + osm.toFixed(0) + " mOsm/L";
 }
-
 
 /* ---------- 3) Eau intracellulaire ---------- */
 function calcICW() {
@@ -5831,30 +5877,28 @@ function calcICW() {
   const poids = parseFloat(document.getElementById("icwPoids").value);
   const $res = document.getElementById("icwResult");
 
-  if (!Na || !poids) return ($res.textContent = "—");
+  if (!Na || !poids) {
+    $res.textContent = "ΔICW = —";
+    return;
+  }
 
   const icw = 0.4 * poids * (140 / Na - 1);
 
-  $res.textContent = icw.toFixed(1) + " L";
+  $res.textContent = "ΔICW = " + icw.toFixed(1) + " L";
 }
 
-
-/* ---------- 4) Eau extracellulaire ---------- */
+/* ---------- 4) Variation de volume plasmatique ---------- */
 function calcPV() {
   const poids = parseFloat(document.getElementById("pvPoids").value);
   const HtePct = parseFloat(document.getElementById("pvHte").value);
   const $res = document.getElementById("pvResult");
 
-  if (!poids || !HtePct && HtePct !== 0) {
-    $res.textContent = "—";
+  if (!poids || (!HtePct && HtePct !== 0)) {
+    $res.textContent = "ΔVP = —";
     return;
   }
 
-  // Hématocrite en fraction (0–1)
   const Hte = HtePct / 100;
-
-  // Variation de volume plasmatique
-  // = 20% × poids × (Hte / 0,45 − 1)
   const delta = 0.2 * poids * (Hte / 0.45 - 1);
 
   let suffixe = " L";
@@ -5864,9 +5908,8 @@ function calcPV() {
     suffixe += " (déficit)";
   }
 
-  $res.textContent = delta.toFixed(1) + suffixe;
+  $res.textContent = "ΔVP = " + delta.toFixed(1) + suffixe;
 }
-
 
 /* ---------- 5) Sodium corrigé ---------- */
 function calcNaCorr() {
@@ -5874,13 +5917,15 @@ function calcNaCorr() {
   const Gly = parseFloat(document.getElementById("naCorrGly").value);
   const $res = document.getElementById("naCorrResult");
 
-  if (!Na || !Gly) return ($res.textContent = "—");
+  if (!Na || !Gly) {
+    $res.textContent = "Na corrigé = —";
+    return;
+  }
 
   const naCorr = Na + 1.6 * (Gly - 1);
 
-  $res.textContent = naCorr.toFixed(1) + " mmol/L";
+  $res.textContent = "Na corrigé = " + naCorr.toFixed(1) + " mmol/L";
 }
-
 
 /* ---------- 6) Calcium corrigé ---------- */
 function calcCaCorr() {
@@ -5889,7 +5934,10 @@ function calcCaCorr() {
   const Prot = parseFloat(document.getElementById("prot").value);
   const $res = document.getElementById("caCorrResult");
 
-  if (!Ca) return ($res.textContent = "—");
+  if (!Ca) {
+    $res.textContent = "Ca corrigé = —";
+    return;
+  }
 
   let CaCorr = null;
 
@@ -5899,40 +5947,45 @@ function calcCaCorr() {
     CaCorr = Ca + 0.01 * (75 - Prot);
   }
 
-  if (CaCorr === null) return ($res.textContent = "—");
-
-  $res.textContent = CaCorr.toFixed(2) + " mmol/L";
-}
-
-
-/* ---------- 7) CVVH — Fraction de filtration ---------- */
-function calcCVVH() {
-  const QsMin = parseFloat(document.getElementById("cvvhQs").value);      // mL/min
-  const Qpre = parseFloat(document.getElementById("cvvhQpre").value);     // mL/h
-  const Qpost = parseFloat(document.getElementById("cvvhQpost").value);   // mL/h
-  const Pertes = parseFloat(document.getElementById("cvvhPerte").value);  // mL/h
-  const $res = document.getElementById("cvvhResult");
-
-  if (!QsMin || (!Qpre && Qpre !== 0) || (!Qpost && Qpost !== 0) || (!Pertes && Pertes !== 0)) {
-    $res.textContent = "—";
+  if (CaCorr === null) {
+    $res.textContent = "Ca corrigé = —";
     return;
   }
 
-  // Conversion Qsang en mL/h
-  const Qs_h = QsMin * 60;
+  $res.textContent = "Ca corrigé = " + CaCorr.toFixed(2) + " mmol/L";
+}
 
+/* ---------- 7) CVVH — Fraction de filtration ---------- */
+function calcCVVH() {
+  const QsMin = parseFloat(document.getElementById("cvvhQs").value);
+  const Qpre = parseFloat(document.getElementById("cvvhQpre").value);
+  const Qpost = parseFloat(document.getElementById("cvvhQpost").value);
+  const Pertes = parseFloat(document.getElementById("cvvhPerte").value);
+  const $res = document.getElementById("cvvhResult");
+
+  if (!QsMin || (!Qpre && Qpre !== 0) || (!Qpost && Qpost !== 0) || (!Pertes && Pertes !== 0)) {
+    $res.textContent = "FF = —";
+    return;
+  }
+
+  const Qs_h = QsMin * 60;
   const numerateur = Qpre + Qpost + Pertes;
   const denominateur = Qs_h + Qpre;
 
   if (denominateur <= 0) {
-    $res.textContent = "—";
+    $res.textContent = "FF = —";
     return;
   }
 
   const FF = (numerateur / denominateur) * 100;
 
-  $res.textContent = FF.toFixed(1) + " % (N < 25%)";
+  $res.textContent = "FF = " + FF.toFixed(1) + " % (N < 25%)";
 }
+
+
+/* ============================================================
+   FORMULES – NEUROLOGIE
+   ============================================================ */
 
 function renderReanFormulesNeuro() {
   const encadres = [
@@ -5942,23 +5995,28 @@ function renderReanFormulesNeuro() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcIP()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>V systolique (cm/s)</label>
-            <input id="ipVs" type="number" step="1" style="width:70px;">
+            <div>
+              <label>V systolique (cm/s)</label><br>
+              <input id="ipVs" type="number" step="1" style="width:140px;">
+            </div>
 
-            <label>V diastolique (cm/s)</label>
-            <input id="ipVd" type="number" step="1" style="width:70px;">
+            <div>
+              <label>V diastolique (cm/s)</label><br>
+              <input id="ipVd" type="number" step="1" style="width:140px;">
+            </div>
 
-            <label>V moyenne (cm/s)</label>
-            <input id="ipVm" type="number" step="1" style="width:70px;">
+            <div>
+              <label>V moyenne (cm/s)</label><br>
+              <input id="ipVm" type="number" step="1" style="width:140px;">
+            </div>
 
-            <span>=</span>
-            <span id="ipResult" style="font-weight:bold;">—</span>
-          </div>
+            <p id="ipResult" style="margin-top:8px; font-weight:bold;">IP = —</p>
 
-          <div style="font-size:0.85rem; margin-top:4px;">
-            Normes : IP ≈ 0,6–1,1. IP ↑ en cas d’HTIC, vasospasme sévère, HTA maligne…
+            <div style="font-size:0.85rem; margin-top:4px;">
+              Normes : IP ≈ 0,6–1,1. IP ↑ en cas d’HTIC, vasospasme sévère, HTA maligne…
+            </div>
           </div>
         </form>
       `,
@@ -5970,20 +6028,23 @@ function renderReanFormulesNeuro() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcLindegaard()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <label>Vm ACM (cm/s)</label>
-            <input id="linVmAcm" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Vm ACM (cm/s)</label><br>
+              <input id="linVmAcm" type="number" step="1" style="width:140px;">
+            </div>
 
-            <label>Vm carotide interne (cm/s)</label>
-            <input id="linVmCi" type="number" step="1" style="width:70px;">
+            <div>
+              <label>Vm carotide interne (cm/s)</label><br>
+              <input id="linVmCi" type="number" step="1" style="width:140px;">
+            </div>
 
-            <span>=</span>
-            <span id="linResult" style="font-weight:bold;">—</span>
-          </div>
+            <p id="linResult" style="margin-top:8px; font-weight:bold;">Index de Lindegaard = —</p>
 
-          <div style="font-size:0.85rem; margin-top:4px;">
-            Normes : &lt; 3 : pas de vasospasme / 3–6 : vasospasme modéré / &gt; 6 : vasospasme sévère.
+            <div style="font-size:0.85rem; margin-top:4px;">
+              Normes : &lt; 3 : pas de vasospasme / 3–6 : vasospasme modéré / &gt; 6 : vasospasme sévère.
+            </div>
           </div>
         </form>
       `,
@@ -6005,19 +6066,14 @@ function calcIP() {
   const Vm = parseFloat(document.getElementById("ipVm").value);
   const $res = document.getElementById("ipResult");
 
-  if (!Vs || !Vd || !Vm) {
-    $res.textContent = "—";
-    return;
-  }
-
-  if (Vm === 0) {
-    $res.textContent = "—";
+  if (!Vs || !Vd || !Vm || Vm === 0) {
+    $res.textContent = "IP = —";
     return;
   }
 
   const IP = (Vs - Vd) / Vm;
 
-  $res.textContent = IP.toFixed(2);
+  $res.textContent = "IP = " + IP.toFixed(2);
 }
 
 // ---------- Index de Lindegaard = Vm_ACM / Vm_CI ----------
@@ -6026,19 +6082,14 @@ function calcLindegaard() {
   const VmCi = parseFloat(document.getElementById("linVmCi").value);
   const $res = document.getElementById("linResult");
 
-  if (!VmAcm || !VmCi) {
-    $res.textContent = "—";
-    return;
-  }
-
-  if (VmCi === 0) {
-    $res.textContent = "—";
+  if (!VmAcm || !VmCi || VmCi === 0) {
+    $res.textContent = "Index de Lindegaard = —";
     return;
   }
 
   const IL = VmAcm / VmCi;
 
-  $res.textContent = IL.toFixed(2);
+  $res.textContent = "Index de Lindegaard = " + IL.toFixed(2);
 }
 
 
