@@ -3513,35 +3513,29 @@ function setupAorteAscLogic() {
   updateAll();
 }
 
-/* ====================================================================
-   DRAINAGE PÉRICARDIQUE – CHIRURGIE URGENTE
-   ==================================================================== */
-
 function renderInterventionDrainagePericardique() {
-
   const encadres = [
-
-    /* -------------------------------------------------------
-       1) CARACTÉRISTIQUES PATIENT
-    ------------------------------------------------------- */
+    // ----------------------------------------------------------------------
+    // 1) CARACTÉRISTIQUES PATIENT
+    // ----------------------------------------------------------------------
     {
       titre: "Caractéristiques patient",
       html: `
         <div class="form">
           <div class="row">
             <label>Poids (kg)
-              <input type="number" id="drain-poids" min="30" max="250" step="1" />
+              <input type="number" id="dp-poids" min="30" max="250" step="1" />
             </label>
           </div>
 
           <div class="row">
             <label>
-              <input type="checkbox" id="drain-imc50" />
+              <input type="checkbox" id="dp-imc50" />
               IMC &gt; 50 kg/m²
             </label>
 
             <label>
-              <input type="checkbox" id="drain-allergie-bl" />
+              <input type="checkbox" id="dp-allergie-bl" />
               Allergie aux bêta-lactamines
             </label>
           </div>
@@ -3549,100 +3543,103 @@ function renderInterventionDrainagePericardique() {
       `,
     },
 
-    /* -------------------------------------------------------
-       2) CONDITIONNEMENT PRÉ-OPÉRATOIRE
-    ------------------------------------------------------- */
+    // ----------------------------------------------------------------------
+    // 2) CONDITIONNEMENT PRÉ-OPÉRATOIRE
+    // ----------------------------------------------------------------------
     {
       titre: "Conditionnement pré-opératoire",
       html: `
-        <p><strong>Objectifs physiologiques :</strong></p>
+        <p><strong>Avant l’induction :</strong></p>
         <ul>
-          <li>FC 60–80/min</li>
-          <li>Maintenir PA systolique adaptée au contexte</li>
-        </ul>
-
-        <p><strong>Remplissage :</strong></p>
-        <ul>
-          <li>Charge volémique prudente si tamponnade franche</li>
-        </ul>
-
-        <p><strong>Oxygénation :</strong></p>
-        <ul>
-          <li>O₂ haut débit</li>
-        </ul>
-
-        <p><strong>Accès vasculaires :</strong></p>
-        <ul>
-          <li>2 VVP de bon calibre</li>
+          <li>Débuter Noradrénaline</li>
+          <li>Expansion volémique</li>
+          <li>Chirurgie en salle</li>
+          <li>Désinfection et champage fait</li>
         </ul>
       `,
     },
 
-    /* -------------------------------------------------------
-       3) MONITORAGE
-    ------------------------------------------------------- */
+    // ----------------------------------------------------------------------
+    // 3) MONITORAGE
+    // ----------------------------------------------------------------------
     {
       titre: "Monitorage",
       html: `
+        <p>
+          Scope ECG 5 branches, SpO₂, KTa à discuter (ne doit pas retarder le drainage),
+          VVP x2, BIS.
+        </p>
+
+        <p><strong>Objectif :</strong></p>
         <ul>
-          <li>Scope ECG 5 dérivations, SpO₂, PNI</li>
-          <li>KTa <strong>si instabilité</strong></li>
-          <li>KTC <strong>si état de choc</strong></li>
-          <li>ETO / ETT selon opérateur</li>
+          <li>Éviter absolument l’augmentation de la post-charge VD</li>
+          <li>Éviter l’hypovolémie (diminution de la pré-charge VD)</li>
         </ul>
+
+        <p>Optimisation de la pré-oxygénation pour maximiser la durée d’apnée.</p>
       `,
     },
 
-    /* -------------------------------------------------------
-       4) ANESTHÉSIE
-    ------------------------------------------------------- */
+    // ----------------------------------------------------------------------
+    // 4) ANESTHÉSIE
+    // ----------------------------------------------------------------------
     {
       titre: "Anesthésie",
       html: `
-        <p><strong>Objectif :</strong> éviter l’effondrement tensionnel à l’induction.</p>
-
         <p><strong>Induction :</strong></p>
         <ul>
-          <li>Étomidate (à privilégier si instabilité)</li>
-          <li>Sufentanil (faible dose)</li>
-          <li>Rocuronium si IOT</li>
+          <li>Etomidate 0,3 mg/kg car induction à risque</li>
+          <li>Rocuronium 1,2 mg/kg <em>(ou Célocurine 1 mg/kg)</em> car séquence rapide systématique</li>
         </ul>
 
-        <p><strong>Entretien :</strong></p>
-        <ul>
-          <li>AIVOC Propofol/Sufentanil</li>
-        </ul>
+        <p>
+          Ventilation mécanique uniquement après ouverture du péricarde
+          (en l’absence de désaturation).
+        </p>
+
+        <p><strong>Entretien :</strong> AIVOC Propofol/Sufentanil</p>
       `,
     },
 
-    /* -------------------------------------------------------
-       5) ANTIBIOPROPHYLAXIE
-    ------------------------------------------------------- */
+    // ----------------------------------------------------------------------
+    // 5) ANTIBIOPROPHYLAXIE
+    // ----------------------------------------------------------------------
     {
       titre: "Antibioprophylaxie",
       html: `
         <ul>
-          <li id="drain-cefazoline-standard">
+          <li id="dp-cefazoline-standard">
             <strong>Céfazoline :</strong>
-            2 g IVL, puis 1 g toutes les 4 h.
+            2 g (+1 g priming CEC) puis 1 g toutes les 4 h.
           </li>
 
-          <li id="drain-cefazoline-obese" style="display:none;">
+          <li id="dp-cefazoline-obese" style="display:none;">
             <strong>Céfazoline (IMC &gt; 50) :</strong>
-            4 g IVL, puis 2 g toutes les 4 h.
+            4 g (+2 g priming CEC) puis 2 g toutes les 4 h.
           </li>
 
-          <li id="drain-vancomycine" style="display:none;">
+          <li id="dp-vancomycine" style="display:none;">
             <strong>Allergie BL :</strong>
-            Vancomycine <span id="drain-vanco-dose">30 mg/kg</span> IVL,
-            unique injection 30 min avant incision.
+            Vancomycine <span id="dp-vanco-dose">30 mg/kg</span> IVL,
+            une injection 30 min avant incision.
           </li>
         </ul>
       `,
     },
 
+    // ----------------------------------------------------------------------
+    // 6) ETO
+    // ----------------------------------------------------------------------
+    {
+      titre: "ETO",
+      html: `
+        <p><strong>Non systématique.</strong></p>
+        <p>Utile pour vérifier l’absence d’épanchement résiduel et/ou caillot péricardique.</p>
+      `,
+    },
   ];
 
+  // ---- Rendu de la page ----
   renderInterventionPage({
     titre: "Drainage péricardique",
     sousTitre: "",
@@ -3655,46 +3652,53 @@ function renderInterventionDrainagePericardique() {
   setupDrainagePericardiqueLogic();
 }
 
+// =====================================================================
+// LOGIQUE ANTIBIOPROPHYLAXIE
+// =====================================================================
 function setupDrainagePericardiqueLogic() {
+  const poidsId    = "dp-poids";
+  const cbImc      = document.getElementById("dp-imc50");
+  const cbAllergie = document.getElementById("dp-allergie-bl");
 
-  const poidsId     = "drain-poids";
-  const cbImc       = document.getElementById("drain-imc50");
-  const cbAllergie  = document.getElementById("drain-allergie-bl");
-
-  const liCefaStd   = document.getElementById("drain-cefazoline-standard");
-  const liCefaObese = document.getElementById("drain-cefazoline-obese");
-  const liVanco     = document.getElementById("drain-vancomycine");
-  const spanVanco   = document.getElementById("drain-vanco-dose");
+  const liStd   = document.getElementById("dp-cefazoline-standard");
+  const liObese = document.getElementById("dp-cefazoline-obese");
+  const liVanco = document.getElementById("dp-vancomycine");
+  const spanV   = document.getElementById("dp-vanco-dose");
 
   function updateATB() {
     const poids = parseKg(poidsId);
 
-    // --- Gestion IMC si pas allergique ---
-    if (!cbAllergie.checked) {
-      if (cbImc.checked) {
-        liCefaStd.style.display = "none";
-        liCefaObese.style.display = "";
-      } else {
-        liCefaStd.style.display = "";
-        liCefaObese.style.display = "none";
-      }
+    // --- Gestion IMC ---
+    if (cbImc.checked) {
+      liStd.style.display = "none";
+      liObese.style.display = "";
+    } else {
+      liStd.style.display = "";
+      liObese.style.display = "none";
     }
 
-    // --- Allergie BL : remplace totalement ---
+    // --- Allergie BL => remplacement complet ---
     if (cbAllergie.checked) {
-      liCefaStd.style.display = "none";
-      liCefaObese.style.display = "none";
+      liStd.style.display = "none";
+      liObese.style.display = "none";
       liVanco.style.display = "";
-      spanVanco.textContent = formatDoseMgPerKg(poids, 30);
+      spanV.textContent = formatDoseMgPerKg(poids, 30);
     } else {
       liVanco.style.display = "none";
+
+      if (cbImc.checked) {
+        liStd.style.display = "none";
+        liObese.style.display = "";
+      } else {
+        liStd.style.display = "";
+        liObese.style.display = "none";
+      }
     }
   }
 
-  // Observateurs
-  document.getElementById(poidsId)?.addEventListener("input", updateATB);
-  cbImc?.addEventListener("change", updateATB);
-  cbAllergie?.addEventListener("change", updateATB);
+  // Écouteurs
+  [cbImc, cbAllergie].forEach(cb => cb.addEventListener("change", updateATB));
+  document.getElementById(poidsId).addEventListener("input", updateATB);
 
   updateATB();
 }
