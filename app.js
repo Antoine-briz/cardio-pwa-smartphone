@@ -6550,35 +6550,58 @@ function openChadsVascImage() {
    RÉANIMATION – ETO
    ==================================================================== */
 
+// Retire l'enveloppe <details>/<summary> d'un bloc HTML ETO
+// pour ne garder que le contenu interne (les lignes avec le logo écran).
+function stripDetailsWrapper(html) {
+  if (!html) return html;
+
+  const summaryClose = html.indexOf("</summary>");
+  if (summaryClose === -1) {
+    // Pas de <summary> trouvé, on renvoie tel quel
+    return html;
+  }
+
+  // Tout ce qui vient après </summary>
+  let inner = html.slice(summaryClose + "</summary>".length);
+
+  // On enlève le </details> final s'il existe
+  const lastDetailsClose = inner.lastIndexOf("</details>");
+  if (lastDetailsClose !== -1) {
+    inner = inner.slice(0, lastDetailsClose);
+  }
+
+  return inner.trim();
+}
+
 function renderReanEto() {
   const encadres = [
     {
       titre: "Fonction systolique VG",
-      html: etoHtmlFonctionVG(),
+      html: stripDetailsWrapper(etoHtmlFonctionVG()),
     },
     {
       titre: "Cinétique segmentaire du VG",
-      html: etoHtmlVGSegmentaire(),
+      html: stripDetailsWrapper(etoHtmlVGSegmentaire()),
     },
     {
       titre: "Valve aortique",
-      html: etoHtmlValveAortique(),
+      html: stripDetailsWrapper(etoHtmlValveAortique()),
     },
     {
       titre: "Valve mitrale",
-      html: etoHtmlValveMitrale(),
+      html: stripDetailsWrapper(etoHtmlValveMitrale()),
     },
     {
       titre: "PTDVG (Fonction diastolique VG)",
-      html: etoHtmlPTDVG(),
+      html: stripDetailsWrapper(etoHtmlPTDVG()),
     },
     {
       titre: "Fonction systolique du VD",
-      html: etoHtmlFonctionVD(),
+      html: stripDetailsWrapper(etoHtmlFonctionVD()),
     },
     {
       titre: "Evaluation d'une HTAP",
-      html: etoHtmlHTAP(),
+      html: stripDetailsWrapper(etoHtmlHTAP()),
     },
   ];
 
