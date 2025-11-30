@@ -6522,58 +6522,61 @@ function openChadsVascImage() {
    RÉANIMATION – ETO
    ==================================================================== */
 
-// Retire l'enveloppe <details>/<summary> d'un bloc HTML ETO
-// pour ne garder que le contenu interne (les lignes avec le logo écran).
-function stripDetailsWrapper(html) {
+// Pour la RÉA : extrait seulement la liste <ul class="eto-list">...</ul>
+// à partir du HTML complet renvoyé par etoHtmlXXX()
+function stripEtoWrapper(html) {
   if (!html) return html;
 
-  const summaryClose = html.indexOf("</summary>");
-  if (summaryClose === -1) {
-    // Pas de <summary> trouvé, on renvoie tel quel
+  const ulStart = html.indexOf('<ul class="eto-list">');
+  if (ulStart === -1) {
+    // Si on ne trouve pas la liste, on renvoie tel quel
     return html;
   }
 
-  // Tout ce qui vient après </summary>
-  let inner = html.slice(summaryClose + "</summary>".length);
-
-  // On enlève le </details> final s'il existe
-  const lastDetailsClose = inner.lastIndexOf("</details>");
-  if (lastDetailsClose !== -1) {
-    inner = inner.slice(0, lastDetailsClose);
+  const ulEnd = html.indexOf("</ul>", ulStart);
+  if (ulEnd === -1) {
+    return html;
   }
 
-  return inner.trim();
+  const inner = html.slice(ulStart, ulEnd + "</ul>".length);
+
+  // On remet juste un petit <section> autour pour garder le style
+  return `
+    <section class="eto-section">
+      ${inner}
+    </section>
+  `.trim();
 }
 
 function renderReanEto() {
   const encadres = [
     {
       titre: "Fonction systolique VG",
-      html: stripDetailsWrapper(etoHtmlFonctionVG()),
+      html: stripEtoWrapper(etoHtmlFonctionVG()),
     },
     {
       titre: "Cinétique segmentaire du VG",
-      html: stripDetailsWrapper(etoHtmlVGSegmentaire()),
+      html: stripEtoWrapper(etoHtmlVGSegmentaire()),
     },
     {
       titre: "Valve aortique",
-      html: stripDetailsWrapper(etoHtmlValveAortique()),
+      html: stripEtoWrapper(etoHtmlValveAortique()),
     },
     {
       titre: "Valve mitrale",
-      html: stripDetailsWrapper(etoHtmlValveMitrale()),
+      html: stripEtoWrapper(etoHtmlValveMitrale()),
     },
     {
       titre: "PTDVG (Fonction diastolique VG)",
-      html: stripDetailsWrapper(etoHtmlPTDVG()),
+      html: stripEtoWrapper(etoHtmlPTDVG()),
     },
     {
       titre: "Fonction systolique du VD",
-      html: stripDetailsWrapper(etoHtmlFonctionVD()),
+      html: stripEtoWrapper(etoHtmlFonctionVD()),
     },
     {
       titre: "Evaluation d'une HTAP",
-      html: stripDetailsWrapper(etoHtmlHTAP()),
+      html: stripEtoWrapper(etoHtmlHTAP()),
     },
   ];
 
@@ -6584,7 +6587,6 @@ function renderReanEto() {
     encadres,
   });
 }
-
 
 function openImg(name) {
   document.getElementById("popup-img").src = `img/${name}`;
