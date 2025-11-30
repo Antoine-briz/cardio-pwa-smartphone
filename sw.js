@@ -10,11 +10,11 @@ const PRECACHE = [
   "./app.js",
   "./manifest.webmanifest",
 
-  // Icônes PWA
+  // Icônes
   "./icons/icon-192.png",
   "./icons/icon-512.png",
 
-  // Images (union de tout ce qui est dans app.js + ancien sw.js)
+  // Images
   "./img/BLSE.png",
   "./img/SARM.png",
   "./img/abdo.png",
@@ -47,7 +47,8 @@ const PRECACHE = [
   "./img/steno.png",
   "./img/titre.png",
   "./img/urinaire.png",
-    "./img/eto.png",
+
+  "./img/eto.png",
   "./img/eto_ao_morphologie.png",
   "./img/eto_ccvg.png",
   "./img/eto_dpdt.png",
@@ -57,7 +58,6 @@ const PRECACHE = [
   "./img/eto_htap_mesosyst.png",
   "./img/eto_htap_pap_ip.png",
   "./img/eto_htap_paps_it.png",
-
   "./img/eto_ia_1.2.png",
   "./img/eto_ia_PISA.png",
   "./img/eto_ia_quantification.png",
@@ -68,7 +68,6 @@ const PRECACHE = [
   "./img/eto_im_VC.png",
   "./img/eto_mit_morphologie.png",
   "./img/eto_ondeS.png",
-
   "./img/eto_ptdvg.png",
   "./img/eto_ra.png",
   "./img/eto_rm_1.2.png",
@@ -79,42 +78,27 @@ const PRECACHE = [
   "./img/eto_tei_vg.png",
   "./img/eto_vd_sprime.png",
   "./img/eto_vd_strain.png",
-
   "./img/eto_vd_tapse.png",
   "./img/eto_vd_tei.png",
   "./img/eto_vg_17segments.png",
+
   "./img/fa.png",
   "./img/saignement.png",
   "./img/transplantation.png",
   "./img/assistances.png",
   "./img/chadsvasc.png",
   "./img/eerecmo.png",
+  "./img/cardiostruct.png",
+  "./img/chircec.png",
+  "./img/consultation.png",
+  "./img/formules.png",
+  "./img/antibiotherapie.png",
+  "./img/prescription.png",
+  "./img/radiovasc.png",
+  "./img/vasculaire.png",
 
-
-  // Images appelées sans le "./img/" dans app.js
-"img/assistances.png",
-"img/cardiostruct.png",
-"img/cec.png",
-"img/chircec.png",
-"img/consultation.png",
-"img/dialyse.png",
-"img/eto.png",
-"img/fa.png",
-"img/formules.png",
-"img/anesthesie.png",
-"img/antibiotherapie.png",
-"img/chadsvasc.png",
-"img/reanimation.png",
-"img/prescription.png",
-"img/radiovasc.png",
-"img/saignement.png",
-"img/transplantation.png",
-"img/vasculaire.png",
-"img/hepatite.png"
-
-
-  // Fichier Excel (planning médical)
-  "files/planning_medical.xlsx",
+  // Excel
+  "./files/planning_medical.xlsx",
 ];
 
 // INSTALL : pré-cache tous les fichiers définis ci-dessus
