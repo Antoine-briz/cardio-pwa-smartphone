@@ -491,6 +491,9 @@ function renderAnesthChirCecMenu() {
 
       <h3 style="margin-top:24px;">Chirurgies urgentes et assistances circulatoires</h3>
       <div class="grid">
+        <button class="btn" onclick="renderInterventionDrainagePericardique()">
+          Drainage péricardique
+        </button>
         <button class="btn" onclick="renderInterventionDissectionAo()">
           Dissection aortique
         </button>
