@@ -5273,6 +5273,10 @@ function renderReanMenu() {
    (avec menu Ventilation / Cardio-vasculaire / Métabolique)
    ==================================================================== */
 
+/* ============================================================
+   MENU FORMULES
+   ============================================================ */
+
 function renderReanFormulesMenu() {
   $app.innerHTML = `
     <section>
@@ -5301,6 +5305,7 @@ function renderReanFormulesMenu() {
   `;
 }
 
+
 /* ============================================================
    FORMULES – VENTILATION
    ============================================================ */
@@ -5314,22 +5319,20 @@ function renderReanFormulesVentilation() {
         <form class="form" oninput="calcVT6Compact()">
           <div style="height:6px;"></div>
 
-          <div style="display:flex; flex-direction:column; gap:6px;">
-            <div>
-              <label>Sexe</label><br>
-              <select id="vtSexe" style="width:100px;">
-                <option value="H">H</option>
-                <option value="F">F</option>
-              </select>
-            </div>
-
-            <div>
-              <label>Taille (cm)</label><br>
-              <input id="vtTaille" type="number" min="120" max="230" style="width:120px;">
-            </div>
-
-            <p id="vtResult" style="margin-top:8px; font-weight:bold;">Volume courant = —</p>
+          <div class="form-line">
+            <label>Sexe</label>
+            <select id="vtSexe">
+              <option value="H">H</option>
+              <option value="F">F</option>
+            </select>
           </div>
+
+          <div class="form-line">
+            <label>Taille (cm)</label>
+            <input id="vtTaille" type="number" min="120" max="230">
+          </div>
+
+          <p id="vtResult" class="form-result">Volume courant = —</p>
         </form>
       `,
     },
@@ -5341,24 +5344,22 @@ function renderReanFormulesVentilation() {
         <form class="form" oninput="calcEspaceMortCompact()">
           <div style="height:6px;"></div>
 
-          <div style="display:flex; flex-direction:column; gap:6px;">
-            <div>
-              <label>PaCO₂ (mmHg)</label><br>
-              <input id="evPaCO2" type="number" step="0.1" style="width:120px;">
-            </div>
-
-            <div>
-              <label>EtCO₂ (mmHg)</label><br>
-              <input id="evEtCO2" type="number" step="0.1" style="width:120px;">
-            </div>
-
-            <div>
-              <label>VT (mL)</label><br>
-              <input id="evVt" type="number" step="1" style="width:120px;">
-            </div>
-
-            <p id="evResult" style="margin-top:8px; font-weight:bold;">Espace mort = —</p>
+          <div class="form-line">
+            <label>PaCO₂ (mmHg)</label>
+            <input id="evPaCO2" type="number" step="0.1">
           </div>
+
+          <div class="form-line">
+            <label>EtCO₂ (mmHg)</label>
+            <input id="evEtCO2" type="number" step="0.1">
+          </div>
+
+          <div class="form-line">
+            <label>VT (mL)</label>
+            <input id="evVt" type="number" step="1">
+          </div>
+
+          <p id="evResult" class="form-result">Espace mort = —</p>
         </form>
       `,
     },
@@ -5370,24 +5371,22 @@ function renderReanFormulesVentilation() {
         <form class="form" oninput="calcNOCompact()">
           <div style="height:6px;"></div>
 
-          <div style="display:flex; flex-direction:column; gap:6px;">
-            <div>
-              <label>[NO] bouteille (ppm)</label><br>
-              <input id="noBottle" type="number" min="1" max="5000" style="width:140px;">
-            </div>
-
-            <div>
-              <label>[NO] souhaité patient (ppm)</label><br>
-              <input id="noPatient" type="number" min="1" max="200" style="width:140px;">
-            </div>
-
-            <div>
-              <label>VM (L/min)</label><br>
-              <input id="noVM" type="number" step="0.1" min="1" max="20" style="width:120px;">
-            </div>
-
-            <p id="noResult" style="margin-top:8px; font-weight:bold;">Débit de NO = —</p>
+          <div class="form-line">
+            <label>[NO] bouteille (ppm)</label>
+            <input id="noBottle" type="number" min="1" max="5000">
           </div>
+
+          <div class="form-line">
+            <label>[NO] souhaité patient (ppm)</label>
+            <input id="noPatient" type="number" min="1" max="200">
+          </div>
+
+          <div class="form-line">
+            <label>VM (L/min)</label>
+            <input id="noVM" type="number" step="0.1" min="1" max="20">
+          </div>
+
+          <p id="noResult" class="form-result">Débit de NO = —</p>
         </form>
       `,
     },
@@ -5411,7 +5410,7 @@ function calcVT6Compact() {
     return;
   }
 
-  let poidsIdeal =
+  const poidsIdeal =
     sexe === "H"
       ? 50 + 0.91 * (taille - 152.4)
       : 45.5 + 0.91 * (taille - 152.4);
@@ -5468,25 +5467,22 @@ function renderReanFormulesCardio() {
         <form class="form" oninput="calcDCEcho()">
           <div style="height:6px;"></div>
 
-          <div style="display:flex; flex-direction:column; gap:6px;">
-
-            <div>
-              <label>Diamètre CCVG (mm)</label><br>
-              <input id="dcDiam" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>ITV CCVG (cm)</label><br>
-              <input id="dcITV" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>FC (/min)</label><br>
-              <input id="dcFC" type="number" style="width:120px;">
-            </div>
-
-            <p id="dcResult" style="margin-top:8px; font-weight:bold;">Débit cardiaque = —</p>
+          <div class="form-line">
+            <label>Diamètre CCVG (mm)</label>
+            <input id="dcDiam" type="number" step="0.1">
           </div>
+
+          <div class="form-line">
+            <label>ITV CCVG (cm)</label>
+            <input id="dcITV" type="number" step="0.1">
+          </div>
+
+          <div class="form-line">
+            <label>FC (/min)</label>
+            <input id="dcFC" type="number">
+          </div>
+
+          <p id="dcResult" class="form-result">Débit cardiaque = —</p>
         </form>
       `,
     },
@@ -5497,25 +5493,22 @@ function renderReanFormulesCardio() {
         <form class="form" oninput="calcPVR()">
           <div style="height:6px;"></div>
 
-          <div style="display:flex; flex-direction:column; gap:6px;">
-
-            <div>
-              <label>PAPm (mmHg)</label><br>
-              <input id="pvrPAPm" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>PAPO (mmHg)</label><br>
-              <input id="pvrPOAP" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>DC (L/min)</label><br>
-              <input id="pvrDC" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <p id="pvrResult" style="margin-top:8px; font-weight:bold;">RVP = —</p>
+          <div class="form-line">
+            <label>PAPm (mmHg)</label>
+            <input id="pvrPAPm" type="number" step="0.1">
           </div>
+
+          <div class="form-line">
+            <label>PAPO (mmHg)</label>
+            <input id="pvrPOAP" type="number" step="0.1">
+          </div>
+
+          <div class="form-line">
+            <label>DC (L/min)</label>
+            <input id="pvrDC" type="number" step="0.1">
+          </div>
+
+          <p id="pvrResult" class="form-result">RVP = —</p>
         </form>
       `,
     },
@@ -5526,30 +5519,27 @@ function renderReanFormulesCardio() {
         <form class="form" oninput="calcDO2()">
           <div style="height:6px;"></div>
 
-          <div style="display:flex; flex-direction:column; gap:6px;">
-
-            <div>
-              <label>Hb (g/dL)</label><br>
-              <input id="doHb" type="number" step="0.1" style="width:120px;">
-            </div>
-
-            <div>
-              <label>SaO₂</label><br>
-              <input id="doSaO2" type="number" step="0.01" style="width:120px;" placeholder="0.97">
-            </div>
-
-            <div>
-              <label>PaO₂ (mmHg)</label><br>
-              <input id="doPaO2" type="number" step="1" style="width:120px;">
-            </div>
-
-            <div>
-              <label>DC (L/min)</label><br>
-              <input id="doDC" type="number" step="0.1" style="width:120px;">
-            </div>
-
-            <p id="doResult" style="margin-top:8px; font-weight:bold;">DO₂ = —</p>
+          <div class="form-line">
+            <label>Hb (g/dL)</label>
+            <input id="doHb" type="number" step="0.1">
           </div>
+
+          <div class="form-line">
+            <label>SaO₂</label>
+            <input id="doSaO2" type="number" step="0.01" placeholder="0.97">
+          </div>
+
+          <div class="form-line">
+            <label>PaO₂ (mmHg)</label>
+            <input id="doPaO2" type="number" step="1">
+          </div>
+
+          <div class="form-line">
+            <label>DC (L/min)</label>
+            <input id="doDC" type="number" step="0.1">
+          </div>
+
+          <p id="doResult" class="form-result">DO₂ = —</p>
         </form>
       `,
     },
@@ -5563,7 +5553,7 @@ function renderReanFormulesCardio() {
   });
 }
 
-// 1) Débit cardiaque échographique (ITV CCVG + diamètre CCVG + FC)
+// 1) Débit cardiaque échographique
 function calcDCEcho() {
   const Dmm = parseFloat(document.getElementById("dcDiam").value);
   const ITV = parseFloat(document.getElementById("dcITV").value);
@@ -5583,7 +5573,7 @@ function calcDCEcho() {
   $res.textContent = "Débit cardiaque = " + DC.toFixed(2) + " L/min";
 }
 
-// 2) Résistances vasculaires pulmonaires (Wood et dyn·s·cm⁻⁵)
+// 2) RVP
 function calcPVR() {
   const PAPm = parseFloat(document.getElementById("pvrPAPm").value);
   const POAP = parseFloat(document.getElementById("pvrPOAP").value);
@@ -5609,7 +5599,7 @@ function calcPVR() {
     "RVP = " + wood.toFixed(2) + " UW (" + dynes.toFixed(0) + " dyn·s·cm⁻⁵)";
 }
 
-// 3) DO₂ (apport d'oxygène, mL/min)
+// 3) DO2
 function calcDO2() {
   const Hb = parseFloat(document.getElementById("doHb").value);
   const SaO2 = parseFloat(document.getElementById("doSaO2").value);
@@ -5641,25 +5631,23 @@ function renderReanFormulesMetabolique() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcDFG()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Créat. urinaire (mmol/L)</label><br>
-              <input id="dfgU" type="number" step="0.1" style="width:160px;">
-            </div>
-
-            <div>
-              <label>Volume des 24h (mL)</label><br>
-              <input id="dfgV" type="number" step="1" style="width:160px;">
-            </div>
-
-            <div>
-              <label>Créat. plasmatique (µmol/L)</label><br>
-              <input id="dfgP" type="number" step="1" style="width:160px;">
-            </div>
-
-            <p id="dfgResult" style="margin-top:8px; font-weight:bold;">DFG = —</p>
+          <div class="form-line">
+            <label>Créat. urinaire (mmol/L)</label>
+            <input id="dfgU" type="number" step="0.1">
           </div>
+
+          <div class="form-line">
+            <label>Volume des 24h (mL)</label>
+            <input id="dfgV" type="number" step="1">
+          </div>
+
+          <div class="form-line">
+            <label>Créat. plasmatique (µmol/L)</label>
+            <input id="dfgP" type="number" step="1">
+          </div>
+
+          <p id="dfgResult" class="form-result">DFG = —</p>
         </form>
       `,
     },
@@ -5670,25 +5658,23 @@ function renderReanFormulesMetabolique() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcOsm()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Na (mmol/L)</label><br>
-              <input id="osmNa" type="number" step="1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Glycémie (g/L)</label><br>
-              <input id="osmGly" type="number" step="0.01" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Urée (mmol/L)</label><br>
-              <input id="osmUrea" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <p id="osmResult" style="margin-top:8px; font-weight:bold;">Osmolarité = —</p>
+          <div class="form-line">
+            <label>Na (mmol/L)</label>
+            <input id="osmNa" type="number" step="1">
           </div>
+
+          <div class="form-line">
+            <label>Glycémie (g/L)</label>
+            <input id="osmGly" type="number" step="0.01">
+          </div>
+
+          <div class="form-line">
+            <label>Urée (mmol/L)</label>
+            <input id="osmUrea" type="number" step="0.1">
+          </div>
+
+          <p id="osmResult" class="form-result">Osmolarité = —</p>
         </form>
       `,
     },
@@ -5699,20 +5685,18 @@ function renderReanFormulesMetabolique() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcICW()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Na (mmol/L)</label><br>
-              <input id="icwNa" type="number" step="1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Poids (kg)</label><br>
-              <input id="icwPoids" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <p id="icwResult" style="margin-top:8px; font-weight:bold;">ΔICW = —</p>
+          <div class="form-line">
+            <label>Na (mmol/L)</label>
+            <input id="icwNa" type="number" step="1">
           </div>
+
+          <div class="form-line">
+            <label>Poids (kg)</label>
+            <input id="icwPoids" type="number" step="0.1">
+          </div>
+
+          <p id="icwResult" class="form-result">ΔICW = —</p>
         </form>
       `,
     },
@@ -5723,20 +5707,18 @@ function renderReanFormulesMetabolique() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcPV()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Poids actuel (kg)</label><br>
-              <input id="pvPoids" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Hématocrite (%)</label><br>
-              <input id="pvHte" type="number" step="0.1" style="width:140px;">
-            </div>
-
-            <p id="pvResult" style="margin-top:8px; font-weight:bold;">ΔVP = —</p>
+          <div class="form-line">
+            <label>Poids actuel (kg)</label>
+            <input id="pvPoids" type="number" step="0.1">
           </div>
+
+          <div class="form-line">
+            <label>Hématocrite (%)</label>
+            <input id="pvHte" type="number" step="0.1">
+          </div>
+
+          <p id="pvResult" class="form-result">ΔVP = —</p>
         </form>
       `,
     },
@@ -5747,20 +5729,18 @@ function renderReanFormulesMetabolique() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcNaCorr()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Na (mmol/L)</label><br>
-              <input id="naCorrNa" type="number" step="1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Glycémie (g/L)</label><br>
-              <input id="naCorrGly" type="number" step="0.01" style="width:140px;">
-            </div>
-
-            <p id="naCorrResult" style="margin-top:8px; font-weight:bold;">Na corrigé = —</p>
+          <div class="form-line">
+            <label>Na (mmol/L)</label>
+            <input id="naCorrNa" type="number" step="1">
           </div>
+
+          <div class="form-line">
+            <label>Glycémie (g/L)</label>
+            <input id="naCorrGly" type="number" step="0.01">
+          </div>
+
+          <p id="naCorrResult" class="form-result">Na corrigé = —</p>
         </form>
       `,
     },
@@ -5771,25 +5751,23 @@ function renderReanFormulesMetabolique() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcCaCorr()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Ca total (mmol/L)</label><br>
-              <input id="caTot" type="number" step="0.01" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Albumine (g/L)</label><br>
-              <input id="alb" type="number" step="1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Protidémie (g/L)</label><br>
-              <input id="prot" type="number" step="1" style="width:140px;">
-            </div>
-
-            <p id="caCorrResult" style="margin-top:8px; font-weight:bold;">Ca corrigé = —</p>
+          <div class="form-line">
+            <label>Ca total (mmol/L)</label>
+            <input id="caTot" type="number" step="0.01">
           </div>
+
+          <div class="form-line">
+            <label>Albumine (g/L)</label>
+            <input id="alb" type="number" step="1">
+          </div>
+
+          <div class="form-line">
+            <label>Protidémie (g/L)</label>
+            <input id="prot" type="number" step="1">
+          </div>
+
+          <p id="caCorrResult" class="form-result">Ca corrigé = —</p>
         </form>
       `,
     },
@@ -5800,30 +5778,28 @@ function renderReanFormulesMetabolique() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcCVVH()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Qsang (mL/min)</label><br>
-              <input id="cvvhQs" type="number" step="1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Qpré (mL/h)</label><br>
-              <input id="cvvhQpre" type="number" step="1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Qpost (mL/h)</label><br>
-              <input id="cvvhQpost" type="number" step="1" style="width:140px;">
-            </div>
-
-            <div>
-              <label>Pertes (mL/h)</label><br>
-              <input id="cvvhPerte" type="number" step="1" style="width:140px;">
-            </div>
-
-            <p id="cvvhResult" style="margin-top:8px; font-weight:bold;">FF = —</p>
+          <div class="form-line">
+            <label>Qsang (mL/min)</label>
+            <input id="cvvhQs" type="number" step="1">
           </div>
+
+          <div class="form-line">
+            <label>Qpré (mL/h)</label>
+            <input id="cvvhQpre" type="number" step="1">
+          </div>
+
+          <div class="form-line">
+            <label>Qpost (mL/h)</label>
+            <input id="cvvhQpost" type="number" step="1">
+          </div>
+
+          <div class="form-line">
+            <label>Pertes (mL/h)</label>
+            <input id="cvvhPerte" type="number" step="1">
+          </div>
+
+          <p id="cvvhResult" class="form-result">FF = —</p>
         </form>
       `,
     },
@@ -5995,28 +5971,26 @@ function renderReanFormulesNeuro() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcIP()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>V systolique (cm/s)</label><br>
-              <input id="ipVs" type="number" step="1" style="width:140px;">
-            </div>
+          <div class="form-line">
+            <label>V systolique (cm/s)</label>
+            <input id="ipVs" type="number" step="1">
+          </div>
 
-            <div>
-              <label>V diastolique (cm/s)</label><br>
-              <input id="ipVd" type="number" step="1" style="width:140px;">
-            </div>
+          <div class="form-line">
+            <label>V diastolique (cm/s)</label>
+            <input id="ipVd" type="number" step="1">
+          </div>
 
-            <div>
-              <label>V moyenne (cm/s)</label><br>
-              <input id="ipVm" type="number" step="1" style="width:140px;">
-            </div>
+          <div class="form-line">
+            <label>V moyenne (cm/s)</label>
+            <input id="ipVm" type="number" step="1">
+          </div>
 
-            <p id="ipResult" style="margin-top:8px; font-weight:bold;">IP = —</p>
+          <p id="ipResult" class="form-result">IP = —</p>
 
-            <div style="font-size:0.85rem; margin-top:4px;">
-              Normes : IP ≈ 0,6–1,1. IP ↑ en cas d’HTIC, vasospasme sévère, HTA maligne…
-            </div>
+          <div style="font-size:0.85rem; margin-top:4px;">
+            Normes : IP ≈ 0,6–1,1. IP ↑ en cas d’HTIC, vasospasme sévère, HTA maligne…
           </div>
         </form>
       `,
@@ -6028,23 +6002,21 @@ function renderReanFormulesNeuro() {
       html: `
         <div style="height:6px;"></div>
         <form class="form" oninput="calcLindegaard()">
-          <div style="display:flex; flex-direction:column; gap:6px;">
 
-            <div>
-              <label>Vm ACM (cm/s)</label><br>
-              <input id="linVmAcm" type="number" step="1" style="width:140px;">
-            </div>
+          <div class="form-line">
+            <label>Vm ACM (cm/s)</label>
+            <input id="linVmAcm" type="number" step="1">
+          </div>
 
-            <div>
-              <label>Vm carotide interne (cm/s)</label><br>
-              <input id="linVmCi" type="number" step="1" style="width:140px;">
-            </div>
+          <div class="form-line">
+            <label>Vm carotide interne (cm/s)</label>
+            <input id="linVmCi" type="number" step="1">
+          </div>
 
-            <p id="linResult" style="margin-top:8px; font-weight:bold;">Index de Lindegaard = —</p>
+          <p id="linResult" class="form-result">Index de Lindegaard = —</p>
 
-            <div style="font-size:0.85rem; margin-top:4px;">
-              Normes : &lt; 3 : pas de vasospasme / 3–6 : vasospasme modéré / &gt; 6 : vasospasme sévère.
-            </div>
+          <div style="font-size:0.85rem; margin-top:4px;">
+            Normes : &lt; 3 : pas de vasospasme / 3–6 : vasospasme modéré / &gt; 6 : vasospasme sévère.
           </div>
         </form>
       `,
