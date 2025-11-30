@@ -109,7 +109,8 @@ const PRECACHE = [
 "img/radiovasc.png",
 "img/saignement.png",
 "img/transplantation.png",
-"img/vasculaire.png"
+"img/vasculaire.png",
+"img/hepatite.png"
 
 
   // Fichier Excel (planning médical)
