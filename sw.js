@@ -1,147 +1,155 @@
-// ------- sw.js (v3) : cache robuste pour mode icône/hors-ligne -------
-const CACHE_NAME = "atb-rules-v18";
+// ------- sw.js : PWA hors-ligne pour l'app de réanimation -------
 
-// Liste des fichiers à pré-cacher
+const CACHE_NAME = "cardio-icu-v1";
+
+// Tous les fichiers à pré-cacher (HTML, CSS, JS, images, Excel)
 const PRECACHE = [
-  "./", "./index.html", 
-  "./styles.css", 
-  "./app.js",  
+  "./",
+  "./index.html",
+  "./styles.css",
+  "./app.js",
   "./manifest.webmanifest",
-  "./icons/icon-192.png", 
+
+  // Icônes PWA
+  "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./img/bandeau.png",
-  "./img/proba.png",
-  "./img/adaptee.png",
-  "./img/duree.png",
-  "./img/rein.png",
-  "./img/modalites.png",
-  "./img/pneumonie.png",
-  "./img/urinaire.png",
+
+  // Images (union de tout ce qui est dans app.js + ancien sw.js)
+  "./img/BLSE.png",
+  "./img/SARM.png",
   "./img/abdo.png",
-  "./img/neuro.png", 
-  "./img/dermohypodermite.png",
-  "./img/ecmo.png",
-  "./img/mediastinite.png",
+  "./img/acineto.png",
+  "./img/adaptee.png",
+  "./img/ampC.png",
+  "./img/anesthesie.png",
   "./img/antibioprophylaxie.png",
   "./img/antibioprophylaxies.png",
-  "./img/fabrice.png",
-  "./img/SARM.png",
-  "./img/ampC.png",
-  "./img/BLSE.png",
-  "./img/pyo.png",
-  "./img/acineto.png",
-  "./img/steno.png",
+  "./img/bandeau.png",
   "./img/carba.png",
-  "./img/erv.png",
-  "./img/dialyse.png",
-  "./img/modalite.png",
-  "./img/titre.png",
-  "./img/anesthesie.png",
-  "./img/reanimation.png",
   "./img/cec.png",
-  // Retrait de pdf.js CDN car CORS/Policy
+  "./img/dermohypodermite.png",
+  "./img/dialyse.png",
+  "./img/duree.png",
+  "./img/ecmo.png",
+  "./img/endocardite.png",
+  "./img/erv.png",
+  "./img/fabrice.png",
+  "./img/mediastinite.png",
+  "./img/modalite.png",
+  "./img/modalites.png",
+  "./img/neuro.png",
+  "./img/pneumonie.png",
+  "./img/proba.png",
+  "./img/pyo.png",
+  "./img/reanimation.png",
+  "./img/rein.png",
+  "./img/sepsis.png",
+  "./img/steno.png",
+  "./img/titre.png",
+  "./img/urinaire.png",
+
+  // Images appelées sans le "./img/" dans app.js
+  "assistances.png",
+  "cardiostruct.png",
+  "cec.png",
+  "chircec.png",
+  "consultation.png",
+  "dialyse.png",
+  "eto.png",
+  "eto_bibliotheque.png",
+  "fa.png",
+  "formules.png",
+  "img/anesthesie.png",
+  "img/antibiotherapie.png",
+  "img/cec.png",
+  "img/chadsvasc.png",
+  "img/reanimation.png",
+  "prescription.png",
+  "radiovasc.png",
+  "saignement.png",
+  "transplantation.png",
+  "vasculaire.png",
+
+  // Fichier Excel (planning médical)
+  "files/planning_medical.xlsx",
 ];
 
+// INSTALL : pré-cache tous les fichiers définis ci-dessus
 self.addEventListener("install", (event) => {
-  // Convertit chaque entrée en URL absolue alignée sur le scope du SW
-  const PRECACHE_URLS = PRECACHE.map(p => new URL(p, self.registration.scope).toString());
-
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE))
   );
   self.skipWaiting();
 });
 
-
+// ACTIVATE : nettoie les anciens caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)))
+      Promise.all(
+        keys.map((key) => (key !== CACHE_NAME ? caches.delete(key) : null))
+      )
     )
   );
   self.clients.claim();
 });
 
-// Normalise les URLs (enlève l'origine) pour matcher le cache relatif
-function toRelative(url) {
-  const u = new URL(url, self.location.href);
-  // Déduplique "/" et "./"
-  let p = u.pathname;
-  if (!p.endsWith("/") && u.search === "" && u.hash === "" && p.indexOf(".") === -1) {
-    // Ex : "/atb/" -> on laissera passer la stratégie navigate ci-dessous
-  }
-  if (p.startsWith(self.registration.scope)) {
-    p = p.slice(self.registration.scope.length);
-  }
-  if (p.startsWith("/")) p = "." + p; // "/index.html" => "./index.html"
-  if (p === "" || p === ".") p = "./";
-  return p;
-}
-
+// FETCH : stratégie hors-ligne (cache d'abord pour le local)
 self.addEventListener("fetch", (event) => {
-  // On ne gère que GET
-  if (event.request.method !== "GET") return;
+  const req = event.request;
+  const url = new URL(req.url);
 
-  const reqUrl = new URL(event.request.url);
+  // On laisse tranquilles les requêtes externes (Euroscore 2, etc.)
+  if (url.origin !== self.location.origin) {
+    return;
+  }
 
-  // 1) Navigation (tap sur l'icône, liens internes) -> app shell
-// => toujours servir l’app shell (index.html), même hors-ligne complet
-if (event.request.mode === "navigate") {
-  event.respondWith(
-    caches.match("./index.html").then(cached => cached || fetch("./index.html"))
-  );
-  return;
-}
-
-  // Sécurité supplémentaire : si une navigation cible un .json, renvoyer l'app shell
-if (event.request.destination === "document" && event.request.url.endsWith(".json")) {
-  event.respondWith(caches.match("./index.html"));
-  return;
-}
-
-
-// 2) Cache-first pour nos fichiers de l'app
-const rel = toRelative(event.request.url);
-
-event.respondWith(
-  (async () => {
-    const req = event.request;
-    const url = new URL(req.url);
-
-    // On prépare 3 candidats pour maximiser les chances de match :
-    //  - la requête telle quelle
-    //  - l’URL absolue basée sur le scope (clé utilisée au pré-cache)
-    //  - la chaîne relative calculée
-    const candidates = [
-      req,
-      new Request(new URL(url.pathname, self.registration.scope).toString()),
-      rel
-    ];
-
-    // 1) On cherche dans le cache (en ignorant la query-string)
-    for (const c of candidates) {
-      const hit = await caches.match(c, { ignoreSearch: true });
-      if (hit) return hit;
-    }
-
-    // 2) Sinon, réseau + mise en cache si même origine
-    try {
-      const res = await fetch(req);
-      try {
-        if (url.origin === self.location.origin) {
-          const copy = res.clone();
+  // Navigation (documents HTML) : on essaie le réseau puis le cache
+  if (req.mode === "navigate" || req.destination === "document") {
+    event.respondWith(
+      (async () => {
+        try {
+          const networkResp = await fetch(req);
           const cache = await caches.open(CACHE_NAME);
-          await cache.put(req, copy);
+          cache.put("./index.html", networkResp.clone());
+          return networkResp;
+        } catch (e) {
+          const cached = await caches.match("./index.html");
+          if (cached) return cached;
+          return new Response("Offline", {
+            status: 503,
+            statusText: "Offline",
+          });
         }
-      } catch {}
-      return res;
-    } catch {
-      // 3) Fallback hors-ligne pour documents
-      if (req.destination === "document") {
-        return caches.match("./index.html");
-      }
-      // Pour images/others: rien à faire (laisser échouer proprement)
-    }
-  })()
-);
+      })()
+    );
+    return;
+  }
 
+  // Pour le reste (CSS, JS, images, Excel, etc.) : cache d'abord, puis réseau
+  event.respondWith(
+    (async () => {
+      const cached = await caches.match(req, { ignoreSearch: true });
+      if (cached) {
+        // En arrière-plan, on tente une mise à jour silencieuse
+        fetch(req)
+          .then(async (networkResp) => {
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(req, networkResp.clone());
+          })
+          .catch(() => {});
+        return cached;
+      }
+
+      try {
+        const networkResp = await fetch(req);
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(req, networkResp.clone());
+        return networkResp;
+      } catch (e) {
+        // Si on est hors ligne et que ce n'était pas en cache : rien à faire
+        return new Response("", { status: 504, statusText: "Offline" });
+      }
+    })()
+  );
+});
