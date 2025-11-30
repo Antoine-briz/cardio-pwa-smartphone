@@ -5291,6 +5291,10 @@ function renderReanFormulesMenu() {
         <button class="btn" onclick="renderReanFormulesMetabolique()">
           Métabolique
         </button>
+
+        <button class="btn" onclick="renderReanFormulesNeuro()">
+          Neurologie
+        </button>
       </div>
 
     </section>
@@ -5928,6 +5932,113 @@ function calcCVVH() {
   const FF = (numerateur / denominateur) * 100;
 
   $res.textContent = FF.toFixed(1) + " % (N < 25%)";
+}
+
+function renderReanFormulesNeuro() {
+  const encadres = [
+    {
+      titre: "Index de pulsatilité (IP)",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcIP()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>V systolique (cm/s)</label>
+            <input id="ipVs" type="number" step="1" style="width:70px;">
+
+            <label>V diastolique (cm/s)</label>
+            <input id="ipVd" type="number" step="1" style="width:70px;">
+
+            <label>V moyenne (cm/s)</label>
+            <input id="ipVm" type="number" step="1" style="width:70px;">
+
+            <span>=</span>
+            <span id="ipResult" style="font-weight:bold;">—</span>
+          </div>
+
+          <div style="font-size:0.85rem; margin-top:4px;">
+            Normes : IP ≈ 0,6–1,1. IP ↑ en cas d’HTIC, vasospasme sévère, HTA maligne…
+          </div>
+        </form>
+      `,
+    },
+
+    {
+      titre: "Index de Lindegaard",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcLindegaard()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Vm ACM (cm/s)</label>
+            <input id="linVmAcm" type="number" step="1" style="width:70px;">
+
+            <label>Vm carotide interne (cm/s)</label>
+            <input id="linVmCi" type="number" step="1" style="width:70px;">
+
+            <span>=</span>
+            <span id="linResult" style="font-weight:bold;">—</span>
+          </div>
+
+          <div style="font-size:0.85rem; margin-top:4px;">
+            Normes : &lt; 3 : pas de vasospasme / 3–6 : vasospasme modéré / &gt; 6 : vasospasme sévère.
+          </div>
+        </form>
+      `,
+    },
+  ];
+
+  renderInterventionPage({
+    titre: "Formules",
+    image: "formules.png",
+    sousTitre: "Neurologie",
+    encadres,
+  });
+}
+
+// ---------- IP = (Vsyst - Vdiast) / Vmoy ----------
+function calcIP() {
+  const Vs = parseFloat(document.getElementById("ipVs").value);
+  const Vd = parseFloat(document.getElementById("ipVd").value);
+  const Vm = parseFloat(document.getElementById("ipVm").value);
+  const $res = document.getElementById("ipResult");
+
+  if (!Vs || !Vd || !Vm) {
+    $res.textContent = "—";
+    return;
+  }
+
+  if (Vm === 0) {
+    $res.textContent = "—";
+    return;
+  }
+
+  const IP = (Vs - Vd) / Vm;
+
+  $res.textContent = IP.toFixed(2);
+}
+
+// ---------- Index de Lindegaard = Vm_ACM / Vm_CI ----------
+function calcLindegaard() {
+  const VmAcm = parseFloat(document.getElementById("linVmAcm").value);
+  const VmCi = parseFloat(document.getElementById("linVmCi").value);
+  const $res = document.getElementById("linResult");
+
+  if (!VmAcm || !VmCi) {
+    $res.textContent = "—";
+    return;
+  }
+
+  if (VmCi === 0) {
+    $res.textContent = "—";
+    return;
+  }
+
+  const IL = VmAcm / VmCi;
+
+  $res.textContent = IL.toFixed(2);
 }
 
 
