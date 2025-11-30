@@ -69,7 +69,7 @@ function renderHome() {
   $app.innerHTML = `
     <section class="home">
       <div class="hero">
-        <img src="img/titre.png" alt="Titre" />
+        <img src="img/titre.png" alt="Titre" class="menu-title" />
       </div>
 
       <div class="grid">
