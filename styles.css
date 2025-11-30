@@ -1324,3 +1324,24 @@ body.theme-light .page-antibiopro .result * {
   opacity: 0.7;
 }
 
+.annuaire-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.annuaire-table th,
+.annuaire-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 6px 4px;
+}
+
+.annuaire-table th {
+  background: #f2f2f2;
+  font-weight: bold;
+}
+
+.annuaire-table tr:last-child td {
+  border-bottom: none;
+}
+
