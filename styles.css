@@ -1370,3 +1370,19 @@ body.theme-light .page-antibiopro .result * {
   color: #222;           /* lisible sur fond clair même en thème sombre */
 }
 
+/* Image du titre (menu principal) */
+.menu-title {
+  display: block;
+  width: 100%;
+  max-width: 380px;   /* Taille maximale sur mobile */
+  margin: 0 auto 12px auto;  /* Centre + ajoute un petit espace */
+  
+  /* L'image s'adapte sans déformer */
+  height: auto;
+}
+
+@media (min-width: 480px) {
+  .menu-title {
+    max-width: 420px;  /* Un peu plus grand sur les écrans larges */
+  }
+}
