@@ -5600,16 +5600,169 @@ function calcDO2() {
 
 function renderReanFormulesMetabolique() {
   const encadres = [
+    /* ---------- 1) DFG mesuré U × V / P ---------- */
     {
-      titre: "Métabolique",
+      titre: "DFG (clairance mesurée)",
+      sousTitreEncadre: "",
       html: `
-        <ul>
-          <li><strong>DFG (UV/P)</strong></li>
-          <li><strong>Osmolarité plasmatique</strong></li>
-          <li><strong>Déficit / excès hydrique</strong></li>
-          <li><strong>Na corrigée</strong>, <strong>Ca corrigée</strong></li>
-          <li><strong>FF sang / FF plasmatique</strong></li>
-        </ul>
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcDFG()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>U (mmol/L)</label>
+            <input id="dfgU" type="number" step="0.1" style="width:70px;">
+
+            <label>V (mL/min)</label>
+            <input id="dfgV" type="number" step="0.1" style="width:70px;">
+
+            <label>P (mmol/L)</label>
+            <input id="dfgP" type="number" step="0.01" style="width:70px;">
+
+            <span>=</span>
+            <span id="dfgResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+
+    /* ---------- 2) Osmolarité plasmatique ---------- */
+    {
+      titre: "Osmolarité plasmatique",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcOsm()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Na (mmol/L)</label>
+            <input id="osmNa" type="number" step="1" style="width:70px;">
+
+            <label>Glycémie (g/L)</label>
+            <input id="osmGly" type="number" step="0.01" style="width:70px;">
+
+            <label>Urée (mmol/L)</label>
+            <input id="osmUrea" type="number" step="0.1" style="width:70px;">
+
+            <span>=</span>
+            <span id="osmResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+
+    /* ---------- 3) Déficit/Excès eau intracellulaire ---------- */
+    {
+      titre: "Eau intracellulaire (ICW)",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcICW()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Na (mmol/L)</label>
+            <input id="icwNa" type="number" step="1" style="width:70px;">
+
+            <label>Poids (kg)</label>
+            <input id="icwPoids" type="number" step="0.1" style="width:70px;">
+
+            <span>=</span>
+            <span id="icwResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+
+    /* ---------- 4) Déficit/Excès eau extracellulaire ---------- */
+    {
+      titre: "Eau extracellulaire (ECW)",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcECW()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Na (mmol/L)</label>
+            <input id="ecwNa" type="number" step="1" style="width:70px;">
+
+            <label>Poids (kg)</label>
+            <input id="ecwPoids" type="number" step="0.1" style="width:70px;">
+
+            <span>=</span>
+            <span id="ecwResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+
+    /* ---------- 5) Sodium corrigé ---------- */
+    {
+      titre: "Sodium corrigé (hyperglycémie)",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcNaCorr()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Na (mmol/L)</label>
+            <input id="naCorrNa" type="number" step="1" style="width:70px;">
+
+            <label>Glycémie (g/L)</label>
+            <input id="naCorrGly" type="number" step="0.01" style="width:70px;">
+
+            <span>=</span>
+            <span id="naCorrResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+
+    /* ---------- 6) Calcium corrigé ---------- */
+    {
+      titre: "Calcium corrigé",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcCaCorr()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Ca total (mmol/L)</label>
+            <input id="caTot" type="number" step="0.01" style="width:70px;">
+
+            <label>Albumine (g/L)</label>
+            <input id="alb" type="number" step="1" style="width:70px;">
+
+            <label>Protidémie (g/L)</label>
+            <input id="prot" type="number" step="1" style="width:70px;">
+
+            <span>=</span>
+            <span id="caCorrResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+
+    /* ---------- 7) CVVH — Fraction de filtration ---------- */
+    {
+      titre: "CVVH – Fraction de filtration",
+      sousTitreEncadre: "",
+      html: `
+        <div style="height:6px;"></div>
+        <form class="form" oninput="calcCVVH()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Qₛang (mL/min)</label>
+            <input id="cvvhQs" type="number" step="1" style="width:70px;">
+
+            <label>Hte (%)</label>
+            <input id="cvvhHte" type="number" step="1" style="width:70px;">
+
+            <label>Qf (mL/min)</label>
+            <input id="cvvhQf" type="number" step="0.1" style="width:70px;">
+
+            <span>=</span>
+            <span id="cvvhResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
       `,
     },
   ];
@@ -5617,10 +5770,133 @@ function renderReanFormulesMetabolique() {
   renderInterventionPage({
     titre: "Formules",
     image: "formules.png",
-    sousTitre: "Métabolique",
+    sousTitre: "Métaboliques",
     encadres,
   });
 }
+
+
+
+/* ============================================================
+   LOGIQUE DES FORMULES — Métabolique
+   ============================================================ */
+
+/* ---------- 1) DFG = U × V / P ---------- */
+function calcDFG() {
+  const U = parseFloat(document.getElementById("dfgU").value);
+  const V = parseFloat(document.getElementById("dfgV").value);
+  const P = parseFloat(document.getElementById("dfgP").value);
+  const $res = document.getElementById("dfgResult");
+
+  if (!U || !V || !P) return ($res.textContent = "—");
+
+  const dfg = (U * V) / P;
+
+  $res.textContent = dfg.toFixed(1) + " mL/min";
+}
+
+
+/* ---------- 2) Osmolarité plasmatique ---------- */
+function calcOsm() {
+  const Na = parseFloat(document.getElementById("osmNa").value);
+  const Gly = parseFloat(document.getElementById("osmGly").value);
+  const Urea = parseFloat(document.getElementById("osmUrea").value);
+  const $res = document.getElementById("osmResult");
+
+  if (!Na || !Gly || !Urea) return ($res.textContent = "—");
+
+  const osm = 2 * Na + (Gly * 18) / 1 + Urea; // Gly (g/L) convertie en mg/dL ×1/18
+
+  $res.textContent = osm.toFixed(0) + " mOsm/L";
+}
+
+
+/* ---------- 3) Eau intracellulaire ---------- */
+function calcICW() {
+  const Na = parseFloat(document.getElementById("icwNa").value);
+  const poids = parseFloat(document.getElementById("icwPoids").value);
+  const $res = document.getElementById("icwResult");
+
+  if (!Na || !poids) return ($res.textContent = "—");
+
+  const icw = 0.4 * poids * (140 / Na - 1);
+
+  $res.textContent = icw.toFixed(1) + " L";
+}
+
+
+/* ---------- 4) Eau extracellulaire ---------- */
+function calcECW() {
+  const Na = parseFloat(document.getElementById("ecwNa").value);
+  const poids = parseFloat(document.getElementById("ecwPoids").value);
+  const $res = document.getElementById("ecwResult");
+
+  if (!Na || !poids) return ($res.textContent = "—");
+
+  const ecw = 0.2 * poids * (140 / Na - 1);
+
+  $res.textContent = ecw.toFixed(1) + " L";
+}
+
+
+/* ---------- 5) Sodium corrigé ---------- */
+function calcNaCorr() {
+  const Na = parseFloat(document.getElementById("naCorrNa").value);
+  const Gly = parseFloat(document.getElementById("naCorrGly").value);
+  const $res = document.getElementById("naCorrResult");
+
+  if (!Na || !Gly) return ($res.textContent = "—");
+
+  const naCorr = Na + 1.6 * (Gly - 1);
+
+  $res.textContent = naCorr.toFixed(1) + " mmol/L";
+}
+
+
+/* ---------- 6) Calcium corrigé ---------- */
+function calcCaCorr() {
+  const Ca = parseFloat(document.getElementById("caTot").value);
+  const Alb = parseFloat(document.getElementById("alb").value);
+  const Prot = parseFloat(document.getElementById("prot").value);
+  const $res = document.getElementById("caCorrResult");
+
+  if (!Ca) return ($res.textContent = "—");
+
+  let CaCorr = null;
+
+  if (Alb) {
+    CaCorr = Ca + 0.02 * (40 - Alb);
+  } else if (Prot) {
+    CaCorr = Ca + 0.01 * (75 - Prot);
+  }
+
+  if (CaCorr === null) return ($res.textContent = "—");
+
+  $res.textContent = CaCorr.toFixed(2) + " mmol/L";
+}
+
+
+/* ---------- 7) CVVH — Fraction de filtration ---------- */
+function calcCVVH() {
+  const Qs = parseFloat(document.getElementById("cvvhQs").value);
+  const Hte = parseFloat(document.getElementById("cvvhHte").value);
+  const Qf = parseFloat(document.getElementById("cvvhQf").value);
+  const $res = document.getElementById("cvvhResult");
+
+  if (!Qs || !Hte || !Qf) return ($res.textContent = "—");
+
+  const Qplasma = Qs * (1 - Hte / 100);
+
+  const FFplasma = (Qf / Qplasma) * 100;
+  const FFsang = (Qf / Qs) * 100;
+
+  $res.textContent =
+    FFplasma.toFixed(1) +
+    "% plasma (N < 25%) — " +
+    FFsang.toFixed(1) +
+    "% sang (N < 20%)";
+}
+
 
 /* ====================================================================
    RÉANIMATION – PRESCRIPTIONS POST-OP (page directe)
