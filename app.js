@@ -5609,13 +5609,13 @@ function renderReanFormulesMetabolique() {
         <form class="form" oninput="calcDFG()">
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-            <label>U (mmol/L)</label>
+            <label>Créat. urinaire (mmol/L)</label>
             <input id="dfgU" type="number" step="0.1" style="width:70px;">
 
-            <label>V (mL/min)</label>
+            <label>Volume des 24h (mL)</label>
             <input id="dfgV" type="number" step="0.1" style="width:70px;">
 
-            <label>P (mmol/L)</label>
+            <label>Créat. plasmatique (µmol/L)</label>
             <input id="dfgP" type="number" step="0.01" style="width:70px;">
 
             <span>=</span>
@@ -5652,47 +5652,49 @@ function renderReanFormulesMetabolique() {
 
     /* ---------- 3) Déficit/Excès eau intracellulaire ---------- */
     {
-      titre: "Eau intracellulaire (ICW)",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
-        <form class="form" oninput="calcICW()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+  titre: "Variation de volume intra-cellulaire (ICW)",
+  sousTitreEncadre: "",
+  html: `
+    <div style="height:6px;"></div>
+    <form class="form" oninput="calcICW()">
+      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+      
+        <label>Na (mmol/L)</label>
+        <input id="icwNa" type="number" step="1" style="width:70px;">
 
-            <label>Na (mmol/L)</label>
-            <input id="icwNa" type="number" step="1" style="width:70px;">
+        <label>Poids (kg)</label>
+        <input id="icwPoids" type="number" step="0.1" style="width:70px;">
 
-            <label>Poids (kg)</label>
-            <input id="icwPoids" type="number" step="0.1" style="width:70px;">
+        <span>=</span>
+        <span id="icwResult" style="font-weight:bold;">—</span>
 
-            <span>=</span>
-            <span id="icwResult" style="font-weight:bold;">—</span>
-          </div>
-        </form>
-      `,
-    },
+      </div>
+    </form>
+  `,
+},
 
     /* ---------- 4) Déficit/Excès eau extracellulaire ---------- */
     {
-      titre: "Eau extracellulaire (ECW)",
-      sousTitreEncadre: "",
-      html: `
-        <div style="height:6px;"></div>
-        <form class="form" oninput="calcECW()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+  titre: "Variation de volume plasmatique (Hte)",
+  sousTitreEncadre: "",
+  html: `
+    <div style="height:6px;"></div>
+    <form class="form" oninput="calcPV()">
+      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-            <label>Na (mmol/L)</label>
-            <input id="ecwNa" type="number" step="1" style="width:70px;">
+        <label>Hte initial (%)</label>
+        <input id="pvH0" type="number" step="0.1" style="width:70px;">
 
-            <label>Poids (kg)</label>
-            <input id="ecwPoids" type="number" step="0.1" style="width:70px;">
+        <label>Hte actuel (%)</label>
+        <input id="pvH1" type="number" step="0.1" style="width:70px;">
 
-            <span>=</span>
-            <span id="ecwResult" style="font-weight:bold;">—</span>
-          </div>
-        </form>
-      `,
-    },
+        <span>=</span>
+        <span id="pvResult" style="font-weight:bold;">—</span>
+
+      </div>
+    </form>
+  `,
+},
 
     /* ---------- 5) Sodium corrigé ---------- */
     {
@@ -5783,14 +5785,18 @@ function renderReanFormulesMetabolique() {
 
 /* ---------- 1) DFG = U × V / P ---------- */
 function calcDFG() {
-  const U = parseFloat(document.getElementById("dfgU").value);
-  const V = parseFloat(document.getElementById("dfgV").value);
-  const P = parseFloat(document.getElementById("dfgP").value);
+  const U = parseFloat(document.getElementById("dfgU").value);       // mmol/L
+  const V = parseFloat(document.getElementById("dfgV").value);       // mL sur 24h
+  const P = parseFloat(document.getElementById("dfgP").value);       // µmol/L
   const $res = document.getElementById("dfgResult");
 
-  if (!U || !V || !P) return ($res.textContent = "—");
+  if (!U || !V || !P) {
+    $res.textContent = "—";
+    return;
+  }
 
-  const dfg = (U * V) / P;
+  // DFG = (U × V × 1000) / (1440 × P)
+  const dfg = (U * V * 1000) / (1440 * P);
 
   $res.textContent = dfg.toFixed(1) + " mL/min";
 }
@@ -5826,16 +5832,16 @@ function calcICW() {
 
 
 /* ---------- 4) Eau extracellulaire ---------- */
-function calcECW() {
-  const Na = parseFloat(document.getElementById("ecwNa").value);
-  const poids = parseFloat(document.getElementById("ecwPoids").value);
-  const $res = document.getElementById("ecwResult");
+function calcPV() {
+  const H0 = parseFloat(document.getElementById("pvH0").value);
+  const H1 = parseFloat(document.getElementById("pvH1").value);
+  const $res = document.getElementById("pvResult");
 
-  if (!Na || !poids) return ($res.textContent = "—");
+  if (!H0 || !H1) return ($res.textContent = "—");
 
-  const ecw = 0.2 * poids * (140 / Na - 1);
+  const delta = ((H0 - H1) / H1) * 100;
 
-  $res.textContent = ecw.toFixed(1) + " L";
+  $res.textContent = delta.toFixed(1) + " %";
 }
 
 
