@@ -5433,18 +5433,75 @@ function calcNOCompact() {
   $res.textContent = debitNO.toFixed(3) + " L/min";
 }
 
-
 function renderReanFormulesCardio() {
   const encadres = [
     {
-      titre: "Cardio-vasculaire",
+      titre: "Débit cardiaque échographique",
+      sousTitreEncadre: "",
       html: `
-        <ul>
-          <li><strong>Débit cardiaque échographique</strong></li>
-          <li><strong>Résistances vasculaires pulmonaires</strong></li>
-          <li><strong>Masse sanguine :</strong><br>
-              Masse sanguine (mL) = (100 – Ht %) × 0,7 × poids (kg)</li>
-        </ul>
+        <form class="form" oninput="calcDCEcho()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Diamètre CCVG</label>
+            <input id="dcDiam" type="number" step="0.1" style="width:70px;"> mm
+
+            <label>ITV CCVG</label>
+            <input id="dcITV" type="number" step="0.1" style="width:70px;"> cm
+
+            <label>FC</label>
+            <input id="dcFC" type="number" style="width:70px;"> /min
+
+            <span>=</span>
+            <span id="dcResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+    {
+      titre: "Résistances vasculaires pulmonaires",
+      sousTitreEncadre: "",
+      html: `
+        <form class="form" oninput="calcPVR()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>PAPm</label>
+            <input id="pvrPAPm" type="number" step="0.1" style="width:70px;"> mmHg
+
+            <label>PAPO</label>
+            <input id="pvrPOAP" type="number" step="0.1" style="width:70px;"> mmHg
+
+            <label>DC</label>
+            <input id="pvrDC" type="number" step="0.1" style="width:70px;"> L/min
+
+            <span>=</span>
+            <span id="pvrResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
+      `,
+    },
+    {
+      titre: "DO₂ (apport en O₂)",
+      sousTitreEncadre: "",
+      html: `
+        <form class="form" oninput="calcDO2()">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+            <label>Hb</label>
+            <input id="doHb" type="number" step="0.1" style="width:70px;"> g/dL
+
+            <label>SaO₂</label>
+            <input id="doSaO2" type="number" step="0.01" style="width:70px;" placeholder="0.97">
+
+            <label>PaO₂</label>
+            <input id="doPaO2" type="number" step="1" style="width:70px;"> mmHg
+
+            <label>DC</label>
+            <input id="doDC" type="number" step="0.1" style="width:70px;"> L/min
+
+            <span>=</span>
+            <span id="doResult" style="font-weight:bold;">—</span>
+          </div>
+        </form>
       `,
     },
   ];
@@ -5452,12 +5509,91 @@ function renderReanFormulesCardio() {
   renderInterventionPage({
     titre: "Formules",
     image: "formules.png",
-    sousTitre: "Cardio-vasculaire",
+    sousTitre: "Cardio-vasculaires",
     encadres,
   });
 }
 
-// --- Formules – Métabolique
+/* ---------- Logique des 3 formules cardio-vasculaires ---------- */
+
+// 1) Débit cardiaque échographique (ITV CCVG + diamètre CCVG + FC)
+function calcDCEcho() {
+  const Dmm = parseFloat(document.getElementById("dcDiam").value);
+  const ITV = parseFloat(document.getElementById("dcITV").value);
+  const FC = parseFloat(document.getElementById("dcFC").value);
+  const $res = document.getElementById("dcResult");
+
+  if (!Dmm || !ITV || !FC) {
+    $res.textContent = "—";
+    return;
+  }
+
+  // Convertir diamètre mm → cm
+  const Dcm = Dmm / 10;
+
+  // Surface CCVG = π × (D/2)^2 (cm²)
+  const surface = Math.PI * Math.pow(Dcm / 2, 2);
+
+  // Volume d'éjection systolique (mL) : surface (cm²) × ITV (cm) = cm³ ≈ mL
+  const VES = surface * ITV;
+
+  // Débit cardiaque = VES × FC / 1000 → L/min
+  const DC = (VES * FC) / 1000;
+
+  $res.textContent = DC.toFixed(2) + " L/min";
+}
+
+// 2) Résistances vasculaires pulmonaires (Wood et dyn·s·cm⁻⁵)
+function calcPVR() {
+  const PAPm = parseFloat(document.getElementById("pvrPAPm").value);
+  const POAP = parseFloat(document.getElementById("pvrPOAP").value);
+  const DC = parseFloat(document.getElementById("pvrDC").value);
+  const $res = document.getElementById("pvrResult");
+
+  if (!PAPm || !POAP || !DC) {
+    $res.textContent = "—";
+    return;
+  }
+
+  const gradient = PAPm - POAP;
+
+  if (gradient <= 0 || DC <= 0) {
+    $res.textContent = "—";
+    return;
+  }
+
+  // RVP en unités Wood
+  const wood = gradient / DC;
+
+  // Conversion en dyn·s·cm⁻⁵
+  const dynes = wood * 80;
+
+  $res.textContent =
+    wood.toFixed(2) + " UW (" + dynes.toFixed(0) + " dyn·s·cm⁻⁵)";
+}
+
+// 3) DO₂ (apport d'oxygène, mL/min)
+function calcDO2() {
+  const Hb = parseFloat(document.getElementById("doHb").value);
+  const SaO2 = parseFloat(document.getElementById("doSaO2").value);
+  const PaO2 = parseFloat(document.getElementById("doPaO2").value);
+  const DC = parseFloat(document.getElementById("doDC").value);
+  const $res = document.getElementById("doResult");
+
+  if (!Hb || !SaO2 || !PaO2 || !DC) {
+    $res.textContent = "—";
+    return;
+  }
+
+  // Contenu artériel en O2 (CaO2, mL O2/dL)
+  // CaO2 = 1.34×Hb×SaO2 + 0.0031×PaO2
+  const CaO2 = 1.34 * Hb * SaO2 + 0.0031 * PaO2;
+
+  // DO2 = DC (L/min) × CaO2 (mL/dL) × 10 (dL/L) → mL/min
+  const DO2 = DC * CaO2 * 10;
+
+  $res.textContent = DO2.toFixed(0) + " mL/min";
+}
 
 function renderReanFormulesMetabolique() {
   const encadres = [
