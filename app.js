@@ -7988,11 +7988,11 @@ function renderReanAntibiotherapieMenu() {
       <h2>Antibiothérapie en Réanimation</h2>
       <img src="img/antibiotherapie.png" alt="Antibiothérapie en réanimation">
       <div class="grid">
-        <button class="btn" onclick="renderProbaMenu()">Probabiliste</button>
-        <button class="btn" onclick="renderAdapteeMenu()">Adaptée</button>
-        <button class="btn" onclick="renderDureesForm()">Durée</button>
-        <button class="btn" onclick="renderReinForm()">Adaptation rénale</button>
-        <button class="btn" onclick="renderModalitesForm()">Modalités</button>
+        <button class="btn" onclick="renderProbaMenu()">Antibiothérapie probabiliste</button>
+        <button class="btn" onclick="renderAdapteeMenu()">Traitement des BMR et BHRe</button>
+        <button class="btn" onclick="renderDureesForm()">Durée d'antibiothérapie</button>
+        <button class="btn" onclick="renderReinForm()">Adaptation posologique à la fonction rénale</button>
+        <button class="btn" onclick="renderModalitesForm()">Modalités d'administration des antibiotiques</button>
       </div>
       <div id="atb-section-root" style="margin-top:16px;"></div>
     </section>
