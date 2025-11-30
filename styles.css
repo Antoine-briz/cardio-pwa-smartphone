@@ -1292,3 +1292,23 @@ body.theme-light .header-title {
   color: #000000 !important;
 }
 
+/* =========================================================
+   Texte des résultats — page Antibioprophylaxie
+   ========================================================= */
+
+/* Thème sombre → texte blanc */
+body:not(.theme-light) .page-antibiopro .info-content,
+body:not(.theme-light) .page-antibiopro .info-content *,
+body:not(.theme-light) .page-antibiopro .result,
+body:not(.theme-light) .page-antibiopro .result * {
+  color: #ffffff !important;
+}
+
+/* Thème clair → texte noir */
+body.theme-light .page-antibiopro .info-content,
+body.theme-light .page-antibiopro .info-content *,
+body.theme-light .page-antibiopro .result,
+body.theme-light .page-antibiopro .result * {
+  color: #000000 !important;
+}
+
