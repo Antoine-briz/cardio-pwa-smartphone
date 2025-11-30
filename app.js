@@ -5313,8 +5313,8 @@ function renderReanFormulesVentilation() {
       <option value="F">F</option>
     </select>
 
-    <label>Taille</label>
-    <input id="vtTaille" type="number" min="120" max="230" style="width:70px;"> cm
+    <label>Taille (cm)</label>
+    <input id="vtTaille" type="number" min="120" max="230" style="width:70px;"> 
 
     <span>=</span>
     <span id="vtResult" style="font-weight:bold;">—</span>
@@ -5331,14 +5331,14 @@ function renderReanFormulesVentilation() {
         <div style="height:6px;"></div>
   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-    <label>PaCO₂</label>
+    <label>PaCO₂ (mmHg)</label>
     <input id="evPaCO2" type="number" step="0.1" style="width:70px;">
 
-    <label>EtCO₂</label>
+    <label>EtCO₂ (mmHg)</label>
     <input id="evEtCO2" type="number" step="0.1" style="width:70px;">
 
-    <label>VT</label>
-    <input id="evVt" type="number" step="1" style="width:70px;"> mL
+    <label>VT (mL)</label>
+    <input id="evVt" type="number" step="1" style="width:70px;"> 
 
     <span>=</span>
     <span id="evResult" style="font-weight:bold;">—</span>
@@ -5355,14 +5355,14 @@ function renderReanFormulesVentilation() {
         <div style="height:6px;"></div>
   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-    <label>[NO] bouteil.</label>
+    <label>[NO] bouteille (ppm)</label>
     <input id="noBottle" type="number" min="1" max="5000" style="width:70px;">
 
-    <label>[NO] pat.</label>
+    <label>[NO] souhaité patient (ppm)</label>
     <input id="noPatient" type="number" min="1" max="200" style="width:70px;">
 
-    <label>VM</label>
-    <input id="noVM" type="number" step="0.1" min="1" max="20" style="width:70px;"> L/min
+    <label>VM (L/min)</label>
+    <input id="noVM" type="number" step="0.1" min="1" max="20" style="width:70px;">
 
     <span>=</span>
     <span id="noResult" style="font-weight:bold;">—</span>
@@ -5440,6 +5440,7 @@ function renderReanFormulesCardio() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcDCEcho()">
+        <div style="height:6px;"></div>
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
             <label>Diamètre CCVG</label>
@@ -5462,6 +5463,7 @@ function renderReanFormulesCardio() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcPVR()">
+        <div style="height:6px;"></div>
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
             <label>PAPm</label>
@@ -5484,19 +5486,20 @@ function renderReanFormulesCardio() {
       sousTitreEncadre: "",
       html: `
         <form class="form" oninput="calcDO2()">
+        <div style="height:6px;"></div>
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-            <label>Hb</label>
-            <input id="doHb" type="number" step="0.1" style="width:70px;"> g/dL
+            <label>Hb (g/dL)</label>
+            <input id="doHb" type="number" step="0.1" style="width:70px;">
 
-            <label>SaO₂</label>
+            <label>SaO₂ (%)</label>
             <input id="doSaO2" type="number" step="0.01" style="width:70px;" placeholder="0.97">
 
-            <label>PaO₂</label>
-            <input id="doPaO2" type="number" step="1" style="width:70px;"> mmHg
+            <label>PaO₂ (mmHg) </label>
+            <input id="doPaO2" type="number" step="1" style="width:70px;">
 
-            <label>DC</label>
-            <input id="doDC" type="number" step="0.1" style="width:70px;"> L/min
+            <label>DC (L/min)</label>
+            <input id="doDC" type="number" step="0.1" style="width:70px;">
 
             <span>=</span>
             <span id="doResult" style="font-weight:bold;">—</span>
