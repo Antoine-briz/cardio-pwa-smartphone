@@ -156,9 +156,9 @@ const routes = {
   // Réanimation
   "#/reanimation": renderReanMenu,
   "#/reanimation/formules": renderReanFormulesMenu,
-  "/reanimation/formules/ventilation": renderFormuleVentilation,
-"/reanimation/formules/hemodynamique": renderFormuleHemodynamique,
-"/reanimation/formules/metabolique": renderFormuleMetabolique,
+  "/reanimation/formules/ventilation": renderReanFormulesVentilation,
+"/reanimation/formules/hemodynamique": renderReanFormulesCardio,
+"/reanimation/formules/metabolique": renderReanFormulesMetabolique,
   "#/reanimation/prescriptions": renderReanPrescriptionsPostOp,
   "#/reanimation/saignements": renderReanSaignementsPostOp,
   "#/reanimation/fa": renderReanFAPostOp,
@@ -5275,137 +5275,196 @@ function renderReanMenu() {
 
 function renderReanFormulesMenu() {
   $app.innerHTML = `
-    ${sectionHeader("Formules", "formules.png")}
+    <section>
 
-    <div class="grid">
-      <button class="btn" onclick="location.hash = '#/reanimation/formules/ventilation'">
-        Ventilation
-      </button>
+      ${sectionHeader("Formules", "formules.png")}
 
-      <button class="btn" onclick="location.hash = '#/reanimation/formules/hemodynamique'">
-        Hémodynamique
-      </button>
+      <div class="grid">
+        <button class="btn" onclick="renderReanFormulesVentilation()">
+          Ventilation
+        </button>
 
-      <button class="btn" onclick="location.hash = '#/reanimation/formules/metabolique'">
-        Métabolique
-      </button>
-    </div>
+        <button class="btn" onclick="renderReanFormulesCardio()">
+          Cardio-vasculaire
+        </button>
+
+        <button class="btn" onclick="renderReanFormulesMetabolique()">
+          Métabolique
+        </button>
+      </div>
+
+    </section>
   `;
 }
 
-// --- Formules – Ventilation
-function renderFormuleVentilation() {
-  $app.innerHTML = `
-    ${sectionHeader("Formules – Ventilation", "formules.png")}
+function renderReanFormulesVentilation() {
+  const encadres = [
+    {
+      titre: "Volume courant 6 mL/kg",
+      sousTitreEncadre: "",
+      html: `
+        <form class="form" onsubmit="calcVT6(); return false;">
+          <div class="row">
+            <div>
+              <label for="vtSexe">Sexe</label>
+              <select id="vtSexe">
+                <option value="H">Homme</option>
+                <option value="F">Femme</option>
+              </select>
+            </div>
+            <div>
+              <label for="vtTaille">Taille (cm)</label>
+              <input id="vtTaille" type="number" min="120" max="230" placeholder="175">
+            </div>
+          </div>
 
-    <div class="card">
-      <h3>Volume courant 6 mL/kg</h3>
-      <div class="content">
-        <label>Sexe :</label>
-        <select id="vtSexe">
-          <option value="H">Homme</option>
-          <option value="F">Femme</option>
-        </select>
+          <button class="btn" type="submit">Calculer</button>
 
-        <label>Taille (cm) :</label>
-        <input type="number" id="vtTaille" placeholder="175">
+          <p id="vtResult"></p>
+        </form>
+      `,
+    },
 
-        <button class="btn" onclick="calcVT6()">Calculer</button>
+    {
+      titre: "Espace mort fonctionnel",
+      sousTitreEncadre: "",
+      html: `
+        <form class="form" onsubmit="calcEspaceMort(); return false;">
+          <div class="row">
+            <div>
+              <label for="evPaCO2">PaCO₂ (mmHg)</label>
+              <input id="evPaCO2" type="number" step="0.1">
+            </div>
+            <div>
+              <label for="evEtCO2">EtCO₂ (mmHg)</label>
+              <input id="evEtCO2" type="number" step="0.1">
+            </div>
+          </div>
 
-        <p id="vtResult"></p>
-      </div>
-    </div>
+          <div>
+            <label for="evVt">Volume courant (mL)</label>
+            <input id="evVt" type="number" step="1">
+          </div>
 
-    <div class="card">
-      <h3>Espace mort fonctionnel</h3>
-      <div class="content">
-        <label>PaCO₂ (mmHg) :</label>
-        <input type="number" id="evPaCO2">
+          <button class="btn" type="submit">Calculer</button>
 
-        <label>EtCO₂ (mmHg) :</label>
-        <input type="number" id="evEtCO2">
+          <p id="evResult"></p>
+        </form>
+      `,
+    },
 
-        <label>Volume courant (mL) :</label>
-        <input type="number" id="evVt">
+    {
+      titre: "Conversion du NO (L/min → ppm)",
+      sousTitreEncadre: "",
+      html: `
+        <form class="form" onsubmit="calcNO(); return false;">
+          <div>
+            <label for="noVM">Volume minute (L/min)</label>
+            <input id="noVM" type="number" step="0.1">
+          </div>
 
-        <button class="btn" onclick="calcEspaceMort()">Calculer</button>
+          <div>
+            <label for="noIE">Rapport I/E</label>
+            <input id="noIE" type="text" placeholder="1/2">
+          </div>
 
-        <p id="evResult"></p>
-      </div>
-    </div>
+          <div>
+            <label for="noDebit">Débit de NO (L/min)</label>
+            <input id="noDebit" type="number" step="0.001">
+          </div>
 
-    <div class="card">
-      <h3>Conversion du NO (L/min → ppm)</h3>
-      <div class="content">
-        <label>Volume minute (L/min) :</label>
-        <input type="number" id="noVM">
+          <button class="btn" type="submit">Calculer</button>
 
-        <label>Rapport I/E :</label>
-        <input type="text" id="noIE" placeholder="1/2">
+          <p id="noResult"></p>
+        </form>
+      `,
+    },
+  ];
 
-        <label>Débit de NO (L/min) :</label>
-        <input type="number" id="noDebit">
-
-        <button class="btn" onclick="calcNO()">Calculer</button>
-
-        <p id="noResult"></p>
-      </div>
-    </div>
-  `;
+  renderInterventionPage({
+    titre: "Formules",
+    image: "formules.png",
+    sousTitre: "Ventilation",
+    encadres,
+  });
 }
 
 function calcVT6() {
   const sexe = document.getElementById("vtSexe").value;
   const taille = parseFloat(document.getElementById("vtTaille").value);
+  const $res = document.getElementById("vtResult");
 
-  if (!taille) return;
+  if (!taille) {
+    $res.textContent = "Merci de renseigner la taille.";
+    return;
+  }
 
-  let poidsIdeal =
-    sexe === "H"
-      ? 50 + 0.91 * (taille - 152.4)
-      : 45.5 + 0.91 * (taille - 152.4);
+  let poidsIdeal;
+  if (sexe === "H") {
+    poidsIdeal = 50 + 0.91 * (taille - 152.4);
+  } else {
+    poidsIdeal = 45.5 + 0.91 * (taille - 152.4);
+  }
 
   const vt = poidsIdeal * 6;
 
-  document.getElementById("vtResult").textContent =
-    "Volume courant = " + vt.toFixed(0) + " mL";
+  $res.textContent =
+    "Volume courant = " + vt.toFixed(0) + " mL (pour " + poidsIdeal.toFixed(1) + " kg idéal)";
 }
 
 function calcEspaceMort() {
   const pa = parseFloat(document.getElementById("evPaCO2").value);
   const et = parseFloat(document.getElementById("evEtCO2").value);
   const vt = parseFloat(document.getElementById("evVt").value);
+  const $res = document.getElementById("evResult");
 
-  if (!pa || !et || !vt) return;
+  if (!pa || !et || !vt) {
+    $res.textContent = "Merci de remplir PaCO₂, EtCO₂ et VT.";
+    return;
+  }
 
   const ratio = (pa - et) / pa;
   const espaceMort = ratio * vt;
 
-  document.getElementById("evResult").textContent =
-    "Espace mort = " + espaceMort.toFixed(0) + " mL";
+  $res.textContent =
+    "Espace mort fonctionnel ≈ " + espaceMort.toFixed(0) + " mL (" + Math.round(ratio * 100) + " % du VT)";
 }
 
 function calcNO() {
-  const VM = parseFloat(document.getElementById("noVM").value);
-  const IE = document.getElementById("noIE").value;
-  const debitNO = parseFloat(document.getElementById("noDebit").value);
+  const VM = parseFloat(document.getElementById("noVM").value);      // L/min
+  const IE = document.getElementById("noIE").value;                  // ex: "1/2"
+  const debitNO = parseFloat(document.getElementById("noDebit").value); // L/min
+  const $res = document.getElementById("noResult");
 
-  if (!VM || !IE || !debitNO) return;
+  if (!VM || !IE || !debitNO) {
+    $res.textContent = "Merci de renseigner VM, I/E et le débit de NO.";
+    return;
+  }
 
-  const [I, E] = IE.split("/").map(Number);
-  if (!I || !E) return;
+  const parts = IE.split("/");
+  const I = parseFloat(parts[0]);
+  const E = parseFloat(parts[1]);
+
+  if (!I || !E) {
+    $res.textContent = "Format du rapport I/E invalide (exemple : 1/2).";
+    return;
+  }
 
   const fracI = I / (I + E);
-  const debitInspiratoire = VM * fracI;
+  const debitInspiratoire = VM * fracI; // L/min
+
+  if (!debitInspiratoire || debitInspiratoire <= 0) {
+    $res.textContent = "Débit inspiratoire invalide.";
+    return;
+  }
 
   const ppm = (debitNO / debitInspiratoire) * 1_000_000;
 
-  document.getElementById("noResult").textContent =
-    "Concentration délivrée = " + ppm.toFixed(0) + " ppm";
+  $res.textContent =
+    "Concentration délivrée ≈ " + ppm.toFixed(0) + " ppm";
 }
 
-
-function renderFormuleHemodynamique() {
+function renderReanFormulesCardio() {
   const encadres = [
     {
       titre: "Cardio-vasculaire",
@@ -5430,7 +5489,7 @@ function renderFormuleHemodynamique() {
 
 // --- Formules – Métabolique
 
-function renderFormuleMetabolique() {
+function renderReanFormulesMetabolique() {
   const encadres = [
     {
       titre: "Métabolique",
