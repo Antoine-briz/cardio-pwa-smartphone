@@ -10637,7 +10637,11 @@ function toggleEtoSub(id) {
 function etoHtmlFonctionVG() {
   return `
     <section class="eto-section">
-      <h4>Fonction systolique VG</h4>
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Fonction systolique VG
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
           FR de surface du VG
@@ -10668,6 +10672,7 @@ function etoHtmlFonctionVG() {
           <span class="eto-icon" onclick="openImg('eto_strain_vg.png')">🖥️</span>
         </li>
       </ul>
+      </div>
     </section>
   `;
 }
@@ -10676,13 +10681,18 @@ function etoHtmlFonctionVG() {
 function etoHtmlVGSegmentaire() {
   return `
     <section class="eto-section">
-      <h4>Cinétique segmentaire du VG</h4>
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Cinétique segmentaire du VG
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
          Cinétique segmentaire: 17 segments du VG (AHA)
           <span class="eto-icon" onclick="openImg('eto_vg_17segments.png')">🖥️</span>
         </li>
       </ul>
+      </div>
     </section>
   `;
 }
@@ -10691,7 +10701,11 @@ function etoHtmlVGSegmentaire() {
 function etoHtmlValveAortique() {
   return `
     <section class="eto-section">
-      <h4>Valve aortique</h4>
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Valve aortique
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
           Morphologie de la valve aortique
@@ -10718,6 +10732,7 @@ function etoHtmlValveAortique() {
           <span class="eto-icon" onclick="openImg('eto_ra.png')">🖥️</span>
         </li>
       </ul>
+      </div>
     </section>
   `;
 }
@@ -10726,7 +10741,11 @@ function etoHtmlValveAortique() {
 function etoHtmlValveMitrale() {
   return `
     <section class="eto-section">
-      <h4>Valve mitrale</h4>
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Valve mitrale
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
           Morphologie de la valve mitrale
@@ -10765,6 +10784,7 @@ function etoHtmlValveMitrale() {
           <span class="eto-icon" onclick="openImg('eto_rm_gradient_surface.png')">🖥️</span>
         </li>
       </ul>
+      </div>
     </section>
   `;
 }
@@ -10773,13 +10793,18 @@ function etoHtmlValveMitrale() {
 function etoHtmlPTDVG() {
   return `
     <section class="eto-section">
-      <h4>Estimation des PTDVG (Fonction diastolique VG)</h4>
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Estimation des PTDVG
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
          Estimation des PTDVG: E/A, E/E', pente E, flux veines pulmoanires
           <span class="eto-icon" onclick="openImg('eto_ptdvg.png')">🖥️</span>
         </li>
       </ul>
+      </div>
     </section>
   `;
 }
@@ -10788,7 +10813,11 @@ function etoHtmlPTDVG() {
 function etoHtmlFonctionVD() {
   return `
     <section class="eto-section">
-      <h4>Fonction systolique VD</h4>
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Fonction systolique du VD
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
           FR de surface du VD
@@ -10815,6 +10844,7 @@ function etoHtmlFonctionVD() {
           <span class="eto-icon" onclick="openImg('eto_tapsepaps.png')">🖥️</span>
         </li>
       </ul>
+      </div>
     </section>
   `;
 }
@@ -10823,7 +10853,11 @@ function etoHtmlFonctionVD() {
 function etoHtmlHTAP() {
   return `
     <section class="eto-section">
-      <h4>HTAP</h4>
+      <h4 class="eto-title" onclick="toggleEtoBlock(this)">
+        Evaluation d'une HTAP
+        <span class="eto-toggle-icon">▸</span>
+      </h4>
+      <div class="eto-block" style="display:none;">
       <ul class="eto-list">
         <li>
           Estimation PAPS sur IT
@@ -10838,8 +10872,26 @@ function etoHtmlHTAP() {
           <span class="eto-icon" onclick="openImg('eto_htap_mesosyst.png')">🖥️</span>
         </li>
       </ul>
+      </div>
     </section>
   `;
+}
+
+function toggleEtoBlock(titleEl) {
+  const section = titleEl.closest(".eto-section");
+  if (!section) return;
+
+  const block = section.querySelector(".eto-block");
+  const icon  = titleEl.querySelector(".eto-toggle-icon");
+
+  if (!block) return;
+
+  const isHidden = block.style.display === "none" || block.style.display === "";
+  block.style.display = isHidden ? "block" : "none";
+
+  if (icon) {
+    icon.textContent = isHidden ? "▾" : "▸";
+  }
 }
 
 /* ============================================================
