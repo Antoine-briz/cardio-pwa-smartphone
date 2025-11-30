@@ -11615,8 +11615,23 @@ function renderCecMenu() {
 function renderPlanning() {
   $app.innerHTML = `
     <section>
-      <h2>Planning médical</h2>
-      <p>Zone à personnaliser (planning de garde, liens vers outils externes, etc.).</p>
+      ${sectionHeader("Planning médical", "planning.png")}
+
+      <div class="card">
+        <p>Le planning médical s’affiche ci-dessous. Vous pouvez le faire défiler ou l’ouvrir dans un nouvel onglet.</p>
+
+        <div style="margin-top:12px; height:70vh;">
+          <iframe
+            src="planning-medical.pdf"
+            style="width:100%; height:100%; border:none;"
+          ></iframe>
+        </div>
+
+        <p style="margin-top:8px; font-size:0.9rem;">
+          Si le document ne s’affiche pas, vous pouvez le
+          <a href="planning-medical.pdf" target="_blank" rel="noopener noreferrer">télécharger ici</a>.
+        </p>
+      </div>
     </section>
   `;
 }
