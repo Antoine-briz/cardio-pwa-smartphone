@@ -1312,3 +1312,15 @@ body.theme-light .page-antibiopro .result * {
   color: #000000 !important;
 }
 
+.eto-title {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eto-toggle-icon {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
