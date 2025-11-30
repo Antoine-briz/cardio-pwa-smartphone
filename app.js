@@ -90,9 +90,9 @@ function renderHome() {
       </div>
 
       <div style="margin-top:24px;">
-        <button class="btn outline" onclick="location.hash = '#/planning'">
-          Planning médical
-        </button>
+        <button class="btn outline" onclick="window.open('files/planning_medical.xlsx')">
+  Planning médical
+</button>
         <button class="btn ghost" style="margin-top:8px;" onclick="location.hash = '#/annuaire'">
           Annuaire
         </button>
