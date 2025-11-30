@@ -5682,11 +5682,11 @@ function renderReanFormulesMetabolique() {
     <form class="form" oninput="calcPV()">
       <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-        <label>Hte initial (%)</label>
-        <input id="pvH0" type="number" step="0.1" style="width:70px;">
+        <label>Poids actuel (kg)</label>
+        <input id="pvPoids" type="number" step="0.1" style="width:70px;">
 
-        <label>Hte actuel (%)</label>
-        <input id="pvH1" type="number" step="0.1" style="width:70px;">
+        <label>Hématocrite (%)</label>
+        <input id="pvHte" type="number" step="0.1" style="width:70px;">
 
         <span>=</span>
         <span id="pvResult" style="font-weight:bold;">—</span>
@@ -5749,22 +5749,26 @@ function renderReanFormulesMetabolique() {
       sousTitreEncadre: "",
       html: `
         <div style="height:6px;"></div>
-        <form class="form" oninput="calcCVVH()">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+    <form class="form" oninput="calcCVVH()">
+      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-            <label>Qₛang (mL/min)</label>
-            <input id="cvvhQs" type="number" step="1" style="width:70px;">
+        <label>Qₛang (mL/min)</label>
+        <input id="cvvhQs" type="number" step="1" style="width:70px;">
 
-            <label>Hte (%)</label>
-            <input id="cvvhHte" type="number" step="1" style="width:70px;">
+        <label>Qpré (mL/h)</label>
+        <input id="cvvhQpre" type="number" step="1" style="width:70px;">
 
-            <label>Qf (mL/min)</label>
-            <input id="cvvhQf" type="number" step="0.1" style="width:70px;">
+        <label>Qpost (mL/h)</label>
+        <input id="cvvhQpost" type="number" step="1" style="width:70px;">
 
-            <span>=</span>
-            <span id="cvvhResult" style="font-weight:bold;">—</span>
-          </div>
-        </form>
+        <label>Pertes (mL/h)</label>
+        <input id="cvvhPerte" type="number" step="1" style="width:70px;">
+
+        <span>=</span>
+        <span id="cvvhResult" style="font-weight:bold;">—</span>
+
+      </div>
+    </form>
       `,
     },
   ];
@@ -5833,15 +5837,30 @@ function calcICW() {
 
 /* ---------- 4) Eau extracellulaire ---------- */
 function calcPV() {
-  const H0 = parseFloat(document.getElementById("pvH0").value);
-  const H1 = parseFloat(document.getElementById("pvH1").value);
+  const poids = parseFloat(document.getElementById("pvPoids").value);
+  const HtePct = parseFloat(document.getElementById("pvHte").value);
   const $res = document.getElementById("pvResult");
 
-  if (!H0 || !H1) return ($res.textContent = "—");
+  if (!poids || !HtePct && HtePct !== 0) {
+    $res.textContent = "—";
+    return;
+  }
 
-  const delta = ((H0 - H1) / H1) * 100;
+  // Hématocrite en fraction (0–1)
+  const Hte = HtePct / 100;
 
-  $res.textContent = delta.toFixed(1) + " %";
+  // Variation de volume plasmatique
+  // = 20% × poids × (Hte / 0,45 − 1)
+  const delta = 0.2 * poids * (Hte / 0.45 - 1);
+
+  let suffixe = " L";
+  if (delta > 0) {
+    suffixe += " (excès)";
+  } else if (delta < 0) {
+    suffixe += " (déficit)";
+  }
+
+  $res.textContent = delta.toFixed(1) + suffixe;
 }
 
 
@@ -5884,23 +5903,31 @@ function calcCaCorr() {
 
 /* ---------- 7) CVVH — Fraction de filtration ---------- */
 function calcCVVH() {
-  const Qs = parseFloat(document.getElementById("cvvhQs").value);
-  const Hte = parseFloat(document.getElementById("cvvhHte").value);
-  const Qf = parseFloat(document.getElementById("cvvhQf").value);
+  const QsMin = parseFloat(document.getElementById("cvvhQs").value);      // mL/min
+  const Qpre = parseFloat(document.getElementById("cvvhQpre").value);     // mL/h
+  const Qpost = parseFloat(document.getElementById("cvvhQpost").value);   // mL/h
+  const Pertes = parseFloat(document.getElementById("cvvhPerte").value);  // mL/h
   const $res = document.getElementById("cvvhResult");
 
-  if (!Qs || !Hte || !Qf) return ($res.textContent = "—");
+  if (!QsMin || (!Qpre && Qpre !== 0) || (!Qpost && Qpost !== 0) || (!Pertes && Pertes !== 0)) {
+    $res.textContent = "—";
+    return;
+  }
 
-  const Qplasma = Qs * (1 - Hte / 100);
+  // Conversion Qsang en mL/h
+  const Qs_h = QsMin * 60;
 
-  const FFplasma = (Qf / Qplasma) * 100;
-  const FFsang = (Qf / Qs) * 100;
+  const numerateur = Qpre + Qpost + Pertes;
+  const denominateur = Qs_h + Qpre;
 
-  $res.textContent =
-    FFplasma.toFixed(1) +
-    "% plasma (N < 25%) — " +
-    FFsang.toFixed(1) +
-    "% sang (N < 20%)";
+  if (denominateur <= 0) {
+    $res.textContent = "—";
+    return;
+  }
+
+  const FF = (numerateur / denominateur) * 100;
+
+  $res.textContent = FF.toFixed(1) + " % (N < 25%)";
 }
 
 
