@@ -5303,25 +5303,22 @@ function renderReanFormulesVentilation() {
       titre: "Volume courant 6 mL/kg",
       sousTitreEncadre: "",
       html: `
-        <form class="form" onsubmit="calcVT6(); return false;">
-          <div class="row">
-            <div>
-              <label for="vtSexe">Sexe</label>
-              <select id="vtSexe">
-                <option value="H">Homme</option>
-                <option value="F">Femme</option>
-              </select>
-            </div>
-            <div>
-              <label for="vtTaille">Taille (cm)</label>
-              <input id="vtTaille" type="number" min="120" max="230" placeholder="175">
-            </div>
-          </div>
+        <form class="form" oninput="calcVT6Compact()">
+  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-          <button class="btn" type="submit">Calculer</button>
+    <label>Sexe</label>
+    <select id="vtSexe" style="width:70px;">
+      <option value="H">H</option>
+      <option value="F">F</option>
+    </select>
 
-          <p id="vtResult"></p>
-        </form>
+    <label>Taille</label>
+    <input id="vtTaille" type="number" min="120" max="230" style="width:70px;"> cm
+
+    <span>=</span>
+    <span id="vtResult" style="font-weight:bold;">—</span>
+  </div>
+</form>
       `,
     },
 
@@ -5329,54 +5326,45 @@ function renderReanFormulesVentilation() {
       titre: "Espace mort fonctionnel",
       sousTitreEncadre: "",
       html: `
-        <form class="form" onsubmit="calcEspaceMort(); return false;">
-          <div class="row">
-            <div>
-              <label for="evPaCO2">PaCO₂ (mmHg)</label>
-              <input id="evPaCO2" type="number" step="0.1">
-            </div>
-            <div>
-              <label for="evEtCO2">EtCO₂ (mmHg)</label>
-              <input id="evEtCO2" type="number" step="0.1">
-            </div>
-          </div>
+        <form class="form" oninput="calcEspaceMortCompact()">
+  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-          <div>
-            <label for="evVt">Volume courant (mL)</label>
-            <input id="evVt" type="number" step="1">
-          </div>
+    <label>PaCO₂</label>
+    <input id="evPaCO2" type="number" step="0.1" style="width:70px;">
 
-          <button class="btn" type="submit">Calculer</button>
+    <label>EtCO₂</label>
+    <input id="evEtCO2" type="number" step="0.1" style="width:70px;">
 
-          <p id="evResult"></p>
-        </form>
+    <label>VT</label>
+    <input id="evVt" type="number" step="1" style="width:70px;"> mL
+
+    <span>=</span>
+    <span id="evResult" style="font-weight:bold;">—</span>
+  </div>
+</form>
       `,
     },
 
     {
-      titre: "Conversion du NO (L/min → ppm)",
+      titre: "Conversion du NO (ppm en L/min)",
       sousTitreEncadre: "",
       html: `
-        <form class="form" onsubmit="calcNO(); return false;">
-          <div>
-            <label for="noVM">Volume minute (L/min)</label>
-            <input id="noVM" type="number" step="0.1">
-          </div>
+        <form class="form" oninput="calcNOCompact()">
+  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-          <div>
-            <label for="noIE">Rapport I/E</label>
-            <input id="noIE" type="text" placeholder="1/2">
-          </div>
+    <label>[NO] bouteil.</label>
+    <input id="noBottle" type="number" min="1" max="5000" style="width:70px;">
 
-          <div>
-            <label for="noDebit">Débit de NO (L/min)</label>
-            <input id="noDebit" type="number" step="0.001">
-          </div>
+    <label>[NO] pat.</label>
+    <input id="noPatient" type="number" min="1" max="200" style="width:70px;">
 
-          <button class="btn" type="submit">Calculer</button>
+    <label>VM</label>
+    <input id="noVM" type="number" step="0.1" min="1" max="20" style="width:70px;"> L/min
 
-          <p id="noResult"></p>
-        </form>
+    <span>=</span>
+    <span id="noResult" style="font-weight:bold;">—</span>
+  </div>
+</form>
       `,
     },
   ];
@@ -5389,80 +5377,59 @@ function renderReanFormulesVentilation() {
   });
 }
 
-function calcVT6() {
+function calcVT6Compact() {
   const sexe = document.getElementById("vtSexe").value;
   const taille = parseFloat(document.getElementById("vtTaille").value);
   const $res = document.getElementById("vtResult");
 
   if (!taille) {
-    $res.textContent = "Merci de renseigner la taille.";
+    $res.textContent = "—";
     return;
   }
 
-  let poidsIdeal;
-  if (sexe === "H") {
-    poidsIdeal = 50 + 0.91 * (taille - 152.4);
-  } else {
-    poidsIdeal = 45.5 + 0.91 * (taille - 152.4);
-  }
+  let poidsIdeal =
+    sexe === "H"
+      ? 50 + 0.91 * (taille - 152.4)
+      : 45.5 + 0.91 * (taille - 152.4);
 
   const vt = poidsIdeal * 6;
 
-  $res.textContent =
-    "Volume courant = " + vt.toFixed(0) + " mL (pour " + poidsIdeal.toFixed(1) + " kg idéal)";
+  $res.textContent = vt.toFixed(0) + " mL";
 }
 
-function calcEspaceMort() {
+function calcEspaceMortCompact() {
   const pa = parseFloat(document.getElementById("evPaCO2").value);
   const et = parseFloat(document.getElementById("evEtCO2").value);
   const vt = parseFloat(document.getElementById("evVt").value);
   const $res = document.getElementById("evResult");
 
   if (!pa || !et || !vt) {
-    $res.textContent = "Merci de remplir PaCO₂, EtCO₂ et VT.";
+    $res.textContent = "—";
     return;
   }
 
   const ratio = (pa - et) / pa;
   const espaceMort = ratio * vt;
 
-  $res.textContent =
-    "Espace mort fonctionnel ≈ " + espaceMort.toFixed(0) + " mL (" + Math.round(ratio * 100) + " % du VT)";
+  $res.textContent = espaceMort.toFixed(0) + " mL";
 }
 
-function calcNO() {
-  const VM = parseFloat(document.getElementById("noVM").value);      // L/min
-  const IE = document.getElementById("noIE").value;                  // ex: "1/2"
-  const debitNO = parseFloat(document.getElementById("noDebit").value); // L/min
+function calcNOCompact() {
+  const bottle = parseFloat(document.getElementById("noBottle").value);
+  const patient = parseFloat(document.getElementById("noPatient").value);
+  const VM = parseFloat(document.getElementById("noVM").value);
   const $res = document.getElementById("noResult");
 
-  if (!VM || !IE || !debitNO) {
-    $res.textContent = "Merci de renseigner VM, I/E et le débit de NO.";
+  if (!bottle || !patient || !VM) {
+    $res.textContent = "—";
     return;
   }
 
-  const parts = IE.split("/");
-  const I = parseFloat(parts[0]);
-  const E = parseFloat(parts[1]);
+  const debitNO = (patient * VM) / bottle;
 
-  if (!I || !E) {
-    $res.textContent = "Format du rapport I/E invalide (exemple : 1/2).";
-    return;
-  }
-
-  const fracI = I / (I + E);
-  const debitInspiratoire = VM * fracI; // L/min
-
-  if (!debitInspiratoire || debitInspiratoire <= 0) {
-    $res.textContent = "Débit inspiratoire invalide.";
-    return;
-  }
-
-  const ppm = (debitNO / debitInspiratoire) * 1_000_000;
-
-  $res.textContent =
-    "Concentration délivrée ≈ " + ppm.toFixed(0) + " ppm";
+  $res.textContent = debitNO.toFixed(3) + " L/min";
 }
+
 
 function renderReanFormulesCardio() {
   const encadres = [
