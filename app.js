@@ -122,7 +122,7 @@ function renderAnesthMenu() {
           Antibioprophylaxie
         </button>
         <button class="btn" onclick="location.hash = '#/anesthesie/chir-cec'">
-          Chirurgies cardiaques sous CEC
+          Chirurgies cardiaques
         </button>
         <button class="btn" onclick="location.hash = '#/anesthesie/cardio-struct'">
           Cardiologie structurelle et rythmologie
@@ -470,7 +470,7 @@ function renderAnesthChirCecMenu() {
     <section>
       ${sectionHeader("Chirurgie cardiaque sous CEC", "chircec.png")}
 
-      <h3>Chirurgies programmées</h3>
+      <h3>Chirurgies programmées sous CEC</h3>
       <div class="grid">
         <button class="btn" onclick="renderInterventionPontages()">
           Pontages coronaires
