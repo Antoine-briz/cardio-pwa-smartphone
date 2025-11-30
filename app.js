@@ -5443,14 +5443,14 @@ function renderReanFormulesCardio() {
         <div style="height:6px;"></div>
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-            <label>Diamètre CCVG</label>
-            <input id="dcDiam" type="number" step="0.1" style="width:70px;"> mm
+            <label>Diamètre CCVG (mm)</label>
+            <input id="dcDiam" type="number" step="0.1" style="width:70px;"> 
 
-            <label>ITV CCVG</label>
-            <input id="dcITV" type="number" step="0.1" style="width:70px;"> cm
+            <label>ITV CCVG (cm)</label>
+            <input id="dcITV" type="number" step="0.1" style="width:70px;"> 
 
-            <label>FC</label>
-            <input id="dcFC" type="number" style="width:70px;"> /min
+            <label>FC (/min)</label>
+            <input id="dcFC" type="number" style="width:70px;"> 
 
             <span>=</span>
             <span id="dcResult" style="font-weight:bold;">—</span>
@@ -5466,14 +5466,14 @@ function renderReanFormulesCardio() {
         <div style="height:6px;"></div>
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
 
-            <label>PAPm</label>
-            <input id="pvrPAPm" type="number" step="0.1" style="width:70px;"> mmHg
+            <label>PAPm (mmHg)</label>
+            <input id="pvrPAPm" type="number" step="0.1" style="width:70px;">
 
-            <label>PAPO</label>
-            <input id="pvrPOAP" type="number" step="0.1" style="width:70px;"> mmHg
+            <label>PAPO (mmHg)</label>
+            <input id="pvrPOAP" type="number" step="0.1" style="width:70px;">
 
-            <label>DC</label>
-            <input id="pvrDC" type="number" step="0.1" style="width:70px;"> L/min
+            <label>DC (L/min)</label>
+            <input id="pvrDC" type="number" step="0.1" style="width:70px;">
 
             <span>=</span>
             <span id="pvrResult" style="font-weight:bold;">—</span>
@@ -5492,7 +5492,7 @@ function renderReanFormulesCardio() {
             <label>Hb (g/dL)</label>
             <input id="doHb" type="number" step="0.1" style="width:70px;">
 
-            <label>SaO₂ (%)</label>
+            <label>SaO₂</label>
             <input id="doSaO2" type="number" step="0.01" style="width:70px;" placeholder="0.97">
 
             <label>PaO₂ (mmHg) </label>
