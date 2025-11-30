@@ -1337,11 +1337,36 @@ body.theme-light .page-antibiopro .result * {
 }
 
 .annuaire-table th {
-  background: #f2f2f2;
+  background: #f2f2f2;      /* tu gardes le fond clair si tu veux */
+  color: #222;              /* texte foncé, lisible sur fond clair */
   font-weight: bold;
 }
-
 .annuaire-table tr:last-child td {
   border-bottom: none;
+}
+
+/* Ajustement des largeurs de colonnes pour l'annuaire */
+.annuaire-table th:nth-child(1),
+.annuaire-table td:nth-child(1) {
+  width: 35%;            /* Nom + prénom sur 2 lignes */
+  white-space: normal;   /* autorise le retour à la ligne */
+}
+
+.annuaire-table th:nth-child(2),
+.annuaire-table td:nth-child(2) {
+  width: 40%;            /* Poste : plus large */
+  white-space: normal;   /* permet au texte de se casser proprement */
+}
+
+.annuaire-table th:nth-child(3),
+.annuaire-table td:nth-child(3) {
+  width: 25%;            /* Téléphone */
+  white-space: nowrap;   /* garde le numéro sur une seule ligne */
+}
+
+/* Correction couleur en-têtes (clair/sombre) */
+.annuaire-table th {
+  background: #f2f2f2;
+  color: #222;           /* lisible sur fond clair même en thème sombre */
 }
 
