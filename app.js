@@ -11830,6 +11830,16 @@ function renderAnnuaire() {
   });
 }
 
+document.addEventListener("click", (e) => {
+  if (e.target.id === "back-button") {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      renderHome(); // ou ta fonction d'accueil
+    }
+  }
+});
+
 
 // =====================================================================
 //  PAGE 404
