@@ -139,7 +139,26 @@ function renderAnesthMenu() {
 }
 
 // Lance tout après chargement du DOM
-document.addEventListener("DOMContentLoaded", initTheme);
+// Lance tout après chargement du DOM
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialisation du thème
+  initTheme();
+
+  // Gestion du bouton "Retour"
+  const backBtn = document.getElementById("back-button");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      if (window.history.length > 1) {
+        // On a un historique : on revient en arrière
+        window.history.back();
+      } else {
+        // Pas d’historique utile : on revient à l’accueil
+        window.location.hash = "#/";
+      }
+    });
+  }
+});
+
 
 const routes = {
   "#/": renderHome,
