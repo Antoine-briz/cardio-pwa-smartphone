@@ -1549,3 +1549,19 @@ fieldset {
 .header-text {
   text-align: center;
 }
+
+/* ============================================
+   ANTIBIOTHÉRAPIE ADAPTÉE → Texte blanc en thème sombre
+   (mais ne pas modifier l’intérieur des tableaux)
+=============================================== */
+[data-theme="dark"] .antibio-adaptee-container .card,
+[data-theme="dark"] .antibio-adaptee-container .card *:not(table):not(td):not(th),
+[data-theme="dark"] .antibio-adaptee-container .info-block,
+[data-theme="dark"] .antibio-adaptee-container .info-block *:not(table):not(td):not(th),
+[data-theme="dark"] .antibio-adaptee-container .abx-block,
+[data-theme="dark"] .antibio-adaptee-container .abx-block *:not(table):not(td):not(th),
+[data-theme="dark"] .antibio-adaptee-container details,
+[data-theme="dark"] .antibio-adaptee-container details *:not(table):not(td):not(th),
+[data-theme="dark"] .antibio-adaptee-container summary {
+    color: #ffffff !important;
+}
