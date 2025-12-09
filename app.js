@@ -68,9 +68,6 @@ function initTheme() {
 function renderHome() {
   $app.innerHTML = `
     <section class="home">
-      <div class="hero">
-        <img src="img/titre2.png" alt="Titre" class="menu-title" />
-      </div>
 
       <div class="grid">
         <div class="card" onclick="location.hash = '#/anesthesie'">
