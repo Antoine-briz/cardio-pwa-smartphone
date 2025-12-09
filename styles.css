@@ -1414,3 +1414,73 @@ body.theme-light .page-antibiopro .result * {
 .back-btn:hover {
   opacity: 0.85;
 }
+
+
+/* ===== Logos du header ===== */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Le titre reste centré */
+  position: relative;
+  padding: 0.75rem 1rem;
+}
+
+/* Conteneurs des logos */
+.header-logo-left,
+.header-logo-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header-logo-left {
+  left: 0.5rem;
+}
+
+.header-logo-right {
+  right: 0.5rem;
+}
+
+/* Taille réduite des logos pour ne pas augmenter le header */
+.header-logo-left img,
+.header-logo-right img {
+  height: 80px;      /* Ajuste si tu veux plus petit/grand */
+  width: auto;
+  opacity: 0.9;
+}
+
+/* Texte centré */
+.header-text {
+  text-align: center;
+  flex: none;
+}
+
+.header-title {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.header-subtitle {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+
+/* Bandeau titre juste sous le header */
+.title-strip {
+  margin: 0;              /* supprime tout espace au-dessus */
+  padding: 0;             /* supprime le padding éventuel */
+  width: 100vw;           /* largeur totale du viewport */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;     /* astuce pour casser les marges du container */
+  margin-right: -50vw;    /* et assurer un full-width réel */
+}
+
+.title-strip-img {
+  width: 100%;
+  height: auto;
+  display: block;         /* supprime l'espace blanc sous l'image */
+   margin-bottom: 1rem;   /* ← espace remis sous l'image */
+}
