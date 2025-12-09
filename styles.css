@@ -1484,3 +1484,20 @@ body.theme-light .page-antibiopro .result * {
   display: block;         /* supprime l'espace blanc sous l'image */
    margin-bottom: 1rem;   /* ← espace remis sous l'image */
 }
+
+/* ============================================
+   Thème sombre – Cartes d'antibiothérapie adaptée
+   Texte blanc partout sauf dans les tableaux
+===============================================*/
+
+/* Textes généraux dans les cartes */
+[data-theme="dark"] .antibio-adaptee .card,
+[data-theme="dark"] .antibio-adaptee .card * {
+  color: #ffffff !important;
+}
+
+/* MAIS on exclut les tableaux, qui doivent rester noir sur fond blanc */
+[data-theme="dark"] .antibio-adaptee table,
+[data-theme="dark"] .antibio-adaptee table * {
+  color: #000000 !important;
+}
