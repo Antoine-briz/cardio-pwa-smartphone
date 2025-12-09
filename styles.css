@@ -1530,19 +1530,21 @@ fieldset {
   text-align: center;
 }
 
-/* ============================================
-   ANTIBIOTHÉRAPIE ADAPTÉE → Texte blanc en thème sombre
-   (mais ne pas modifier l’intérieur des tableaux)
-=============================================== */
-[data-theme="dark"] .antibio-adaptee-container .card,
-[data-theme="dark"] .antibio-adaptee-container .card *:not(table):not(td):not(th),
-[data-theme="dark"] .antibio-adaptee-container .info-block,
-[data-theme="dark"] .antibio-adaptee-container .info-block *:not(table):not(td):not(th),
-[data-theme="dark"] .antibio-adaptee-container .abx-block,
-[data-theme="dark"] .antibio-adaptee-container .abx-block *:not(table):not(td):not(th),
-[data-theme="dark"] .antibio-adaptee-container details,
-[data-theme="dark"] .antibio-adaptee-container details *:not(table):not(td):not(th),
-[data-theme="dark"] .antibio-adaptee-container summary {
-    color: #ffffff !important;
+/* ===========================================
+   ANTIBIOTHÉRAPIE ADAPTÉE – pages SARM / BLSE / Pyo...
+   =========================================== */
+
+/* Thème sombre : texte des encadrés en blanc,
+   MAIS on laisse les tableaux en texte foncé sur fond blanc */
+[data-theme="dark"] .bact-page .info-card,
+[data-theme="dark"] .bact-page .info-card *:not(table):not(th):not(td) {
+  color: #f9fafb !important;
 }
 
+/* Tableaux : toujours texte foncé sur fond blanc dans les pages bactérie */
+.bact-page .info-card table,
+.bact-page .info-card table th,
+.bact-page .info-card table td {
+  color: #111827 !important;
+  background-color: #ffffff !important;
+}
