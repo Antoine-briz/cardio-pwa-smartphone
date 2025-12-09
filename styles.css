@@ -1524,26 +1524,6 @@ fieldset {
   justify-content: center;
 }
 
-/* Logos repositionnés correctement */
-.header-logo {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  max-height: 60%;    /* empêche de dépasser */
-  height: auto;
-  width: auto;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-/* Logo gauche et logo droite */
-.header-logo-left {
-  left: 12px;
-}
-
-.header-logo-right {
-  right: 12px;
-}
 
 /* Titre toujours centré visuellement */
 .header-text {
@@ -1566,16 +1546,3 @@ fieldset {
     color: #ffffff !important;
 }
 
-.title-strip {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-.title-strip-img {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  border-radius: 0 !important;
-}
