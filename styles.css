@@ -1565,3 +1565,17 @@ fieldset {
 [data-theme="dark"] .antibio-adaptee-container summary {
     color: #ffffff !important;
 }
+
+.title-strip {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.title-strip-img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0 !important;
+}
