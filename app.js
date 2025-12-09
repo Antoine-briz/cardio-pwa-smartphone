@@ -111,7 +111,6 @@ function renderAnesthMenu() {
     <section>
       <div class="hero">
         <img src="img/titre3.png" alt="Protocoles d’anesthésie" />
-        <h2>Protocoles d’anesthésie</h2>
       </div>
 
       <div class="grid">
@@ -5183,7 +5182,6 @@ function renderReanMenu() {
     <section>
       <div class="hero">
         <img src="img/titre4.png" alt="Réanimation" />
-        <h2>Protocoles de réanimation</h2>
       </div>
 
       <div class="grid">
