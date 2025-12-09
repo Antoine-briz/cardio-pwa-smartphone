@@ -8008,10 +8008,6 @@ function renderAdapteeMenu() {
   appContainer.appendChild(container); // Insère le contenu dans #app
 }
 
-
-
-function renderDureesForm() {
-  // ======================= Données – listes =======================
   const INFECTIONS = {
     "Pneumonies": ["Communautaire", "PAVM", "Nécrose/abcès", "Empyème pleural"],
     "Infections urinaires": ["Cystite", "Pyélonéphrite", "IU masculine"],
@@ -8038,6 +8034,9 @@ function renderDureesForm() {
   };
 
   const GROUPES_BACT = Object.keys(BACTERIES);
+
+function renderDureesForm() {
+  // ======================= Données – listes =======================
 
   // ======================= UI =======================
   $app.innerHTML = `
