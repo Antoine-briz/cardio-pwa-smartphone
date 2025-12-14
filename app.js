@@ -93,6 +93,9 @@ function renderHome() {
         <button class="btn ghost" style="margin-top:8px;" onclick="location.hash = '#/annuaire'">
           Annuaire
         </button>
+        <button class="btn ghost" onclick="location.hash = '#/codes'">
+          Codes d’accès
+        </button>
       </div>
     </section>
   `;
