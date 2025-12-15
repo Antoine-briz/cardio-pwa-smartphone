@@ -560,13 +560,14 @@ function rvCheck(id, label) {
 }
 
 function rvImg(src, alt) {
+  // Affichage en overlay via openPopup (comme ETO / hépatite)
   return `
     <div class="mini-figure" style="margin-top:.5rem;">
       <img
-        src="img/${src}"
+        src="./img/${src}"
         alt="${alt}"
-        style="max-width:220px;width:100%;height:auto;cursor:pointer;"
-        onclick="(window.openPopup ? openPopup(this.src) : window.open(this.src,'_blank'))"
+        style="max-width:220px; width:100%; height:auto; cursor:pointer;"
+        onclick="openPopup(this.src)"
       >
     </div>
   `;
@@ -922,9 +923,7 @@ function renderInterventionRadioVascAbdo() {
     `;
     if (pos === "Décubitus latéral" || pos === "Décubitus ventral") {
       mon = `
-        <div>Scope ECG 5 branches, SpO2, PNI, EtCO2</div>
-        <div>PNI, IOT, EtCO2</div>
-        <div>BIS, TOF</div>
+        <div>Scope ECG 5 branches, SpO2, PNI, IOT/EtCO2, BIS, TOF</div>
         <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
       `;
     }
@@ -932,34 +931,78 @@ function renderInterventionRadioVascAbdo() {
 
     // Anesthésie (issu du tableau)
     let an = `
-      <div><strong>Protocole d’anesthésie :</strong> Sédation par AIVOC de Propofol/Rémifentanil</div>
+      <div><strong>Protocole d’anesthésie :</strong> Sédation par AIVOC de Rémifentanil</div>
       <div>Décubitus dorsal</div>
       <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
     `;
     if (pos === "Décubitus latéral") {
-      an = `
-        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
-        <div>Induction AIVOC Propofol/Rémifentanil</div>
-        <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
-        <div>IOT sélective par sonde double lumière</div>
-        ${rvImg("uniplum1.png","Gestion de l’intubation")}
-        <div style="margin-top:.5rem;">Gestion de la ventilation pulmonaire associée</div>
-        ${rvImg("uniplum2.png","Gestion de la ventilation")}
-        <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
-      `;
-    }
-    if (pos === "Décubitus ventral") {
-      an = `
-        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
-        <div>Induction AIVOC Propofol/Rémifentanil</div>
-        <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
-        <div>IOT par sonde mono-lumière</div>
-        <div style="margin-top:.5rem;">Procédure de décubitus ventral</div>
-        ${rvImg("vdp.png","Décubitus ventral")}
-        <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
-      `;
-    }
-    document.getElementById("abAn").innerHTML = an;
+  an = `
+    <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+    <div>Induction AIVOC Propofol/Rémifentanil</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
+
+    <div>
+      Intubation par sonde double lumière :
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum1.png')">
+        Gestion de l’intubation (clicable)
+      </a>,
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum2.png')">
+        gestion de la ventilation uni-pulmonaire
+      </a>
+    </div>
+
+    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+  `;
+}
+if (pos === "Décubitus latéral") {
+  an = `
+    <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+    <div>Induction AIVOC Propofol/Rémifentanil</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
+
+    <div>
+      Intubation par sonde double lumière :
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum1.png')">
+        Gestion de l’intubation 🖼️️
+      </a>,
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/uniplum2.png')">
+        Gestion ventilation uni-pulmonaire 🖼️️
+      </a>
+    </div>
+
+    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+  `;
+}
+
+if (pos === "Décubitus ventral") {
+  an = `
+    <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+    <div>Induction AIVOC Propofol/Rémifentanil</div>
+    <div>Curarisation par curare antagonisable (Rocuronium 0,6-1,2mg/kg)</div>
+    <div>IOT par sonde mono-lumière</div>
+
+    <div>
+      Procédure de décubitus ventral :
+      <a href="javascript:void(0)"
+         class="inline-img-link"
+         onclick="openPopup('./img/vdp.png')">
+        Décubitus ventral 🖼️️
+      </a>
+    </div>
+
+    <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan +/- Profenid</div>
+  `;
+}
+
+document.getElementById("abAn").innerHTML = an;
 
     // Antibioprophylaxie (issu du tableau + XXX)
     let abx = "Céfazoline 2g puis 1g toutes les 4h IVSE.";
@@ -987,7 +1030,20 @@ function renderInterventionRadioVascTIPS() {
       ouvert: true,
       html: `
         <div class="info-content">
-          <div>(Aucune sélection)</div>
+          <div style="margin-bottom:.5rem;">
+            <strong>Gravité du patient :</strong> <em>(sélection unique)</em>
+          </div>
+
+          ${rvRadio("tipsGravite", "A froid", "A froid", true)}
+          ${rvRadio("tipsGravite", "Choc hémorragique", "Choc hémorragique")}
+
+          <div style="margin-top:.75rem;">
+            ${rvCheck("tipsIMC", "IMC &gt; 50 kg/m2")}
+          </div>
+
+          <div style="margin-top:.5rem;">
+            ${rvCheck("tipsAllergie", "Allergie aux bêta-lactamines")}
+          </div>
         </div>
       `
     },
@@ -1051,13 +1107,6 @@ function renderInterventionRadioVascBiliaire() {
         <div class="info-content">
           ${rvCheck("bilIMC","IMC &gt; 50 kg/m2")}
           ${rvCheck("bilAllergie","Allergie aux bêta-lactamines")}
-          <div style="margin-top:.5rem;">
-            <div><strong>Gestion des traitements :</strong></div>
-            <ul>
-              <li>Poursuite Kardégic</li>
-              <li>Arrêt anti-P2Y12</li>
-              <li>Arrêt anticoagulants</li>
-            </ul>
           </div>
         </div>
       `
@@ -1085,8 +1134,7 @@ function renderInterventionRadioVascBiliaire() {
       titre: "Monitorage",
       html: `
         <div class="info-content">
-          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2</div>
-          <div>BIS, TOF</div>
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
           <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
         </div>
       `
