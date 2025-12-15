@@ -595,15 +595,22 @@ function renderInterventionRadioVascFAV() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-      html: `
-        <div class="info-content">
-          <ul>
-            <li>Procédure possible si :</li>
-            <li>Plaquettes &gt; 50 G/L</li>
-            <li>TP &gt; 50%</li>
-          </ul>
-        </div>
-      `
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
     },
     {
       titre: "Monitorage",
@@ -681,15 +688,22 @@ function renderInterventionRadioVascMI() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-      html: `
-        <div class="info-content">
-          <ul>
-            <li>Procédure possible si :</li>
-            <li>Plaquettes &gt; 50 G/L</li>
-            <li>TP &gt; 50%</li>
-          </ul>
-        </div>
-      `
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12 (sauf geste veineux)</li>
+        <li>Arrêt anticoagulants (sauf geste veineux)</li>
+      </ul>
+    </div>
+  `
     },
     {
       titre: "Monitorage",
@@ -767,15 +781,22 @@ function renderInterventionRadioVascEmbol() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-      html: `
-        <div class="info-content">
-          <ul>
-            <li>Procédure possible si :</li>
-            <li>Plaquettes &gt; 50 G/L</li>
-            <li>TP &gt; 50%</li>
-          </ul>
-        </div>
-      `
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12 (sauf geste veineux)</li>
+        <li>Arrêt anticoagulants (sauf geste veineux)</li>
+      </ul>
+    </div>
+  `
     },
     {
       titre: "Monitorage",
@@ -858,15 +879,22 @@ function renderInterventionRadioVascAbdo() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-      html: `
-        <div class="info-content">
-          <ul>
-            <li>Procédure possible si :</li>
-            <li>Plaquettes &gt; 50 G/L</li>
-            <li>TP &gt; 50%</li>
-          </ul>
-        </div>
-      `
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
     },
     { titre: "Monitorage", html: `<div class="info-content" id="abMon"></div>` },
     { titre: "Anesthésie", html: `<div class="info-content" id="abAn"></div>` },
@@ -965,15 +993,22 @@ function renderInterventionRadioVascTIPS() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-      html: `
-        <div class="info-content">
-          <ul>
-            <li>Procédure possible si :</li>
-            <li>Plaquettes &gt; 50 G/L</li>
-            <li>TP &gt; 50%</li>
-          </ul>
-        </div>
-      `
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
     },
     {
       titre: "Monitorage",
@@ -1029,15 +1064,22 @@ function renderInterventionRadioVascBiliaire() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-      html: `
-        <div class="info-content">
-          <ul>
-            <li>Procédure possible si :</li>
-            <li>Plaquettes &gt; 50 G/L</li>
-            <li>TP &gt; 50%</li>
-          </ul>
-        </div>
-      `
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
     },
     {
       titre: "Monitorage",
@@ -1106,15 +1148,22 @@ function renderInterventionRadioVascNephro() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-      html: `
-        <div class="info-content">
-          <ul>
-            <li>Procédure possible si :</li>
-            <li>Plaquettes &gt; 50 G/L</li>
-            <li>TP &gt; 50%</li>
-          </ul>
-        </div>
-      `
+  html: `
+    <div class="info-content">
+      <div>Procédure possible si:</div>
+      <ul>
+        <li>Plaquettes &gt; 50 G/L</li>
+        <li>TP &gt; 50%</li>
+      </ul>
+
+      <div style="margin-top:.5rem;">Gestion des traitements:</div>
+      <ul>
+        <li>Poursuite Kardégic</li>
+        <li>Arrêt anti-P2Y12</li>
+        <li>Arrêt anticoagulants</li>
+      </ul>
+    </div>
+  `
     },
     {
       titre: "Monitorage",
