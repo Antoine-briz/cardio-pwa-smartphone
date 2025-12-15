@@ -609,8 +609,7 @@ function renderInterventionRadioVascFAV() {
       titre: "Monitorage",
       html: `
         <div class="info-content">
-          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2</div>
-          <div>BIS, TOF</div>
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
           <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
         </div>
       `
@@ -696,8 +695,7 @@ function renderInterventionRadioVascMI() {
       titre: "Monitorage",
       html: `
         <div class="info-content">
-          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2</div>
-          <div>BIS, TOF</div>
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
           <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
         </div>
       `
@@ -783,8 +781,7 @@ function renderInterventionRadioVascEmbol() {
       titre: "Monitorage",
       html: `
         <div class="info-content">
-          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2</div>
-          <div>BIS, TOF</div>
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
           <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
         </div>
       `
@@ -982,8 +979,7 @@ function renderInterventionRadioVascTIPS() {
       titre: "Monitorage",
       html: `
         <div class="info-content">
-          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2</div>
-          <div>BIS, TOF</div>
+          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
           <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
         </div>
       `
