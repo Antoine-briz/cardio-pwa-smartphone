@@ -646,6 +646,8 @@ function renderInterventionRadioVascFAV() {
     encadres,
   });
 
+expandPatientCharacteristics();
+  
   // --- Algorithme ABX (issu des XXX, non affiché) ---
   function compute() {
     const type = document.querySelector("input[name='favType']:checked")?.value || "Sans pose de stent";
@@ -735,6 +737,8 @@ function renderInterventionRadioVascMI() {
     image: "radiovasc.png",
     encadres,
   });
+
+  expandPatientCharacteristics();
 
   function compute() {
     const type = document.querySelector("input[name='miType']:checked")?.value || "Sans pose de stent ou stent nu";
@@ -829,6 +833,8 @@ function renderInterventionRadioVascEmbol() {
     encadres,
   });
 
+  expandPatientCharacteristics();
+  
   function compute() {
     const type = document.querySelector("input[name='embType']:checked")?.value || "Embolisation artérielle";
     const extra = document.getElementById("embExtra");
@@ -909,6 +915,8 @@ function renderInterventionRadioVascAbdo() {
     encadres,
   });
 
+expandPatientCharacteristics();
+  
   function compute() {
     const pos = document.querySelector("input[name='pos']:checked")?.value || "Décubitus dorsal";
     const type = document.querySelector("input[name='abType']:checked")?.value || "Hépatique";
@@ -1097,6 +1105,8 @@ function renderInterventionRadioVascTIPS() {
   });
 }
 
+expandPatientCharacteristics();
+
 // ----- 6) Drainage biliaire percutané -----
 function renderInterventionRadioVascBiliaire() {
   const encadres = [
@@ -1160,6 +1170,8 @@ function renderInterventionRadioVascBiliaire() {
     encadres,
   });
 
+expandPatientCharacteristics();
+  
   function compute() {
     const imc = document.getElementById("bilIMC")?.checked;
     const allergie = document.getElementById("bilAllergie")?.checked;
@@ -1245,6 +1257,8 @@ function renderInterventionRadioVascNephro() {
     encadres,
   });
 
+expandPatientCharacteristics();
+  
   function compute() {
     const imc = document.getElementById("nephIMC")?.checked;
     const allergie = document.getElementById("nephAllergie")?.checked;
