@@ -12533,6 +12533,20 @@ function renderAnnuaire() {
   });
 }
 
+function renderCodesAcces() {
+  $app.innerHTML = `
+    <section>
+      <div class="hero">
+        <h2>Codes d’accès</h2>
+      </div>
+
+      <div class="card">
+        <p>
+          Page « Codes d’accès » à compléter (VPN, logiciels, accès dossiers, etc.).
+        </p>
+      </div>
+    </section>
+  `;
 
 // ============================================================
 //  ACR — Chirurgie cardiaque (version ordinateur)
