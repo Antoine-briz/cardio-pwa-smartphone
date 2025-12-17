@@ -97,6 +97,11 @@ function renderHome() {
           Codes d’accès
         </button>
       </div>
+      <div class="home-emergency">
+        <button class="btn danger" onclick="location.hash = '#/acr'">
+          Arrêt cardio-respiratoire
+        </button>
+      </div>
     </section>
   `;
 }
@@ -12528,6 +12533,239 @@ function renderAnnuaire() {
   });
 }
 
+
+// ============================================================
+//  ACR — Chirurgie cardiaque (version ordinateur)
+// ============================================================
+
+let acrTimerInterval = null;
+let acrStartMs = null;
+let acrLog = []; // { label, wall, chrono }
+
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+function getChronoStr() {
+  if (!acrStartMs) return "00:00";
+  const elapsed = Date.now() - acrStartMs;
+  const totalSec = Math.floor(elapsed / 1000);
+  const mm = Math.floor(totalSec / 60);
+  const ss = totalSec % 60;
+  return `${pad2(mm)}:${pad2(ss)}`;
+}
+
+function getWallTimeStr() {
+  // Heure réelle au moment du clic
+  return new Date().toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
+function acrRenderLiveSynth() {
+  const el = document.getElementById("acr-synth-live");
+  if (!el) return;
+
+  const lines = acrLog
+    .map(e => `• ${e.label} — ${e.wall} (${e.chrono})`)
+    .join("\n");
+
+  el.textContent = lines || "—";
+}
+
+// 🔁 Remplace ta fonction acrAddEvent par celle-ci (ou ajoute l’appel à acrRenderLiveSynth())
+function acrAddEvent(label) {
+  const entry = {
+    label,
+    wall: getWallTimeStr(),
+    chrono: getChronoStr(),
+  };
+  acrLog.push(entry);
+
+  // ✅ met à jour la synthèse “live” dans l’encadré
+  acrRenderLiveSynth();
+}
+
+function acrStartTimer() {
+  // éviter les doublons si on revient sur la page
+  if (acrTimerInterval) clearInterval(acrTimerInterval);
+
+  acrStartMs = Date.now();
+  acrLog = [];
+
+  // Ligne “début de la réanimation” dès l’ouverture
+  acrAddEvent("Début de la réanimation");
+  acrRenderLiveSynth();
+  const chronoEl = document.getElementById("acr-chrono");
+  const tick = () => {
+    if (!chronoEl) return;
+    chronoEl.textContent = getChronoStr();
+  };
+
+  tick();
+  acrTimerInterval = setInterval(tick, 250);
+}
+
+function acrStopTimer() {
+  if (acrTimerInterval) clearInterval(acrTimerInterval);
+  acrTimerInterval = null;
+  acrStartMs = null;
+}
+
+function setAcrTheme(forceLight) {
+  if (forceLight) {
+    document.body.classList.add("acr-force-light");
+  } else {
+    document.body.classList.remove("acr-force-light");
+  }
+}
+
+function openAcrSynthese() {
+  const lines = acrLog
+    .map(e => `• ${e.label} — ${e.wall} (${e.chrono})`)
+    .join("\n");
+
+  const overlay = document.createElement("div");
+  overlay.className = "acr-modal";
+  overlay.innerHTML = `
+    <div class="acr-modal-card" role="dialog" aria-modal="true">
+      <div class="acr-modal-head">
+        <h3>Synthèse</h3>
+        <button class="acr-modal-close" aria-label="Fermer">✖</button>
+      </div>
+      <pre class="acr-modal-body">${lines || "—"}</pre>
+      <div class="acr-modal-actions">
+        <button class="btn ghost" id="acr-close">Fermer</button>
+      </div>
+    </div>
+  `;
+
+  const close = () => overlay.remove();
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector(".acr-modal-close")?.addEventListener("click", close);
+  overlay.querySelector("#acr-close")?.addEventListener("click", close);
+
+  document.body.appendChild(overlay);
+}
+
+function renderAcrChirCardiaque() {
+  acrStopTimer();
+  setAcrTheme(true);   // 🔒 force texte noir sur ACR
+  $app.innerHTML = `
+    <section class="acr5-wrap">
+      <div class="acr5-board">
+
+        <!-- CHRONOMÈTRES -->
+        <div class="acr5-frame f-chrono">
+          <div class="acr5-frame-title">Chronomètre</div>
+          <div class="acr5-frame-body acr5-chrono-body">
+            <div id="acr-chrono" class="acr5-chrono-screen">00:00</div>
+          </div>
+        </div>
+
+        <!-- AIDES -->
+        <div class="acr5-frame f-aides">
+          <div class="acr5-frame-title">Aides</div>
+          <div class="acr5-frame-body acr5-aides-body">
+            <button class="acr5-btn danger" onclick="openImg('aidecognitiveSFAR.png')">
+              Aide cognitive ACR SFAR
+            </button>
+
+            <button class="acr5-btn danger" onclick="openImg('tableauacr.png')">
+              Etiologies ACR<br>Chir. cardiaque
+            </button>
+
+            <div class="acr5-phones">
+              <div><strong>MAR réa :</strong> 27 670</div>
+              <div><strong>MAR USIP :</strong> 28 118</div>
+              <div><strong>MAR bloc :</strong> 27 671</div>
+              <div><strong>Interne chirurgie cardiaque :</strong> 65 645</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYNTHÈSE (LIVE) -->
+        <div class="acr5-frame f-synth">
+          <div class="acr5-frame-title">Synthèse</div>
+          <div class="acr5-frame-body acr5-synth-body">
+            <button class="acr5-btn brown synth-btn" onclick="openAcrSynthese()">
+              Ouvrir en fenêtre
+            </button>
+
+            <!-- ✅ Synthèse en continu -->
+            <pre id="acr-synth-live" class="acr5-synth-live">—</pre>
+          </div>
+        </div>
+
+        <!-- MÉDICAMENTS -->
+        <div class="acr5-frame f-meds">
+          <div class="acr5-frame-title">Médicaments</div>
+          <div class="acr5-frame-subtitle">(Cliquez pour ajouter)</div>
+
+          <div class="acr5-frame-body acr5-meds-grid">
+            <button class="acr5-btn blue" onclick="acrAddEvent('Adrénaline 1 mg IVD')">Adrénaline 1mg IVD</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Cordarone 300 mg IVD')">Cordarone 300mg IVD</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Lidocaïne 1 mg/kg IVL')">Lidocaïne 1 mg/kg IVL</button>
+
+            <button class="acr5-btn blue" onclick="acrAddEvent('Bicar. 4,2% 250 mL')">Bicar. 4,2% 250mL</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('GluCalcium 1 g IVD')">GluCalcium 1g IVD</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Intra lipides 3 mL/kg IVL')">Intra lipides 3 mL/kg IVL</button>
+
+            <button class="acr5-btn blue" onclick="acrAddEvent('Bicar. 8,4% 100 mL')">Bicar. 8,4% 100mL</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Ringer lactate 500 mL')">Ringer lactate 500mL</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Actilyse EP 0,6 mg/kg 15 min')">Actilyse EP 0,6 mg/kg 15min</button>
+          </div>
+        </div>
+
+        <!-- AUTRES -->
+        <div class="acr5-frame f-others">
+          <div class="acr5-frame-title">Autres</div>
+          <div class="acr5-frame-subtitle">(Cliquez pour ajouter)</div>
+
+          <div class="acr5-frame-body acr5-others-body">
+            <button class="acr5-btn other other-cee" onclick="acrAddEvent('CEE 150–200 J')">
+              <img class="acr5-icon" src="img/eclair.png" alt="">
+              <div>
+                <div class="acr5-big">CEE</div>
+                <div class="acr5-small">150-200J</div>
+              </div>
+            </button>
+
+            <button class="acr5-btn other other-intub"
+              onclick="acrAddEvent('Intubation/VM (Vt 6 mL/kg, PEP 5, FR 10, FiO2 100%)')">
+              <img class="acr5-icon" src="img/iot.png" alt="">
+              <div>
+                <div class="acr5-big">Intubation/VM</div>
+                <div class="acr5-small">Vt 6mL/kg · PEP 5 · FR 10/min · FiO2 100%</div>
+              </div>
+            </button>
+
+            <!-- ✅ DERNIER bouton : Départ ECMO + icône ecmova.png -->
+            <button class="acr5-btn other other-ecmo" 
+              onclick="acrAddEvent('Départ ECMO')">
+              <img class="acr5-icon" src="img/ecmova.png" alt="">
+              <div>
+                <div class="acr5-big">Départ ECMO</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" onclick="history.back()">← Retour</button>
+      </div>
+    </section>
+  `;
+
+  acrStartTimer();
+  acrRenderLiveSynth(); // ✅ initialise l’affichage live immédiatement
+}
+
+
 document.addEventListener("click", (e) => {
   if (e.target.id === "back-button") {
     if (window.history.length > 1) {
@@ -12610,6 +12848,8 @@ const routes = {
   // Divers
   "#/planning": renderPlanning,
   "#/annuaire": renderAnnuaire,
+  "#/codes": renderCodesAcces,
+  "#/acr": renderAcrChirCardiaque,
 };
 
 function navigate() {
