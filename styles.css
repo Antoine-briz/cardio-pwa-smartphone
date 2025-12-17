@@ -2006,3 +2006,42 @@ body.acr-force-light .acr5-synth-live {
     font-size: 13px;
   }
 }
+
+/* =========================================================
+   ACR – Correction thème sombre sur smartphone
+   Encadrés clairs + texte noir
+   ========================================================= */
+
+@media (max-width: 820px) {
+
+  /* Fond clair forcé pour les encadrés ACR */
+  body.acr-force-light .acr5-frame {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.15);
+  }
+
+  /* Fond clair pour éléments internes */
+  body.acr-force-light .acr5-frame-body,
+  body.acr-force-light .acr5-phones,
+  body.acr-force-light .acr5-synth-live {
+    background: rgba(0,0,0,0.03) !important;
+  }
+
+  /* Titres d’encadrés bien lisibles */
+  body.acr-force-light .acr5-frame-title {
+    background: rgba(0,0,0,0.05) !important;
+    color: #000 !important;
+  }
+
+  /* Sécurité : texte noir partout dans les cadres */
+  body.acr-force-light .acr5-frame,
+  body.acr-force-light .acr5-frame * {
+    color: #000 !important;
+  }
+
+  /* Boutons restent contrastés */
+  body.acr-force-light .acr5-btn,
+  body.acr-force-light .acr5-btn * {
+    color: #fff !important;
+  }
+}
