@@ -12547,7 +12547,8 @@ function renderCodesAcces() {
       </div>
     </section>
   `;
-
+}
+  
 // ============================================================
 //  ACR — Chirurgie cardiaque (version ordinateur)
 // ============================================================
