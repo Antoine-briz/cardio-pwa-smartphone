@@ -97,6 +97,18 @@ const PRECACHE = [
   "./img/radiovasc.png",
   "./img/vasculaire.png",
 
+   "./img/aidecognitiveSFAR.png",
+  "./img/antibiotherapie2.png",
+  "./img/dv.png",
+  "./img/eclair.png",
+  "./img/ecmova.png",
+  "./img/gestionunipulm.png",
+  "./img/iot.png",
+  "./img/iotdoublelum.png",
+  "./img/logocardio.png",
+  "./img/logosaric.png",
+  "./img/tableauacr.png",
+
   // Excel
   "./files/planning_medical.xlsx",
 ];
