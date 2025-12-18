@@ -2999,12 +2999,12 @@ function renderInterventionPage({ titre, sousTitre = "", encadres, image = null 
       ${encadres
         .map(
           (box) => `
-          <details class="card">
-            <summary><strong>${box.titre}</strong></summary>
-            <div class="card-body">
-              ${box.html}
-            </div>
-          </details>
+          <details class="card" ${box.ouvert ? "open" : ""}>
+        <summary><strong>${box.titre}</strong></summary>
+        <div class="card-body">
+          ${box.html}
+        </div>
+      </details>
         `
         )
         .join("")}
