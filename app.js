@@ -13153,18 +13153,17 @@ function renderAnnuaire() {
   renderInterventionPage({
     titre: "Annuaire",
     sousTitre: "",
+    image: "annuaire.png",
     encadres,
   });
 }
 
 function renderCodesAcces() {
-  $app.innerHTML = `
-    <section>
-      <div class="hero">
-        <h2>Codes d’accès</h2>
-      </div>
-
-      <div class="card">
+  const encadres = [
+    {
+      titre: "Codes d’accès",
+      sousTitreEncadre: "",
+      html: `
         <div style="height:6px;"></div>
 
         <table class="annuaire-table">
@@ -13203,11 +13202,17 @@ function renderCodesAcces() {
             <tr><td>Rez-de-chaussée</td><td>Box 18 (consult cardio med)</td><td>C123</td></tr>
           </tbody>
         </table>
-      </div>
-    </section>
-  `;
-}
+      `,
+    },
+  ];
 
+  renderInterventionPage({
+    titre: "Codes d’accès",
+    sousTitre: "",
+    image: "codes.png",
+    encadres,
+  });
+}
   
 // ============================================================
 //  ACR — Chirurgie cardiaque (version ordinateur)
