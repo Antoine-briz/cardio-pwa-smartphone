@@ -13485,14 +13485,9 @@ function renderAcrChirCardiaque() {
   acrRenderLiveSynth(); // ✅ initialise l’affichage live immédiatement
 }
 
-
 document.addEventListener("click", (e) => {
   if (e.target.id === "back-button") {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      renderHome(); // ou ta fonction d'accueil
-    }
+    window.history.back();
   }
 });
 
