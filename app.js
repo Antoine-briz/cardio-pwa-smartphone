@@ -12909,8 +12909,19 @@ const routes = {
   "#/acr": renderAcrChirCardiaque,
 };
 
+let currentRoute = null;
+
 function navigate() {
   const hash = window.location.hash || "#/";
+
+  // 🔒 Si on QUITTE la page ACR, on nettoie
+  if (currentRoute === "#/acr" && hash !== "#/acr") {
+    disableAcrWakeLock();
+    setAcrTheme(false);
+  }
+
+  currentRoute = hash;
+
   const view = routes[hash];
   if (view) {
     view();
