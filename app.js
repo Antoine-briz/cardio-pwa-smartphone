@@ -1056,11 +1056,11 @@ function renderInterventionRadioVascTIPS() {
             <strong>Gravité du patient :</strong> <em>(sélection unique)</em>
           </div>
 
-          ${rvRadio("tipsGravite", "A froid", "A froid", true)}
-          ${rvRadio("tipsGravite", "Choc hémorragique", "Choc hémorragique")}
+          ${rvRadio("tipsGravite", "afroid", "A froid", true)}
+          ${rvRadio("tipsGravite", "choc", "Choc hémorragique")}
 
           <div style="margin-top:.75rem;">
-            ${rvCheck("tipsIMC", "IMC &gt; 50 kg/m2")}
+            ${rvCheck("tipsIMC", "IMC &gt; 50 kg/m²")}
           </div>
 
           <div style="margin-top:.5rem;">
@@ -1071,55 +1071,127 @@ function renderInterventionRadioVascTIPS() {
     },
     {
       titre: "Hémostase / risque hémorragique",
-  html: `
-    <div class="info-content">
-      <div>Procédure possible si:</div>
-      <ul>
-        <li>Plaquettes &gt; 50 G/L</li>
-        <li>TP &gt; 50%</li>
-      </ul>
+      html: `
+        <div class="info-content">
+          <div>Procédure possible si:</div>
+          <ul>
+            <li>Plaquettes &gt; 50 G/L</li>
+            <li>TP &gt; 50%</li>
+          </ul>
 
-      <div style="margin-top:.5rem;">Gestion des traitements:</div>
-      <ul>
-        <li>Poursuite Kardégic</li>
-        <li>Arrêt anti-P2Y12</li>
-        <li>Arrêt anticoagulants</li>
-      </ul>
-    </div>
-  `
+          <div style="margin-top:.5rem;">Gestion des traitements:</div>
+          <ul>
+            <li>Poursuite Kardégic</li>
+            <li>Arrêt anti-P2Y12</li>
+            <li>Arrêt anticoagulants</li>
+          </ul>
+        </div>
+      `
     },
+
+    // ✅ Monitorage dynamique via compute() (id tipsMonitor)
     {
       titre: "Monitorage",
-      html: `
-        <div class="info-content">
-          <div>Scope ECG 5 branches, SpO2, PNI, EtCO2, BIS, TOF</div>
-          <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
-        </div>
-      `
+      html: `<div class="info-content" id="tipsMonitor"></div>`
     },
+
+    // ✅ Anesthésie dynamique via compute() (id tipsAnesth)
     {
       titre: "Anesthésie",
-      html: `
-        <div class="info-content">
-          <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
-          <div>AIVOC Propofol/Rémifentanil</div>
-          <div>Décubitus dorsal maintenu</div>
-          <div style="margin-top:.5rem;"><strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan</div>
-        </div>
-      `
+      html: `<div class="info-content" id="tipsAnesth"></div>`
     },
-    { titre: "Antibioprophylaxie", html: `<div class="info-content">Pas d’antibioprophylaxie.</div>` }
+
+    // ✅ Antibioprophylaxie dynamique via compute() (id tipsABX)
+    {
+      titre: "Antibioprophylaxie",
+      html: `<div class="info-content" id="tipsABX"></div>`
+    },
   ];
 
   renderInterventionPage({
     titre: "TIPS",
     sousTitre: "",
-    image: "radiovasc.png",
+    image: "radiovasc2.png",
     encadres,
   });
-}
 
-expandPatientCharacteristics();
+  expandPatientCharacteristics();
+
+  function compute() {
+    const gravite =
+      document.querySelector("input[name='tipsGravite']:checked")?.value || "afroid";
+
+    const imc = document.getElementById("tipsIMC")?.checked;
+    const allergie = document.getElementById("tipsAllergie")?.checked;
+
+    const monitor = document.getElementById("tipsMonitor");
+    const anesth = document.getElementById("tipsAnesth");
+    const abx = document.getElementById("tipsABX");
+
+    // Sécurité
+    if (!monitor || !anesth || !abx) return;
+
+    // ---- MONITORAGE ----
+    if (gravite === "choc") {
+      monitor.innerHTML = `
+        <div>Scope ECG 5 branches, SpO₂, PNI, EtCO₂</div>
+        <div>PA invasive</div>
+        <div>BIS, TOF</div>
+        <div style="margin-top:.25rem;">VVP x2 de bon calibre + prolongateur</div>
+      `;
+    } else {
+      monitor.innerHTML = `
+        <div>Scope ECG 5 branches, SpO₂, PNI, EtCO₂</div>
+        <div>BIS, TOF</div>
+        <div style="margin-top:.25rem;">VVP 18G avec prolongateur et octopus</div>
+      `;
+    }
+
+    // ---- ANESTHÉSIE ----
+    if (gravite === "choc") {
+      anesth.innerHTML = `
+        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+        <div>Induction prudente (Etomidate ou équivalent)</div>
+        <div>AIVOC Propofol / Rémifentanil</div>
+        <div>Décubitus dorsal maintenu</div>
+        <div style="margin-top:.5rem;">
+          <strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan
+        </div>
+      `;
+    } else {
+      anesth.innerHTML = `
+        <div><strong>Protocole d’anesthésie :</strong> Anesthésie générale avec IOT</div>
+        <div>AIVOC Propofol / Rémifentanil</div>
+        <div>Décubitus dorsal maintenu</div>
+        <div style="margin-top:.5rem;">
+          <strong>Analgésie post-opératoire :</strong> Paracétamol, Acupan
+        </div>
+      `;
+    }
+
+    // ---- ANTIBIOPROPHYLAXIE (corrigée + IMC/allergie) ----
+    // ⚠️ Ici je te remets une logique cohérente : à adapter si ton PPT impose autre chose.
+    // - À froid : pas d’ATB
+    // - Choc hémorragique : ATB, dose majorée si IMC>50, alternative si allergie
+    let txt = "Pas d’antibioprophylaxie.";
+
+    if (gravite === "choc") {
+      txt = "Ceftriaxone 1 g IVL — dose unique.";
+      if (imc) txt = "Ceftriaxone 2 g IVL — dose unique.";
+      if (allergie) {
+        txt = "Vancomycine 30 mg/kg IVL — dose unique (débuter ~30 min avant).";
+      }
+    }
+
+    abx.innerHTML = txt;
+  }
+
+  document
+    .querySelectorAll("input[name='tipsGravite'], #tipsIMC, #tipsAllergie")
+    .forEach(el => el.addEventListener("change", compute));
+
+  compute();
+}
 
 // ----- 6) Drainage biliaire percutané -----
 function renderInterventionRadioVascBiliaire() {
