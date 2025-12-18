@@ -12674,8 +12674,40 @@ function openAcrSynthese() {
   document.body.appendChild(overlay);
 }
 
+// =========================================================
+// Screen Wake Lock (empêcher veille écran)
+// =========================================================
+let acrWakeLock = null;
+
+async function enableAcrWakeLock() {
+  if ("wakeLock" in navigator) {
+    try {
+      acrWakeLock = await navigator.wakeLock.request("screen");
+      console.log("Wake Lock activé (ACR)");
+    } catch (err) {
+      console.warn("Wake Lock refusé :", err);
+    }
+  }
+}
+
+function disableAcrWakeLock() {
+  if (acrWakeLock) {
+    acrWakeLock.release();
+    acrWakeLock = null;
+    console.log("Wake Lock désactivé");
+  }
+}
+
+/* Sécurité : si l’onglet perd le focus, on réessaie */
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && acrWakeLock) {
+    enableAcrWakeLock();
+  }
+});
+
 function renderAcrChirCardiaque() {
   acrStopTimer();
+  enableAcrWakeLock();
   setAcrTheme(true);   // 🔒 force texte noir sur ACR
   $app.innerHTML = `
     <section class="acr5-wrap">
@@ -12778,8 +12810,11 @@ function renderAcrChirCardiaque() {
       </div>
 
       <div class="actions">
-        <button class="btn ghost" onclick="history.back()">← Retour</button>
-      </div>
+  <button class="btn ghost"
+    onclick="disableAcrWakeLock(); setAcrTheme(false); history.back();">
+    ← Retour
+  </button>
+</div>
     </section>
   `;
 
