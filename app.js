@@ -13209,7 +13209,7 @@ function renderCodesAcces() {
   renderInterventionPage({
     titre: "Codes d’accès",
     sousTitre: "",
-    image: "codes.png",
+    image: "code.png",
     encadres,
   });
 }
