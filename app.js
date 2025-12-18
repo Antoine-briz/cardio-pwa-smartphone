@@ -12730,15 +12730,13 @@ function renderAcrChirCardiaque() {
 
           <div class="acr5-frame-body acr5-meds-grid">
             <button class="acr5-btn blue" onclick="acrAddEvent('Adrénaline 1 mg IVD')">Adrénaline 1mg IVD</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('GluCalcium 1 g IVD')">GluCalcium 1g IVD</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Ringer lactate 500 mL')">Ringer lactate 500mL</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Bicar. 8,4% 100 mL')">Bicar. 8,4% 100mL</button>
+            <button class="acr5-btn blue" onclick="acrAddEvent('Bicar. 4,2% 250 mL')">Bicar. 4,2% 250mL</button>
             <button class="acr5-btn blue" onclick="acrAddEvent('Cordarone 300 mg IVD')">Cordarone 300mg IVD</button>
             <button class="acr5-btn blue" onclick="acrAddEvent('Lidocaïne 1 mg/kg IVL')">Lidocaïne 1 mg/kg IVL</button>
-
-            <button class="acr5-btn blue" onclick="acrAddEvent('Bicar. 4,2% 250 mL')">Bicar. 4,2% 250mL</button>
-            <button class="acr5-btn blue" onclick="acrAddEvent('GluCalcium 1 g IVD')">GluCalcium 1g IVD</button>
             <button class="acr5-btn blue" onclick="acrAddEvent('Intra lipides 3 mL/kg IVL')">Intra lipides 3 mL/kg IVL</button>
-
-            <button class="acr5-btn blue" onclick="acrAddEvent('Bicar. 8,4% 100 mL')">Bicar. 8,4% 100mL</button>
-            <button class="acr5-btn blue" onclick="acrAddEvent('Ringer lactate 500 mL')">Ringer lactate 500mL</button>
             <button class="acr5-btn blue" onclick="acrAddEvent('Actilyse EP 0,6 mg/kg 15 min')">Actilyse EP 0,6 mg/kg 15min</button>
           </div>
         </div>
