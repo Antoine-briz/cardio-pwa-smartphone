@@ -1123,6 +1123,204 @@ function renderInterventionAorteAbdominale() {
   renderSelected();
 }
 
+function renderInterventionMembreInferieur() {
+  // ----------------------------------------------------------
+  // Helpers (identiques aux autres sections)
+  // ----------------------------------------------------------
+  const escapeHtml = (s) =>
+    (s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+
+  const doseSpan = (perKg, unit) =>
+    `<span data-per-kg="${perKg}" data-unit="${unit}"></span>`;
+
+  const mgKg = (perKg) =>
+    `${String(perKg).replace(".", ",")} mg/kg (${doseSpan(perKg, "mg")} mg)`;
+
+  const mgKgH = (perKg) =>
+    `${String(perKg).replace(".", ",")} mg/kg/h (${doseSpan(perKg, "mg/h")} mg/h)`;
+
+  const uiKg = (perKg) =>
+    `${String(perKg).replace(".", ",")} UI/kg (${doseSpan(perKg, "UI")} UI)`;
+
+  const imgLink = (label, file) =>
+    `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
+
+  const imgIcon = (file) =>
+    `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
+
+  function linkifyCf(html) {
+    if (!html) return "";
+
+    // UNIQUEMENT changement des NOMS de fichiers images
+    html = html.replaceAll(
+      "Cf QLB 🖥️",
+      `${imgLink("Cf QLB", "cf-qlb.png")} ${imgIcon("cf-qlb.png")}`
+    );
+    html = html.replaceAll(
+      "Cf TAP-bloc 🖥️",
+      `${imgLink("Cf TAP-bloc", "cf-tap-bloc.png")} ${imgIcon("cf-tap-bloc.png")}`
+    );
+    html = html.replaceAll(
+      "Cf BIIIH 🖥️",
+      `${imgLink("Cf BIIIH", "cf-biiih.png")} ${imgIcon("cf-biiih.png")}`
+    );
+    html = html.replaceAll(
+      "Cf femoral 🖥️",
+      `${imgLink("Cf femoral", "cf-femoral.png")} ${imgIcon("cf-femoral.png")}`
+    );
+    html = html.replaceAll(
+      "Cf obturateur 🖥️",
+      `${imgLink("Cf obturateur", "cf-obturateur.png")} ${imgIcon("cf-obturateur.png")}`
+    );
+    html = html.replaceAll(
+      "Cf canal adducteurs 🖥️",
+      `${imgLink("Cf canal adducteurs", "cf-canal-adducteurs.png")} ${imgIcon(
+        "cf-canal-adducteurs.png"
+      )}`
+    );
+    html = html.replaceAll(
+      "Cf sciatique 🖥️",
+      `${imgLink("Cf sciatique", "cf-sciatique.png")} ${imgIcon("cf-sciatique.png")}`
+    );
+
+    // sécurité si jamais "Cf ..." apparaît sans l’emoji dans le texte
+    html = html.replaceAll("Cf QLB", `${imgLink("Cf QLB", "cf-qlb.png")}`);
+    html = html.replaceAll("Cf TAP-bloc", `${imgLink("Cf TAP-bloc", "cf-tap-bloc.png")}`);
+    html = html.replaceAll("Cf BIIIH", `${imgLink("Cf BIIIH", "cf-biiih.png")}`);
+    html = html.replaceAll("Cf femoral", `${imgLink("Cf femoral", "cf-femoral.png")}`);
+    html = html.replaceAll("Cf obturateur", `${imgLink("Cf obturateur", "cf-obturateur.png")}`);
+    html = html.replaceAll(
+      "Cf canal adducteurs",
+      `${imgLink("Cf canal adducteurs", "cf-canal-adducteurs.png")}`
+    );
+    html = html.replaceAll("Cf sciatique", `${imgLink("Cf sciatique", "cf-sciatique.png")}`);
+
+    return html;
+  }
+
+  // ----------------------------------------------------------
+  // Données – MEMBRE INFÉRIEUR (INCHANGÉES)
+  // ----------------------------------------------------------
+  const MI = {
+    "Pontage artériel du membre inférieur": {
+      gestion:
+        "<strong>Examens complémentaires :</strong><br>- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, TP/TCA, Groupe x2, RAI)<br>- ECG<br><br><strong>Gestion des traitements :</strong><br>- Maintien Kardégic<br>- Arrêt Clopidogrel J-5<br>- Arrêt AOD J-5<br><br><strong>Pré-commande :</strong><br>- 4 CGR",
+      monitorage:
+        "- Scope 5 branches<br>- SpO2<br>- VVP<br>- PNI ou KTa<br>- TOF<br>- BIS",
+      alr:
+        "<strong>Analgésie loco-régionale :</strong><br>- QLB ou TAP-bloc<br>- Bloc fémoral ± obturateur ± sciatique<br><br>- Cf QLB 🖥️<br>- Cf TAP-bloc 🖥️<br>- Cf femoral 🖥️<br>- Cf obturateur 🖥️<br>- Cf sciatique 🖥️",
+      orientation:
+        "<strong>SSPI / USC :</strong><br><br><strong>Surveillance :</strong><br>- Douleur<br>- Ischémie du membre<br>- Saignement<br>- Obj PAS &lt; 160 mmHg",
+      protocoleKind: "mi_standard",
+    },
+
+    "Amputation de membre inférieur": {
+      gestion:
+        "<strong>Examens complémentaires :</strong><br>- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, TP/TCA, Groupe x2, RAI)<br>- ECG<br><br><strong>Pré-commande :</strong><br>- 2 CGR",
+      monitorage:
+        "- Scope 5 branches<br>- SpO2<br>- VVP<br>- PNI<br>- TOF",
+      alr:
+        "<strong>Analgésie loco-régionale :</strong><br>- BIIIH ± sciatique<br><br>- Cf BIIIH 🖥️<br>- Cf sciatique 🖥️",
+      orientation:
+        "<strong>SSPI :</strong><br><br><strong>Surveillance :</strong><br>- Douleur<br>- Saignement<br>- État hémodynamique",
+      protocoleKind: "mi_standard",
+    },
+
+    "Chirurgie distale du membre inférieur": {
+      gestion:
+        "<strong>Examens complémentaires :</strong><br>- Biologie pré-opératoire standard<br>- ECG si terrain<br><br><strong>Pré-commande :</strong><br>- Selon contexte",
+      monitorage:
+        "- Scope standard<br>- SpO2<br>- VVP<br>- PNI",
+      alr:
+        "<strong>Analgésie loco-régionale :</strong><br>- Bloc canal des adducteurs ± sciatique<br><br>- Cf canal adducteurs 🖥️<br>- Cf sciatique 🖥️",
+      orientation:
+        "<strong>SSPI :</strong><br><br><strong>Surveillance :</strong><br>- Douleur<br>- Déficit neurologique",
+      protocoleKind: "mi_standard",
+    },
+  };
+
+  // ----------------------------------------------------------
+  // UI
+  // ----------------------------------------------------------
+  const encadres = [
+    {
+      titre: "Choix de l'intervention",
+      html: `
+        <select id="mi-intervention" class="select">
+          ${Object.keys(MI)
+            .map((k) => `<option value="${k}">${k}</option>`)
+            .join("")}
+        </select>
+      `,
+    },
+    {
+      titre: "Caractéristiques patient",
+      html: `
+        <label>Poids (kg)
+          <input type="number" id="anesth-poids" min="30" max="250" />
+        </label>
+        <label><input type="checkbox" id="mi-induction-risque" /> Induction à risque</label>
+        <label><input type="checkbox" id="mi-sequence-rapide" /> Séquence rapide</label>
+      `,
+    },
+    { titre: "Gestion pré-opératoire", html: `<div id="mi-gestion" class="info-content"></div>` },
+    { titre: "Monitorage/équipement", html: `<div id="mi-monitorage" class="info-content"></div>` },
+    { titre: "Protocole d'anesthésie", html: `<div id="mi-protocole" class="info-content"></div>` },
+    { titre: "Analgésie loco-régionale", html: `<div id="mi-alr" class="info-content"></div>` },
+    { titre: "Orientation post-opératoire", html: `<div id="mi-orientation" class="info-content"></div>` },
+  ];
+
+  renderInterventionPage({
+    titre: "Chirurgie vasculaire : membre inférieur",
+    encadres,
+  });
+
+  // Ouvrir les 2 premiers encadrés
+  document.querySelectorAll("details.card")[0].open = true;
+  document.querySelectorAll("details.card")[1].open = true;
+
+  // ----------------------------------------------------------
+  // Rendu
+  // ----------------------------------------------------------
+  const sel = document.getElementById("mi-intervention");
+  const poids = document.getElementById("anesth-poids");
+
+  function buildProtocole() {
+    return `
+      <strong>Induction :</strong><br>
+      - Propofol ${mgKg(2)} (Etomidate ${mgKg(0.3)} si induction à risque)<br>
+      - Curare standard (Rocuronium ${mgKg(0.6)} / ${mgKg(1.2)} si SR)<br><br>
+
+      <strong>Entretien :</strong><br>
+      - AIVOC Propofol/Rémifentanil<br><br>
+
+      <strong>Anticoagulation :</strong><br>
+      - Héparine ${uiKg(50)} selon geste
+    `;
+  }
+
+  function renderSelected() {
+    const row = MI[sel.value];
+
+    document.getElementById("mi-gestion").innerHTML = linkifyCf(row.gestion);
+    document.getElementById("mi-monitorage").innerHTML = linkifyCf(row.monitorage);
+    document.getElementById("mi-protocole").innerHTML = linkifyCf(buildProtocole());
+    document.getElementById("mi-alr").innerHTML = linkifyCf(row.alr);
+    document.getElementById("mi-orientation").innerHTML = linkifyCf(row.orientation);
+
+    if (typeof setupAnesthGlobalDoseLogic === "function") setupAnesthGlobalDoseLogic();
+    if (poids) poids.dispatchEvent(new Event("input"));
+  }
+
+  sel.addEventListener("change", renderSelected);
+  poids.addEventListener("input", renderSelected);
+
+  renderSelected();
+}
+
 
 
 
