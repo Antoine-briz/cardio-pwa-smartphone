@@ -582,7 +582,7 @@ function renderVasculaireProtocoles() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : Protocoles spécifiques",
+    titre: "Protocoles spécifiques - Vasculaire",
     sousTitre: "",
     image: "vasculaire.png",
     encadres,
@@ -921,7 +921,7 @@ function renderInterventionAorteThoracique() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : aorte thoracique et thoraco-abdominale",
+    titre: "Chirurgies de l'aorte thoracique et thoraco-abdominale",
     sousTitre: "",
     image: "vasculaire.png",
     encadres,
@@ -1091,7 +1091,7 @@ function renderInterventionAorteAbdominale() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : aorte abdominale et artères viscérales",
+    titre: "Chirurgies de l'aorte abdominale et artères viscérales",
     image: "vasculaire.png",
     encadres,
   });
@@ -1285,7 +1285,7 @@ function renderInterventionMembreInferieur() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : membre inférieur",
+    titre: "Chirurgies des membres inférieurs",
     image: "vasculaire.png",
     encadres,
   });
@@ -1481,7 +1481,7 @@ function renderInterventionEndoprothese() {
   ];
 
   renderInterventionPage({
-    titre: "Chirurgie vasculaire : endoprothèses aortiques",
+    titre: "Endoprothèses aortiques",
     sousTitre: "",
     image: "vasculaire.png",
     encadres,
