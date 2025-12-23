@@ -497,17 +497,13 @@ function renderAnesthCardioStructMenu() {
   `;
 }
 
-function renderAnesthVasculaire() {
+function renderAnesthVasculaireMenu() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
     <h2>Chirurgie vasculaire</h2>
 
     <div class="menu-grid">
-
-      <button class="btn-red" onclick="renderVasculaireProtocoles()">
-        Protocoles spécifiques
-      </button>
 
       <button class="btn-blue" onclick="renderInterventionCarotide()">
         Chirurgies de la carotide et des TSA
@@ -529,6 +525,9 @@ function renderAnesthVasculaire() {
         Endoprothèses aortiques
       </button>
 
+<button class="btn-red" onclick="renderVasculaireProtocoles()">
+        Protocoles spécifiques
+      </button>
     </div>
   `;
 }
