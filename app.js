@@ -61,10 +61,8 @@ function initTheme() {
 }
 
 function openPdf(file) {
-  // Si tes PDF sont dans un dossier /pdf, garde "pdf/".
-  // Sinon mets "".
-  const base = "pdf/";
-  window.open(base + encodeURIComponent(file), "_blank");
+  const url = new URL(`files/${file}`, window.location.href);
+  window.open(url.toString(), "_blank");
 }
 
 // =====================================================================
