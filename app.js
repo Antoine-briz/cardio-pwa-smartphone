@@ -592,6 +592,7 @@ function renderVasculaireProtocoles() {
   document.querySelectorAll("details.card").forEach((d) => (d.open = true));
 }
 
+
 function renderInterventionCarotide() {
   // ----------------------------------------------------------
   // Helpers
@@ -856,7 +857,7 @@ function renderInterventionCarotide() {
           <div class="row" id="row-pose-materiel" style="display:none;">
             <label>
               <input type="checkbox" id="vc-pose-materiel" />
-              Pose de matériel : Oui/Non
+              Pose de matériel
             </label>
           </div>
         </div>
@@ -1010,47 +1011,47 @@ function renderInterventionCarotide() {
 
     // Lignes d’hémostase / entretien / objectif TA (présentation “cellule”)
     const heparineCarotide =
-      "Héparine " +
+      "- Héparine " +
       uiKg(50) +
       " avant clampage carotidien, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)";
 
     const heparineTsa =
-      "Héparine " +
+      "- Héparine " +
       uiKg(50) +
       " avant clampage des TSA, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)";
 
     if (row.kind === "TSA_STERNOTOMIE") {
       return (
-        `<strong>Induction:</strong> Anesthésie générale ${hypnotiqueSterno}, ${curare}<br>` +
+        `<strong>Induction:</strong> Anesthésie générale ${hypnotiqueSterno}, ${curare}<br><br>` +
         `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
-        `<strong>Hémostase:</strong> Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
-        `${heparineTsa}<br>` +
-        `Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
         `<strong>Entretien:</strong> AIVOC Propofol/Sufentanil<br><br>` +
+        `<strong>Hémostase:</strong><br> - Exacyl ${mgKg(20)} puis ${mgKgH(2)} IVSE (sauf CI)<br>` +
+        `${heparineTsa}<br>` +
+        ` - Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}<br><br>` +
         `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage des TSA`
       );
     }
 
     if (row.kind === "STTB") {
       return (
-        `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br>` +
+        `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br><br>` +
         `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
         `<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil<br><br>` +
-        `<strong>Anticoagulation:</strong> Héparine ${uiKg(50)}, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)`
+        `<strong>Anticoagulation:</strong><br> - Héparine ${uiKg(50)}, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)`
       );
     }
 
     const withQuantra = row.kind === "CAROTIDE_CLAMP_QUANTRA";
 
     return (
-      `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br>` +
+      `<strong>Induction:</strong> Anesthésie générale ${hypnotique}, ${curare}<br><br>` +
       `<strong>Antibioprophylaxie:</strong> ${atb}<br><br>` +
-      `<strong>Hémostase:</strong> ${heparineCarotide}` +
+      `<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil<br><br>` +
+      `<strong>Hémostase:</strong><br> ${heparineCarotide}` +
       (withQuantra
-        ? `<br>Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}`
+        ? `<br> - Transfusion guidée par le Quantra ${imgLink("Cf algorithme Quantra", "cf-algorithme-quantra.png")}`
         : "") +
       `<br><br>` +
-      `<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil<br><br>` +
       `<strong>Objectif TA:</strong> PAS &gt; 140 mmHg pendant le clampage carotidien`
     );
   }
@@ -1382,12 +1383,12 @@ function renderInterventionAorteThoracique() {
     // sans ajouter de tirets/retours non présents.
     if (type === "ASC_CROSSE_CEC") {
       return (
-        `${inductionText()}<br>` +
+        `${inductionText()}<br><br>` +
         `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
         `<br>` +
         `<strong>Entretien:</strong> <br>` +
-        `AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
-        `Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE <br>` +
+        `- AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
+        `- Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE <br>` +
         `<br>` +
         `<strong>Hémostase: </strong><br>` +
         `- Exacyl <strong>${mgKg(20)}</strong> puis <strong>${mgKgH(2)}</strong> IVSE (sauf CI)<br>` +
@@ -1398,12 +1399,12 @@ function renderInterventionAorteThoracique() {
 
     if (type === "ATA_123_CEC") {
       return (
-        `${inductionText()}<br>` +
+        `${inductionText()}<br><br>` +
         `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
         `<br>` +
         `<strong>Entretien: </strong><br>` +
-        `AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
-        `Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
+        `- AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
+        `- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
         `<br>` +
         `<strong>Hémostase:</strong><br>` +
         `- Exacyl <strong>${mgKg(20)}</strong> puis <strong>${mgKgH(2)}</strong> IVSE (sauf CI)<br>` +
@@ -1418,12 +1419,12 @@ function renderInterventionAorteThoracique() {
 
     // ATA IV sans CEC
     return (
-      `${inductionText()}<br>` +
+      `${inductionText()}<br><br>` +
       `<strong>Antibioprophylaxie:</strong> ${antibioticText()}<br>` +
       `<br>` +
       `<strong>Entretien: </strong><br>` +
-      `AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
-      `Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
+      `- AIVOC Propofol/Sufentanil , Atracurium IVSE<br>` +
+      `- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE. <br>` +
       `<br>` +
       `<strong>Hémostase: </strong><br>` +
       `- Héparine <strong>${uiKg(50)}</strong>, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si &lt; 2h (½ dose 2-4h, 0 &gt; 4h)<br>` +
@@ -1457,6 +1458,7 @@ function renderInterventionAorteThoracique() {
 
   renderSelected();
 }
+
 
 function renderInterventionAorteAbdominale() {
   // ----------------------------------------------------------
@@ -1546,206 +1548,211 @@ function renderInterventionAorteAbdominale() {
   const DATA_RAW = {
     "Anévrysme de l’aorte abdominale (AAA) sous-rénale": {
       gestion: `Examens complémentaires :
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS +/- NIRS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
+<strong>Entretien:</strong>
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+
+<strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra
 
-Objectifs tensionnels: Cf objectifs tensionnels chirurgie aortique`,
-      alr: `TAP-bloc ou QLB
+<strong>Objectifs tensionnels:</strong> Cf objectifs tensionnels chirurgie aortique`,
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
 
 Examens:
-ECG
-Radio de thorax
-Bilan complet à l’admission
+- ECG
+- Radio de thorax
+- Bilan complet à l’admission
 
 Surveillance:
-Saignement
-Ischémie digestive
-Insuffisance rénale
-Douleur`,
+- Saignement
+- Ischémie digestive
+- Insuffisance rénale
+- Douleur`,
     },
 
     "Pontage aorto-bifémoral (carrefour)": {
       gestion: `Examens complémentaires :
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
+<strong>Entretien:</strong>
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+
+<strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
 
 Examens:
-ECG
-Bilan complet à l’admission
+- ECG
+- Bilan complet à l’admission
 
 Surveillance:
-Saignement
-Ischémie digestive
-Insuffisance rénale
-Douleur`,
+- Saignement
+- Ischémie digestive
+- Insuffisance rénale
+- Douleur`,
     },
 
     "Allogreffe de l’aorte abdominale": {
       gestion: `Examens complémentaires :
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
+<strong>Entretien:</strong>
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+
+<strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
 
 Examens:
-ECG
-Bilan complet à l’admission
+- ECG
+- Bilan complet à l’admission
 
 Surveillance:
-Saignement
-Ischémie digestive
-Insuffisance rénale
-Douleur`,
+- Saignement
+- Ischémie digestive
+- Insuffisance rénale
+- Douleur`,
     },
 
     "Syndrome de Nutcracker": {
       gestion: `Examens complémentaires :
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
+<strong>Entretien:</strong>
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+
+<strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
 
 Examens:
-ECG
-Bilan complet à l’admission
+- ECG
+- Bilan complet à l’admission
 
 Surveillance:
-Saignement
-Ischémie digestive
-Insuffisance rénale
-Douleur`,
+- Saignement
+- Ischémie digestive
+- Insuffisance rénale
+- Douleur`,
     },
 
     // ligne “référence” des 3 dernières (contenu identique pour toutes les colonnes)
     "Pontage aorto-mésentérique, ilio-mésentérique": {
       gestion: `Examens complémentaires :
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, TOF, KTa, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC Propofol/Sufentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC Propofol/Sufentanil , Atracurium IVSE
-Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
+<strong>Entretien:</strong>
+- AIVOC Propofol/Sufentanil , Atracurium IVSE
+- Xylocaïne (10mg/mL) + Kétamine (0,5mg/mL S-kéta): Bolus initial : 0,2mL/kg puis 0,15mL/kg/h IVSE
+
+<strong>Hémostase:</strong>
 - Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)
 - Transfusion guidée par le Quantra Cf algorithme Quantra`,
-      alr: `TAP-bloc ou QLB
+      alr: `TAP-bloc ou QLB2 ou Péridurale thoracique
 Cf TAP-bloc 🖥️
 Cf QLB 🖥️`,
       orientation: `USIP/Réa
 
 Examens:
-ECG
-Bilan complet à l’admission
+- ECG
+- Bilan complet à l’admission
 
 Surveillance:
-Saignement
-Ischémie digestive
-Insuffisance rénale
-Douleur`,
+- Saignement
+- Ischémie digestive
+- Insuffisance rénale
+- Douleur`,
     },
 
     // 2 lignes suivantes : cellules vides dans PPT => même contenu que la ligne précédente
@@ -1848,9 +1855,9 @@ Douleur`,
     if (el) el.innerHTML = html || "";
   };
 
-  function nl2br(s) {
-    return escapeHtml(s).replace(/\n/g, "<br>");
-  }
+ function nl2brRaw(s) {
+  return (s ?? "").replace(/\n/g, "<br>");
+}
 
   function applyProtocolConditions(rawText) {
     // 1) Induction à risque
@@ -1897,16 +1904,16 @@ Douleur`,
     const row = DATA[key];
 
     // autres encadrés : texte cellule => nl2br => liens
-    setHtml("vaa-gestion", linkifyImgs(nl2br(row.gestion)));
-    setHtml("vaa-monitorage", linkifyImgs(nl2br(row.monitorage)));
+    setHtml("vaa-gestion", linkifyImgs(nl2brRaw(row.gestion)));
+    setHtml("vaa-monitorage", linkifyImgs(nl2brRaw(row.monitorage)));
 
     // protocole : conditions + calculs/kg + liens images
     const prot = applyProtocolConditions(row.protocole);
-    const protHtml = augmentPerKg(linkifyImgs(nl2br(prot)));
+    const protHtml = augmentPerKg(linkifyImgs(nl2brRaw(prot)));
     setHtml("vaa-protocole", protHtml);
 
-    setHtml("vaa-alr", linkifyImgs(nl2br(row.alr)));
-    setHtml("vaa-orientation", linkifyImgs(nl2br(row.orientation)));
+    setHtml("vaa-alr", linkifyImgs(nl2brRaw(row.alr)));
+    setHtml("vaa-orientation", linkifyImgs(nl2brRaw(row.orientation)));
 
     if (typeof setupAnesthGlobalDoseLogic === "function") setupAnesthGlobalDoseLogic();
     if (poidsInput) poidsInput.dispatchEvent(new Event("input"));
@@ -1993,9 +2000,9 @@ function renderInterventionMembreInferieur() {
     return html;
   }
 
-  function nl2br(s) {
-    return escapeHtml(s ?? "").replace(/\n/g, "<br>");
-  }
+  function nl2brRaw(s) {
+  return (s ?? "").replace(/\n/g, "<br>");
+}
 
   // ----------------------------------------------------------
   // Données (strictement tableau, avec héritage des cellules fusionnées)
@@ -2003,198 +2010,202 @@ function renderInterventionMembreInferieur() {
   const DATA = {
     "Trépied fémoral": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC propofol/rémifentanil
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
-- Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil
+
+<strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
       alr: `Au choix:
-Bloc fémoral ou BIIIH ou QLB
-Cf bloc fémoral 🖥️
+QLB2/3 OU BIIIH + Bloc fémoral
+Cf QLB 🖥️
 Cf BIIIH 🖥️
-Cf QLB 🖥️`,
+Cf bloc fémoral 🖥️`,
       orientation: `SSPI 2h minimum
 
-Examens à l’entrée: ECG + GDS ou Hemocue
+Examens à l’entrée: 
+- ECG
+- GDS ou Hemocue
 
 Surveillance: 
-Saignement
-Douleur`,
+- Saignement
+- Douleur`,
     },
 
     "Pontage ilio-fémoral externe": {},
 
     "Pontage ilio-fémoral commune": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC propofol/rémifentanil
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
-- Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Bloc fémoral ou BIIIH ou QLB
-Cf bloc fémoral 🖥️
-Cf BIIIH 🖥️
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil
+
+<strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
+      alr: `
+Bloc QLB 2 ou 3
 Cf QLB 🖥️`,
       orientation: `SSPI 2h minimum
 
-Examens à l’entrée: ECG + GDS ou Hemocue
+Examens à l’entrée: 
+- ECG
+- GDS ou Hemocue
 
 Surveillance: 
-Saignement
-Douleur`,
+- Saignement
+- Douleur`,
     },
 
     "Pontage croisé fémoro-fémoral": {},
 
     "Pontage fémoro-poplité": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC propofol/rémifentanil
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
-- Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Cf fémoral 🖥️ Cf BIIIH 🖥️ Cf sciatique 🖥️ Cf canal adducteurs 🖥️ Cf obturateur🖥️`,
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil
+
+<strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
+      alr: `Si sus-articulaire, au choix: Bloc fémoral + BIIH OU Bloc fémoral + QLB2 OU Bloc obturateur + BIIH OU Bloc obturateur + QLB 
+      Si sous-articulaire, au choix: Bloc fémoral + BIIH + sciatique poplité OU Bloc canal des adducteurs + Bloc obturateur + BIIH + sciatique poplité
+Cf BIIIH 🖥️ Cf bloc fémoral 🖥️ Cf QLB 🖥️ Cf obturateur 🖥️ Cf sciatique 🖥️ Cf canal adducteurs 🖥️`,
       orientation: `SSPI 2h minimum
 
-Examens à l’entrée: ECG + GDS ou Hemocue
+Examens à l’entrée: 
+- ECG
+- GDS ou Hemocue
 
 Surveillance: 
-Saignement
-Douleur`,
+- Saignement
+- Douleur`,
     },
 
     "Pontage axillo-bifémoral": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC propofol/rémifentanil
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
-- Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Cf sciatique 🖥️ Cf fémoral 🖥️`,
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil
+
+<strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
+      alr: `Carré des lombes bilatéral
+Cf QLB 🖥️`,
       orientation: `SSPI 2h minimum
 
-Examens à l’entrée: ECG + GDS ou Hemocue
+Examens à l’entrée: 
+- ECG
+- GDS ou Hemocue
 
 Surveillance: 
-Saignement
-Douleur`,
+- Saignement
+- Douleur`,
     },
 
     "Pontage distal en veine": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 4 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), TOF, BIS, SU, réchauffeur/transfuseur`,
-      protocole: `Induction: Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
-Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
+      protocole: `<strong>Induction:</strong> Anesthésie générale IOT ou masque laryngé, AIVOC propofol/rémifentanil (Remplacé par : « Etomidate 0,3mg/kg car induction à risque » si induction à risque coché), Atracurium 0,5mg/kg (Remplacé par: « Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide » si séquence rapide coché)
 
-Entretien:
-AIVOC propofol/rémifentanil
+<strong>Antibioprophylaxie:</strong> Céfazoline 2g puis 1g toutes les 4h Si IMC > 50 coché: Céfazoline 4g puis 2g toutes les 4h. Si allergie cochée: Vancomycine 30mg/kg IVL une injection 30min avant incision
 
-Hémostase:
-- Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
-      alr: `Au choix:
-Cf sciatique 🖥️`,
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil
+
+<strong>Hémostase:</strong> Héparine 50 UI/kg, pas de monitorage de l’ACT. Antagonisation par Protamine en ratio 1/1 si < 2h (½ dose 2-4h, 0 > 4h)`,
+      alr: `Au choix:Bloc fémoral + BIIH + bloc sciatique
+ Cf bloc fémoral 🖥️ Cf BIIIH 🖥️ Cf sciatique 🖥️`,
       orientation: `SSPI 2h minimum
 
-Examens à l’entrée: ECG + GDS ou Hemocue
+Examens à l’entrée: 
+- ECG
+- GDS ou Hemocue
 
 Surveillance: 
-Saignement
-Douleur`,
+- Saignement
+- Douleur`,
     },
 
     "Angioplastie": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Maintien Clopidogrel
-Maintien Ticagrélor
-Maintien Prasugrel
-Maintien AOD
+- Maintien Kardégic
+- Maintien Clopidogrel
+- Maintien Ticagrélor
+- Maintien Prasugrel
+- Maintien AOD
 
 Pré-commande : 2 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI, BIS`,
-      protocole: `Induction: Anesthésie générale AIVOC propofol/rémifentanil ou Sédation
-Antibioprophylaxie: Pas d’antibioprophylaxie
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC propofol/rémifentanil ou Sédation
 
-Entretien:
-AIVOC propofol/rémifentanil`,
+<strong>Antibioprophylaxie:</strong> Pas d’antibioprophylaxie
+
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil`,
       alr: `Pas d’ALR`,
       orientation: `SSPI 1h minimum
 Ambulatoire
@@ -2204,38 +2215,43 @@ Pas d’examen particulier`,
 
     "Amputation": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 2 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI (Si induction à risque coché remplacer « PNI » par « KTa »), BIS, SU`,
-      protocole: `Induction: Privilégier ALR avec cathéter périnerveux (bloc sciatique poplité ou fémoral selon le niveau d’amputation)
-Antibioprophylaxie (adapter selon documentation): Augmentin 2g/2...ergie cochée: Clindamycine 900 mg IVL + Gentamicine 6-7mg/kg IVL`,
-      alr: `Au choix:
+      protocole: `<strong>Induction:</strong> Privilégier ALR avec cathéter périnerveux (bloc sciatique poplité ou fémoral selon le niveau d’amputation)
+
+<strong>Antibioprophylaxie</strong> (adapter selon documentation): Augmentin 2g/2...ergie cochée: Clindamycine 900 mg IVL + Gentamicine 6-7mg/kg IVL`,
+      alr: `Amputation d’orteil: Sciatique poplité +/- saphène si premier orteils 
+      Amputation trans-métatarsienne: Sciatique poplité
+      Amputation trans-tibiale: Sciatique + fémoral
+      Amputation trans-fémorale: Sciatique sous glutéal + fémoral
 Cf sciatique 🖥️ Cf fémoral 🖥️`,
       orientation: `SSPI 2h minimum
 
 Examens:
-ECG
-GDS ou Hemocue
+- ECG
+- GDS ou Hemocue
 
 Surveillance:
-Saignement
-Douleur`,
+- Saignement
+- Douleur`,
     },
 
     "Varices": {
       gestion: `...`,
       monitorage: `...`,
-      protocole: `Induction: Si Laser/Radiofréquence seul: Anesthésie locale + Séd...fentanil IOT OU Rachianesthésie. Position en  décubitus ventral.
-Antibioprophylaxie (Uniquement si abord chirurgical du scarpa): ...chée: Vancomycine 30mg/kg IVL une injection 30min avant incision`,
+      protocole: `<strong>Induction:</strong> Si Laser/Radiofréquence seul: Anesthésie locale + Séd...fentanil IOT OU Rachianesthésie. Position en  décubitus ventral.
+
+<strong>Antibioprophylaxie</strong> (Uniquement si abord chirurgical du scarpa): ...chée: Vancomycine 30mg/kg IVL une injection 30min avant incision`,
       alr: `Pas d’ALR`,
       orientation: `SSPI 1h minimum
 Ambulatoire
@@ -2245,32 +2261,33 @@ Pas d’examen particulier`,
 
     "Sympathectomie lombaire": {
       gestion: `Examens complémentaires : 
-Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
-ECG
+- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)
+- ECG
 
 Gestion des traitements :
-Maintien Kardégic
-Arrêt Clopidogrel J-5
-Arrêt Ticagrélor J-5
-Arrêt Prasugrel J-7
-Arrêt AOD J-5
+- Maintien Kardégic
+- Arrêt Clopidogrel J-5
+- Arrêt Ticagrélor J-5
+- Arrêt Prasugrel J-7
+- Arrêt AOD J-5
 
 Pré-commande : 2 CGR`,
       monitorage: `Scope 5 branches, SpO2, VVP, PNI, BIS`,
-      protocole: `Induction: Anesthésie générale AIVOC propofol/rémifentanil
-Antibioprophylaxie: Pas d’antibioprophylaxie
+      protocole: `<strong>Induction:</strong> Anesthésie générale AIVOC propofol/rémifentanil
 
-Entretien:
-AIVOC propofol/rémifentanil`,
-      alr: `BPV ou érecteur
-Cf BPV 🖥️
-Cf érecteur 🖥️`,
+<strong>Antibioprophylaxie:</strong> Pas d’antibioprophylaxie
+
+<strong>Entretien:</strong> AIVOC propofol/rémifentanil`,
+      alr: `Au choix: BPV OU érecteur du rachis
+Cf BPV 🖥️ Cf érecteur 🖥️`,
       orientation: `SSPI 2h minimum
 
-Examens à l’entrée: ECG + GDS ou Hemocue
+Examens à l’entrée: 
+- ECG
+- GDS ou Hemocue
 
 Surveillance:
-Douleur`,
+- Douleur`,
     },
   };
 
@@ -2464,15 +2481,15 @@ Douleur`,
     // Varices : afficher/masquer le choix unique
     if (varRow) varRow.style.display = key === "Varices" ? "" : "none";
 
-    setHtml("vmi-gestion", linkifyImgs(nl2br(row.gestion)));
-    setHtml("vmi-monitorage", linkifyImgs(nl2br(row.monitorage)));
+    setHtml("vmi-gestion", linkifyImgs(nl2brRaw(row.gestion)));
+    setHtml("vmi-monitorage", linkifyImgs(nl2brRaw(row.monitorage)));
 
     const prot = applyConditions(key, row.protocole);
-    const protHtml = augmentPerKg(linkifyImgs(nl2br(prot)));
+    const protHtml = augmentPerKg(linkifyImgs(nl2brRaw(prot)));
     setHtml("vmi-protocole", protHtml);
 
-    setHtml("vmi-alr", linkifyImgs(nl2br(row.alr)));
-    setHtml("vmi-orientation", linkifyImgs(nl2br(row.orientation)));
+    setHtml("vmi-alr", linkifyImgs(nl2brRaw(row.alr)));
+    setHtml("vmi-orientation", linkifyImgs(nl2brRaw(row.orientation)));
 
     if (typeof setupAnesthGlobalDoseLogic === "function") setupAnesthGlobalDoseLogic();
     if (poidsInput) poidsInput.dispatchEvent(new Event("input"));
@@ -2672,37 +2689,65 @@ function renderInterventionEndoprotheses() {
     return "Céfazoline 2g puis 1g toutes les 4h";
   }
 
-  function applyConditions(html, interventionName) {
-    let t = html || "";
+function applyConditions(html, interventionName) {
+  let t = html || "";
 
-    // retire les consignes orange (parenthèses contenant “Remplacé”)
-    t = t.replace(/\(Remplacé[^)]*\)/g, "");
+  // --------------------------------------------------
+  // 1. Retirer les consignes orange
+  // --------------------------------------------------
+  t = t.replace(/\(Remplacé[^)]*\)/g, "");
 
-    // induction à risque : remplacement du segment AIVOC
-    if (cbRisk?.checked) {
-      t = t.replace(/AIVOC\s+propofol\/rémifentanil/g, "Etomidate 0,3mg/kg car induction à risque");
-    }
-
-    // séquence rapide : remplacement de ( +/- ) Atracurium 0,5mg/kg
-    if (cbSeq?.checked) {
-      t = t.replace(/(\+\/-\s*)?Atracurium\s*0,5mg\/kg/g, "Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide");
-    }
-
-    // Antibioprophylaxie : on remplace tout le contenu de la ligne par la version choisie
+  // --------------------------------------------------
+  // 2. Induction à risque
+  // --------------------------------------------------
+  if (cbRisk?.checked) {
     t = t.replace(
-      /<strong>Antibioprophylaxie:\s*<\/strong>[\s\S]*?(?=<br><br>|$)/,
-      `<strong>Antibioprophylaxie: </strong>${antibioticText()}`
+      /AIVOC\s+propofol\/rémifentanil/g,
+      "Etomidate 0,3mg/kg car induction à risque"
     );
-
-    // Monitorage EVAR : note “remplacer PNI par KTa”
-    if (interventionName === "Endoprothèse aortique sous-rénale (EVAR)") {
-      t = t.replace(/\(Si induction à risque coché[^)]*\)/g, "");
-      if (cbRisk?.checked) t = t.replace(/\bPNI\b/g, "KTa");
-    }
-
-    return t;
   }
 
+  // --------------------------------------------------
+  // 3. Séquence rapide
+  // --------------------------------------------------
+  if (cbSeq?.checked) {
+    t = t.replace(
+      /(\+\/-\s*)?Atracurium\s*0,5mg\/kg/g,
+      "Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide"
+    );
+  }
+
+// --------------------------------------------------
+// Saut de ligne homogène entre Induction / ATB / Entretien
+// --------------------------------------------------
+t = t.replace(
+  /<strong>Induction:[\s\S]*?<strong>Antibioprophylaxie:/,
+  (match) => match.replace("<strong>Antibioprophylaxie:", "<br><br><strong>Antibioprophylaxie:")
+);
+
+t = t.replace(
+  /<strong>Antibioprophylaxie:\s*<\/strong>[\s\S]*?(?=<br><br>|$)/,
+  `<strong>Antibioprophylaxie: </strong>${antibioticText()}<br><br>
+<strong>Entretien:</strong> AIVOC Propofol/Rémifentanil`
+);
+
+  // --------------------------------------------------
+  // 6. Supprimer "ALR: Pas d’ALR"
+  // --------------------------------------------------
+  t = t.replace(/<br><br><strong>ALR:\s*<\/strong>\s*Pas d’ALR/gi, "");
+  t = t.replace(/<br><strong>ALR:\s*<\/strong>\s*Pas d’ALR/gi, "");
+
+  // --------------------------------------------------
+  // 7. Cas particulier EVAR (PNI → KTa)
+  // --------------------------------------------------
+  if (interventionName === "Endoprothèse aortique sous-rénale (EVAR)") {
+    t = t.replace(/\(Si induction à risque coché[^)]*\)/g, "");
+    if (cbRisk?.checked) t = t.replace(/\bPNI\b/g, "KTa");
+  }
+
+  return t;
+}
+  
   function renderSelected() {
     const key = sel.value;
     const row = DATA[key];
