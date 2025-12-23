@@ -2336,3 +2336,23 @@ body.acr-force-light .acr5-synth-live {
     max-height: 220px;
   }
 }
+
+/* Surlignage recherche dans l'annuaire */
+mark.annuaire-mark {
+  background: rgba(124,195,255,0.35);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 4px;
+}
+
+/* Badge encadré dans les résultats */
+.annuaire-result-badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.85;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
