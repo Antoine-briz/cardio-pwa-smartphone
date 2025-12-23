@@ -503,34 +503,36 @@ function renderAnesthVasculaireMenu() {
   app.innerHTML = `
     <h2>Chirurgie vasculaire</h2>
 
-    <div class="menu-grid">
+    <div class="grid">
 
-      <button class="btn-blue" onclick="renderInterventionCarotide()">
+      <button class="btn btn-red" onclick="renderVasculaireProtocoles()">
+        Protocoles spécifiques
+      </button>
+
+      <button class="btn btn-blue" onclick="renderInterventionCarotide()">
         Chirurgies de la carotide et des TSA
       </button>
 
-      <button class="btn-blue" onclick="renderInterventionAorteThoracique()">
+      <button class="btn btn-blue" onclick="renderInterventionAorteThoracique()">
         Chirurgies de l'aorte thoracique et thoraco-abdominale
       </button>
 
-      <button class="btn-blue" onclick="renderInterventionAorteAbdominale()">
+      <button class="btn btn-blue" onclick="renderInterventionAorteAbdominale()">
         Chirurgies de l'aorte abdominale et artères viscérales
       </button>
 
-      <button class="btn-blue" onclick="renderInterventionMembreInferieur()">
+      <button class="btn btn-blue" onclick="renderInterventionMembreInferieur()">
         Chirurgies du membre inférieur
       </button>
 
-      <button class="btn-blue" onclick="renderInterventionEndoprotheses()">
+      <button class="btn btn-blue" onclick="renderInterventionEndoprothese()">
         Endoprothèses aortiques
       </button>
 
-<button class="btn-red" onclick="renderVasculaireProtocoles()">
-        Protocoles spécifiques
-      </button>
     </div>
   `;
 }
+
 
 function renderVasculaireProtocoles() {
   // Ouvre un PDF dans /files en encodant correctement espaces + accents
