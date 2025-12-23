@@ -11005,6 +11005,13 @@ function renderReanAntibiotherapieMenu() {
         <button class="btn" onclick="renderDureesForm()">Durée d'antibiothérapie</button>
         <button class="btn" onclick="renderReinForm()">Adaptation posologique à la fonction rénale</button>
         <button class="btn" onclick="renderModalitesForm()">Modalités d'administration des antibiotiques</button>
+        </div>
+        <!-- Bouton rouge : lien direct PDF -->
+      <div style="margin-top:20px;">
+        <button class="btn btn-red" onclick='openPdf("Bactériologie clinique.pdf")'>
+          Bactériologie clinique en réanimation
+        </button>
+      
       </div>
       <div id="atb-section-root" style="margin-top:16px;"></div>
     </section>
