@@ -60,6 +60,12 @@ function initTheme() {
   }
 }
 
+function openPdf(file) {
+  // Si tes PDF sont dans un dossier /pdf, garde "pdf/".
+  // Sinon mets "".
+  const base = "pdf/";
+  window.open(base + encodeURIComponent(file), "_blank");
+}
 
 // =====================================================================
 //  PAGE D’ACCUEIL
@@ -505,10 +511,6 @@ function renderAnesthVasculaireMenu() {
 
     <div class="grid">
 
-      <button class="btn btn-red" onclick="renderVasculaireProtocoles()">
-        Protocoles spécifiques
-      </button>
-
       <button class="btn btn-blue" onclick="renderInterventionCarotide()">
         Chirurgies de la carotide et des TSA
       </button>
@@ -529,69 +531,60 @@ function renderAnesthVasculaireMenu() {
         Endoprothèses aortiques
       </button>
 
+      <button class="btn btn-red" onclick="renderVasculaireProtocoles()">
+        Protocoles spécifiques
+      </button>
+
     </div>
   `;
 }
-
-
 function renderVasculaireProtocoles() {
-  // Ouvre un PDF dans /files en encodant correctement espaces + accents
-  const openPdf = (pdfName) => {
-    window.open(`files/${encodeURIComponent(pdfName)}`, "_blank");
-  };
+  const app = document.getElementById("app");
 
-  const encadres = [
-    {
-      titre: "Infectieux",
-      html: `
-        <div class="grid">
-          <button class="btn" onclick="(${openPdf.toString()})('Infections des prothèses vasculaires.pdf')">
+  app.innerHTML = `
+    <h2>Protocoles spécifiques</h2>
+
+    <section class="intervention-main">
+
+      <details class="card" open>
+        <summary>Infectieux</summary>
+        <div class="card-body">
+          <button class="btn" onclick='openPdf("Infections des prothèses vasculaires.pdf")'>
             Infections des prothèses vasculaires
           </button>
-          <button class="btn" onclick="(${openPdf.toString()})('Antibiothérapies des amputations de membre.pdf')">
+          <button class="btn" onclick='openPdf("Antibiothérapies des amputations de membre.pdf")'>
             Antibiothérapies des amputations de membre
           </button>
         </div>
-      `,
-    },
-    {
-      titre: "Dérivation lombaire externe (DLE)",
-      html: `
-        <div class="grid">
-          <button class="btn" onclick="(${openPdf.toString()})('Protocole DLE.pdf')">
+      </details>
+
+      <details class="card" open>
+        <summary>Dérivation lombaire externe (DLE)</summary>
+        <div class="card-body">
+          <button class="btn" onclick='openPdf("Protocole DLE.pdf")'>
             Protocole DLE
           </button>
-          <button class="btn" onclick="(${openPdf.toString()})('Mémo DLE.pdf')">
+          <button class="btn" onclick='openPdf("Mémo DLE.pdf")'>
             Mémo DLE
           </button>
         </div>
-      `,
-    },
-    {
-      titre: "Fibrinolyse in situ",
-      html: `
-        <div class="grid">
-          <button class="btn" onclick="(${openPdf.toString()})('Protocole fibrinolyse in situ.pdf')">
+      </details>
+
+      <details class="card" open>
+        <summary>Fibrinolyse in situ</summary>
+        <div class="card-body">
+          <button class="btn" onclick='openPdf("Protocole fibrinolyse in situ.pdf")'>
             Protocole fibrinolyse in situ
           </button>
-          <button class="btn" onclick="(${openPdf.toString()})('Mémo fibrinolyse in situ.pdf')">
+          <button class="btn" onclick='openPdf("Mémo fibrinolyse in situ.pdf")'>
             Mémo fibrinolyse in situ
           </button>
         </div>
-      `,
-    },
-  ];
+      </details>
 
-  renderInterventionPage({
-    titre: "Protocoles spécifiques - Vasculaire",
-    sousTitre: "",
-    image: "vasculaire.png",
-    encadres,
-  });
-
-  document.querySelectorAll("details.card").forEach((d) => (d.open = true));
+    </section>
+  `;
 }
-
 
 function renderInterventionCarotide() {
   // ----------------------------------------------------------
