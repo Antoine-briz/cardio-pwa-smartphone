@@ -15562,7 +15562,7 @@ function renderAnnuaire() {
 
   // état initial
   renderResults([], "");
-
+}
 
 function renderCodesAcces() {
   const encadres = [
