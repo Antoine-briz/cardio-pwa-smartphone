@@ -15412,13 +15412,9 @@ function renderAnnuaire() {
   });
 
   // ----------------------------------------------------------
-  // 2) Injection UI Recherche/Résultats (symétriques) + logique
+  // Recherche + Résultats (symétriques) — version robuste
   // ----------------------------------------------------------
   const rootApp = document.getElementById("app");
-
-  // On insère la recherche juste après le "hero" (si présent), sinon en tout début de #app
-  const hero = rootApp.querySelector(".hero");
-  const anchor = hero || rootApp.firstElementChild || rootApp;
 
   const esc = (s) =>
     (s ?? "")
@@ -15427,6 +15423,18 @@ function renderAnnuaire() {
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
+
+  // Donne un comportement type Ctrl+F (maj/min + accents + ponctuation ignorés)
+  function norm(s) {
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]/g, "");
+  }
+
+  // Injecter la recherche JUSTE SOUS l’image/titre (hero)
+  const hero = rootApp.querySelector(".hero");
 
   const searchWrap = document.createElement("div");
   searchWrap.className = "annuaire-search-wrap";
@@ -15446,9 +15454,9 @@ function renderAnnuaire() {
     </div>
   `;
 
-  anchor.insertAdjacentElement("afterend", searchWrap);
+  if (hero) hero.insertAdjacentElement("afterend", searchWrap);
+  else rootApp.insertAdjacentElement("afterbegin", searchWrap);
 
-  // Récupération DOM APRÈS insertion
   const input = document.getElementById("annuaire-search-input");
   const resultsEl = document.getElementById("annuaire-results");
   const hintEl = document.getElementById("annuaire-search-hint");
@@ -15458,20 +15466,7 @@ function renderAnnuaire() {
     return;
   }
 
-  // ----------------------------------------------------------
-  // 3) Recherche permissive type Ctrl+F
-  // ----------------------------------------------------------
-  function norm(s) {
-    return (s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]/g, "");
-  }
-
-  // ----------------------------------------------------------
-  // 4) Surlignage dans les tableaux (sans casser les <a href="tel:...">)
-  // ----------------------------------------------------------
+  // --- Surlignage (optionnel) ---
   function clearHighlights(container) {
     (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
       m.replaceWith(document.createTextNode(m.textContent || ""));
@@ -15514,10 +15509,15 @@ function renderAnnuaire() {
   }
 
   // ----------------------------------------------------------
-  // 5) Index : toutes les lignes de toutes les tables (même encadrés fermés)
-  // IMPORTANT : on indexe sur rootApp (pas seulement un sous-bloc)
+  // INDEX ROBUSTE : on indexe sur rootApp (pas sur "main")
+  // + fallback si aucune table n'est trouvée
   // ----------------------------------------------------------
-  const allRows = Array.from(rootApp.querySelectorAll("table tbody tr"));
+  let allRows = Array.from(rootApp.querySelectorAll("table tbody tr"));
+
+  // Fallback: si ton HTML n’a pas de <tbody> (ou autre), on prend tous les tr qui ont des td
+  if (allRows.length === 0) {
+    allRows = Array.from(rootApp.querySelectorAll("tr")).filter((tr) => tr.querySelector("td"));
+  }
 
   const index = allRows
     .map((tr) => {
@@ -15543,9 +15543,19 @@ function renderAnnuaire() {
     })
     .filter(Boolean);
 
-  // ----------------------------------------------------------
-  // 6) Résultats + filtre
-  // ----------------------------------------------------------
+  // Auto-test DEV : si BOUGLE n’est pas indexé, on l’affiche clairement
+  const hasBougle = index.some((x) => x.key.includes("bougle"));
+  if (!hasBougle) {
+    resultsEl.innerHTML = `
+      <div class="annuaire-results-empty">
+        ⚠️ Index vide ou incorrect : je ne trouve pas "BOUGLE" dans les lignes indexées.<br>
+        Lignes indexées: ${index.length}
+      </div>
+    `;
+  } else {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
+  }
+
   function flashRow(tr) {
     tr.classList.add("annuaire-row-flash");
     setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
@@ -15577,13 +15587,6 @@ function renderAnnuaire() {
         `
       )
       .join("");
-
-    if (matches.length > MAX) {
-      resultsEl.insertAdjacentHTML(
-        "beforeend",
-        `<div class="annuaire-results-more">+ ${matches.length - MAX} autre(s)…</div>`
-      );
-    }
 
     resultsEl._matches = shown;
   }
@@ -15630,10 +15633,7 @@ function renderAnnuaire() {
   });
 
   input.addEventListener("input", applyFilter);
-
-  // état initial
-  renderResults([], "");
-}
+    }
 
   
 function renderCodesAcces() {
