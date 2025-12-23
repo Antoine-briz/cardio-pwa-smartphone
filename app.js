@@ -15412,55 +15412,157 @@ function renderAnnuaire() {
   });
 
   // ----------------------------------------------------------
-  // Barre de recherche (injectée au-dessus des encadrés)
+  // Barre de recherche + panneau résultats (au-dessus des encadrés)
   // ----------------------------------------------------------
   const main = document.querySelector(".intervention-main") || document.getElementById("app");
 
-  const searchBar = document.createElement("div");
-  searchBar.className = "annuaire-search";
-  searchBar.innerHTML = `
-    <input id="annuaire-search-input"
-           type="search"
-           placeholder="Rechercher un nom, un poste ou un numéro…"
-           autocomplete="off" />
-    <button class="btn" id="annuaire-search-clear" type="button">Effacer</button>
+  const searchWrap = document.createElement("div");
+  searchWrap.className = "annuaire-search-wrap";
+  searchWrap.innerHTML = `
+    <div class="annuaire-search-left">
+      <input id="annuaire-search-input"
+             type="search"
+             placeholder="Rechercher un nom, un poste ou un numéro…"
+             autocomplete="off" />
+      <div class="annuaire-search-hint" id="annuaire-search-hint"></div>
+    </div>
+
+    <div class="annuaire-search-right">
+      <div class="annuaire-results-title">Résultats</div>
+      <div id="annuaire-results" class="annuaire-results"></div>
+    </div>
   `;
 
-  // On place la barre juste après le titre (hero) si présent
+  // Place juste sous le hero
   const hero = main?.querySelector(".hero");
   if (hero && hero.parentNode) {
-    hero.insertAdjacentElement("afterend", searchBar);
+    hero.insertAdjacentElement("afterend", searchWrap);
   } else if (main) {
-    main.insertAdjacentElement("afterbegin", searchBar);
+    main.insertAdjacentElement("afterbegin", searchWrap);
   }
 
   const input = document.getElementById("annuaire-search-input");
-  const clearBtn = document.getElementById("annuaire-search-clear");
+  const resultsEl = document.getElementById("annuaire-results");
+  const hintEl = document.getElementById("annuaire-search-hint");
 
   function normalize(s) {
     return (s || "")
       .toLowerCase()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, ""); // enlève accents
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  // Index : toutes les lignes de toutes les tables (même si encadrés fermés)
+  const rows = Array.from(document.querySelectorAll(".annuaire-table tbody tr"));
+  const index = rows
+    .map((tr) => {
+      const tds = tr.querySelectorAll("td");
+      if (!tds || tds.length === 0) return null;
+
+      const nom = (tds[0]?.innerText || "").trim();
+      const poste = (tds[1]?.innerText || "").trim();
+      const tel = (tds[2]?.innerText || "").trim();
+
+      // Le <details> parent pour pouvoir l’ouvrir au clic
+      const parentDetails = tr.closest("details.card");
+
+      return {
+        tr,
+        parentDetails,
+        nom,
+        poste,
+        tel,
+        searchText: normalize(`${nom} ${poste} ${tel}`),
+      };
+    })
+    .filter(Boolean);
+
+  // Petit highlight (optionnel mais pratique)
+  function flashRow(tr) {
+    tr.classList.add("annuaire-row-flash");
+    setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
+  }
+
+  function renderResults(list, query) {
+    // Message d’aide
+    if (!query) {
+      hintEl.textContent = `Tape un nom, un poste ou un numéro…`;
+      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
+      return;
+    }
+
+    hintEl.textContent = `${list.length} résultat(s)`;
+
+    if (list.length === 0) {
+      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
+      return;
+    }
+
+    // Limite d’affichage (évite une liste trop longue)
+    const MAX = 40;
+    const shown = list.slice(0, MAX);
+
+    resultsEl.innerHTML = shown
+      .map((x, i) => {
+        const name = x.nom || "(Sans nom)";
+        const line2 = [x.poste, x.tel].filter(Boolean).join(" • ");
+        return `
+          <button class="annuaire-result-item" type="button" data-idx="${index.indexOf(x)}">
+            <div class="annuaire-result-name">${escapeHtml(name)}</div>
+            <div class="annuaire-result-meta">${escapeHtml(line2)}</div>
+          </button>
+        `;
+      })
+      .join("");
+
+    if (list.length > MAX) {
+      resultsEl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="annuaire-results-more">+ ${list.length - MAX} autre(s) résultat(s)…</div>`
+      );
+    }
   }
 
   function applyFilter() {
     const q = normalize(input.value.trim());
 
-    const rows = document.querySelectorAll(".annuaire-table tbody tr");
-    rows.forEach((tr) => {
-      const text = normalize(tr.innerText);
-      tr.style.display = q === "" || text.includes(q) ? "" : "none";
+    if (!q) {
+      // ré-affiche toutes les lignes
+      index.forEach((x) => (x.tr.style.display = ""));
+      renderResults([], "");
+      return;
+    }
+
+    const matches = [];
+    index.forEach((x) => {
+      const ok = x.searchText.includes(q);
+      x.tr.style.display = ok ? "" : "none";
+      if (ok) matches.push(x);
     });
+
+    renderResults(matches, q);
   }
 
-  input.addEventListener("input", applyFilter);
-  clearBtn.addEventListener("click", () => {
-    input.value = "";
-    input.focus();
-    applyFilter();
+  // Clic sur un résultat : ouvre l’encadré + scroll sur la ligne
+  resultsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".annuaire-result-item");
+    if (!btn) return;
+
+    const idx = Number(btn.getAttribute("data-idx"));
+    const item = index[idx];
+    if (!item) return;
+
+    if (item.parentDetails) item.parentDetails.open = true;
+
+    item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
+    flashRow(item.tr);
   });
-}
+
+  input.addEventListener("input", applyFilter);
+
+  // état initial
+  renderResults([], "");
+
 
 function renderCodesAcces() {
   const encadres = [
