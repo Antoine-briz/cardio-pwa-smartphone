@@ -15411,236 +15411,230 @@ function renderAnnuaire() {
     encadres,
   });
 
-// ----------------------------------------------------------
-// Recherche + Résultats (anti-null, références directes)
-// ----------------------------------------------------------
-const rootApp = $app || document.getElementById("app");
-const main = document.querySelector(".intervention-main") || rootApp;
+  // ----------------------------------------------------------
+  // 2) Injection UI Recherche/Résultats (symétriques) + logique
+  // ----------------------------------------------------------
+  const rootApp = document.getElementById("app");
 
-// Helpers
-const esc = (s) =>
-  (s ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  // On insère la recherche juste après le "hero" (si présent), sinon en tout début de #app
+  const hero = rootApp.querySelector(".hero");
+  const anchor = hero || rootApp.firstElementChild || rootApp;
 
-function norm(s) {
-  return (s || "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "");
-}
+  const esc = (s) =>
+    (s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
 
-// UI (on crée les éléments -> références jamais null)
-const wrap = document.createElement("div");
-wrap.className = "annuaire-search-wrap";
+  const searchWrap = document.createElement("div");
+  searchWrap.className = "annuaire-search-wrap";
+  searchWrap.innerHTML = `
+    <div class="annuaire-panel">
+      <div class="annuaire-panel-title">Recherche</div>
+      <input id="annuaire-search-input"
+             type="search"
+             placeholder="Nom, poste ou numéro…"
+             autocomplete="off" />
+      <div class="annuaire-search-hint" id="annuaire-search-hint">Tape pour filtrer…</div>
+    </div>
 
-const panelLeft = document.createElement("div");
-panelLeft.className = "annuaire-panel";
+    <div class="annuaire-panel">
+      <div class="annuaire-panel-title">Résultats</div>
+      <div id="annuaire-results" class="annuaire-results"></div>
+    </div>
+  `;
 
-const titleLeft = document.createElement("div");
-titleLeft.className = "annuaire-panel-title";
-titleLeft.textContent = "Recherche";
+  anchor.insertAdjacentElement("afterend", searchWrap);
 
-const input = document.createElement("input");
-input.type = "search";
-input.id = "annuaire-search-input";
-input.placeholder = "Nom, poste ou numéro…";
-input.autocomplete = "off";
+  // Récupération DOM APRÈS insertion
+  const input = document.getElementById("annuaire-search-input");
+  const resultsEl = document.getElementById("annuaire-results");
+  const hintEl = document.getElementById("annuaire-search-hint");
 
-const hintEl = document.createElement("div");
-hintEl.className = "annuaire-search-hint";
-hintEl.textContent = "Tape pour filtrer…";
-
-panelLeft.appendChild(titleLeft);
-panelLeft.appendChild(input);
-panelLeft.appendChild(hintEl);
-
-const panelRight = document.createElement("div");
-panelRight.className = "annuaire-panel";
-
-const titleRight = document.createElement("div");
-titleRight.className = "annuaire-panel-title";
-titleRight.textContent = "Résultats";
-
-const resultsEl = document.createElement("div");
-resultsEl.id = "annuaire-results";
-resultsEl.className = "annuaire-results";
-resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
-
-panelRight.appendChild(titleRight);
-panelRight.appendChild(resultsEl);
-
-wrap.appendChild(panelLeft);
-wrap.appendChild(panelRight);
-
-// Insertion juste sous le hero si présent, sinon en haut
-const hero = document.querySelector(".intervention-main .hero");
-if (hero) hero.insertAdjacentElement("afterend", wrap);
-else main.insertAdjacentElement("afterbegin", wrap);
-
-// ----------------------------------------------------------
-// Surlignage
-// ----------------------------------------------------------
-function clearHighlights(container) {
-  (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
-    m.replaceWith(document.createTextNode(m.textContent || ""));
-  });
-}
-
-function highlightInCell(td, queryRaw) {
-  if (!td || !queryRaw) return;
-  const q = queryRaw.trim();
-  if (!q) return;
-
-  const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
-  const nodes = [];
-  while (walker.nextNode()) nodes.push(walker.currentNode);
-
-  const qLower = q.toLowerCase();
-
-  nodes.forEach((node) => {
-    const txt = node.nodeValue || "";
-    const low = txt.toLowerCase();
-    const idx = low.indexOf(qLower);
-    if (idx === -1) return;
-
-    const before = txt.slice(0, idx);
-    const match = txt.slice(idx, idx + q.length);
-    const after = txt.slice(idx + q.length);
-
-    const frag = document.createDocumentFragment();
-    if (before) frag.appendChild(document.createTextNode(before));
-
-    const mark = document.createElement("mark");
-    mark.className = "annuaire-mark";
-    mark.textContent = match;
-    frag.appendChild(mark);
-
-    if (after) frag.appendChild(document.createTextNode(after));
-
-    node.parentNode.replaceChild(frag, node);
-  });
-}
-
-// ----------------------------------------------------------
-// Index : toutes les lignes de TOUTES les tables (même encadrés fermés)
-// ----------------------------------------------------------
-const allRows = Array.from(main.querySelectorAll("table tbody tr"));
-
-const index = allRows
-  .map((tr) => {
-    const tds = tr.querySelectorAll("td");
-    if (!tds || tds.length === 0) return null;
-
-    const details = tr.closest("details.card");
-    const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
-
-    const cellsText = Array.from(tds).map((td) => (td.innerText || "").trim());
-    const raw = cellsText.join(" | ");
-
-    return {
-      tr,
-      tds: Array.from(tds),
-      details,
-      encadre,
-      nom: (cellsText[0] || "").trim(),
-      meta: cellsText.slice(1).filter(Boolean).join(" • "),
-      raw,
-      key: norm(raw),
-    };
-  })
-  .filter(Boolean);
-
-function flashRow(tr) {
-  tr.classList.add("annuaire-row-flash");
-  setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
-}
-
-function renderResults(matches, qRaw) {
-  if (!qRaw) {
-    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
-    resultsEl._matches = [];
-    return;
-  }
-  if (matches.length === 0) {
-    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
-    resultsEl._matches = [];
+  if (!input || !resultsEl || !hintEl) {
+    console.error("Annuaire search DOM missing:", { input, resultsEl, hintEl });
     return;
   }
 
-  const MAX = 50;
-  const shown = matches.slice(0, MAX);
-
-  resultsEl.innerHTML = shown
-    .map(
-      (x, i) => `
-        <button class="annuaire-result-item" type="button" data-i="${i}">
-          <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
-          <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
-          <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
-        </button>
-      `
-    )
-    .join("");
-
-  if (matches.length > MAX) {
-    resultsEl.insertAdjacentHTML(
-      "beforeend",
-      `<div class="annuaire-results-more">+ ${matches.length - MAX} autre(s)…</div>`
-    );
+  // ----------------------------------------------------------
+  // 3) Recherche permissive type Ctrl+F
+  // ----------------------------------------------------------
+  function norm(s) {
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]/g, "");
   }
 
-  resultsEl._matches = shown;
-}
-
-function applyFilter() {
-  const qRaw = (input.value || "").trim();
-  const q = norm(qRaw);
-
-  clearHighlights(main);
-
-  if (!q) {
-    hintEl.textContent = "Tape pour filtrer…";
-    index.forEach((x) => (x.tr.style.display = ""));
-    renderResults([], "");
-    return;
+  // ----------------------------------------------------------
+  // 4) Surlignage dans les tableaux (sans casser les <a href="tel:...">)
+  // ----------------------------------------------------------
+  function clearHighlights(container) {
+    (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
+      m.replaceWith(document.createTextNode(m.textContent || ""));
+    });
   }
 
-  const matches = [];
-  index.forEach((x) => {
-    const ok = x.key.includes(q);
-    x.tr.style.display = ok ? "" : "none";
-    if (ok) {
-      matches.push(x);
-      x.tds.forEach((td) => highlightInCell(td, qRaw));
+  function highlightInCell(td, queryRaw) {
+    if (!td || !queryRaw) return;
+    const q = queryRaw.trim();
+    if (!q) return;
+
+    const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    const qLower = q.toLowerCase();
+
+    nodes.forEach((node) => {
+      const txt = node.nodeValue || "";
+      const low = txt.toLowerCase();
+      const idx = low.indexOf(qLower);
+      if (idx === -1) return;
+
+      const before = txt.slice(0, idx);
+      const match = txt.slice(idx, idx + q.length);
+      const after = txt.slice(idx + q.length);
+
+      const frag = document.createDocumentFragment();
+      if (before) frag.appendChild(document.createTextNode(before));
+
+      const mark = document.createElement("mark");
+      mark.className = "annuaire-mark";
+      mark.textContent = match;
+      frag.appendChild(mark);
+
+      if (after) frag.appendChild(document.createTextNode(after));
+
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  // ----------------------------------------------------------
+  // 5) Index : toutes les lignes de toutes les tables (même encadrés fermés)
+  // IMPORTANT : on indexe sur rootApp (pas seulement un sous-bloc)
+  // ----------------------------------------------------------
+  const allRows = Array.from(rootApp.querySelectorAll("table tbody tr"));
+
+  const index = allRows
+    .map((tr) => {
+      const tds = tr.querySelectorAll("td");
+      if (!tds || tds.length === 0) return null;
+
+      const details = tr.closest("details.card");
+      const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
+
+      const cellsText = Array.from(tds).map((td) => (td.innerText || "").trim());
+      const raw = cellsText.join(" | ");
+
+      return {
+        tr,
+        tds: Array.from(tds),
+        details,
+        encadre,
+        nom: (cellsText[0] || "").trim(),
+        meta: cellsText.slice(1).filter(Boolean).join(" • "),
+        raw,
+        key: norm(raw),
+      };
+    })
+    .filter(Boolean);
+
+  // ----------------------------------------------------------
+  // 6) Résultats + filtre
+  // ----------------------------------------------------------
+  function flashRow(tr) {
+    tr.classList.add("annuaire-row-flash");
+    setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
+  }
+
+  function renderResults(matches, qRaw) {
+    if (!qRaw) {
+      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
+      resultsEl._matches = [];
+      return;
     }
+    if (matches.length === 0) {
+      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
+      resultsEl._matches = [];
+      return;
+    }
+
+    const MAX = 50;
+    const shown = matches.slice(0, MAX);
+
+    resultsEl.innerHTML = shown
+      .map(
+        (x, i) => `
+          <button class="annuaire-result-item" type="button" data-i="${i}">
+            <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
+            <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
+            <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
+          </button>
+        `
+      )
+      .join("");
+
+    if (matches.length > MAX) {
+      resultsEl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="annuaire-results-more">+ ${matches.length - MAX} autre(s)…</div>`
+      );
+    }
+
+    resultsEl._matches = shown;
+  }
+
+  function applyFilter() {
+    const qRaw = (input.value || "").trim();
+    const q = norm(qRaw);
+
+    clearHighlights(rootApp);
+
+    if (!q) {
+      hintEl.textContent = "Tape pour filtrer…";
+      index.forEach((x) => (x.tr.style.display = ""));
+      renderResults([], "");
+      return;
+    }
+
+    const matches = [];
+    index.forEach((x) => {
+      const ok = x.key.includes(q);
+      x.tr.style.display = ok ? "" : "none";
+      if (ok) {
+        matches.push(x);
+        x.tds.forEach((td) => highlightInCell(td, qRaw));
+      }
+    });
+
+    hintEl.textContent = `${matches.length} résultat(s)`;
+    renderResults(matches, qRaw);
+  }
+
+  resultsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".annuaire-result-item");
+    if (!btn) return;
+
+    const shown = resultsEl._matches || [];
+    const i = Number(btn.getAttribute("data-i"));
+    const item = shown[i];
+    if (!item) return;
+
+    if (item.details) item.details.open = true;
+    item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
+    flashRow(item.tr);
   });
 
-  hintEl.textContent = `${matches.length} résultat(s)`;
-  renderResults(matches, qRaw);
+  input.addEventListener("input", applyFilter);
+
+  // état initial
+  renderResults([], "");
 }
 
-// ✅ Ici, input n’est JAMAIS null (référence directe)
-input.addEventListener("input", applyFilter);
-
-resultsEl.addEventListener("click", (e) => {
-  const btn = e.target.closest(".annuaire-result-item");
-  if (!btn) return;
-
-  const shown = resultsEl._matches || [];
-  const i = Number(btn.getAttribute("data-i"));
-  const item = shown[i];
-  if (!item) return;
-
-  if (item.details) item.details.open = true;
-  item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
-  flashRow(item.tr);
-});
-}
   
 function renderCodesAcces() {
   const encadres = [
