@@ -15411,157 +15411,202 @@ function renderAnnuaire() {
     encadres,
   });
 
-  // ----------------------------------------------------------
-  // Barre de recherche + panneau résultats (au-dessus des encadrés)
-  // ----------------------------------------------------------
-  const main = document.querySelector(".intervention-main") || document.getElementById("app");
+ // ----------------------------------------------------------
+// Index + recherche + résultats + surlignage
+// ----------------------------------------------------------
+const main = document.querySelector(".intervention-main") || document.getElementById("app");
 
-  const searchWrap = document.createElement("div");
-  searchWrap.className = "annuaire-search-wrap";
-  searchWrap.innerHTML = `
-    <div class="annuaire-search-left">
-      <input id="annuaire-search-input"
-             type="search"
-             placeholder="Rechercher un nom, un poste ou un numéro…"
-             autocomplete="off" />
-      <div class="annuaire-search-hint" id="annuaire-search-hint"></div>
-    </div>
+const esc = (s) =>
+  (s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
-    <div class="annuaire-search-right">
-      <div class="annuaire-results-title">Résultats</div>
-      <div id="annuaire-results" class="annuaire-results"></div>
-    </div>
-  `;
+// Normalisation permissive (Ctrl+F)
+// - minuscule
+// - enlève accents
+// - enlève tout sauf lettres/chiffres
+function norm(s) {
+  return (s || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
 
-  // Place juste sous le hero
-  const hero = main?.querySelector(".hero");
-  if (hero && hero.parentNode) {
-    hero.insertAdjacentElement("afterend", searchWrap);
-  } else if (main) {
-    main.insertAdjacentElement("afterbegin", searchWrap);
+// (A) Utilitaires surlignage dans les tables
+function clearHighlights(root = main) {
+  root.querySelectorAll("mark.annuaire-mark").forEach((m) => {
+    const text = document.createTextNode(m.textContent || "");
+    m.replaceWith(text);
+  });
+}
+
+function highlightInCell(td, queryRaw) {
+  // Surlignage simple, permissif (case-insensitive), sur la chaîne brute.
+  // Si queryRaw vide -> rien.
+  if (!td || !queryRaw) return;
+
+  const q = queryRaw.trim();
+  if (!q) return;
+
+  // On travaille sur le texte rendu (pas sur les balises <a href="tel:...">)
+  // => on ne touche pas aux <a>, on surligne seulement dans les textNodes.
+  const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
+  const texts = [];
+  while (walker.nextNode()) texts.push(walker.currentNode);
+
+  const qLower = q.toLowerCase();
+
+  texts.forEach((node) => {
+    const txt = node.nodeValue;
+    if (!txt) return;
+
+    const txtLower = txt.toLowerCase();
+    const idx = txtLower.indexOf(qLower);
+    if (idx === -1) return;
+
+    // Remplace la première occurrence (suffisant et évite de tout casser)
+    const before = txt.slice(0, idx);
+    const match = txt.slice(idx, idx + q.length);
+    const after = txt.slice(idx + q.length);
+
+    const frag = document.createDocumentFragment();
+    if (before) frag.appendChild(document.createTextNode(before));
+
+    const mark = document.createElement("mark");
+    mark.className = "annuaire-mark";
+    mark.textContent = match;
+    frag.appendChild(mark);
+
+    if (after) frag.appendChild(document.createTextNode(after));
+
+    node.parentNode.replaceChild(frag, node);
+  });
+}
+
+// (B) Index : toutes les lignes de toutes les tables + titre d’encadré
+const allRows = Array.from(main.querySelectorAll("table tbody tr"));
+
+const index = allRows
+  .map((tr) => {
+    const tds = tr.querySelectorAll("td");
+    if (!tds || tds.length === 0) return null;
+
+    const details = tr.closest("details.card");
+    const summaryText = details?.querySelector("summary")?.innerText?.trim() || "";
+
+    const cellsText = Array.from(tds).map((td) => (td.innerText || "").trim());
+    const raw = cellsText.join(" | ");
+
+    return {
+      tr,
+      tds: Array.from(tds),
+      details,
+      encadre: summaryText,          // <-- affichage dans résultats
+      nom: (cellsText[0] || "").trim(),
+      meta: cellsText.slice(1).filter(Boolean).join(" • "),
+      raw,
+      key: norm(raw),
+    };
+  })
+  .filter(Boolean);
+
+// (C) UI refs
+const input = document.getElementById("annuaire-search-input");
+const resultsEl = document.getElementById("annuaire-results");
+const hintEl = document.getElementById("annuaire-search-hint");
+
+function flashRow(tr) {
+  tr.classList.add("annuaire-row-flash");
+  setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
+}
+
+function renderResults(matches, qRaw) {
+  if (!qRaw) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
+    resultsEl._matches = [];
+    return;
+  }
+  if (matches.length === 0) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
+    resultsEl._matches = [];
+    return;
   }
 
-  const input = document.getElementById("annuaire-search-input");
-  const resultsEl = document.getElementById("annuaire-results");
-  const hintEl = document.getElementById("annuaire-search-hint");
+  const MAX = 50;
+  const shown = matches.slice(0, MAX);
 
-  function normalize(s) {
-    return (s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+  resultsEl.innerHTML = shown
+    .map((x, i) => `
+      <button class="annuaire-result-item" type="button" data-i="${i}">
+        <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
+        <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
+        <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
+      </button>
+    `)
+    .join("");
+
+  if (matches.length > MAX) {
+    resultsEl.insertAdjacentHTML(
+      "beforeend",
+      `<div class="annuaire-results-more">+ ${matches.length - MAX} autre(s)…</div>`
+    );
   }
 
-  // Index : toutes les lignes de toutes les tables (même si encadrés fermés)
-  const rows = Array.from(document.querySelectorAll(".annuaire-table tbody tr"));
-  const index = rows
-    .map((tr) => {
-      const tds = tr.querySelectorAll("td");
-      if (!tds || tds.length === 0) return null;
+  resultsEl._matches = shown;
+}
 
-      const nom = (tds[0]?.innerText || "").trim();
-      const poste = (tds[1]?.innerText || "").trim();
-      const tel = (tds[2]?.innerText || "").trim();
+function applyFilter() {
+  const qRaw = (input.value || "").trim();
+  const qNorm = norm(qRaw);
 
-      // Le <details> parent pour pouvoir l’ouvrir au clic
-      const parentDetails = tr.closest("details.card");
+  // Toujours nettoyer l'ancien surlignage
+  clearHighlights(main);
 
-      return {
-        tr,
-        parentDetails,
-        nom,
-        poste,
-        tel,
-        searchText: normalize(`${nom} ${poste} ${tel}`),
-      };
-    })
-    .filter(Boolean);
-
-  // Petit highlight (optionnel mais pratique)
-  function flashRow(tr) {
-    tr.classList.add("annuaire-row-flash");
-    setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
+  if (!qNorm) {
+    hintEl.textContent = "Tape pour filtrer…";
+    index.forEach((x) => (x.tr.style.display = ""));
+    renderResults([], "");
+    return;
   }
 
-  function renderResults(list, query) {
-    // Message d’aide
-    if (!query) {
-      hintEl.textContent = `Tape un nom, un poste ou un numéro…`;
-      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
-      return;
+  const matches = [];
+  index.forEach((x) => {
+    const ok = x.key.includes(qNorm);
+    x.tr.style.display = ok ? "" : "none";
+    if (ok) {
+      matches.push(x);
+      // surlignage dans les cellules de la ligne
+      x.tds.forEach((td) => highlightInCell(td, qRaw));
     }
-
-    hintEl.textContent = `${list.length} résultat(s)`;
-
-    if (list.length === 0) {
-      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
-      return;
-    }
-
-    // Limite d’affichage (évite une liste trop longue)
-    const MAX = 40;
-    const shown = list.slice(0, MAX);
-
-    resultsEl.innerHTML = shown
-      .map((x, i) => {
-        const name = x.nom || "(Sans nom)";
-        const line2 = [x.poste, x.tel].filter(Boolean).join(" • ");
-        return `
-          <button class="annuaire-result-item" type="button" data-idx="${index.indexOf(x)}">
-            <div class="annuaire-result-name">${escapeHtml(name)}</div>
-            <div class="annuaire-result-meta">${escapeHtml(line2)}</div>
-          </button>
-        `;
-      })
-      .join("");
-
-    if (list.length > MAX) {
-      resultsEl.insertAdjacentHTML(
-        "beforeend",
-        `<div class="annuaire-results-more">+ ${list.length - MAX} autre(s) résultat(s)…</div>`
-      );
-    }
-  }
-
-  function applyFilter() {
-    const q = normalize(input.value.trim());
-
-    if (!q) {
-      // ré-affiche toutes les lignes
-      index.forEach((x) => (x.tr.style.display = ""));
-      renderResults([], "");
-      return;
-    }
-
-    const matches = [];
-    index.forEach((x) => {
-      const ok = x.searchText.includes(q);
-      x.tr.style.display = ok ? "" : "none";
-      if (ok) matches.push(x);
-    });
-
-    renderResults(matches, q);
-  }
-
-  // Clic sur un résultat : ouvre l’encadré + scroll sur la ligne
-  resultsEl.addEventListener("click", (e) => {
-    const btn = e.target.closest(".annuaire-result-item");
-    if (!btn) return;
-
-    const idx = Number(btn.getAttribute("data-idx"));
-    const item = index[idx];
-    if (!item) return;
-
-    if (item.parentDetails) item.parentDetails.open = true;
-
-    item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
-    flashRow(item.tr);
   });
 
-  input.addEventListener("input", applyFilter);
+  hintEl.textContent = `${matches.length} résultat(s)`;
+  renderResults(matches, qRaw);
+}
 
-  // état initial
-  renderResults([], "");
+// Clic résultat : ouvre encadré + scroll + flash
+resultsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".annuaire-result-item");
+  if (!btn) return;
+
+  const shown = resultsEl._matches || [];
+  const i = Number(btn.getAttribute("data-i"));
+  const item = shown[i];
+  if (!item) return;
+
+  if (item.details) item.details.open = true;
+  item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
+  flashRow(item.tr);
+});
+
+input.addEventListener("input", applyFilter);
+
+// état initial
+renderResults([], "");
 }
 
 function renderCodesAcces() {
