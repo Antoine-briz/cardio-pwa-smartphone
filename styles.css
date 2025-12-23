@@ -2161,3 +2161,18 @@ body.acr-force-light .acr5-synth-live {
 .info-content br {
   line-height: 1.5;
 }
+/* Forcer le bouton "Protocoles spécifiques" en rouge */
+.btn.btn-red {
+  background-color: #8b1e1e !important;
+  color: #ffffff;
+}
+
+.btn.btn-red:hover {
+  background-color: #a32626 !important;
+}
+
+/* Espacement entre les boutons des Protocoles spécifiques */
+.card-body .btn {
+  display: block;
+  margin-bottom: 0.5rem;
+}
