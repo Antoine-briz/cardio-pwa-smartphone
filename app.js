@@ -15410,278 +15410,263 @@ function renderAnnuaire() {
     image: "annuaire.png",
     encadres,
   });
-   // ==========================================================
-  // Annuaire - Recherche + Résultats (robuste + diagnostic)
-  // ==========================================================
-  const rootApp = document.getElementById("app");
 
-  const esc = (s) =>
-    (s ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+// ==========================================================
+// Annuaire - Recherche + Résultats (robuste + diagnostic)
+// ==========================================================
+const rootApp = document.getElementById("app");
 
-  // Ctrl+F permissif: maj/min + accents + ponctuation ignorés
-  function norm(s) {
-    return (s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]/g, "");
+const esc = (s) =>
+  (s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+function norm(s) {
+  return (s || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+// ---------- UI ----------
+const hero = rootApp.querySelector(".hero");
+
+const searchWrap = document.createElement("div");
+searchWrap.className = "annuaire-search-wrap";
+searchWrap.innerHTML = `
+  <div class="annuaire-panel">
+    <div class="annuaire-panel-title">Recherche</div>
+    <input id="annuaire-search-input"
+           type="search"
+           placeholder="Nom, poste ou numéro…"
+           autocomplete="off" />
+    <div class="annuaire-search-hint" id="annuaire-search-hint">Initialisation…</div>
+  </div>
+
+  <div class="annuaire-panel">
+    <div class="annuaire-panel-title">Résultats</div>
+    <div id="annuaire-results" class="annuaire-results"></div>
+  </div>
+`;
+
+if (hero) hero.insertAdjacentElement("afterend", searchWrap);
+else rootApp.insertAdjacentElement("afterbegin", searchWrap);
+
+const input = document.getElementById("annuaire-search-input");
+const resultsEl = document.getElementById("annuaire-results");
+const hintEl = document.getElementById("annuaire-search-hint");
+
+function showDiag(msg) {
+  resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
+}
+
+if (!input || !resultsEl || !hintEl) {
+  console.error("Annuaire search DOM missing:", { input, resultsEl, hintEl });
+  return;
+}
+
+// ---------- Surlignage ----------
+function clearHighlights(container) {
+  (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
+    m.replaceWith(document.createTextNode(m.textContent || ""));
+  });
+}
+
+function highlightInCell(td, queryRaw) {
+  if (!td || !queryRaw) return;
+  const q = queryRaw.trim();
+  if (!q) return;
+
+  const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  const qLower = q.toLowerCase();
+
+  nodes.forEach((node) => {
+    const txt = node.nodeValue || "";
+    const low = txt.toLowerCase();
+    const idx = low.indexOf(qLower);
+    if (idx === -1) return;
+
+    const before = txt.slice(0, idx);
+    const match = txt.slice(idx, idx + q.length);
+    const after = txt.slice(idx + q.length);
+
+    const frag = document.createDocumentFragment();
+    if (before) frag.appendChild(document.createTextNode(before));
+
+    const mark = document.createElement("mark");
+    mark.className = "annuaire-mark";
+    mark.textContent = match;
+    frag.appendChild(mark);
+
+    if (after) frag.appendChild(document.createTextNode(after));
+    node.parentNode.replaceChild(frag, node);
+  });
+}
+
+function flashRow(tr) {
+  tr.classList.add("annuaire-row-flash");
+  setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
+}
+
+// ---------- Index + retry ----------
+let index = [];
+
+function buildIndexOnce() {
+  const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
+    (tr) => tr.querySelectorAll("td").length > 0
+  );
+
+  index = allRows
+    .map((tr) => {
+      const tds = Array.from(tr.querySelectorAll("td"));
+      if (tds.length === 0) return null;
+
+      const details = tr.closest("details.card");
+      const summary = details?.querySelector("summary");
+      const encadre = (summary?.textContent || "").trim(); // <-- textContent
+
+      // ✅ IMPORTANT: textContent (pas innerText) => marche même si <details> fermé
+      const cellsText = tds.map((td) => (td.textContent || "").trim()); // <-- textContent
+      const raw = cellsText.join(" | ");
+
+      return {
+        tr,
+        tds,
+        details,
+        encadre,
+        nom: (cellsText[0] || "").trim(),
+        meta: cellsText.slice(1).filter(Boolean).join(" • "),
+        raw,
+        key: norm(raw),
+      };
+    })
+    .filter(Boolean);
+
+  return index.length;
+}
+
+function renderResults(matches, qRaw) {
+  if (!qRaw) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué</div>`;
+    resultsEl._matches = [];
+    return;
   }
-
-  // ---------- UI ----------
-  const hero = rootApp.querySelector(".hero");
-
-  const searchWrap = document.createElement("div");
-  searchWrap.className = "annuaire-search-wrap";
-  searchWrap.innerHTML = `
-    <div class="annuaire-panel">
-      <div class="annuaire-panel-title">Recherche</div>
-      <input id="annuaire-search-input"
-             type="search"
-             placeholder="Nom, poste ou numéro…"
-             autocomplete="off" />
-      <div class="annuaire-search-hint" id="annuaire-search-hint">Initialisation…</div>
-    </div>
-
-    <div class="annuaire-panel">
-      <div class="annuaire-panel-title">Résultats</div>
-      <div id="annuaire-results" class="annuaire-results"></div>
-    </div>
-  `;
-
-  if (hero) hero.insertAdjacentElement("afterend", searchWrap);
-  else rootApp.insertAdjacentElement("afterbegin", searchWrap);
-
-  const input = document.getElementById("annuaire-search-input");
-  const resultsEl = document.getElementById("annuaire-results");
-  const hintEl = document.getElementById("annuaire-search-hint");
-
-  function showDiag(msg) {
-    resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
-  }
-
-  if (!input || !resultsEl || !hintEl) {
-    console.error("Annuaire search DOM missing:", { input, resultsEl, hintEl });
+  if (matches.length === 0) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat</div>`;
+    resultsEl._matches = [];
     return;
   }
 
-  // ---------- Surlignage ----------
-  function clearHighlights(container) {
-    (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
-      m.replaceWith(document.createTextNode(m.textContent || ""));
-    });
+  const MAX = 50;
+  const shown = matches.slice(0, MAX);
+  resultsEl._matches = shown;
+
+  resultsEl.innerHTML = shown
+    .map(
+      (x, i) => `
+        <button class="annuaire-result-item" type="button" data-i="${i}">
+          <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
+          <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
+          <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
+        </button>
+      `
+    )
+    .join("");
+}
+
+function applyFilter() {
+  const qRaw = (input.value || "").trim();
+  const q = norm(qRaw);
+
+  clearHighlights(rootApp);
+
+  if (!q) {
+    hintEl.textContent = "Tape pour filtrer…";
+    index.forEach((x) => (x.tr.style.display = ""));
+    renderResults([], "");
+    return;
   }
 
-  function highlightInCell(td, queryRaw) {
-    if (!td || !queryRaw) return;
-    const q = queryRaw.trim();
-    if (!q) return;
-
-    const walker = document.createTreeWalker(td, NodeFilter.SHOW_TEXT, null);
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-
-    const qLower = q.toLowerCase();
-
-    nodes.forEach((node) => {
-      const txt = node.nodeValue || "";
-      const low = txt.toLowerCase();
-      const idx = low.indexOf(qLower);
-      if (idx === -1) return;
-
-      const before = txt.slice(0, idx);
-      const match = txt.slice(idx, idx + q.length);
-      const after = txt.slice(idx + q.length);
-
-      const frag = document.createDocumentFragment();
-      if (before) frag.appendChild(document.createTextNode(before));
-
-      const mark = document.createElement("mark");
-      mark.className = "annuaire-mark";
-      mark.textContent = match;
-      frag.appendChild(mark);
-
-      if (after) frag.appendChild(document.createTextNode(after));
-      node.parentNode.replaceChild(frag, node);
-    });
-  }
-
-  function flashRow(tr) {
-    tr.classList.add("annuaire-row-flash");
-    setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
-  }
-
-  // ---------- Index + retry ----------
-  let index = [];
-
-  function buildIndexOnce() {
-    // On ne dépend PAS de tbody (trop fragile)
-    const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
-      (tr) => tr.querySelectorAll("td").length > 0
-    );
-
-    index = allRows
-      .map((tr) => {
-        const tds = Array.from(tr.querySelectorAll("td"));
-        if (tds.length === 0) return null;
-
-        const details = tr.closest("details.card");
-        const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
-
-        const cellsText = tds.map((td) => (td.innerText || "").trim());
-        const raw = cellsText.join(" | ");
-
-        return {
-          tr,
-          tds,
-          details,
-          encadre,
-          nom: (cellsText[0] || "").trim(),
-          meta: cellsText.slice(1).filter(Boolean).join(" • "),
-          raw,
-          key: norm(raw),
-        };
-      })
-      .filter(Boolean);
-
-    return index.length;
-  }
-
-  function initSearchNow() {
-    // Diagnostic initial
-    const hasBougle = index.some((x) => x.key.includes("bougle"));
-    const first = index[0]?.raw || "NONE";
-
-    hintEl.textContent = `Index prêt (${index.length} lignes)`;
-    showDiag(
-      `✅ Initialisation OK\n` +
-      `Index = ${index.length}\n` +
-      `BOUGLE présent = ${hasBougle ? "OUI" : "NON"}\n` +
-      `Première ligne = ${first}\n\n` +
-      `Tape dans la recherche (ex: bou)`
-    );
-
-    function renderResults(matches, qRaw) {
-      if (!qRaw) {
-        resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
-        resultsEl._matches = [];
-        return;
-      }
-      if (matches.length === 0) {
-        resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
-        resultsEl._matches = [];
-        return;
-      }
-
-      const MAX = 50;
-      const shown = matches.slice(0, MAX);
-      resultsEl._matches = shown;
-
-      resultsEl.innerHTML = shown
-        .map(
-          (x, i) => `
-            <button class="annuaire-result-item" type="button" data-i="${i}">
-              <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
-              <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
-              <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
-            </button>
-          `
-        )
-        .join("");
+  const matches = [];
+  index.forEach((x) => {
+    const ok = x.key.includes(q);
+    x.tr.style.display = ok ? "" : "none";
+    if (ok) {
+      matches.push(x);
+      x.tds.forEach((td) => highlightInCell(td, qRaw));
     }
+  });
 
-    function applyFilter() {
-      const qRaw = (input.value || "").trim();
-      const q = norm(qRaw);
+  hintEl.textContent = `${matches.length} résultat(s)`;
+  renderResults(matches, qRaw);
 
-      clearHighlights(rootApp);
-
-      if (!q) {
-        hintEl.textContent = "Tape pour filtrer…";
-        index.forEach((x) => (x.tr.style.display = ""));
-        renderResults([], "");
-        return;
-      }
-
-      const matches = [];
-      index.forEach((x) => {
-        const ok = x.key.includes(q);
-        x.tr.style.display = ok ? "" : "none";
-        if (ok) {
-          matches.push(x);
-          x.tds.forEach((td) => highlightInCell(td, qRaw));
-        }
-      });
-
-      hintEl.textContent = `${matches.length} résultat(s)`;
-      renderResults(matches, qRaw);
-
-      // TEST DEMANDÉ : "bou" doit donner BOUGLE Adrien si index correct
-      if (norm(qRaw) === "bou" && matches.length === 0) {
-        const sample = index.slice(0, 10).map(x => x.raw).join("\n- ");
-        showDiag(
-          `⚠️ Test "bou" = 0 résultat\n` +
-          `Index = ${index.length}\n` +
-          `Exemples indexés:\n- ${sample}\n\n` +
-          `➡️ Si tu ne vois pas "BOUGLE Adrien" dans les exemples, tu n'indexes pas les bonnes lignes.`
-        );
-      }
-    }
-
-    resultsEl.addEventListener("click", (e) => {
-      const btn = e.target.closest(".annuaire-result-item");
-      if (!btn) return;
-
-      const shown = resultsEl._matches || [];
-      const i = Number(btn.getAttribute("data-i"));
-      const item = shown[i];
-      if (!item) return;
-
-      if (item.details) item.details.open = true;
-      item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
-      flashRow(item.tr);
-    });
-
-    input.addEventListener("input", applyFilter);
-    // état initial
-    applyFilter();
-  }
-
-  // Retry 2 secondes max : attend que les tables existent réellement
-  let tries = 0;
-  const maxTries = 120; // ~2s à 60fps
-  (function waitForRows() {
-    tries += 1;
-    const n = buildIndexOnce();
-
-    if (n > 0) {
-      initSearchNow();
-      return;
-    }
-
-    hintEl.textContent = `Initialisation… (tentative ${tries}/${maxTries})`;
-    if (tries >= maxTries) {
+  // ✅ Test demandé
+  if (norm(qRaw) === "bou") {
+    console.log("TEST 'bou' =>", matches.map((m) => m.nom));
+    if (!matches.some((m) => norm(m.nom).includes("bougle"))) {
       showDiag(
-        `❌ Diagnostic: index toujours vide\n` +
-        `Tentatives = ${tries}\n\n` +
-        `➡️ Le code ne trouve AUCUN <tr><td> dans #app.\n` +
-        `Causes possibles:\n` +
-        `- ton annuaire n'est pas rendu en <table><tr><td> (ou pas dans #app)\n` +
-        `- les lignes sont dans un autre conteneur hors #app\n` +
-        `- les encadrés sont générés via un autre composant après coup\n\n` +
-        `➡️ Vérifie: dans ta page Annuaire, fais une recherche "td" dans l'inspecteur: il y en a ?`
+        `⚠️ Test "bou" : BOUGLE non trouvé\n` +
+        `Index = ${index.length}\n` +
+        `Exemple 1 = ${index[0]?.raw || "NONE"}\n` +
+        `Exemple 2 = ${index[1]?.raw || "NONE"}\n\n` +
+        `➡️ Si les exemples ne contiennent jamais de noms, alors ce n'est pas le bon DOM qui est indexé.`
       );
-      return;
     }
+  }
+}
 
-    requestAnimationFrame(waitForRows);
-  })();
+// click sur résultat => ouvre l'encadré + scroll
+resultsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".annuaire-result-item");
+  if (!btn) return;
+
+  const shown = resultsEl._matches || [];
+  const i = Number(btn.getAttribute("data-i"));
+  const item = shown[i];
+  if (!item) return;
+
+  if (item.details) item.details.open = true;
+  item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
+  flashRow(item.tr);
+});
+
+input.addEventListener("input", applyFilter);
+
+// Retry (attend le rendu)
+let tries = 0;
+const maxTries = 120; // ~2s
+(function waitForRows() {
+  tries += 1;
+  const n = buildIndexOnce();
+
+  if (n > 0) {
+    const hasBougle = index.some((x) => x.key.includes("bougle"));
+    console.log("Annuaire index =", n, "BOUGLE présent =", hasBougle, "first =", index[0]?.raw);
+    hintEl.textContent = `Index prêt (${n} lignes)`;
+    applyFilter(); // affiche "Aucun filtre appliqué" au départ
+    return;
+  }
+
+  hintEl.textContent = `Initialisation… (${tries}/${maxTries})`;
+  if (tries >= maxTries) {
+    showDiag(
+      `❌ Index vide après ${tries} tentatives.\n` +
+      `➡️ Aucun <tr><td> trouvé dans #app au moment du scan.\n` +
+      `Vérifie que l'annuaire est bien rendu dans #app.`
+    );
+    return;
+  }
+  requestAnimationFrame(waitForRows);
+})();
  }
-
+  
 function renderCodesAcces() {
   const encadres = [
     {
