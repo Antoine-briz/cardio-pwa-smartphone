@@ -15410,9 +15410,8 @@ function renderAnnuaire() {
     image: "annuaire.png",
     encadres,
   });
-
   // ----------------------------------------------------------
-  // Recherche + Résultats (symétriques) — version robuste
+  // Recherche + Résultats (symétriques) — version robuste + DIAG
   // ----------------------------------------------------------
   const rootApp = document.getElementById("app");
 
@@ -15424,7 +15423,7 @@ function renderAnnuaire() {
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
 
-  // Donne un comportement type Ctrl+F (maj/min + accents + ponctuation ignorés)
+  // Ctrl+F permissif: casse/accents/ponctuation ignorés
   function norm(s) {
     return (s || "")
       .toLowerCase()
@@ -15433,7 +15432,7 @@ function renderAnnuaire() {
       .replace(/[^a-z0-9]/g, "");
   }
 
-  // Injecter la recherche JUSTE SOUS l’image/titre (hero)
+  // Injecter la recherche juste sous le hero (image) si présent
   const hero = rootApp.querySelector(".hero");
 
   const searchWrap = document.createElement("div");
@@ -15466,7 +15465,12 @@ function renderAnnuaire() {
     return;
   }
 
-  // --- Surlignage (optionnel) ---
+  // Diagnostic visible
+  function showDiag(msg) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
+  }
+
+  // --- Surlignage ---
   function clearHighlights(container) {
     (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
       m.replaceWith(document.createTextNode(m.textContent || ""));
@@ -15508,37 +15512,62 @@ function renderAnnuaire() {
     });
   }
 
-// INDEX ROBUSTE : tous les <tr> contenant au moins un <td> (pas dépendant de <tbody>)
-const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
-  (tr) => tr.querySelectorAll("td").length > 0
-);
+  // ----------------------------------------------------------
+  // INDEX ROBUSTE : tous les <tr> qui contiennent au moins un <td>
+  // ----------------------------------------------------------
+  const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
+    (tr) => tr.querySelectorAll("td").length > 0
+  );
 
-const index = allRows
-  .map((tr) => {
-    const tds = Array.from(tr.querySelectorAll("td"));
-    if (tds.length === 0) return null;
+  const index = allRows
+    .map((tr) => {
+      const tds = Array.from(tr.querySelectorAll("td"));
+      if (tds.length === 0) return null;
 
-    const details = tr.closest("details.card");
-    const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
+      const details = tr.closest("details.card");
+      const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
 
-    const cellsText = tds.map((td) => (td.innerText || "").trim());
-    const raw = cellsText.join(" | ");
+      const cellsText = tds.map((td) => (td.innerText || "").trim());
+      const raw = cellsText.join(" | ");
 
-    return {
-      tr,
-      tds,
-      details,
-      encadre,
-      nom: (cellsText[0] || "").trim(),
-      meta: cellsText.slice(1).filter(Boolean).join(" • "),
-      raw,
-      key: norm(raw),
-    };
-  })
-  .filter(Boolean);
+      return {
+        tr,
+        tds,
+        details,
+        encadre,
+        nom: (cellsText[0] || "").trim(),
+        meta: cellsText.slice(1).filter(Boolean).join(" • "),
+        raw,
+        key: norm(raw),
+      };
+    })
+    .filter(Boolean);
 
-console.log("ANNuaire index rows =", index.length, "contains BOUGLE =", index.some(x => x.key.includes("bougle")));
-
+  // --- DIAG au chargement ---
+  const bouglePresent = index.some((x) => x.key.includes("bougle"));
+  if (index.length === 0) {
+    showDiag(
+      "⚠️ Diagnostic Annuaire\n" +
+      "- Index = 0 ligne.\n" +
+      "➡️ Donc aucun résultat ne peut apparaître.\n" +
+      "Causes probables :\n" +
+      "1) Les tables ne sont pas dans #app (ou pas des <table><tr><td>).\n" +
+      "2) Le rendu HTML de l'annuaire n'est pas du tout une table.\n"
+    );
+  } else if (!bouglePresent) {
+    const sample = index.slice(0, 10).map((x) => x.raw).join("\n- ");
+    showDiag(
+      "⚠️ Diagnostic Annuaire\n" +
+      "- Index OK (" + index.length + " lignes) mais 'BOUGLE' introuvable.\n" +
+      "➡️ Exemples de lignes indexées:\n- " + sample + "\n\n" +
+      "➡️ Conclusion : tu n'indexes pas le bon contenu (pas le tableau des noms)."
+    );
+  } else {
+    // OK
+    showDiag(
+      "✅ Index OK (" + index.length + " lignes). Test: 'bou' doit sortir 'BOUGLE Adrien'."
+    );
+  }
 
   function flashRow(tr) {
     tr.classList.add("annuaire-row-flash");
@@ -15600,6 +15629,16 @@ console.log("ANNuaire index rows =", index.length, "contains BOUGLE =", index.so
 
     hintEl.textContent = `${matches.length} résultat(s)`;
     renderResults(matches, qRaw);
+
+    // test demandé : si "bou" ne donne rien, affiche diag
+    if (norm(qRaw) === "bou" && matches.length === 0) {
+      const sample = index.slice(0, 10).map((x) => x.raw).join("\n- ");
+      showDiag(
+        "⚠️ Test 'bou' = 0 résultat\n" +
+        "Index = " + index.length + "\n" +
+        "➡️ Exemples de lignes indexées:\n- " + sample
+      );
+    }
   }
 
   resultsEl.addEventListener("click", (e) => {
@@ -15617,6 +15656,7 @@ console.log("ANNuaire index rows =", index.length, "contains BOUGLE =", index.so
   });
 
   input.addEventListener("input", applyFilter);
+
     }
 
 function renderCodesAcces() {
