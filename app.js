@@ -15508,53 +15508,37 @@ function renderAnnuaire() {
     });
   }
 
-  // ----------------------------------------------------------
-  // INDEX ROBUSTE : on indexe sur rootApp (pas sur "main")
-  // + fallback si aucune table n'est trouvée
-  // ----------------------------------------------------------
-  let allRows = Array.from(rootApp.querySelectorAll("table tbody tr"));
+// INDEX ROBUSTE : tous les <tr> contenant au moins un <td> (pas dépendant de <tbody>)
+const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
+  (tr) => tr.querySelectorAll("td").length > 0
+);
 
-  // Fallback: si ton HTML n’a pas de <tbody> (ou autre), on prend tous les tr qui ont des td
-  if (allRows.length === 0) {
-    allRows = Array.from(rootApp.querySelectorAll("tr")).filter((tr) => tr.querySelector("td"));
-  }
+const index = allRows
+  .map((tr) => {
+    const tds = Array.from(tr.querySelectorAll("td"));
+    if (tds.length === 0) return null;
 
-  const index = allRows
-    .map((tr) => {
-      const tds = tr.querySelectorAll("td");
-      if (!tds || tds.length === 0) return null;
+    const details = tr.closest("details.card");
+    const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
 
-      const details = tr.closest("details.card");
-      const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
+    const cellsText = tds.map((td) => (td.innerText || "").trim());
+    const raw = cellsText.join(" | ");
 
-      const cellsText = Array.from(tds).map((td) => (td.innerText || "").trim());
-      const raw = cellsText.join(" | ");
+    return {
+      tr,
+      tds,
+      details,
+      encadre,
+      nom: (cellsText[0] || "").trim(),
+      meta: cellsText.slice(1).filter(Boolean).join(" • "),
+      raw,
+      key: norm(raw),
+    };
+  })
+  .filter(Boolean);
 
-      return {
-        tr,
-        tds: Array.from(tds),
-        details,
-        encadre,
-        nom: (cellsText[0] || "").trim(),
-        meta: cellsText.slice(1).filter(Boolean).join(" • "),
-        raw,
-        key: norm(raw),
-      };
-    })
-    .filter(Boolean);
+console.log("ANNuaire index rows =", index.length, "contains BOUGLE =", index.some(x => x.key.includes("bougle")));
 
-  // Auto-test DEV : si BOUGLE n’est pas indexé, on l’affiche clairement
-  const hasBougle = index.some((x) => x.key.includes("bougle"));
-  if (!hasBougle) {
-    resultsEl.innerHTML = `
-      <div class="annuaire-results-empty">
-        ⚠️ Index vide ou incorrect : je ne trouve pas "BOUGLE" dans les lignes indexées.<br>
-        Lignes indexées: ${index.length}
-      </div>
-    `;
-  } else {
-    resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
-  }
 
   function flashRow(tr) {
     tr.classList.add("annuaire-row-flash");
