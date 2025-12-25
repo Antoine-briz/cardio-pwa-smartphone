@@ -15410,9 +15410,9 @@ function renderAnnuaire() {
     image: "annuaire.png",
     encadres,
   });
-  // ----------------------------------------------------------
-  // Recherche + Résultats (symétriques) — version robuste + DIAG
-  // ----------------------------------------------------------
+   // ==========================================================
+  // Annuaire - Recherche + Résultats (robuste + diagnostic)
+  // ==========================================================
   const rootApp = document.getElementById("app");
 
   const esc = (s) =>
@@ -15423,7 +15423,7 @@ function renderAnnuaire() {
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
 
-  // Ctrl+F permissif: casse/accents/ponctuation ignorés
+  // Ctrl+F permissif: maj/min + accents + ponctuation ignorés
   function norm(s) {
     return (s || "")
       .toLowerCase()
@@ -15432,7 +15432,7 @@ function renderAnnuaire() {
       .replace(/[^a-z0-9]/g, "");
   }
 
-  // Injecter la recherche juste sous le hero (image) si présent
+  // ---------- UI ----------
   const hero = rootApp.querySelector(".hero");
 
   const searchWrap = document.createElement("div");
@@ -15444,7 +15444,7 @@ function renderAnnuaire() {
              type="search"
              placeholder="Nom, poste ou numéro…"
              autocomplete="off" />
-      <div class="annuaire-search-hint" id="annuaire-search-hint">Tape pour filtrer…</div>
+      <div class="annuaire-search-hint" id="annuaire-search-hint">Initialisation…</div>
     </div>
 
     <div class="annuaire-panel">
@@ -15460,17 +15460,16 @@ function renderAnnuaire() {
   const resultsEl = document.getElementById("annuaire-results");
   const hintEl = document.getElementById("annuaire-search-hint");
 
+  function showDiag(msg) {
+    resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
+  }
+
   if (!input || !resultsEl || !hintEl) {
     console.error("Annuaire search DOM missing:", { input, resultsEl, hintEl });
     return;
   }
 
-  // Diagnostic visible
-  function showDiag(msg) {
-    resultsEl.innerHTML = `<div class="annuaire-results-empty" style="white-space:pre-wrap;">${esc(msg)}</div>`;
-  }
-
-  // --- Surlignage ---
+  // ---------- Surlignage ----------
   function clearHighlights(container) {
     (container || document).querySelectorAll("mark.annuaire-mark").forEach((m) => {
       m.replaceWith(document.createTextNode(m.textContent || ""));
@@ -15507,66 +15506,8 @@ function renderAnnuaire() {
       frag.appendChild(mark);
 
       if (after) frag.appendChild(document.createTextNode(after));
-
       node.parentNode.replaceChild(frag, node);
     });
-  }
-
-  // ----------------------------------------------------------
-  // INDEX ROBUSTE : tous les <tr> qui contiennent au moins un <td>
-  // ----------------------------------------------------------
-  const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
-    (tr) => tr.querySelectorAll("td").length > 0
-  );
-
-  const index = allRows
-    .map((tr) => {
-      const tds = Array.from(tr.querySelectorAll("td"));
-      if (tds.length === 0) return null;
-
-      const details = tr.closest("details.card");
-      const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
-
-      const cellsText = tds.map((td) => (td.innerText || "").trim());
-      const raw = cellsText.join(" | ");
-
-      return {
-        tr,
-        tds,
-        details,
-        encadre,
-        nom: (cellsText[0] || "").trim(),
-        meta: cellsText.slice(1).filter(Boolean).join(" • "),
-        raw,
-        key: norm(raw),
-      };
-    })
-    .filter(Boolean);
-
-  // --- DIAG au chargement ---
-  const bouglePresent = index.some((x) => x.key.includes("bougle"));
-  if (index.length === 0) {
-    showDiag(
-      "⚠️ Diagnostic Annuaire\n" +
-      "- Index = 0 ligne.\n" +
-      "➡️ Donc aucun résultat ne peut apparaître.\n" +
-      "Causes probables :\n" +
-      "1) Les tables ne sont pas dans #app (ou pas des <table><tr><td>).\n" +
-      "2) Le rendu HTML de l'annuaire n'est pas du tout une table.\n"
-    );
-  } else if (!bouglePresent) {
-    const sample = index.slice(0, 10).map((x) => x.raw).join("\n- ");
-    showDiag(
-      "⚠️ Diagnostic Annuaire\n" +
-      "- Index OK (" + index.length + " lignes) mais 'BOUGLE' introuvable.\n" +
-      "➡️ Exemples de lignes indexées:\n- " + sample + "\n\n" +
-      "➡️ Conclusion : tu n'indexes pas le bon contenu (pas le tableau des noms)."
-    );
-  } else {
-    // OK
-    showDiag(
-      "✅ Index OK (" + index.length + " lignes). Test: 'bou' doit sortir 'BOUGLE Adrien'."
-    );
   }
 
   function flashRow(tr) {
@@ -15574,90 +15515,172 @@ function renderAnnuaire() {
     setTimeout(() => tr.classList.remove("annuaire-row-flash"), 900);
   }
 
-  function renderResults(matches, qRaw) {
-    if (!qRaw) {
-      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
-      resultsEl._matches = [];
-      return;
-    }
-    if (matches.length === 0) {
-      resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
-      resultsEl._matches = [];
-      return;
-    }
+  // ---------- Index + retry ----------
+  let index = [];
 
-    const MAX = 50;
-    const shown = matches.slice(0, MAX);
+  function buildIndexOnce() {
+    // On ne dépend PAS de tbody (trop fragile)
+    const allRows = Array.from(rootApp.querySelectorAll("tr")).filter(
+      (tr) => tr.querySelectorAll("td").length > 0
+    );
 
-    resultsEl.innerHTML = shown
-      .map(
-        (x, i) => `
-          <button class="annuaire-result-item" type="button" data-i="${i}">
-            <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
-            <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
-            <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
-          </button>
-        `
-      )
-      .join("");
+    index = allRows
+      .map((tr) => {
+        const tds = Array.from(tr.querySelectorAll("td"));
+        if (tds.length === 0) return null;
 
-    resultsEl._matches = shown;
+        const details = tr.closest("details.card");
+        const encadre = details?.querySelector("summary")?.innerText?.trim() || "";
+
+        const cellsText = tds.map((td) => (td.innerText || "").trim());
+        const raw = cellsText.join(" | ");
+
+        return {
+          tr,
+          tds,
+          details,
+          encadre,
+          nom: (cellsText[0] || "").trim(),
+          meta: cellsText.slice(1).filter(Boolean).join(" • "),
+          raw,
+          key: norm(raw),
+        };
+      })
+      .filter(Boolean);
+
+    return index.length;
   }
 
-  function applyFilter() {
-    const qRaw = (input.value || "").trim();
-    const q = norm(qRaw);
+  function initSearchNow() {
+    // Diagnostic initial
+    const hasBougle = index.some((x) => x.key.includes("bougle"));
+    const first = index[0]?.raw || "NONE";
 
-    clearHighlights(rootApp);
+    hintEl.textContent = `Index prêt (${index.length} lignes)`;
+    showDiag(
+      `✅ Initialisation OK\n` +
+      `Index = ${index.length}\n` +
+      `BOUGLE présent = ${hasBougle ? "OUI" : "NON"}\n` +
+      `Première ligne = ${first}\n\n` +
+      `Tape dans la recherche (ex: bou)`
+    );
 
-    if (!q) {
-      hintEl.textContent = "Tape pour filtrer…";
-      index.forEach((x) => (x.tr.style.display = ""));
-      renderResults([], "");
-      return;
+    function renderResults(matches, qRaw) {
+      if (!qRaw) {
+        resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun filtre appliqué.</div>`;
+        resultsEl._matches = [];
+        return;
+      }
+      if (matches.length === 0) {
+        resultsEl.innerHTML = `<div class="annuaire-results-empty">Aucun résultat.</div>`;
+        resultsEl._matches = [];
+        return;
+      }
+
+      const MAX = 50;
+      const shown = matches.slice(0, MAX);
+      resultsEl._matches = shown;
+
+      resultsEl.innerHTML = shown
+        .map(
+          (x, i) => `
+            <button class="annuaire-result-item" type="button" data-i="${i}">
+              <div class="annuaire-result-name">${esc(x.nom || x.raw)}</div>
+              <div class="annuaire-result-meta">${esc(x.meta || "")}</div>
+              <div class="annuaire-result-badge">${esc(x.encadre || "")}</div>
+            </button>
+          `
+        )
+        .join("");
     }
 
-    const matches = [];
-    index.forEach((x) => {
-      const ok = x.key.includes(q);
-      x.tr.style.display = ok ? "" : "none";
-      if (ok) {
-        matches.push(x);
-        x.tds.forEach((td) => highlightInCell(td, qRaw));
+    function applyFilter() {
+      const qRaw = (input.value || "").trim();
+      const q = norm(qRaw);
+
+      clearHighlights(rootApp);
+
+      if (!q) {
+        hintEl.textContent = "Tape pour filtrer…";
+        index.forEach((x) => (x.tr.style.display = ""));
+        renderResults([], "");
+        return;
       }
+
+      const matches = [];
+      index.forEach((x) => {
+        const ok = x.key.includes(q);
+        x.tr.style.display = ok ? "" : "none";
+        if (ok) {
+          matches.push(x);
+          x.tds.forEach((td) => highlightInCell(td, qRaw));
+        }
+      });
+
+      hintEl.textContent = `${matches.length} résultat(s)`;
+      renderResults(matches, qRaw);
+
+      // TEST DEMANDÉ : "bou" doit donner BOUGLE Adrien si index correct
+      if (norm(qRaw) === "bou" && matches.length === 0) {
+        const sample = index.slice(0, 10).map(x => x.raw).join("\n- ");
+        showDiag(
+          `⚠️ Test "bou" = 0 résultat\n` +
+          `Index = ${index.length}\n` +
+          `Exemples indexés:\n- ${sample}\n\n` +
+          `➡️ Si tu ne vois pas "BOUGLE Adrien" dans les exemples, tu n'indexes pas les bonnes lignes.`
+        );
+      }
+    }
+
+    resultsEl.addEventListener("click", (e) => {
+      const btn = e.target.closest(".annuaire-result-item");
+      if (!btn) return;
+
+      const shown = resultsEl._matches || [];
+      const i = Number(btn.getAttribute("data-i"));
+      const item = shown[i];
+      if (!item) return;
+
+      if (item.details) item.details.open = true;
+      item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
+      flashRow(item.tr);
     });
 
-    hintEl.textContent = `${matches.length} résultat(s)`;
-    renderResults(matches, qRaw);
-
-    // test demandé : si "bou" ne donne rien, affiche diag
-    if (norm(qRaw) === "bou" && matches.length === 0) {
-      const sample = index.slice(0, 10).map((x) => x.raw).join("\n- ");
-      showDiag(
-        "⚠️ Test 'bou' = 0 résultat\n" +
-        "Index = " + index.length + "\n" +
-        "➡️ Exemples de lignes indexées:\n- " + sample
-      );
-    }
+    input.addEventListener("input", applyFilter);
+    // état initial
+    applyFilter();
   }
 
-  resultsEl.addEventListener("click", (e) => {
-    const btn = e.target.closest(".annuaire-result-item");
-    if (!btn) return;
+  // Retry 2 secondes max : attend que les tables existent réellement
+  let tries = 0;
+  const maxTries = 120; // ~2s à 60fps
+  (function waitForRows() {
+    tries += 1;
+    const n = buildIndexOnce();
 
-    const shown = resultsEl._matches || [];
-    const i = Number(btn.getAttribute("data-i"));
-    const item = shown[i];
-    if (!item) return;
-
-    if (item.details) item.details.open = true;
-    item.tr.scrollIntoView({ behavior: "smooth", block: "center" });
-    flashRow(item.tr);
-  });
-
-  input.addEventListener("input", applyFilter);
-
+    if (n > 0) {
+      initSearchNow();
+      return;
     }
+
+    hintEl.textContent = `Initialisation… (tentative ${tries}/${maxTries})`;
+    if (tries >= maxTries) {
+      showDiag(
+        `❌ Diagnostic: index toujours vide\n` +
+        `Tentatives = ${tries}\n\n` +
+        `➡️ Le code ne trouve AUCUN <tr><td> dans #app.\n` +
+        `Causes possibles:\n` +
+        `- ton annuaire n'est pas rendu en <table><tr><td> (ou pas dans #app)\n` +
+        `- les lignes sont dans un autre conteneur hors #app\n` +
+        `- les encadrés sont générés via un autre composant après coup\n\n` +
+        `➡️ Vérifie: dans ta page Annuaire, fais une recherche "td" dans l'inspecteur: il y en a ?`
+      );
+      return;
+    }
+
+    requestAnimationFrame(waitForRows);
+  })();
+ }
 
 function renderCodesAcces() {
   const encadres = [
