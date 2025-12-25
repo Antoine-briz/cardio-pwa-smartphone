@@ -15619,7 +15619,6 @@ console.log("ANNuaire index rows =", index.length, "contains BOUGLE =", index.so
   input.addEventListener("input", applyFilter);
     }
 
-  
 function renderCodesAcces() {
   const encadres = [
     {
