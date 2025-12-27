@@ -5506,15 +5506,10 @@ function renderInterventionPontages() {
       `,
     },
     {
-  titre: "Coupes et mesures ETO",
+  titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoGeneralHtml("pc")}
+    ${etoActionsHtml("pc")}
   `,
 },
     {
