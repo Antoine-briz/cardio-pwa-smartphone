@@ -5793,6 +5793,7 @@ function etoFormHtmlCompact(prefix) {
 function openEtoFormModal(prefix) {
   const overlay = document.createElement("div");
   overlay.className = "acr-modal";
+  overlay.classList.add("eto-modal");
   overlay.innerHTML = `
     <div class="acr-modal-card" role="dialog" aria-modal="true" style="max-width:1100px;">
       <div class="acr-modal-head">
