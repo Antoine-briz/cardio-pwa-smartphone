@@ -2905,3 +2905,154 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 .eto-modal .acr-modal-actions {
   gap: 0 !important;
 }
+
+/* =========================================================
+   ETO – UI POLISH (plus beau + titres + lisibilité icône)
+   À COLLER TOUT EN BAS
+   ========================================================= */
+
+/* Enlever l'espace au-dessus du formulaire dans la modal */
+.eto-modal .acr-modal-body {
+  padding-top: 4px !important;
+}
+
+/* Le container du formulaire : pas de marge haute */
+.eto-modal .eto-compact {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Titres de section : plus grands, plus nets */
+.eto-modal .eto-section-title {
+  font-size: 1.02rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.2px;
+  margin: 10px 0 6px !important;
+  padding: 6px 10px !important;
+  border-radius: 10px !important;
+  background: #f2f2f2 !important;
+  border: 1px solid #000 !important;
+}
+
+/* Première section : pas de vide au-dessus */
+.eto-modal .eto-section-title:first-of-type {
+  margin-top: 0 !important;
+}
+
+/* Rangs : un peu plus d'air horizontal, quasi zéro vertical */
+.eto-modal .eto-compact .eto-row {
+  row-gap: 4px !important;
+  column-gap: 14px !important; /* <-- lisibilité champ vs champ */
+  margin: 2px 0 !important;
+  align-items: flex-end !important;
+}
+
+/* Labels : structure "Titre au-dessus / champ en dessous" pour la lisibilité */
+.eto-modal .eto-compact label {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+  line-height: 1.05 !important;
+}
+
+/* Texte du label : discret mais lisible */
+.eto-modal .eto-compact label,
+.eto-modal .eto-compact .checkbox {
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+}
+
+/* Checkbox : revenir en ligne (sinon trop haut) */
+.eto-modal .eto-compact .checkbox {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding-top: 16px !important; /* aligne la checkbox avec les champs */
+}
+
+/* Champs : légèrement plus larges + look "propre" */
+.eto-modal .eto-compact input[type="number"],
+.eto-modal .eto-compact input[type="text"],
+.eto-modal .eto-compact select {
+  width: 86px !important;
+  height: 30px !important;
+  border-radius: 10px !important;
+  padding: 2px 8px !important;
+  font-size: 0.86rem !important;
+}
+
+/* Wrapper champ + icône : icône clairement rattachée */
+.eto-modal .eto-inputwrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;           /* <-- séparation claire champ / icône */
+}
+
+/* Icône écran : plus "bouton" + bordure (on sait à quoi elle appartient) */
+.eto-modal .eto-imgicon {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 10px !important;
+  border: 1.5px solid #000 !important;
+  background: #fff !important;
+  color: #000 !important;
+  font-size: 0.95rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Petit effet au survol */
+.eto-modal .eto-imgicon:hover {
+  background: #f2f2f2 !important;
+}
+
+/* Inline blocks RA/IA etc : card légère */
+.eto-modal .eto-inlineblock {
+  background: #fafafa !important;
+  border: 1px solid #000 !important;
+  border-radius: 12px !important;
+  padding: 8px 10px !important;
+}
+
+/* Dans les blocs inline, on garde la structure compacte */
+.eto-modal .eto-inlineblock .checkbox {
+  padding-top: 0 !important;
+  margin-bottom: 4px !important;
+}
+
+/* Boutons : un peu plus "propres" visuellement */
+.eto-modal .btn,
+.eto-modal .btn.ghost {
+  border-radius: 12px !important;
+  padding: 8px 12px !important;
+  min-width: 150px !important;
+}
+
+/* =========================================================
+   ETO – ICÔNE ÉCRAN STYLE APP (sans encadré)
+   ========================================================= */
+
+.eto-modal .eto-imgicon {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+
+  font-size: 1.1rem !important; /* taille cohérente avec le reste de l'app */
+  line-height: 1 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  cursor: pointer;
+}
+
+/* Survol discret (comme ailleurs dans l’app) */
+.eto-modal .eto-imgicon:hover {
+  opacity: 0.7;
+}
