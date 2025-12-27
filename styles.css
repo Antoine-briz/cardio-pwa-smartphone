@@ -2481,578 +2481,225 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 }
 
 /* ===========================
-   ETO – ULTRA COMPACT FINAL
-   (dense + align left + theme-proof)
+   ETO – OPTION A (TABLEAU MÉDICAL)
+   + theme-proof + inputs blancs + checkbox OK
    =========================== */
 
-.eto-compact {
-  font-size: 0.86rem;
-  line-height: 1.05;
-}
-
-/* Alignement strict à gauche + suppression du centrage hérité */
-.eto-compact,
-.eto-compact * {
-  justify-content: flex-start !important;
-  text-align: left !important;
-}
-
-/* Rows : quasi collées */
-.eto-compact .row {
-  gap: 3px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  flex-wrap: wrap;
-  align-items: center !important;
-  min-height: unset !important;
-}
-
-/* Sections : bande fine, serrée */
-.eto-section-title {
-  margin: 4px 0 2px !important;
-  padding: 3px 6px !important;
-  font-weight: 900;
-  font-size: 0.82rem !important;
-  line-height: 1 !important;
-  border-radius: 7px !important;
-  background: rgba(0,0,0,0.08);
-}
-
-.eto-title-inline {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-/* Blocs RA/IA RM/IM : très serrés */
-.eto-inlineblock {
-  padding: 3px 5px !important;
-  margin: 0 !important;
-  border-radius: 8px !important;
-  background: rgba(0,0,0,0.04);
-}
-
-/* Labels : une ligne, aucune marge */
-.eto-compact label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1 !important;
-}
-
-/* Checkbox : compact */
-.eto-compact .checkbox {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-/* Inputs ultra compacts */
-.eto-compact input[type="number"],
-.eto-compact select,
-.eto-compact input[type="text"] {
-  height: 24px !important;
-  padding: 0 5px !important;
-  width: 72px !important;
-  font-size: 0.8rem !important;
-  border-radius: 8px !important;
-}
-
-/* Icone image : petite et collée */
-.eto-inputwrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px !important;
-}
-
-.eto-imgicon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px !important;
-  height: 18px !important;
-  border-radius: 6px !important;
-  text-decoration: none;
-  user-select: none;
-  font-size: 0.75rem !important;
-  background: rgba(0,0,0,0.12);
-  color: #000 !important;
-}
-
-.eto-imgicon:hover {
-  background: rgba(0,0,0,0.2);
-}
-
-/* Enlever séparateurs */
-.eto-compact hr {
-  display: none;
-}
-
-/* Petit espace entre titre d'encadré (page) et 1er bouton */
+/* --- Petite marge sous le titre d'encadré (page) --- */
 .encadre h3 + .row,
 .encadre h2 + .row {
   margin-top: 8px;
 }
-
-/* fallback (si jamais le DOM diffère) */
 #pc-eto-goto,
 #pc-eto-open {
   margin-top: 6px;
 }
 
-/* ===========================
-   ETO MODAL – TOUJOURS CLAIRE
-   (saisie + synthèse)
-   =========================== */
-
-/* La modal ETO doit avoir overlay + carte au-dessus */
+/* --- Modal ETO toujours claire, texte noir --- */
 .eto-modal {
   z-index: 999999 !important;
+  color-scheme: light !important; /* crucial mobile */
 }
-
-/* Carte + body : toujours blancs */
 .eto-modal .acr-modal-card,
 .eto-modal .acr-modal-body,
 .eto-modal pre {
   background: #fff !important;
 }
-
-/* Texte : toujours noir */
 .eto-modal,
 .eto-modal * {
   color: #000 !important;
+  text-align: left !important;
 }
 
-/* Inputs : blancs + contour noir (corrige les inputs noirs) */
-.eto-modal input,
-.eto-modal select,
-.eto-modal textarea {
-  background-color: #fff !important;
-  color: #000 !important;
-  border: 1.5px solid #000 !important;
-  box-shadow: none !important;
-}
-
-.eto-modal input:focus,
-.eto-modal select:focus,
-.eto-modal textarea:focus {
-  outline: none !important;
-  border: 2px solid #000 !important;
-}
-
-/* Boutons : blancs identiques (générer/effacer/copier/fermer) */
-.eto-modal .btn,
-.eto-modal .btn.ghost {
-  background: #fff !important;
-  color: #000 !important;
-  border: 2px solid #000 !important;
-  box-shadow: none !important;
-  font-weight: 600;
-}
-
-.eto-modal .btn:hover,
-.eto-modal .btn.ghost:hover {
-  background: #f2f2f2 !important;
-}
-
-.eto-modal .btn:active,
-.eto-modal .btn.ghost:active {
-  background: #e6e6e6 !important;
-}
-
-/* Modal : paddings réduits (moins d'espace vide) */
+/* Modal : paddings propres (évite le "vide" au-dessus) */
 .eto-modal .acr-modal-head {
-  padding: 6px 10px !important;
+  padding: 8px 12px !important;
 }
-
 .eto-modal .acr-modal-body {
-  padding: 6px 8px !important;
+  padding: 8px 12px !important;
   max-height: 78vh;
   overflow-y: auto;
 }
-
 .eto-modal .acr-modal-actions {
-  padding: 6px 8px !important;
+  padding: 8px 12px !important;
 }
 
-/* Synthèse : encadrée, compacte, lisible */
-.eto-modal pre,
-#eto-synth-text {
-  border: 1.5px solid #000 !important;
-  padding: 6px 8px !important;
-  border-radius: 6px;
-  font-size: 0.82rem !important;
-  line-height: 1.1 !important;
-  white-space: pre-wrap;
+/* --- Titres de sections mieux mis en valeur --- */
+.eto-modal .eto-section-title {
+  font-size: 1.08rem !important;
+  font-weight: 900 !important;
+  margin: 14px 0 10px !important;
+  padding: 8px 10px !important;
+  border-left: 6px solid #000 !important;
+  border-radius: 10px !important;
+  background: #f4f4f4 !important;
+  line-height: 1.05 !important;
+}
+.eto-modal .eto-section-title:first-of-type {
+  margin-top: 0 !important;
 }
 
-/* ===========================
-   POPUP IMAGES AU-DESSUS
-   (images visibles même si modal ouverte)
-   =========================== */
-
-.img-popup,
-.img-overlay {
-  z-index: 1000000 !important;
+/* --- OPTION A : mise en page type tableau (grille) --- */
+/* Chaque .eto-row devient une grille de "cartes de champs" */
+.eto-modal .eto-compact .eto-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 10px 18px !important;
+  align-items: end !important;
+  margin: 0 0 10px !important;
+  padding: 0 !important;
 }
-
-/* Mobile : champs un peu plus étroits */
-@media (max-width: 768px) {
-  .eto-compact input[type="number"],
-  .eto-compact select,
-  .eto-compact input[type="text"] {
-    width: 68px !important;
+@media (max-width: 950px) {
+  .eto-modal .eto-compact .eto-row {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+}
+@media (max-width: 680px) {
+  .eto-modal .eto-compact .eto-row {
+    grid-template-columns: 1fr;
   }
 }
 
-/* =========================================================
-   PATCH ETO (fix inputs noirs + enlever espaces verticaux)
-   À COLLER TOUT EN BAS DU FICHIER
-   ========================================================= */
-
-/* 1) Forcer les contrôles natifs en "light" même en thème sombre */
-.eto-modal {
-  color-scheme: light !important; /* clé pour iOS/Android */
-}
-
-/* 2) Modal ETO : annuler les gaps/paddings hérités (souvent responsables des trous) */
-.eto-modal .acr-modal-card,
-.eto-modal .acr-modal-body,
-.eto-modal .acr-modal-actions {
-  gap: 0 !important;
-}
-
-.eto-modal .acr-modal-body {
-  padding: 6px 8px !important; /* déjà chez toi mais on re-force */
-}
-
-/* 3) Ultra-dense : écraser toutes les marges verticales internes */
-.eto-modal .eto-compact,
-.eto-modal .eto-compact div,
+/* Chaque label devient une mini-ligne "libellé | valeur+🖥️" */
 .eto-modal .eto-compact label {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Le vrai coupable le plus fréquent = .row avec margin-bottom ailleurs */
-.eto-modal .eto-compact .row {
-  margin: 0 !important;
-  padding: 0 !important;
-  gap: 2px !important;
-  row-gap: 2px !important;
-  column-gap: 6px !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto;
+  gap: 10px !important;
   align-items: center !important;
-  justify-content: flex-start !important;
-}
-
-/* 4) Inputs : blancs + contour noir (et forçage iOS) */
-.eto-modal .eto-compact input,
-.eto-modal .eto-compact select,
-.eto-modal .eto-compact textarea {
-  background: #fff !important;
-  color: #000 !important;
-  border: 1.5px solid #000 !important;
-  box-shadow: none !important;
-  -webkit-text-fill-color: #000 !important; /* iOS : sinon texte gris/clair */
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-/* 5) Réduire encore la hauteur des titres (souvent trop grands visuellement) */
-.eto-modal .eto-section-title {
-  margin: 3px 0 2px !important;
-  padding: 2px 6px !important;
-  line-height: 1 !important;
-}
-
-/* 6) Empêcher un centrage hérité */
-.eto-modal .eto-compact,
-.eto-modal .eto-compact * {
-  text-align: left !important;
-  justify-content: flex-start !important;
-}
-
-/* 7) Boutons ETO : blancs identiques */
-.eto-modal button.btn,
-.eto-modal button.btn.ghost {
-  background: #fff !important;
-  color: #000 !important;
-  border: 2px solid #000 !important;
-  box-shadow: none !important;
-}
-
-/* 8) Synthèse : toujours claire aussi */
-.eto-modal pre,
-.eto-modal #eto-synth-text {
-  background: #fff !important;
-  color: #000 !important;
-  -webkit-text-fill-color: #000 !important;
-  border: 1.5px solid #000 !important;
-}
-
-/* 9) Si un style global force des <br> ou des espaces, on neutralise */
-.eto-modal .eto-compact br { display: none !important; }
-
-/* =========================================================
-   ETO PATCH FINAL (corrige compact + inputs noirs + checkbox points)
-   ========================================================= */
-
-/* 1) La modal ETO doit toujours être rendue en thème clair */
-.eto-modal {
-  color-scheme: light !important; /* essentiel sur mobile */
-}
-
-/* 2) Notre "row" ETO (remplace .row inline) : ultra compact, aligné gauche */
-.eto-modal .eto-compact .eto-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start !important;
-  align-items: center !important;
-
-  gap: 3px !important;
-  row-gap: 2px !important;
-  column-gap: 6px !important;
-
+  white-space: normal !important;
   margin: 0 !important;
   padding: 0 !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
 }
 
-/* 3) Réduire encore les marges partout */
-.eto-modal .eto-compact,
-.eto-modal .eto-compact * {
-  margin-block: 0 !important;
-}
-
-/* 4) Labels en ligne (pas en colonne) */
-.eto-modal .eto-compact label {
+/* Wrapper input+icone : toujours à droite */
+.eto-modal .eto-inputwrap {
   display: inline-flex !important;
-  flex-direction: row !important;
   align-items: center !important;
-  gap: 6px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1.05 !important;
-  white-space: nowrap;
+  gap: 8px !important; /* espace clair entre champ et 🖥️ */
+  justify-content: flex-end !important;
 }
 
-/* 5) Inputs/select : BLANCS + contour noir (sans casser les checkbox) */
+/* Inputs / selects : blancs + contour noir */
 .eto-modal .eto-compact input[type="number"],
 .eto-modal .eto-compact input[type="text"],
 .eto-modal .eto-compact select,
 .eto-modal .eto-compact textarea {
   background: #fff !important;
   color: #000 !important;
-  border: 1.5px solid #000 !important;
+  border: 1.6px solid #000 !important;
   box-shadow: none !important;
-
-  height: 24px !important;
-  padding: 0 5px !important;
-  width: 72px !important;
-  font-size: 0.8rem !important;
-  border-radius: 8px !important;
-
   -webkit-text-fill-color: #000 !important;
+
+  height: 32px !important;
+  padding: 2px 8px !important;
+  width: 92px !important;
+  font-size: 0.92rem !important;
+  border-radius: 10px !important;
+
   appearance: none;
   -webkit-appearance: none;
 }
+.eto-modal .eto-compact input[type="number"]:focus,
+.eto-modal .eto-compact input[type="text"]:focus,
+.eto-modal .eto-compact select:focus,
+.eto-modal .eto-compact textarea:focus {
+  outline: none !important;
+  border-width: 2px !important;
+}
 
-/* 6) CHECKBOX : restaurer le rendu natif (sinon “points”) */
+/* Checkbox : restaurer le rendu natif (pas des points) */
 .eto-modal .eto-compact input[type="checkbox"] {
   appearance: auto !important;
-  -webkit-appearance: checkbox !important; /* iOS */
+  -webkit-appearance: checkbox !important;
   background: #fff !important;
-  border: 1.5px solid #000 !important;
-
+  border: 1.6px solid #000 !important;
   width: 16px;
   height: 16px;
   margin: 0 !important;
 }
 
-/* 7) Checkbox container */
+/* Les lignes "checkbox" (RA/IA etc) : format tableau */
 .eto-modal .eto-compact .checkbox {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 8px !important;
+  font-weight: 800 !important;
+}
+
+/* Blocs RA/IA RM/IM : full-width dans la grille (plus lisible) */
+.eto-modal .eto-inlineblock {
+  grid-column: 1 / -1;           /* prend toute la largeur de la ligne */
+  border: 1.4px solid #000 !important;
+  border-radius: 14px !important;
+  background: #fafafa !important;
+  padding: 10px 12px !important;
+}
+
+/* Dans ces blocs, on garde la même grille */
+.eto-modal .eto-inlineblock .eto-row {
+  grid-template-columns: repeat(3, minmax(260px, 1fr)) !important;
+  margin-bottom: 0 !important;
+}
+@media (max-width: 950px) {
+  .eto-modal .eto-inlineblock .eto-row {
+    grid-template-columns: repeat(2, minmax(240px, 1fr)) !important;
+  }
+}
+@media (max-width: 680px) {
+  .eto-modal .eto-inlineblock .eto-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Icône 🖥️ : style app (sans encadré) */
+.eto-modal .eto-imgicon {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
   padding: 0 !important;
-  margin: 0 !important;
-}
-
-/* 8) Titres encore plus serrés */
-.eto-modal .eto-section-title {
-  margin: 4px 0 2px !important;
-  padding: 2px 6px !important;
+  width: auto !important;
+  height: auto !important;
+  font-size: 1.15rem !important;
   line-height: 1 !important;
+  cursor: pointer;
 }
+.eto-modal .eto-imgicon:hover { opacity: 0.7; }
 
-/* 9) Boutons ETO : blancs identiques */
+/* Boutons : blancs, texte noir, contour noir (identiques) */
 .eto-modal .btn,
 .eto-modal .btn.ghost {
   background: #fff !important;
   color: #000 !important;
   border: 2px solid #000 !important;
   box-shadow: none !important;
-}
-
-/* 10) Supprimer le "gap" éventuel sur la structure de modal */
-.eto-modal .acr-modal-card,
-.eto-modal .acr-modal-body,
-.eto-modal .acr-modal-actions {
-  gap: 0 !important;
-}
-
-/* =========================================================
-   ETO – UI POLISH (plus beau + titres + lisibilité icône)
-   À COLLER TOUT EN BAS
-   ========================================================= */
-
-/* Enlever l'espace au-dessus du formulaire dans la modal */
-.eto-modal .acr-modal-body {
-  padding-top: 4px !important;
-}
-
-/* Le container du formulaire : pas de marge haute */
-.eto-modal .eto-compact {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-/* Titres de section : plus grands, plus nets */
-.eto-modal .eto-section-title {
-  font-size: 1.02rem !important;
-  font-weight: 900 !important;
-  letter-spacing: 0.2px;
-  margin: 10px 0 6px !important;
-  padding: 6px 10px !important;
-  border-radius: 10px !important;
-  background: #f2f2f2 !important;
-  border: 1px solid #000 !important;
-}
-
-/* Première section : pas de vide au-dessus */
-.eto-modal .eto-section-title:first-of-type {
-  margin-top: 0 !important;
-}
-
-/* Rangs : un peu plus d'air horizontal, quasi zéro vertical */
-.eto-modal .eto-compact .eto-row {
-  row-gap: 4px !important;
-  column-gap: 14px !important; /* <-- lisibilité champ vs champ */
-  margin: 2px 0 !important;
-  align-items: flex-end !important;
-}
-
-/* Labels : structure "Titre au-dessus / champ en dessous" pour la lisibilité */
-.eto-modal .eto-compact label {
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  gap: 3px !important;
-  line-height: 1.05 !important;
-}
-
-/* Texte du label : discret mais lisible */
-.eto-modal .eto-compact label,
-.eto-modal .eto-compact .checkbox {
-  font-size: 0.82rem !important;
-  font-weight: 600 !important;
-}
-
-/* Checkbox : revenir en ligne (sinon trop haut) */
-.eto-modal .eto-compact .checkbox {
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 8px !important;
-  padding-top: 16px !important; /* aligne la checkbox avec les champs */
-}
-
-/* Champs : légèrement plus larges + look "propre" */
-.eto-modal .eto-compact input[type="number"],
-.eto-modal .eto-compact input[type="text"],
-.eto-modal .eto-compact select {
-  width: 86px !important;
-  height: 30px !important;
-  border-radius: 10px !important;
-  padding: 2px 8px !important;
-  font-size: 0.86rem !important;
-}
-
-/* Wrapper champ + icône : icône clairement rattachée */
-.eto-modal .eto-inputwrap {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;           /* <-- séparation claire champ / icône */
-}
-
-/* Icône écran : plus "bouton" + bordure (on sait à quoi elle appartient) */
-.eto-modal .eto-imgicon {
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 10px !important;
-  border: 1.5px solid #000 !important;
-  background: #fff !important;
-  color: #000 !important;
-  font-size: 0.95rem !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Petit effet au survol */
-.eto-modal .eto-imgicon:hover {
-  background: #f2f2f2 !important;
-}
-
-/* Inline blocks RA/IA etc : card légère */
-.eto-modal .eto-inlineblock {
-  background: #fafafa !important;
-  border: 1px solid #000 !important;
-  border-radius: 12px !important;
-  padding: 8px 10px !important;
-}
-
-/* Dans les blocs inline, on garde la structure compacte */
-.eto-modal .eto-inlineblock .checkbox {
-  padding-top: 0 !important;
-  margin-bottom: 4px !important;
-}
-
-/* Boutons : un peu plus "propres" visuellement */
-.eto-modal .btn,
-.eto-modal .btn.ghost {
+  font-weight: 700 !important;
   border-radius: 12px !important;
   padding: 8px 12px !important;
   min-width: 150px !important;
 }
+.eto-modal .btn:hover,
+.eto-modal .btn.ghost:hover { background: #f2f2f2 !important; }
+.eto-modal .btn:active,
+.eto-modal .btn.ghost:active { background: #e6e6e6 !important; }
 
-/* =========================================================
-   ETO – ICÔNE ÉCRAN STYLE APP (sans encadré)
-   ========================================================= */
-
-.eto-modal .eto-imgicon {
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-
-  width: auto !important;
-  height: auto !important;
-  padding: 0 !important;
-
-  font-size: 1.1rem !important; /* taille cohérente avec le reste de l'app */
-  line-height: 1 !important;
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  cursor: pointer;
+/* Synthèse : claire + encadrée */
+.eto-modal pre,
+.eto-modal #eto-synth-text {
+  background: #fff !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+  border: 1.6px solid #000 !important;
+  padding: 8px 10px !important;
+  border-radius: 10px !important;
+  font-size: 0.95rem !important;
+  line-height: 1.25 !important;
+  white-space: pre-wrap;
 }
 
-/* Survol discret (comme ailleurs dans l’app) */
-.eto-modal .eto-imgicon:hover {
-  opacity: 0.7;
+/* Images AU-DESSUS de tout */
+.img-popup,
+.img-overlay {
+  z-index: 1000000 !important;
 }
