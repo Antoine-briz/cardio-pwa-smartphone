@@ -2711,113 +2711,90 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
   }
 }
 
-/* ===========================
-   ETO – ALIGNÉ À GAUCHE + ULTRA DENSE
-   =========================== */
+/* =========================================================
+   PATCH ETO (fix inputs noirs + enlever espaces verticaux)
+   À COLLER TOUT EN BAS DU FICHIER
+   ========================================================= */
 
-/* Forcer alignement à gauche partout dans l'ETO */
-.eto-compact,
-.eto-compact * {
-  justify-content: flex-start !important;
-  align-items: center !important;
-  text-align: left !important;
+/* 1) Forcer les contrôles natifs en "light" même en thème sombre */
+.eto-modal {
+  color-scheme: light !important; /* clé pour iOS/Android */
 }
 
-/* Supprimer les énormes espacements verticaux */
-.eto-compact .row {
-  margin: 0 !important;
-  padding: 0 !important;
-  gap: 3px !important;
-  min-height: unset !important;
+/* 2) Modal ETO : annuler les gaps/paddings hérités (souvent responsables des trous) */
+.eto-modal .acr-modal-card,
+.eto-modal .acr-modal-body,
+.eto-modal .acr-modal-actions {
+  gap: 0 !important;
 }
 
-/* Sections : bande fine */
-.eto-section-title {
-  margin: 4px 0 2px !important;
-  padding: 3px 6px !important;
-  font-size: 0.82rem !important;
-  line-height: 1 !important;
-}
-
-/* Labels : sur une seule ligne, sans marge */
-.eto-compact label {
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1 !important;
-  white-space: nowrap;
-}
-
-/* Inputs ultra-compacts */
-.eto-compact input[type="number"],
-.eto-compact select {
-  height: 24px !important;
-  padding: 0 5px !important;
-  width: 72px !important;
-  font-size: 0.8rem !important;
-}
-
-/* Checkbox : collées */
-.eto-compact .checkbox {
-  padding: 0 !important;
-  margin: 0 !important;
-  gap: 4px !important;
-}
-
-/* RA / IA / RM / IM : blocs serrés */
-.eto-inlineblock {
-  padding: 3px 5px !important;
-  margin: 0 !important;
-}
-
-/* Icône écran : minuscule */
-.eto-imgicon {
-  width: 18px !important;
-  height: 18px !important;
-  font-size: 0.75rem !important;
-  margin: 0 !important;
-}
-
-/* Modal body : supprimer les grands paddings */
 .eto-modal .acr-modal-body {
-  padding: 6px 8px !important;
+  padding: 6px 8px !important; /* déjà chez toi mais on re-force */
 }
 
-/* Enlever tout espacement automatique parasite */
-.eto-modal br {
-  display: none;
+/* 3) Ultra-dense : écraser toutes les marges verticales internes */
+.eto-modal .eto-compact,
+.eto-modal .eto-compact div,
+.eto-modal .eto-compact label {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* ===========================
-   ETO – INPUTS BLANCS
-   =========================== */
-
-.eto-modal input,
-.eto-modal select,
-.eto-modal textarea {
-  background-color: #fff !important;
-  color: #000 !important;
-  border: 1.5px solid #000 !important;
-  box-shadow: none !important;
+/* Le vrai coupable le plus fréquent = .row avec margin-bottom ailleurs */
+.eto-modal .eto-compact .row {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 2px !important;
+  row-gap: 2px !important;
+  column-gap: 6px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
 }
 
-.eto-modal input:focus,
-.eto-modal select:focus,
-.eto-modal textarea:focus {
-  outline: none !important;
-  border: 2px solid #000 !important;
-}
-
-/* ===========================
-   ETO – SYNTHÈSE CLAIRE
-   =========================== */
-
-.eto-modal pre,
-#eto-synth-text {
+/* 4) Inputs : blancs + contour noir (et forçage iOS) */
+.eto-modal .eto-compact input,
+.eto-modal .eto-compact select,
+.eto-modal .eto-compact textarea {
   background: #fff !important;
   color: #000 !important;
   border: 1.5px solid #000 !important;
-  padding: 8px !important;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  line-height: 1.15;
+  box-shadow: none !important;
+  -webkit-text-fill-color: #000 !important; /* iOS : sinon texte gris/clair */
+  appearance: none;
+  -webkit-appearance: none;
 }
+
+/* 5) Réduire encore la hauteur des titres (souvent trop grands visuellement) */
+.eto-modal .eto-section-title {
+  margin: 3px 0 2px !important;
+  padding: 2px 6px !important;
+  line-height: 1 !important;
+}
+
+/* 6) Empêcher un centrage hérité */
+.eto-modal .eto-compact,
+.eto-modal .eto-compact * {
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+/* 7) Boutons ETO : blancs identiques */
+.eto-modal button.btn,
+.eto-modal button.btn.ghost {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  box-shadow: none !important;
+}
+
+/* 8) Synthèse : toujours claire aussi */
+.eto-modal pre,
+.eto-modal #eto-synth-text {
+  background: #fff !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+  border: 1.5px solid #000 !important;
+}
+
+/* 9) Si un style global force des <br> ou des espaces, on neutralise */
+.eto-modal .eto-compact br { display: none !important; }
