@@ -2710,3 +2710,114 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
     width: 68px !important;
   }
 }
+
+/* ===========================
+   ETO – ALIGNÉ À GAUCHE + ULTRA DENSE
+   =========================== */
+
+/* Forcer alignement à gauche partout dans l'ETO */
+.eto-compact,
+.eto-compact * {
+  justify-content: flex-start !important;
+  align-items: center !important;
+  text-align: left !important;
+}
+
+/* Supprimer les énormes espacements verticaux */
+.eto-compact .row {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 3px !important;
+  min-height: unset !important;
+}
+
+/* Sections : bande fine */
+.eto-section-title {
+  margin: 4px 0 2px !important;
+  padding: 3px 6px !important;
+  font-size: 0.82rem !important;
+  line-height: 1 !important;
+}
+
+/* Labels : sur une seule ligne, sans marge */
+.eto-compact label {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap;
+}
+
+/* Inputs ultra-compacts */
+.eto-compact input[type="number"],
+.eto-compact select {
+  height: 24px !important;
+  padding: 0 5px !important;
+  width: 72px !important;
+  font-size: 0.8rem !important;
+}
+
+/* Checkbox : collées */
+.eto-compact .checkbox {
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 4px !important;
+}
+
+/* RA / IA / RM / IM : blocs serrés */
+.eto-inlineblock {
+  padding: 3px 5px !important;
+  margin: 0 !important;
+}
+
+/* Icône écran : minuscule */
+.eto-imgicon {
+  width: 18px !important;
+  height: 18px !important;
+  font-size: 0.75rem !important;
+  margin: 0 !important;
+}
+
+/* Modal body : supprimer les grands paddings */
+.eto-modal .acr-modal-body {
+  padding: 6px 8px !important;
+}
+
+/* Enlever tout espacement automatique parasite */
+.eto-modal br {
+  display: none;
+}
+
+/* ===========================
+   ETO – INPUTS BLANCS
+   =========================== */
+
+.eto-modal input,
+.eto-modal select,
+.eto-modal textarea {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 1.5px solid #000 !important;
+  box-shadow: none !important;
+}
+
+.eto-modal input:focus,
+.eto-modal select:focus,
+.eto-modal textarea:focus {
+  outline: none !important;
+  border: 2px solid #000 !important;
+}
+
+/* ===========================
+   ETO – SYNTHÈSE CLAIRE
+   =========================== */
+
+.eto-modal pre,
+#eto-synth-text {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1.5px solid #000 !important;
+  padding: 8px !important;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: 1.15;
+}
