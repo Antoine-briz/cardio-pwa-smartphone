@@ -4,7 +4,7 @@
 //  ROUTER DE BASE
 // =====================================================================
 
-const $app = document.getElementById("app");tc
+const $app = document.getElementById("app");
 
 function h(cls, html) {
   return `<div class="${cls}">${html}</div>`;
@@ -5544,7 +5544,7 @@ function etoFormHtmlCompact(prefix) {
     <div class="eto-row">
       <div class="eto-inlineblock">
         <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-ra"/> RA
+          <input type="checkbox" id="${prefix}-eto-ra"/> Rétrécissement aortique
         </label>
 
         <div id="${prefix}-eto-ra-inline" style="display:none;">
@@ -5589,7 +5589,7 @@ function etoFormHtmlCompact(prefix) {
 
       <div class="eto-inlineblock">
         <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-ia"/> IA
+          <input type="checkbox" id="${prefix}-eto-ia"/> Insuffisance aortique
         </label>
 
         <div id="${prefix}-eto-ia-inline" style="display:none;">
@@ -5675,7 +5675,7 @@ function etoFormHtmlCompact(prefix) {
     <div class="eto-row">
       <div class="eto-inlineblock">
         <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-rm"/> RM
+          <input type="checkbox" id="${prefix}-eto-rm"/> Rétrécissement mitral
         </label>
 
         <div id="${prefix}-eto-rm-inline" style="display:none;">
@@ -5713,7 +5713,7 @@ function etoFormHtmlCompact(prefix) {
 
       <div class="eto-inlineblock">
         <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-im"/> IM
+          <input type="checkbox" id="${prefix}-eto-im"/> Insuffisance mitrale
         </label>
 
         <div id="${prefix}-eto-im-inline" style="display:none;">
