@@ -5440,32 +5440,35 @@ function etoFormHtmlCompact(prefix) {
   return `
   <div id="${prefix}-eto-form" class="eto-compact eto-cr">
 
-    <!-- Conditions (ligne au-dessus du tableau) -->
-    <div class="eto-conditions-line">
-      <div class="eto-conditions-title">Conditions</div>
-
-      <label class="eto-cond-field">
-        Thorax
-        <select id="${prefix}-eto-thorax">
-          <option value="Fermé" selected>Fermé</option>
-          <option value="Ouvert">Ouvert</option>
-        </select>
-      </label>
-
-      <label class="eto-cond-field">
-        Noradrénaline (mg/h)
-        <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
-      </label>
-
-      <label class="eto-cond-field">
-        Dobutamine (µg/kg/min)
-        <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
-      </label>
-    </div>
-
     <!-- Tableau (scroll horizontal sur smartphone) -->
     <div class="eto-table-wrap">
       <table class="eto-cr-table">
+       <tbody>
+  <!-- CONDITIONS : une seule ligne, collée au reste -->
+  <tr class="eto-cond-row">
+    <td class="eto-sec eto-sec-conditions">Conditions</td>
+    <td class="eto-cond-cell" colspan="2">
+      <div class="eto-cond-inline">
+        <label class="eto-cond-item">
+          Thorax
+          <select id="${prefix}-eto-thorax">
+            <option value="Fermé" selected>Fermé</option>
+            <option value="Ouvert">Ouvert</option>
+          </select>
+        </label>
+
+        <label class="eto-cond-item">
+          Noradrénaline (mg/h)
+          <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
+        </label>
+
+        <label class="eto-cond-item">
+          Dobutamine (µg/kg/min)
+          <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
+        </label>
+      </div>
+    </td>
+  </tr>
         <thead>
           <tr>
             <th class="col-ana">Analyse</th>
