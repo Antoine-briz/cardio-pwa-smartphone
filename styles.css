@@ -2703,3 +2703,303 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 .img-overlay {
   z-index: 1000000 !important;
 }
+
+/* ===========================
+   ETO – TABLEAU 3 COLONNES (esthétique + compact)
+   =========================== */
+
+/* Modal ETO : toujours claire, police noire */
+.eto-modal {
+  z-index: 999999 !important;
+  color-scheme: light !important; /* mobile */
+}
+.eto-modal .acr-modal-card,
+.eto-modal .acr-modal-body,
+.eto-modal pre {
+  background: #fff !important;
+}
+.eto-modal,
+.eto-modal * {
+  color: #000 !important;
+  text-align: left !important;
+}
+
+/* Modal : enlever les gros paddings */
+.eto-modal .acr-modal-head {
+  padding: 10px 12px !important;
+}
+.eto-modal .acr-modal-body {
+  padding: 10px 12px !important;
+  max-height: 78vh;
+  overflow-y: auto;
+}
+.eto-modal .acr-modal-actions {
+  padding: 10px 12px !important;
+}
+
+/* Container ETO */
+.eto-modal .eto-cr {
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+/* ===========================
+   Ligne CONDITIONS (au-dessus)
+   =========================== */
+.eto-modal .eto-conditions-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 14px;
+  padding: 10px 12px;
+  margin: 0 0 10px 0;
+  border: 1.5px solid rgba(0,0,0,0.25);
+  border-radius: 12px;
+  background: rgba(0, 120, 255, 0.06);
+}
+
+.eto-modal .eto-conditions-title {
+  font-weight: 900;
+  font-size: 1rem;
+  padding: 4px 8px;
+  border-radius: 10px;
+  background: rgba(0, 120, 255, 0.12);
+  border: 1px solid rgba(0,0,0,0.18);
+  margin-right: 6px;
+}
+
+.eto-modal .eto-cond-field {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Inputs conditions */
+.eto-modal .eto-conditions-line input[type="number"],
+.eto-modal .eto-conditions-line select {
+  height: 32px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  border: 1.6px solid #000;
+  background: #fff;
+  color: #000;
+  min-width: 110px;
+}
+
+/* ===========================
+   TABLE WRAP (scroll horizontal)
+   =========================== */
+.eto-modal .eto-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 14px;
+  border: 1.5px solid rgba(0,0,0,0.25);
+}
+
+/* ===========================
+   TABLE
+   =========================== */
+.eto-modal table.eto-cr-table {
+  width: 100%;
+  min-width: 980px; /* force le scroll sur smartphone */
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.eto-modal .eto-cr-table thead th {
+  position: sticky;      /* reste visible lors du scroll vertical dans la modal */
+  top: 0;
+  z-index: 2;
+  background: rgba(0, 120, 255, 0.12);
+  border-bottom: 2px solid rgba(0,0,0,0.35);
+  font-weight: 900;
+  font-size: 0.95rem;
+  padding: 10px 10px;
+}
+
+/* Colonnes */
+.eto-modal .eto-cr-table .col-ana { width: 180px; }
+.eto-modal .eto-cr-table .col-saisie { width: 560px; }
+.eto-modal .eto-cr-table .col-img { width: 240px; }
+
+/* Cellules */
+.eto-modal .eto-cr-table td,
+.eto-modal .eto-cr-table th {
+  border-right: 1px solid rgba(0,0,0,0.15);
+}
+.eto-modal .eto-cr-table td:last-child,
+.eto-modal .eto-cr-table th:last-child {
+  border-right: none;
+}
+
+.eto-modal .eto-cr-table tbody td {
+  vertical-align: top;
+  padding: 10px 10px;
+  border-top: 1px solid rgba(0,0,0,0.12);
+}
+
+/* Zebra léger */
+.eto-modal .eto-cr-table tbody tr:nth-child(even) td {
+  background: rgba(0,0,0,0.02);
+}
+
+/* Titre de section (colonne Analyse) */
+.eto-modal .eto-sec {
+  font-weight: 900;
+  font-size: 0.95rem;
+  padding: 10px 8px !important;
+  background: rgba(0,0,0,0.04);
+  border-right: 2px solid rgba(0,0,0,0.15);
+  white-space: nowrap;
+}
+
+/* ===========================
+   Contenu saisie (colonne 2)
+   =========================== */
+.eto-modal .eto-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: flex-end;
+}
+
+.eto-modal .eto-cell label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+/* Inputs / selects : blancs + contour noir */
+.eto-modal .eto-cell input[type="number"],
+.eto-modal .eto-cell select,
+.eto-modal .eto-cell input[type="text"] {
+  height: 30px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1.6px solid #000;
+  background: #fff;
+  color: #000;
+  width: 95px;
+  -webkit-text-fill-color: #000;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Checkbox : rendu natif (pas des points) */
+.eto-modal input[type="checkbox"] {
+  appearance: auto !important;
+  -webkit-appearance: checkbox !important;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+/* checkbox label (horizontale) */
+.eto-modal .eto-cell label.checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-top: 18px; /* aligne visuellement avec champs */
+  font-weight: 800;
+}
+
+/* Sous-sections RA/IA/RM/IM */
+.eto-modal .eto-subtitle {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-weight: 900;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(255, 140, 0, 0.10);
+  border: 1px solid rgba(0,0,0,0.18);
+}
+
+.eto-modal .eto-subcell {
+  padding: 8px 8px;
+  border-radius: 12px;
+  background: rgba(255, 140, 0, 0.05);
+  border: 1px dashed rgba(0,0,0,0.25);
+}
+
+/* ===========================
+   Colonne IMAGES (colonne 3)
+   =========================== */
+.eto-modal .eto-imgcol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.eto-modal .eto-imglink {
+  text-decoration: none;
+  font-weight: 800;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.25);
+  background: rgba(0, 120, 255, 0.06);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eto-modal .eto-imglink::after {
+  content: "🖥️";
+  font-weight: 400;
+}
+
+.eto-modal .eto-imglink:hover {
+  background: rgba(0, 120, 255, 0.12);
+}
+
+/* ===========================
+   Boutons bas
+   =========================== */
+.eto-modal .eto-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 10px 0 0;
+}
+
+.eto-modal .btn,
+.eto-modal .btn.ghost {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  box-shadow: none !important;
+  font-weight: 800;
+  border-radius: 12px;
+  padding: 8px 12px;
+  min-width: 170px;
+}
+
+.eto-modal .btn:hover,
+.eto-modal .btn.ghost:hover {
+  background: #f2f2f2 !important;
+}
+
+/* ===========================
+   Synthèse CR
+   =========================== */
+.eto-modal pre,
+.eto-modal #eto-synth-text {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1.6px solid #000 !important;
+  padding: 10px 12px !important;
+  border-radius: 12px !important;
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+/* Images AU-DESSUS de tout */
+.img-popup,
+.img-overlay {
+  z-index: 1000000 !important;
+}
