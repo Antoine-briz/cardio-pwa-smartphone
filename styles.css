@@ -3212,3 +3212,25 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
    ========================================================= */
 .img-popup,
 .img-overlay{ z-index:1000000 !important; }
+
+/* ===== Uniformiser la police + colonne gauche en gras ===== */
+.eto-modal .eto-cr-table,
+.eto-modal .eto-cr-table th,
+.eto-modal .eto-cr-table td {
+  font-size: 0.92rem !important;
+}
+
+.eto-modal .eto-sec {
+  font-weight: 900 !important;     /* juste gras */
+  font-size: 0.92rem !important;   /* même taille que le reste */
+  background: rgba(0,0,0,0.06) !important; /* fond discret */
+  white-space: nowrap;
+}
+
+/* Colonne droite : liens NON soulignés */
+.eto-modal .eto-imglink {
+  text-decoration: none !important;
+}
+.eto-modal .eto-imglink:hover {
+  opacity: 0.75;
+}
