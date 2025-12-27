@@ -5881,21 +5881,26 @@ function buildEtoCompteRenduCompact(prefix, root) {
   }
 
   // Fonction VG
-  {
-    const fevg = val(q("fevg"));
-    const itv = val(q("itv-ccvg"));
-    const tc = q("tcseg")?.checked;
-    const dtdvg = val(q("dtdvg"));
-    const siv = val(q("siv"));
+{
+  const fevg = val(q("fevg"));
+  const itv = val(q("itv-ccvg"));
+  const tc = q("tcseg")?.checked;
+  const dtdvg = val(q("dtdvg"));
+  const siv = val(q("siv"));
 
-    const parts = [];
-    if (fevg) parts.push(`FEVG estimée à ${fevg}%.`);
-    if (itv) parts.push(`ITV CCVG à ${itv} cm.`);
-    if (tc) parts.push(`TC segmentaire du VG.`);
-    if (dtdvg) parts.push(`DTDVG ${dtdvg} mm.`);
-    if (siv) parts.push(`SIV ${siv} mm.`);
-    lines.push(parts.length ? parts.join(" ") : "Fonction VG : non renseignée.");
-  }
+  const parts = [];
+  if (fevg) parts.push(`FEVG estimée à ${fevg}%.`);
+  if (itv) parts.push(`ITV CCVG à ${itv} cm.`);
+
+  // ✅ consigne : si pas coché => absence
+  if (tc) parts.push(`TC segmentaire du VG.`);
+  else parts.push(`Absence de TC segmentaire.`);
+
+  if (dtdvg) parts.push(`DTDVG ${dtdvg} mm.`);
+  if (siv) parts.push(`SIV ${siv} mm.`);
+
+  lines.push(parts.length ? parts.join(" ") : "Fonction VG : non renseignée.");
+}
 
   // Fonction VD (abréviations autorisées)
   {
@@ -5915,46 +5920,58 @@ function buildEtoCompteRenduCompact(prefix, root) {
   }
 
   // Valve aortique
-  {
-    const ra = q("ra")?.checked;
-    const ia = q("ia")?.checked;
-    const bic = q("bicuspidie")?.checked;
+{
+  const ra = q("ra")?.checked;
+  const ia = q("ia")?.checked;
+  const bic = q("bicuspidie")?.checked;
 
-    const parts = [];
-    if (bic) parts.push("Valve aortique bicuspide.");
+  const parts = [];
 
-    if (ra) {
-      const sev = val(q("ra-sev"));
-      const vmax = val(q("ra-vmax"));
-      const gdmax = val(q("ra-gdmax"));
-      const itvva = val(q("ra-itv"));
-      const surf = val(q("ra-surface"));
-      const s = [];
-      s.push("RA");
-      if (sev) s.push(sev.toLowerCase());
-      if (vmax) s.push(`Vmax ${vmax} m/s`);
-      if (gdmax) s.push(`Gd max ${gdmax} mmHg`);
-      if (itvva) s.push(`ITV VA ${itvva} cm`);
-      if (surf) s.push(`surface ${surf} cm²`);
-      parts.push(`${s.join(", ")}.`);
-    }
+  // ✅ consigne : bicuspide non coché => tricuspide
+  parts.push(bic ? "Valve aortique bicuspide." : "Valve aortique tricuspide.");
 
-    if (ia) {
-      const dir = val(q("ia-dir"));
-      const sev = val(q("ia-sev"));
-      const vc = val(q("ia-vc"));
-      const p12 = val(q("ia-p12"));
-      const s = [];
-      s.push("IA");
-      if (dir) s.push(dir.toLowerCase());
-      if (sev) s.push(sev.toLowerCase());
-      if (vc) s.push(`VC ${vc} mm`);
-      if (p12) s.push(`P1/2T ${p12} ms`);
-      parts.push(`${s.join(", ")}.`);
-    }
-
-    lines.push(parts.length ? parts.join(" ") : "Valve aortique : non renseignée.");
+  if (ra) {
+    const sev = val(q("ra-sev"));
+    const vmax = val(q("ra-vmax"));
+    const gdmax = val(q("ra-gdmax"));
+    const itvva = val(q("ra-itv"));
+    const surf = val(q("ra-surface"));
+    const s = [];
+    s.push("RA");
+    if (sev) s.push(sev.toLowerCase());
+    if (vmax) s.push(`Vmax ${vmax} m/s`);
+    if (gdmax) s.push(`Gd max ${gdmax} mmHg`);
+    if (itvva) s.push(`ITV VA ${itvva} cm`);
+    if (surf) s.push(`surface ${surf} cm²`);
+    parts.push(`${s.join(", ")}.`);
   }
+
+  if (ia) {
+    const dir = val(q("ia-dir"));
+    const sev = val(q("ia-sev"));
+    const vc = val(q("ia-vc"));
+    const p12 = val(q("ia-p12"));
+    const s = [];
+    s.push("IA");
+    if (dir) s.push(dir.toLowerCase());
+    if (sev) s.push(sev.toLowerCase());
+    if (vc) s.push(`VC ${vc} mm`);
+    if (p12) s.push(`P1/2T ${p12} ms`);
+    parts.push(`${s.join(", ")}.`);
+  }
+
+  // ✅ consigne : si IA et RA non cochées => non fuyante, non sténosante
+  if (!ra && !ia) {
+    parts.push("Valve aortique non fuyante, non sténosante.");
+  } else if (!ra && ia) {
+    parts.push("Valve aortique non sténosante.");
+  } else if (ra && !ia) {
+    parts.push("Valve aortique non fuyante.");
+  }
+
+  lines.push(parts.join(" "));
+}
+
 
   // Diamètres aortiques (sans CCVG + sans aorte dilatée/non)
   {
@@ -5973,43 +5990,53 @@ function buildEtoCompteRenduCompact(prefix, root) {
     lines.push(parts.join(" "));
   }
 
-  // Valve mitrale
-  {
-    const anneau = val(q("anneau-mitral"));
-    const rm = q("rm")?.checked;
-    const im = q("im")?.checked;
+// Valve mitrale
+{
+  const anneau = val(q("anneau-mitral"));
+  const rm = q("rm")?.checked;
+  const im = q("im")?.checked;
 
-    const parts = [];
-    if (anneau) parts.push(`Anneau mitral ${anneau} mm.`);
+  const parts = [];
+  if (anneau) parts.push(`Anneau mitral ${anneau} mm.`);
 
-    if (rm) {
-      const sev = val(q("rm-sev"));
-      const surf = val(q("rm-surface"));
-      const gdm = val(q("rm-gdmoy"));
-      const p12 = val(q("rm-p12"));
-      const s = ["RM"];
-      if (sev) s.push(sev.toLowerCase());
-      if (surf) s.push(`surface ${surf} cm²`);
-      if (gdm) s.push(`Gd moyen ${gdm} mmHg`);
-      if (p12) s.push(`P1/2T ${p12} ms`);
-      parts.push(`${s.join(", ")}.`);
-    }
-
-    if (im) {
-      const dir = val(q("im-dir"));
-      const sev = val(q("im-sev"));
-      const vc = val(q("im-vc"));
-      const p12 = val(q("im-p12"));
-      const s = ["IM"];
-      if (dir) s.push(dir.toLowerCase());
-      if (sev) s.push(sev.toLowerCase());
-      if (vc) s.push(`VC ${vc} mm`);
-      if (p12) s.push(`P1/2T ${p12} ms`);
-      parts.push(`${s.join(", ")}.`);
-    }
-
-    lines.push(parts.length ? parts.join(" ") : "Valve mitrale : non renseignée.");
+  if (rm) {
+    const sev = val(q("rm-sev"));
+    const surf = val(q("rm-surface"));
+    const gdm = val(q("rm-gdmoy"));
+    const p12 = val(q("rm-p12"));
+    const s = ["RM"];
+    if (sev) s.push(sev.toLowerCase());
+    if (surf) s.push(`surface ${surf} cm²`);
+    if (gdm) s.push(`Gd moyen ${gdm} mmHg`);
+    if (p12) s.push(`P1/2T ${p12} ms`);
+    parts.push(`${s.join(", ")}.`);
   }
+
+  if (im) {
+    const dir = val(q("im-dir"));
+    const sev = val(q("im-sev"));
+    const vc = val(q("im-vc"));
+    const p12 = val(q("im-p12"));
+    const s = ["IM"];
+    if (dir) s.push(dir.toLowerCase());
+    if (sev) s.push(sev.toLowerCase());
+    if (vc) s.push(`VC ${vc} mm`);
+    if (p12) s.push(`P1/2T ${p12} ms`);
+    parts.push(`${s.join(", ")}.`);
+  }
+
+  // ✅ consigne : si IM et RM non cochées => non fuyante, non sténosante
+  if (!rm && !im) {
+    parts.push("Valve mitrale non fuyante, non sténosante.");
+  } else if (!rm && im) {
+    parts.push("Valve mitrale non sténosante.");
+  } else if (rm && !im) {
+    parts.push("Valve mitrale non fuyante.");
+  }
+
+  lines.push(parts.length ? parts.join(" ") : "Valve mitrale : non renseignée.");
+}
+
 
   // Tricuspide / PAPs
   {
