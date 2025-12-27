@@ -4,7 +4,7 @@
 //  ROUTER DE BASE
 // =====================================================================
 
-const $app = document.getElementById("app");
+const $app = document.getElementById("app");tc
 
 function h(cls, html) {
   return `<div class="${cls}">${html}</div>`;
@@ -5482,7 +5482,7 @@ function etoFormHtmlCompact(prefix) {
 
       <label class="checkbox">
         <input type="checkbox" id="${prefix}-eto-tcseg"/>
-        TC segmentaire
+        Troubles de cinétique segmentaire
         ${etoImgIcon("eto_vg_17segments.png")}
       </label>
 
