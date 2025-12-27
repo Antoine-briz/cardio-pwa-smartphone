@@ -2614,3 +2614,52 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
     width: 72px;
   }
 }
+
+/* ===========================
+   ETO – couleur texte forcée
+   (indépendante du thème)
+   =========================== */
+
+/* Modal ETO : texte toujours noir */
+.acr-modal-card,
+.acr-modal-card * {
+  color: #000 !important;
+}
+
+/* Inputs / selects lisibles */
+.acr-modal-card input,
+.acr-modal-card select,
+.acr-modal-card textarea {
+  color: #000 !important;
+  background-color: #fff !important;
+}
+
+/* Titres bien contrastés */
+.acr-modal-card h3,
+.eto-section-title {
+  color: #000 !important;
+}
+
+/* Pré (synthèse CR) */
+.acr-modal-body pre,
+#acr-modal-body,
+#eto-synth-text {
+  color: #000 !important;
+}
+
+/* Icône écran toujours visible */
+.eto-imgicon {
+  color: #000 !important;
+}
+
+/* Espace entre le titre d'encadré et les boutons ETO */
+.encadre h3 + .row,
+.encadre h2 + .row {
+  margin-top: 10px;
+}
+
+/* Fallback : espace au-dessus du bloc de boutons ETO */
+#pc-eto-goto,
+#pc-eto-open {
+  margin-top: 6px;
+}
