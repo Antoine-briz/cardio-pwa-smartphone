@@ -2481,275 +2481,220 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 }
 
 /* ===========================
-   ETO ULTRA-COMPACT
+   ETO – ULTRA COMPACT FINAL
+   (dense + align left + theme-proof)
    =========================== */
 
 .eto-compact {
-  font-size: 0.88rem;
-  line-height: 1.15;
+  font-size: 0.86rem;
+  line-height: 1.05;
 }
 
-/* ---------- Sections ---------- */
+/* Alignement strict à gauche + suppression du centrage hérité */
+.eto-compact,
+.eto-compact * {
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
+/* Rows : quasi collées */
+.eto-compact .row {
+  gap: 3px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-wrap: wrap;
+  align-items: center !important;
+  min-height: unset !important;
+}
+
+/* Sections : bande fine, serrée */
 .eto-section-title {
-  margin: 10px 0 6px;
-  padding: 6px 8px;
+  margin: 4px 0 2px !important;
+  padding: 3px 6px !important;
   font-weight: 900;
-  font-size: 0.9rem;
-  border-radius: 8px;
+  font-size: 0.82rem !important;
+  line-height: 1 !important;
+  border-radius: 7px !important;
   background: rgba(0,0,0,0.08);
 }
 
 .eto-title-inline {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
-/* ---------- Inline blocs (RA/IA, RM/IM) ---------- */
+/* Blocs RA/IA RM/IM : très serrés */
 .eto-inlineblock {
-  padding: 6px 8px;
-  border-radius: 10px;
+  padding: 3px 5px !important;
+  margin: 0 !important;
+  border-radius: 8px !important;
   background: rgba(0,0,0,0.04);
 }
 
-/* ---------- Labels en ligne (très compact) ---------- */
+/* Labels : une ligne, aucune marge */
 .eto-compact label {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   white-space: nowrap;
-  margin: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
 }
 
-/* Nom du champ à gauche */
-.eto-compact label > span:first-child {
-  font-weight: 500;
-}
-
-/* ---------- Inputs ---------- */
-.eto-compact input[type="number"],
-.eto-compact select {
-  width: 88px;
-  height: 30px;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-}
-
-/* ---------- Checkbox ---------- */
+/* Checkbox : compact */
 .eto-compact .checkbox {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 0;
+  gap: 4px !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-/* ---------- Icône image ---------- */
+/* Inputs ultra compacts */
+.eto-compact input[type="number"],
+.eto-compact select,
+.eto-compact input[type="text"] {
+  height: 24px !important;
+  padding: 0 5px !important;
+  width: 72px !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+}
+
+/* Icone image : petite et collée */
 .eto-inputwrap {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px !important;
 }
 
 .eto-imgicon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 6px !important;
   text-decoration: none;
-  font-size: 0.9rem;
+  user-select: none;
+  font-size: 0.75rem !important;
   background: rgba(0,0,0,0.12);
+  color: #000 !important;
 }
 
 .eto-imgicon:hover {
   background: rgba(0,0,0,0.2);
 }
 
-/* ---------- Rows ---------- */
-.eto-compact .row {
-  gap: 8px !important;
-  margin: 2px 0;
-  flex-wrap: wrap;
-}
-
-/* ---------- Suppression des séparateurs ---------- */
+/* Enlever séparateurs */
 .eto-compact hr {
   display: none;
 }
 
-/* ---------- Modal compacte ---------- */
-.acr-modal-card {
-  border-radius: 14px;
-  max-width: 1150px;
-}
-
-.acr-modal-head {
-  padding: 8px 12px;
-}
-
-.acr-modal-body {
-  padding: 10px 12px;
-  max-height: 78vh;
-  overflow-y: auto;
-}
-
-/* ---------- Boutons ---------- */
-.acr-modal-actions {
-  padding: 8px 12px;
-}
-
-.acr-modal-actions .btn {
-  min-width: 90px;
-  padding: 6px 10px;
-  font-size: 0.85rem;
-}
-
-/* ---------- Mobile (tablette portrait) ---------- */
-@media (max-width: 768px) {
-  .eto-compact input[type="number"],
-  .eto-compact select {
-    width: 72px;
-  }
-}
-
-/* ===========================
-   ETO – couleur texte forcée
-   (indépendante du thème)
-   =========================== */
-
-/* Modal ETO : texte toujours noir */
-.acr-modal-card,
-.acr-modal-card * {
-  color: #000 !important;
-}
-
-/* Inputs / selects lisibles */
-.acr-modal-card input,
-.acr-modal-card select,
-.acr-modal-card textarea {
-  color: #000 !important;
-  background-color: #fff !important;
-}
-
-/* Titres bien contrastés */
-.acr-modal-card h3,
-.eto-section-title {
-  color: #000 !important;
-}
-
-/* Pré (synthèse CR) */
-.acr-modal-body pre,
-#acr-modal-body,
-#eto-synth-text {
-  color: #000 !important;
-}
-
-/* Icône écran toujours visible */
-.eto-imgicon {
-  color: #000 !important;
-}
-
-/* Espace entre le titre d'encadré et les boutons ETO */
+/* Petit espace entre titre d'encadré (page) et 1er bouton */
 .encadre h3 + .row,
 .encadre h2 + .row {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
-/* Fallback : espace au-dessus du bloc de boutons ETO */
+/* fallback (si jamais le DOM diffère) */
 #pc-eto-goto,
 #pc-eto-open {
   margin-top: 6px;
 }
 
 /* ===========================
-   ETO – ULTRA-COMPACT (v2)
+   ETO MODAL – TOUJOURS CLAIRE
+   (saisie + synthèse)
    =========================== */
 
-.eto-compact { 
-  font-size: 0.86rem;
-  line-height: 1.05;
-}
-
-/* rows : quasi collées */
-.eto-compact .row {
-  gap: 4px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* titres de section : plus fins/serrés */
-.eto-section-title {
-  margin: 6px 0 4px !important;
-  padding: 4px 6px !important;
-  border-radius: 7px !important;
-  font-size: 0.86rem !important;
-}
-
-/* blocs RA/IA RM/IM : très serrés */
-.eto-inlineblock {
-  padding: 4px 6px !important;
-  border-radius: 8px !important;
-}
-
-/* labels : pas de marge verticale */
-.eto-compact label {
-  margin: 0 !important;
-}
-
-/* inputs plus petits */
-.eto-compact input[type="number"],
-.eto-compact select {
-  height: 28px !important;
-  padding: 1px 6px !important;
-  width: 78px !important;
-  font-size: 0.84rem !important;
-}
-
-/* checkbox : compact */
-.eto-compact .checkbox {
-  gap: 5px !important;
-  padding: 0 !important;
-}
-
-/* icône écran plus petite et collée */
-.eto-imgicon {
-  width: 20px !important;
-  height: 20px !important;
-  border-radius: 6px !important;
-  font-size: 0.85rem !important;
-}
-
-.eto-inputwrap { gap: 3px !important; }
-
-/* ===========================
-   ETO modal : toujours clair
-   =========================== */
-
+/* La modal ETO doit avoir overlay + carte au-dessus */
 .eto-modal {
-  /* overlay sombre ok */
+  z-index: 999999 !important;
 }
 
+/* Carte + body : toujours blancs */
 .eto-modal .acr-modal-card,
-.eto-modal .acr-modal-body {
+.eto-modal .acr-modal-body,
+.eto-modal pre {
   background: #fff !important;
 }
 
+/* Texte : toujours noir */
 .eto-modal,
 .eto-modal * {
   color: #000 !important;
 }
 
+/* Inputs : blancs + contour noir (corrige les inputs noirs) */
 .eto-modal input,
 .eto-modal select,
 .eto-modal textarea {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 1.5px solid #000 !important;
+  box-shadow: none !important;
+}
+
+.eto-modal input:focus,
+.eto-modal select:focus,
+.eto-modal textarea:focus {
+  outline: none !important;
+  border: 2px solid #000 !important;
+}
+
+/* Boutons : blancs identiques (générer/effacer/copier/fermer) */
+.eto-modal .btn,
+.eto-modal .btn.ghost {
   background: #fff !important;
   color: #000 !important;
+  border: 2px solid #000 !important;
+  box-shadow: none !important;
+  font-weight: 600;
 }
+
+.eto-modal .btn:hover,
+.eto-modal .btn.ghost:hover {
+  background: #f2f2f2 !important;
+}
+
+.eto-modal .btn:active,
+.eto-modal .btn.ghost:active {
+  background: #e6e6e6 !important;
+}
+
+/* Modal : paddings réduits (moins d'espace vide) */
+.eto-modal .acr-modal-head {
+  padding: 6px 10px !important;
+}
+
+.eto-modal .acr-modal-body {
+  padding: 6px 8px !important;
+  max-height: 78vh;
+  overflow-y: auto;
+}
+
+.eto-modal .acr-modal-actions {
+  padding: 6px 8px !important;
+}
+
+/* Synthèse : encadrée, compacte, lisible */
+.eto-modal pre,
+#eto-synth-text {
+  border: 1.5px solid #000 !important;
+  padding: 6px 8px !important;
+  border-radius: 6px;
+  font-size: 0.82rem !important;
+  line-height: 1.1 !important;
+  white-space: pre-wrap;
+}
+
 /* ===========================
-   Popup images AU-DESSUS
+   POPUP IMAGES AU-DESSUS
+   (images visibles même si modal ouverte)
    =========================== */
 
 .img-popup,
@@ -2757,5 +2702,11 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
   z-index: 1000000 !important;
 }
 
-
-
+/* Mobile : champs un peu plus étroits */
+@media (max-width: 768px) {
+  .eto-compact input[type="number"],
+  .eto-compact select,
+  .eto-compact input[type="text"] {
+    width: 68px !important;
+  }
+}
