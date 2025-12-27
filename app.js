@@ -5442,7 +5442,7 @@ function etoFormHtmlCompact(prefix) {
   <div id="${prefix}-eto-form" class="eto-compact">
 
     <div class="eto-section-title">Conditions</div>
-    <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+    <div class="eto-row">
       <label style="min-width:220px;">
         Thorax
         <select id="${prefix}-eto-thorax">
@@ -5465,7 +5465,7 @@ function etoFormHtmlCompact(prefix) {
     </div>
 
     <div class="eto-section-title">Fonction VG</div>
-    <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+    <div class="eto-row">
       <label>FEVG (%)
         <span class="eto-inputwrap">
           <input type="number" id="${prefix}-eto-fevg" step="1" min="0" max="100"/>
@@ -5480,7 +5480,7 @@ function etoFormHtmlCompact(prefix) {
         </span>
       </label>
 
-      <label class="checkbox" style="margin-top:18px;">
+      <label class="checkbox">
         <input type="checkbox" id="${prefix}-eto-tcseg"/>
         TC segmentaire
         ${etoImgIcon("eto_vg_17segments.png")}
@@ -5502,18 +5502,18 @@ function etoFormHtmlCompact(prefix) {
     </div>
 
     <div class="eto-section-title">Fonction VD</div>
-    <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
-      <label class="checkbox" style="margin-top:18px;">
+    <div class="eto-row">
+      <label class="checkbox">
         <input type="checkbox" id="${prefix}-eto-vd-alt-syst"/>
         Altération systolique
       </label>
 
-      <label class="checkbox" style="margin-top:18px;">
+      <label class="checkbox">
         <input type="checkbox" id="${prefix}-eto-vd-dilate"/>
         VD dilaté
       </label>
 
-      <label class="checkbox" style="margin-top:18px;">
+      <label class="checkbox">
         <input type="checkbox" id="${prefix}-eto-vd-hypertro"/>
         VD hypertrophié
       </label>
@@ -5541,14 +5541,14 @@ function etoFormHtmlCompact(prefix) {
       <!-- Pas de lien morphologie aortique => supprimé -->
     </div>
 
-    <div class="row" style="gap:12px; align-items:flex-start; flex-wrap:wrap;">
+    <div class="eto-row">
       <div class="eto-inlineblock">
         <label class="checkbox">
           <input type="checkbox" id="${prefix}-eto-ra"/> RA
         </label>
 
         <div id="${prefix}-eto-ra-inline" style="display:none;">
-          <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+          <div class="eto-row">
             <label>Sévérité
               <select id="${prefix}-eto-ra-sev">
                 <option value="">—</option>
@@ -5593,7 +5593,7 @@ function etoFormHtmlCompact(prefix) {
         </label>
 
         <div id="${prefix}-eto-ia-inline" style="display:none;">
-          <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+          <div class="eto-row">
             <label>Direction
               <select id="${prefix}-eto-ia-dir">
                 <option value="">—</option>
@@ -5622,7 +5622,7 @@ function etoFormHtmlCompact(prefix) {
               </span>
             </label>
           </div>
-          <div style="margin-top:6px;">
+          <div>
             ${etoImgIcon("eto_ia_quantification.png")}
           </div>
         </div>
@@ -5630,7 +5630,7 @@ function etoFormHtmlCompact(prefix) {
     </div>
 
     <div class="eto-section-title">Diamètres aortiques</div>
-    <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+    <div class="eto-row">
       <!-- ✅ suppression : Aorte dilatée/non + CCVG mm -->
       <label>Anneau (mm)
         <span class="eto-inputwrap">
@@ -5662,7 +5662,7 @@ function etoFormHtmlCompact(prefix) {
     </div>
 
     <div class="eto-section-title">Valve mitrale</div>
-    <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+    <div class="eto-row">
       <!-- ✅ anneau mitral directement sous "Valve mitrale" -->
       <label>Diamètre anneau (mm)
         <span class="eto-inputwrap">
@@ -5672,14 +5672,14 @@ function etoFormHtmlCompact(prefix) {
       <!-- Pas de lien morphologie mitrale => supprimé -->
     </div>
 
-    <div class="row" style="gap:12px; align-items:flex-start; flex-wrap:wrap; margin-top:6px;">
+    <div class="eto-row">
       <div class="eto-inlineblock">
         <label class="checkbox">
           <input type="checkbox" id="${prefix}-eto-rm"/> RM
         </label>
 
         <div id="${prefix}-eto-rm-inline" style="display:none;">
-          <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+          <div class="eto-row">
             <label>Sévérité
               <select id="${prefix}-eto-rm-sev">
                 <option value="">—</option>
@@ -5717,7 +5717,7 @@ function etoFormHtmlCompact(prefix) {
         </label>
 
         <div id="${prefix}-eto-im-inline" style="display:none;">
-          <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+          <div class="eto-row">
             <label>Direction
               <select id="${prefix}-eto-im-dir">
                 <option value="">—</option>
@@ -5746,7 +5746,7 @@ function etoFormHtmlCompact(prefix) {
               </span>
             </label>
           </div>
-          <div style="margin-top:6px;">
+          <div>
             ${etoImgIcon("eto_im_classif.png")}
           </div>
         </div>
@@ -5754,14 +5754,14 @@ function etoFormHtmlCompact(prefix) {
     </div>
 
     <div class="eto-section-title">Valve tricuspide / PAPs</div>
-    <div class="row" style="gap:10px; align-items:flex-end; flex-wrap:wrap;">
+    <div class="eto-row">
       <label>Diamètre anneau (mm)
         <span class="eto-inputwrap">
           <input type="number" id="${prefix}-eto-anneau-tric" step="1" min="0"/>
         </span>
       </label>
 
-      <label class="checkbox" style="margin-top:18px;">
+      <label class="checkbox">
         <input type="checkbox" id="${prefix}-eto-it"/> IT
       </label>
 
@@ -5775,13 +5775,13 @@ function etoFormHtmlCompact(prefix) {
     </div>
 
     <div class="eto-section-title">Autres</div>
-    <div class="row" style="gap:12px; flex-wrap:wrap;">
-      <label class="checkbox"><input type="checkbox" id="${prefix}-eto-auricule-libre"/> Auricule libre</label>
-      <label class="checkbox"><input type="checkbox" id="${prefix}-eto-paroi-aorte-ok"/> Paroi aortique intègre</label>
-      <label class="checkbox"><input type="checkbox" id="${prefix}-eto-fop-absent"/> Absence de FOP</label>
+    <div class="eto-row">
+      <label class="checkbox"><input type="checkbox" id="${prefix}-eto-auricule-libre" checked/> Auricule libre</label>
+      <label class="checkbox"><input type="checkbox" id="${prefix}-eto-paroi-aorte-ok" checked/> Paroi aortique intègre</label>
+      <label class="checkbox"><input type="checkbox" id="${prefix}-eto-fop-absent" checked/> Absence de FOP</label>
     </div>
 
-    <div class="row" style="gap:12px; margin-top:14px; flex-wrap:wrap;">
+    <div class="eto-row">
       <button class="btn" id="${prefix}-eto-generate">Générer le CR d'ETO</button>
       <button class="btn ghost" id="${prefix}-eto-clear">Effacer la saisie</button>
     </div>
@@ -5853,6 +5853,14 @@ function initEtoFormHandlers(prefix, root) {
     const thorax = g("thorax");
     if (thorax) thorax.value = "Fermé";
 
+    // Recocher les 3 items par défaut
+    const cbAur = root.querySelector(`#${prefix}-eto-auricule-libre`);
+    const cbParoi = root.querySelector(`#${prefix}-eto-paroi-aorte-ok`);
+    const cbFop = root.querySelector(`#${prefix}-eto-fop-absent`);
+    if (cbAur) cbAur.checked = true;
+    if (cbParoi) cbParoi.checked = true;
+    if (cbFop) cbFop.checked = true;
+
     sync();
   });
 
@@ -5881,28 +5889,26 @@ function buildEtoCompteRenduCompact(prefix, root) {
   }
 
   // Fonction VG
-{
-  const fevg = val(q("fevg"));
-  const itv = val(q("itv-ccvg"));
-  const tc = q("tcseg")?.checked;
-  const dtdvg = val(q("dtdvg"));
-  const siv = val(q("siv"));
+  {
+    const fevg = val(q("fevg"));
+    const itv = val(q("itv-ccvg"));
+    const tc = q("tcseg")?.checked;
+    const dtdvg = val(q("dtdvg"));
+    const siv = val(q("siv"));
 
-  const parts = [];
-  if (fevg) parts.push(`FEVG estimée à ${fevg}%.`);
-  if (itv) parts.push(`ITV CCVG à ${itv} cm.`);
+    const parts = [];
+    if (fevg) parts.push(`FEVG estimée à ${fevg}%.`);
+    if (itv) parts.push(`ITV CCVG à ${itv} cm.`);
 
-  // ✅ consigne : si pas coché => absence
-  if (tc) parts.push(`TC segmentaire du VG.`);
-  else parts.push(`Absence de TC segmentaire.`);
+    if (tc) parts.push(`TC segmentaire du VG.`);
+    else parts.push(`Absence de TC segmentaire.`);
 
-  if (dtdvg) parts.push(`DTDVG ${dtdvg} mm.`);
-  if (siv) parts.push(`SIV ${siv} mm.`);
+    if (dtdvg) parts.push(`DTDVG ${dtdvg} mm.`);
+    if (siv) parts.push(`SIV ${siv} mm.`);
+    lines.push(parts.length ? parts.join(" ") : "Fonction VG : non renseignée.");
+  }
 
-  lines.push(parts.length ? parts.join(" ") : "Fonction VG : non renseignée.");
-}
-
-  // Fonction VD (abréviations autorisées)
+  // Fonction VD
   {
     const alt = q("vd-alt-syst")?.checked;
     const dil = q("vd-dilate")?.checked;
@@ -5920,123 +5926,117 @@ function buildEtoCompteRenduCompact(prefix, root) {
   }
 
   // Valve aortique
-{
-  const ra = q("ra")?.checked;
-  const ia = q("ia")?.checked;
-  const bic = q("bicuspidie")?.checked;
+  {
+    const ra = q("ra")?.checked;
+    const ia = q("ia")?.checked;
+    const bic = q("bicuspidie")?.checked;
 
-  const parts = [];
+    const parts = [];
 
-  // ✅ consigne : bicuspide non coché => tricuspide
-  parts.push(bic ? "Valve aortique bicuspide." : "Valve aortique tricuspide.");
+    parts.push(bic ? "Valve aortique bicuspide." : "Valve aortique tricuspide.");
 
-  if (ra) {
-    const sev = val(q("ra-sev"));
-    const vmax = val(q("ra-vmax"));
-    const gdmax = val(q("ra-gdmax"));
-    const itvva = val(q("ra-itv"));
-    const surf = val(q("ra-surface"));
-    const s = [];
-    s.push("RA");
-    if (sev) s.push(sev.toLowerCase());
-    if (vmax) s.push(`Vmax ${vmax} m/s`);
-    if (gdmax) s.push(`Gd max ${gdmax} mmHg`);
-    if (itvva) s.push(`ITV VA ${itvva} cm`);
-    if (surf) s.push(`surface ${surf} cm²`);
-    parts.push(`${s.join(", ")}.`);
+    if (ra) {
+      const sev = val(q("ra-sev"));
+      const vmax = val(q("ra-vmax"));
+      const gdmax = val(q("ra-gdmax"));
+      const itvva = val(q("ra-itv"));
+      const surf = val(q("ra-surface"));
+      const s = [];
+      s.push("RA");
+      if (sev) s.push(sev.toLowerCase());
+      if (vmax) s.push(`Vmax ${vmax} m/s`);
+      if (gdmax) s.push(`Gd max ${gdmax} mmHg`);
+      if (itvva) s.push(`ITV VA ${itvva} cm`);
+      if (surf) s.push(`surface ${surf} cm²`);
+      parts.push(`${s.join(", ")}.`);
+    }
+
+    if (ia) {
+      const dir = val(q("ia-dir"));
+      const sev = val(q("ia-sev"));
+      const vc = val(q("ia-vc"));
+      const p12 = val(q("ia-p12"));
+      const s = [];
+      s.push("IA");
+      if (dir) s.push(dir.toLowerCase());
+      if (sev) s.push(sev.toLowerCase());
+      if (vc) s.push(`VC ${vc} mm`);
+      if (p12) s.push(`P1/2T ${p12} ms`);
+      parts.push(`${s.join(" ")}.`);
+    }
+
+    if (!ra && !ia) {
+      parts.push("Valve aortique non fuyante, non sténosante.");
+    } else if (!ra && ia) {
+      parts.push("Valve aortique non sténosante.");
+    } else if (ra && !ia) {
+      parts.push("Valve aortique non fuyante.");
+    }
+
+    lines.push(parts.join(" "));
   }
 
-  if (ia) {
-    const dir = val(q("ia-dir"));
-    const sev = val(q("ia-sev"));
-    const vc = val(q("ia-vc"));
-    const p12 = val(q("ia-p12"));
-    const s = [];
-    s.push("IA");
-    if (dir) s.push(dir.toLowerCase());
-    if (sev) s.push(sev.toLowerCase());
-    if (vc) s.push(`VC ${vc} mm`);
-    if (p12) s.push(`P1/2T ${p12} ms`);
-    parts.push(`${s.join(", ")}.`);
-  }
-
-  // ✅ consigne : si IA et RA non cochées => non fuyante, non sténosante
-  if (!ra && !ia) {
-    parts.push("Valve aortique non fuyante, non sténosante.");
-  } else if (!ra && ia) {
-    parts.push("Valve aortique non sténosante.");
-  } else if (ra && !ia) {
-    parts.push("Valve aortique non fuyante.");
-  }
-
-  lines.push(parts.join(" "));
-}
-
-
-  // Diamètres aortiques (sans CCVG + sans aorte dilatée/non)
+  // Diamètres aortiques
   {
     const anneau = val(q("anneau-mm"));
     const sinus = val(q("sinus-mm"));
     const st = val(q("st-mm"));
     const tub = val(q("tub-mm"));
 
-    const parts = [];
     const dims = [];
     if (anneau) dims.push(`anneau ${anneau} mm`);
     if (sinus) dims.push(`sinus ${sinus} mm`);
     if (st) dims.push(`sino-tubulaire ${st} mm`);
     if (tub) dims.push(`tubulaire ${tub} mm`);
-    parts.push(dims.length ? `Diamètres aortiques : ${dims.join(", ")}.` : "Diamètres aortiques : non renseignés.");
-    lines.push(parts.join(" "));
+
+    lines.push(dims.length ? `Diamètres aortiques : ${dims.join(", ")}.` : "Diamètres aortiques : non renseignés.");
   }
 
-// Valve mitrale
-{
-  const anneau = val(q("anneau-mitral"));
-  const rm = q("rm")?.checked;
-  const im = q("im")?.checked;
+  // Valve mitrale
+  {
+    const anneau = val(q("anneau-mitral"));
+    const rm = q("rm")?.checked;
+    const im = q("im")?.checked;
 
-  const parts = [];
-  if (anneau) parts.push(`Anneau mitral ${anneau} mm.`);
+    const parts = [];
+    if (anneau) parts.push(`Anneau mitral ${anneau} mm.`);
 
-  if (rm) {
-    const sev = val(q("rm-sev"));
-    const surf = val(q("rm-surface"));
-    const gdm = val(q("rm-gdmoy"));
-    const p12 = val(q("rm-p12"));
-    const s = ["RM"];
-    if (sev) s.push(sev.toLowerCase());
-    if (surf) s.push(`surface ${surf} cm²`);
-    if (gdm) s.push(`Gd moyen ${gdm} mmHg`);
-    if (p12) s.push(`P1/2T ${p12} ms`);
-    parts.push(`${s.join(", ")}.`);
+    if (rm) {
+      const sev = val(q("rm-sev"));
+      const surf = val(q("rm-surface"));
+      const gdm = val(q("rm-gdmoy"));
+      const p12 = val(q("rm-p12"));
+      const s = ["RM"];
+      if (sev) s.push(sev.toLowerCase());
+      if (surf) s.push(`surface ${surf} cm²`);
+      if (gdm) s.push(`Gd moyen ${gdm} mmHg`);
+      if (p12) s.push(`P1/2T ${p12} ms`);
+      parts.push(`${s.join(", ")}.`);
+    }
+
+    if (im) {
+      const dir = val(q("im-dir"));
+      const sev = val(q("im-sev"));
+      const vc = val(q("im-vc"));
+      const p12 = val(q("im-p12"));
+      const s = ["IM"];
+      if (dir) s.push(dir.toLowerCase());
+      if (sev) s.push(sev.toLowerCase());
+      if (vc) s.push(`VC ${vc} mm`);
+      if (p12) s.push(`P1/2T ${p12} ms`);
+      parts.push(`${s.join(", ")}.`);
+    }
+
+    if (!rm && !im) {
+      parts.push("Valve mitrale non fuyante, non sténosante.");
+    } else if (!rm && im) {
+      parts.push("Valve mitrale non sténosante.");
+    } else if (rm && !im) {
+      parts.push("Valve mitrale non fuyante.");
+    }
+
+    lines.push(parts.length ? parts.join(" ") : "Valve mitrale : non renseignée.");
   }
-
-  if (im) {
-    const dir = val(q("im-dir"));
-    const sev = val(q("im-sev"));
-    const vc = val(q("im-vc"));
-    const p12 = val(q("im-p12"));
-    const s = ["IM"];
-    if (dir) s.push(dir.toLowerCase());
-    if (sev) s.push(sev.toLowerCase());
-    if (vc) s.push(`VC ${vc} mm`);
-    if (p12) s.push(`P1/2T ${p12} ms`);
-    parts.push(`${s.join(", ")}.`);
-  }
-
-  // ✅ consigne : si IM et RM non cochées => non fuyante, non sténosante
-  if (!rm && !im) {
-    parts.push("Valve mitrale non fuyante, non sténosante.");
-  } else if (!rm && im) {
-    parts.push("Valve mitrale non sténosante.");
-  } else if (rm && !im) {
-    parts.push("Valve mitrale non fuyante.");
-  }
-
-  lines.push(parts.length ? parts.join(" ") : "Valve mitrale : non renseignée.");
-}
-
 
   // Tricuspide / PAPs
   {
@@ -6062,7 +6062,6 @@ function buildEtoCompteRenduCompact(prefix, root) {
     lines.push(parts.length ? parts.join(" ") : "Autres : non renseigné.");
   }
 
-  // ✅ 1 ligne par rubrique
   return lines.join("\n");
 }
 
@@ -6070,7 +6069,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
 function openEtoSynthese(text) {
   const overlay = document.createElement("div");
   overlay.className = "acr-modal";
- overlay.classList.add("eto-modal");
+  overlay.classList.add("eto-modal");
   overlay.innerHTML = `
     <div class="acr-modal-card" role="dialog" aria-modal="true">
       <div class="acr-modal-head">
@@ -6095,7 +6094,6 @@ function openEtoSynthese(text) {
     try {
       await navigator.clipboard.writeText(t);
     } catch (e) {
-      // fallback simple
       const ta = document.createElement("textarea");
       ta.value = t;
       document.body.appendChild(ta);
