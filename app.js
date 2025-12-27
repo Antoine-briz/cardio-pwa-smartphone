@@ -5444,31 +5444,7 @@ function etoFormHtmlCompact(prefix) {
     <div class="eto-table-wrap">
       <table class="eto-cr-table">
        <tbody>
-  <!-- CONDITIONS : une seule ligne, collée au reste -->
-  <tr class="eto-cond-row">
-    <td class="eto-sec eto-sec-conditions">Conditions</td>
-    <td class="eto-cond-cell" colspan="2">
-      <div class="eto-cond-inline">
-        <label class="eto-cond-item">
-          Thorax
-          <select id="${prefix}-eto-thorax">
-            <option value="Fermé" selected>Fermé</option>
-            <option value="Ouvert">Ouvert</option>
-          </select>
-        </label>
 
-        <label class="eto-cond-item">
-          Noradrénaline (mg/h)
-          <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
-        </label>
-
-        <label class="eto-cond-item">
-          Dobutamine (µg/kg/min)
-          <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
-        </label>
-      </div>
-    </td>
-  </tr>
         <thead>
           <tr>
             <th class="col-ana">Analyse</th>
@@ -5801,10 +5777,33 @@ function openEtoFormModal(prefix) {
   overlay.classList.add("eto-modal");
   overlay.innerHTML = `
     <div class="acr-modal-card" role="dialog" aria-modal="true" style="max-width:1100px;">
-      <div class="acr-modal-head">
-        <h3>Compte rendu d'ETO</h3>
-        <button class="acr-modal-close" aria-label="Fermer">✖</button>
-      </div>
+      <div class="acr-modal-head eto-head">
+  <div class="eto-head-left">
+    <h3 style="margin:0;">Compte rendu d'ETO</h3>
+  </div>
+
+  <div class="eto-head-right">
+    <label class="eto-head-field">
+      Thorax
+      <select id="${prefix}-eto-thorax">
+        <option value="Fermé" selected>Fermé</option>
+        <option value="Ouvert">Ouvert</option>
+      </select>
+    </label>
+
+    <label class="eto-head-field">
+      Noradrénaline (mg/h)
+      <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
+    </label>
+
+    <label class="eto-head-field">
+      Dobutamine (µg/kg/min)
+      <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
+    </label>
+
+    <button class="acr-modal-close" aria-label="Fermer">✖</button>
+  </div>
+</div>
       <div class="acr-modal-body">
         ${etoFormHtmlCompact(prefix)}
       </div>
