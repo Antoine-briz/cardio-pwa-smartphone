@@ -6070,6 +6070,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
 function openEtoSynthese(text) {
   const overlay = document.createElement("div");
   overlay.className = "acr-modal";
+ overlay.classList.add("eto-modal");
   overlay.innerHTML = `
     <div class="acr-modal-card" role="dialog" aria-modal="true">
       <div class="acr-modal-head">
