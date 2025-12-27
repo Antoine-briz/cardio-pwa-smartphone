@@ -2480,3 +2480,137 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
   border-color: #a32626;
 }
 
+/* ===========================
+   ETO ULTRA-COMPACT
+   =========================== */
+
+.eto-compact {
+  font-size: 0.88rem;
+  line-height: 1.15;
+}
+
+/* ---------- Sections ---------- */
+.eto-section-title {
+  margin: 10px 0 6px;
+  padding: 6px 8px;
+  font-weight: 900;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.08);
+}
+
+.eto-title-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Inline blocs (RA/IA, RM/IM) ---------- */
+.eto-inlineblock {
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.04);
+}
+
+/* ---------- Labels en ligne (très compact) ---------- */
+.eto-compact label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* Nom du champ à gauche */
+.eto-compact label > span:first-child {
+  font-weight: 500;
+}
+
+/* ---------- Inputs ---------- */
+.eto-compact input[type="number"],
+.eto-compact select {
+  width: 88px;
+  height: 30px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+/* ---------- Checkbox ---------- */
+.eto-compact .checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+}
+
+/* ---------- Icône image ---------- */
+.eto-inputwrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.eto-imgicon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  background: rgba(0,0,0,0.12);
+}
+
+.eto-imgicon:hover {
+  background: rgba(0,0,0,0.2);
+}
+
+/* ---------- Rows ---------- */
+.eto-compact .row {
+  gap: 8px !important;
+  margin: 2px 0;
+  flex-wrap: wrap;
+}
+
+/* ---------- Suppression des séparateurs ---------- */
+.eto-compact hr {
+  display: none;
+}
+
+/* ---------- Modal compacte ---------- */
+.acr-modal-card {
+  border-radius: 14px;
+  max-width: 1150px;
+}
+
+.acr-modal-head {
+  padding: 8px 12px;
+}
+
+.acr-modal-body {
+  padding: 10px 12px;
+  max-height: 78vh;
+  overflow-y: auto;
+}
+
+/* ---------- Boutons ---------- */
+.acr-modal-actions {
+  padding: 8px 12px;
+}
+
+.acr-modal-actions .btn {
+  min-width: 90px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+/* ---------- Mobile (tablette portrait) ---------- */
+@media (max-width: 768px) {
+  .eto-compact input[type="number"],
+  .eto-compact select {
+    width: 72px;
+  }
+}
