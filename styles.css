@@ -3390,3 +3390,39 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
   height: 100%;
   justify-content: center;
 }
+
+/* CR ETO tableau : gras uniquement colonne gauche */
+.eto-modal .eto-cr-table th,
+.eto-modal .eto-cr-table td {
+  font-weight: 400 !important;
+}
+
+.eto-modal .eto-cr-table td.eto-sec {
+  font-weight: 700 !important; /* uniquement colonne gauche */
+}
+
+/* Header modal ETO : inputs toujours blancs (même thème sombre / mobile) */
+.eto-modal { color-scheme: light !important; }
+
+.eto-modal .eto-head-field input,
+.eto-modal .eto-head-field select {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1.5px solid #000 !important;
+  box-shadow: none !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
+/* Checkbox ETO : restaurer rendu natif */
+.eto-modal input[type="checkbox"]{
+  appearance: auto !important;
+  -webkit-appearance: checkbox !important;
+  background: #fff !important;
+}
+/* 2 champs sur la même ligne dans une cellule */
+.eto-modal .eto-inline2{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
