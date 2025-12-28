@@ -3298,3 +3298,54 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 .eto-modal .eto-cr-table select {
   height: 24px !important;
 }
+
+/* ===========================
+   ETO – SUPPRESSION ESPACE BLANC SOUS LE TITRE
+   =========================== */
+
+/* 1. Supprimer padding haut du body de la modal */
+.eto-modal .acr-modal-body {
+  padding-top: 0 !important;
+}
+
+/* 2. Aucun margin-top sur le wrapper du tableau */
+.eto-modal .eto-table-wrap {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 3. Aucun margin-top sur le tableau lui-même */
+.eto-modal table.eto-cr-table {
+  margin-top: 0 !important;
+}
+
+/* 4. Sécurité : premier élément du body */
+.eto-modal .acr-modal-body > *:first-child {
+  margin-top: 0 !important;
+}
+/* ===== Inputs du header ETO (Thorax / Noradrénaline / Dobutamine) ===== */
+.eto-modal .eto-head-field input,
+.eto-modal .eto-head-field select {
+  background: #fff !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+
+  border: 1.6px solid #000 !important;
+  border-radius: 8px !important;
+
+  height: 26px !important;
+  padding: 1px 6px !important;
+  width: 78px !important;
+
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+}
+/* ===== Centrage vertical des colonnes gauche et droite ===== */
+.eto-modal .eto-cr-table td.eto-sec,
+.eto-modal .eto-cr-table td.eto-imgcol {
+  vertical-align: middle !important;
+}
+.eto-modal .eto-imgcol {
+  justify-content: center;
+}
