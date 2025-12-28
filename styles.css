@@ -3234,3 +3234,67 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 .eto-modal .eto-imglink:hover {
   opacity: 0.75;
 }
+
+/* ===== header ETO + body : supprimer espace sous le titre ===== */
+.eto-modal .acr-modal-body {
+  padding-top: 0 !important;
+}
+
+.eto-modal .eto-table-wrap {
+  margin-top: 0 !important;
+}
+
+.eto-modal table.eto-cr-table {
+  margin-top: 0 !important;
+}
+
+/* ===== Header ETO avec champs à droite ===== */
+.eto-modal .eto-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.eto-modal .eto-head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.eto-modal .eto-head-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.eto-modal .eto-head-field input,
+.eto-modal .eto-head-field select {
+  height: 26px !important;
+  padding: 1px 6px !important;
+  border-radius: 8px !important;
+  border: 1.6px solid #000 !important;
+  background: #fff !important;
+  color: #000 !important;
+  width: 78px !important;
+}
+
+.eto-modal .eto-cr-table td {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.eto-modal .eto-cr-table td,
+.eto-modal .eto-cr-table label,
+.eto-modal .eto-cr-table a {
+  line-height: 1.05 !important;
+}
+
+.eto-modal .eto-cr-table input,
+.eto-modal .eto-cr-table select {
+  height: 24px !important;
+}
