@@ -5771,27 +5771,20 @@ function etoFormHtmlCompact(prefix) {
   `;
 }
 
-function openEtoFormModal(prefix, bodyHtml) {
+function openEtoFormModal(prefix) {
   const overlay = document.createElement("div");
   overlay.className = "acr-modal";
   overlay.classList.add("eto-modal");
 
-  // ✅ Body : priorité au bodyHtml fourni, sinon auto-switch selon le select
-  let html = bodyHtml;
+  // ✅ Auto-switch selon le prefix + le select (rva-type / rvm-type)
+  let bodyHtml;
 
-  if (!html) {
-    // Plastie aortique
-    if (prefix === "rva" && document.getElementById("rva-type")?.value === "plastie") {
-      html = etoFormHtmlCompactPlastieAortique(prefix);
-    }
-    // Plastie mitrale
-    else if (prefix === "rvm" && document.getElementById("rvm-type")?.value === "plastie") {
-      html = etoFormHtmlCompactPlastieMitrale(prefix);
-    }
-    // Général
-    else {
-      html = etoFormHtmlCompact(prefix);
-    }
+  if (prefix === "rva" && document.getElementById("rva-type")?.value === "plastie") {
+    bodyHtml = etoFormHtmlCompactPlastieAortique(prefix);
+  } else if (prefix === "rvm" && document.getElementById("rvm-type")?.value === "plastie") {
+    bodyHtml = etoFormHtmlCompactPlastieMitrale(prefix);
+  } else {
+    bodyHtml = etoFormHtmlCompact(prefix);
   }
 
   overlay.innerHTML = `
@@ -5824,7 +5817,7 @@ function openEtoFormModal(prefix, bodyHtml) {
         </div>
       </div>
 
-      <div class="acr-modal-body">${html}</div>
+      <div class="acr-modal-body">${bodyHtml}</div>
     </div>
   `;
 
@@ -5835,6 +5828,7 @@ function openEtoFormModal(prefix, bodyHtml) {
   document.body.appendChild(overlay);
   initEtoFormHandlers(prefix, overlay);
 }
+
 
 function etoFormHtmlCompactPlastieAortique(prefix) {
   return `
@@ -7251,34 +7245,6 @@ function renderInterventionRVA() {
 
 initEtoEntryButtons("rva");
 
-// === Override ouverture Compte rendu ETO selon RVA / plastie aortique ===
-{
-  const btn = document.getElementById("rva-eto-open");
-  if (btn && btn.parentNode) {
-
-    // Supprime le listener ajouté par initEtoEntryButtons
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-
-    newBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      const type = document.getElementById("rva-type")?.value || "rva";
-
-      if (type === "plastie") {
-        // 👉 FORMULAIRE PLASTIE AORTIQUE
-        openEtoFormModal(
-          "rva",
-          etoFormHtmlCompactPlastieAortique("rva")
-        );
-      } else {
-        // 👉 FORMULAIRE GÉNÉRAL (pontages / RVA)
-        openEtoFormModal("rva");
-      }
-    });
-  }
-}
-
   expandPatientCharacteristics(); 
   // Calcul Kétamine / Exacyl / Ropivacaïne / Héparine à partir du poids
   setupAnesthGlobalDoseLogic();
@@ -7511,34 +7477,6 @@ function renderInterventionRVM() {
   });
 
 initEtoEntryButtons("rvm");
-
-  // === Override ouverture Compte rendu ETO selon RVM / plastie mitrale ===
-{
-  const btn = document.getElementById("rvm-eto-open");
-  if (btn && btn.parentNode) {
-
-    // IMPORTANT : supprimer le listener ajouté par initEtoEntryButtons
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-
-    newBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      const type = document.getElementById("rvm-type")?.value || "rvm";
-
-      if (type === "plastie") {
-        // 👉 FORMULAIRE PLASTIE MITRALE
-        openEtoFormModal(
-          "rvm",
-          etoFormHtmlCompactPlastieMitrale("rvm")
-        );
-      } else {
-        // 👉 FORMULAIRE GÉNÉRAL (pontages / RVM)
-        openEtoFormModal("rvm");
-      }
-    });
-  }
-}
   
   expandPatientCharacteristics(); 
   // Calcul global des doses (Kétamine / Exacyl / Ropi max / Héparine…)
