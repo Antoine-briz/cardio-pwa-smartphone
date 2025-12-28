@@ -5751,7 +5751,7 @@ function etoFormHtmlCompact(prefix) {
             <td>
               <div class="eto-cell">
                 <label class="checkbox"><input type="checkbox" id="${prefix}-eto-auricule-libre" checked/> Auricule libre</label>
-                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-fop-absent" checked/> Absence de FOP</label>
+                <label class="checkbox"><input type="checkbox" id="${prefix}-eto-fop-absent" checked/> Absence de FOP en PEP ≥ 6 cmH2O</label>
                 <label class="checkbox"><input type="checkbox" id="${prefix}-eto-paroi-aorte-ok" checked/> Paroi aortique intègre</label>
               </div>
             </td>
