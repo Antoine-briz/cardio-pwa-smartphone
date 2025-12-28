@@ -5902,8 +5902,8 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const parts = [];
     if (fevg) parts.push(`FEVG estimée à ${fevg}%.`);
     if (itv) parts.push(`ITV CCVG à ${itv} cm.`);
-    if (tc) parts.push(`TC segmentaire du VG.`);
-    else parts.push(`Absence de TC segmentaire.`);
+    if (tc) parts.push(`Trouble de cinétique segmentaire du VG.`);
+    else parts.push(`Absence de trouble de cinétique segmentaire.`);
     if (dtdvg) parts.push(`DTDVG ${dtdvg} mm.`);
     if (siv) parts.push(`SIV ${siv} mm.`);
     lines.push(parts.length ? parts.join(" ") : "Fonction VG : non renseignée.");
