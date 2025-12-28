@@ -6956,7 +6956,7 @@ function renderInterventionRVA() {
 
 initEtoEntryButtons("rva");
 
-// Override ouverture CR ETO pour prendre en compte rva-type
+// --- Override ouverture Compte rendu ETO selon RVA / plastie aortique ---
 const btn = document.getElementById("rva-eto-open");
 if (btn) {
   btn.onclick = (e) => {
