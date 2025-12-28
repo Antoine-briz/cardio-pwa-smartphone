@@ -7477,7 +7477,7 @@ function renderInterventionRVM() {
     {
   titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoEntryButtonsHtml("pc")}
+    ${etoEntryButtonsHtml("rvm")}
   `,
 },
     {
