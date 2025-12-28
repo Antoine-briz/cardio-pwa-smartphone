@@ -3489,3 +3489,23 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   font-weight: 900 !important;
   border-bottom: 2px solid rgba(0,0,0,0.35) !important;
 }
+
+/* =========================================================
+   ETO – homogénéiser la police des champs de saisie
+   (même police que labels / checkbox)
+   ========================================================= */
+
+/* 1) Forcer la même police sur TOUS les éléments de saisie */
+.eto-modal .eto-cr-table input,
+.eto-modal .eto-cr-table select,
+.eto-modal .eto-cr-table textarea {
+  font-family: inherit !important;
+  font-weight: 400 !important;
+}
+
+/* 2) Sécurité : wrapper central (si flex interne) */
+.eto-modal .eto-cr-table .eto-cell,
+.eto-modal .eto-cr-table .eto-cell * {
+  font-family: inherit !important;
+  font-weight: 400 !important;
+}
