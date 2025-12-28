@@ -6151,7 +6151,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
     lines.push(`- Autres : ${parts.join(", ")}.`);
   }
 }
-
+}
 
 // --- Synthèse CR (avec Copier + Fermer) ---
 function openEtoSynthese(text) {
