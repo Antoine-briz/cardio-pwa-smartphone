@@ -6151,6 +6151,9 @@ function buildEtoCompteRenduCompact(prefix, root) {
     lines.push(`- Autres : ${parts.join(", ")}.`);
   }
 }
+
+  // ✅ IMPORTANT : sinon la synthèse est vide (undefined)
+  return lines.join("\n");
 }
 
 // --- Synthèse CR (avec Copier + Fermer) ---
