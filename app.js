@@ -5771,6 +5771,144 @@ function etoFormHtmlCompact(prefix) {
   `;
 }
 
+function etoHtmlEvaluationAortique(prefix) {
+  const p = (id) => `${prefix}-${id}`;
+
+  return `
+  <tr>
+    <td class="eto-sec">Évaluation aortique</td>
+
+    <td>
+      <div class="eto-cell">
+
+        <label class="checkbox">
+          <input type="checkbox" id="${p("eto-bicuspidie")}"/>
+          Bicuspide
+        </label>
+
+        <label>Type (si bicuspide)
+          <select id="${p("eto-ao-bicus-type")}">
+            <option value="">—</option>
+            <option>0</option><option>1</option><option>2</option>
+          </select>
+        </label>
+
+        <label>Mécanisme IA
+          <select id="${p("eto-ia-meca")}">
+            <option value="">—</option>
+            <option>Dilatation</option>
+            <option>Perforation</option>
+            <option>Prolapsus</option>
+            <option>Restriction</option>
+          </select>
+        </label>
+
+        <label>Centrage IA
+          <select id="${p("eto-ia-centrage")}">
+            <option value="">—</option>
+            <option>Centrée</option>
+            <option>Excentrée</option>
+          </select>
+        </label>
+
+        <label>Sévérité IA
+          <select id="${p("eto-ia-sev")}">
+            <option value="">—</option>
+            <option>Minime</option>
+            <option>Modérée</option>
+            <option>Sévère</option>
+          </select>
+        </label>
+
+        <label>VC (mm)
+          <input type="number" id="${p("eto-ia-vc")}" step="1" min="0"/>
+        </label>
+
+        <label>P1/2T (ms)
+          <input type="number" id="${p("eto-ia-p12")}" step="1" min="0"/>
+        </label>
+
+        <hr/>
+
+        <div class="eto-subtitle">Diamètres aortiques</div>
+        <div class="eto-inline2">
+          <label>Anneau (mm) <input type="number" id="${p("eto-ao-anneau")}" step="1" min="0"/></label>
+          <label>Sinus (mm) <input type="number" id="${p("eto-ao-sinus")}" step="1" min="0"/></label>
+          <label>Sino-tub (mm) <input type="number" id="${p("eto-ao-st")}" step="1" min="0"/></label>
+          <label>Tubulaire (mm) <input type="number" id="${p("eto-ao-tub")}" step="1" min="0"/></label>
+        </div>
+
+        <hr/>
+
+        <div class="eto-subtitle">Analyse cuspide par cuspide</div>
+
+        <div class="eto-subsubtitle">RCC</div>
+        <div class="eto-inline2">
+          <label>eH (mm) <input type="number" id="${p("eto-rcc-eh")}" step="1" min="0"/></label>
+          <label>gH (mm) <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/></label>
+          <label>Long. bord libre (mm) <input type="number" id="${p("eto-rcc-lbl")}" step="1" min="0"/></label>
+        </div>
+
+        <div class="eto-subsubtitle">LCC</div>
+        <div class="eto-inline2">
+          <label>eH (mm) <input type="number" id="${p("eto-lcc-eh")}" step="1" min="0"/></label>
+          <label>gH (mm) <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/></label>
+          <label>Long. bord libre (mm) <input type="number" id="${p("eto-lcc-lbl")}" step="1" min="0"/></label>
+        </div>
+
+        <div class="eto-subsubtitle">NCC</div>
+        <div class="eto-inline2">
+          <label>eH (mm) <input type="number" id="${p("eto-ncc-eh")}" step="1" min="0"/></label>
+          <label>gH (mm) <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/></label>
+          <label>Long. bord libre (mm) <input type="number" id="${p("eto-ncc-lbl")}" step="1" min="0"/></label>
+        </div>
+
+        <hr/>
+
+        <div class="eto-subtitle">Résultat post-plastie</div>
+        <div class="eto-inline2">
+          <label>cH (mm)
+            <input type="number" id="${p("eto-plastie-ch")}" step="1" min="0"/>
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" id="${p("eto-fuite-resid")}"/>
+            Fuite résiduelle
+          </label>
+
+          <label>Centrage fuite
+            <select id="${p("eto-fuite-centrage")}">
+              <option value="">—</option>
+              <option>Centrée</option>
+              <option>Excentrée</option>
+            </select>
+          </label>
+
+          <label>Sévérité fuite
+            <select id="${p("eto-fuite-sev")}">
+              <option value="">—</option>
+              <option>Minime</option>
+              <option>Modérée</option>
+              <option>Sévère</option>
+            </select>
+          </label>
+        </div>
+
+      </div>
+    </td>
+
+    <td class="eto-imgcol">
+      ${etoImgLink("Morphologie VA", "eto_ao_morphologie.png")}
+      ${etoImgLink("Classification IA", "eto_ao_quantification.png")}
+      ${etoImgLink("IA VC", "eto_ia_vc.png")}
+      ${etoImgLink("IA P1/2", "eto_ia_1.2.png")}
+      ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
+      ${etoImgLink("Plastie aortique", "cf-plastieaortique.png")}
+    </td>
+  </tr>
+  `;
+}
+
 function openEtoFormModal(prefix) {
   const overlay = document.createElement("div");
   overlay.className = "acr-modal";
@@ -6332,11 +6470,11 @@ function renderInterventionPontages() {
       `,
     },
     {
-      titre: "Échographie trans-œsophagienne",
+  titre: "Échographie trans-œsophagienne",
   html: `
     ${etoEntryButtonsHtml("pc")}
   `,
-    },
+},
     {
       titre: "CEC",
       html: `
