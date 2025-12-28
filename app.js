@@ -5888,7 +5888,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const parts = [`Thorax ${thorax.toLowerCase()}.`];
     if (nora) parts.push(`Noradrénaline ${nora} mg/h.`);
     if (dobu) parts.push(`Dobutamine ${dobu} µg/kg/min.`);
-    lines.push(parts.join(" "));
+    lines.push(`- <strong>Conditions</strong> : ${conditions.join(", ")}`);
   }
 
 // ===== Fonction VG =====
