@@ -5711,7 +5711,7 @@ function etoFormHtmlCompact(prefix) {
               </div>
             </td>
             <td class="eto-imgcol">
-              ${etoImgLink("Surface mitrale (planim.)", "eto_rm_planim.png")}
+              ${etoImgLink("Surface mitrale", "eto_rm_planim.png")}
               ${etoImgLink("Gd moyen mitral", "eto_rm_gdmoyen.png")}
               ${etoImgLink("RM P1/2T", "eto_rm_1.2.png")}
               ${etoImgLink("Classification IM", "eto_im_classif.png")}
@@ -5804,7 +5804,7 @@ function openEtoFormModal(prefix) {
     <button class="acr-modal-close" aria-label="Fermer">✖</button>
   </div>
 </div>
-      <div class="acr-modal-body">
+      <div class="acr-modal-body">${etoFormHtmlCompact(prefix)}</div>
         ${etoFormHtmlCompact(prefix)}
       </div>
     </div>
