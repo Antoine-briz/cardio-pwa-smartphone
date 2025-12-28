@@ -7475,15 +7475,9 @@ function renderInterventionRVM() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+  titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
