@@ -3349,3 +3349,44 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 .eto-modal .eto-imgcol {
   justify-content: center;
 }
+
+/* ETO : ne PAS préserver les retours à la ligne HTML */
+.eto-modal .acr-modal-body{
+  white-space: normal !important;
+  font-family: inherit !important;
+  padding-top: 0 !important;     /* enlève le haut */
+}
+
+/* si ton tableau est le 1er élément, on colle vraiment */
+.eto-modal .acr-modal-body > *:first-child{
+  margin-top: 0 !important;
+}
+
+/* ETO header inputs : toujours blancs (même thème sombre / mobile) */
+.eto-modal .eto-head-field input,
+.eto-modal .eto-head-field select{
+  background: #fff !important;
+  color: #000 !important;
+  -webkit-text-fill-color:#000 !important;
+  border: 1.6px solid #000 !important;
+  box-shadow: none !important;
+
+  color-scheme: light !important;     /* clé mobile */
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* centrer verticalement la cellule */
+.eto-modal td.eto-sec,
+.eto-modal td.eto-imgcol{
+  vertical-align: middle !important;
+}
+
+/* et faire remplir la hauteur à la colonne droite */
+.eto-modal td.eto-imgcol{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.eto-modal .eto-imgcol{
+  height: 100%;
+  justify-content: center;
+}
