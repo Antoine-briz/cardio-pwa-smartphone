@@ -6027,12 +6027,13 @@ function buildEtoCompteRenduCompact(prefix, root) {
     parts.push("non fuyante");
   }
 
+  // ⚠️ UN SEUL push = UNE SEULE LIGNE
   if (parts.length) {
     lines.push(`- Valve aortique : ${parts.join(", ")}.`);
   }
 }
 
-
+  
 // ===== Diamètres aortiques =====
 {
   const anneau = val(q("anneau-mm"));
@@ -6047,7 +6048,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
   if (tub) parts.push(`aorte tubulaire ${tub} mm`);
 
   if (parts.length) {
-    lines.push(`- Diamètres aortiques : ${parts.join(", ")}.`);
+    lines.push(`- Diamètres aortiques : ${parts.join(", ")}.`)
   }
 }
 
