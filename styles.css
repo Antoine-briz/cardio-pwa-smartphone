@@ -3509,3 +3509,12 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   font-family: inherit !important;
   font-weight: 400 !important;
 }
+
+/* ===========================
+   ETO – SYNTHÈSE : respecter les retours ligne
+   =========================== */
+
+.eto-modal #eto-synth-text,
+.eto-modal pre {
+  white-space: pre-wrap !important;
+}
