@@ -5805,7 +5805,6 @@ function openEtoFormModal(prefix) {
   </div>
 </div>
       <div class="acr-modal-body">${etoFormHtmlCompact(prefix)}</div>
-        ${etoFormHtmlCompact(prefix)}
       </div>
     </div>
   `;
