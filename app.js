@@ -5926,7 +5926,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
   }
 
   if (parts.length) {
-    lines.push(`- Fonction VG : ${parts.join(", ")}.`);
+    lines.push(`- <strong>Fonction VG</strong> : ${parts.join(", ")}.`);
   }
 }
 
@@ -5969,7 +5969,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
   }
 
   if (parts.length) {
-    lines.push(`- Fonction VD : ${parts.join(", ")}.`);
+    lines.push(`- <strong>Fonction VD</strong> : ${parts.join(", ")}.`);
   }
 }
 
@@ -6039,7 +6039,7 @@ parts.push(txt);
 
   // ⚠️ UN SEUL push = UNE SEULE LIGNE
   if (parts.length) {
-    lines.push(`- Valve aortique : ${parts.join(", ")}.`);
+    lines.push(`- <strong>Valve aortique</strong> : ${parts.join(", ")}.`);
   }
 }
 
@@ -6131,7 +6131,7 @@ parts.push(txt);
   }
 
   if (parts.length) {
-    lines.push(`- Valve mitrale : ${parts.join(", ")}.`);
+    lines.push(`- <strong>Diamètres aortiques</strong> :${parts.join(", ")}.`);
   }
 }
 
@@ -6159,7 +6159,7 @@ parts.push(txt);
   }
 
   if (parts.length) {
-    lines.push(`- Tricuspide / PAPs : ${parts.join(", ")}.`);
+    lines.push(`- <strong>Tricuspide / PAPs</strong> :  ${parts.join(", ")}.`);
   }
 }
 
@@ -6180,7 +6180,7 @@ parts.push(txt);
   }
 
   if (parts.length) {
-    lines.push(`- Autres : ${parts.join(", ")}.`);
+    lines.push(`- <strong>Autres</strong> :  ${parts.join(", ")}.`);
   }
 }
 
