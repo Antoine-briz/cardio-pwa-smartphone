@@ -5880,16 +5880,18 @@ function buildEtoCompteRenduCompact(prefix, root) {
 
   const lines = [];
 
-  // Conditions
-  {
-    const thorax = val(q("thorax")) || "Fermé";
-    const nora = val(q("nora"));
-    const dobu = val(q("dobu"));
-    const parts = [`Thorax ${thorax.toLowerCase()}.`];
-    if (nora) parts.push(`Noradrénaline ${nora} mg/h.`);
-    if (dobu) parts.push(`Dobutamine ${dobu} µg/kg/min.`);
-    lines.push(`- <strong>Conditions</strong> : ${conditions.join(", ")}`);
-  }
+// Conditions
+{
+  const thorax = val(q("thorax")) || "Fermé";
+  const nora = val(q("nora"));
+  const dobu = val(q("dobu"));
+
+  const parts = [`thorax ${thorax.toLowerCase()}`];
+  if (nora) parts.push(`noradrénaline ${nora} mg/h`);
+  if (dobu) parts.push(`dobutamine ${dobu} µg/kg/min`);
+
+  lines.push(`- <strong>Conditions</strong> : ${parts.join(", ")}.`);
+}
 
 // ===== Fonction VG =====
 {
