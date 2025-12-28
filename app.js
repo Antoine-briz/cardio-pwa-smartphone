@@ -5771,42 +5771,45 @@ function etoFormHtmlCompact(prefix) {
   `;
 }
 
-
-function openEtoFormModal(prefix) {
+function openEtoFormModal(prefix, bodyHtml) {
   const overlay = document.createElement("div");
   overlay.className = "acr-modal";
   overlay.classList.add("eto-modal");
+
+  // Si bodyHtml n'est pas fourni => comportement identique à avant
+  const html = bodyHtml ?? etoFormHtmlCompact(prefix);
+
   overlay.innerHTML = `
     <div class="acr-modal-card" role="dialog" aria-modal="true" style="max-width:1100px;">
       <div class="acr-modal-head eto-head">
-  <div class="eto-head-left">
-    <h3 style="margin:0;">Compte rendu d'ETO</h3>
-  </div>
+        <div class="eto-head-left">
+          <h3 style="margin:0;">Compte rendu d'ETO</h3>
+        </div>
 
-  <div class="eto-head-right">
-    <label class="eto-head-field">
-      Thorax
-      <select id="${prefix}-eto-thorax">
-        <option value="Fermé" selected>Fermé</option>
-        <option value="Ouvert">Ouvert</option>
-      </select>
-    </label>
+        <div class="eto-head-right">
+          <label class="eto-head-field">
+            Thorax
+            <select id="${prefix}-eto-thorax">
+              <option value="Fermé" selected>Fermé</option>
+              <option value="Ouvert">Ouvert</option>
+            </select>
+          </label>
 
-    <label class="eto-head-field">
-      Noradrénaline (mg/h)
-      <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
-    </label>
+          <label class="eto-head-field">
+            Noradrénaline (mg/h)
+            <input type="number" id="${prefix}-eto-nora" step="0.1" min="0"/>
+          </label>
 
-    <label class="eto-head-field">
-      Dobutamine (µg/kg/min)
-      <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
-    </label>
+          <label class="eto-head-field">
+            Dobutamine (µg/kg/min)
+            <input type="number" id="${prefix}-eto-dobu" step="0.1" min="0"/>
+          </label>
 
-    <button class="acr-modal-close" aria-label="Fermer">✖</button>
-  </div>
-</div>
-      <div class="acr-modal-body">${etoFormHtmlCompact(prefix)}</div>
+          <button class="acr-modal-close" aria-label="Fermer">✖</button>
+        </div>
       </div>
+
+      <div class="acr-modal-body">${html}</div>
     </div>
   `;
 
@@ -5817,6 +5820,7 @@ function openEtoFormModal(prefix) {
   document.body.appendChild(overlay);
   initEtoFormHandlers(prefix, overlay);
 }
+
 
 function etoFormHtmlCompactPlastieAortique(prefix) {
   return `
@@ -6952,28 +6956,34 @@ function renderInterventionRVA() {
 
 initEtoEntryButtons("rva");
 
-// === Override ouverture Compte rendu ETO (RVA / plastie aortique) ===
-const btn = document.getElementById("rva-eto-open");
-if (btn && btn.parentNode) {
+// === Override ouverture Compte rendu ETO selon RVA / plastie aortique ===
+{
+  const btn = document.getElementById("rva-eto-open");
+  if (btn && btn.parentNode) {
 
-  // IMPORTANT : supprimer les listeners ajoutés par initEtoEntryButtons
-  const newBtn = btn.cloneNode(true);
-  btn.parentNode.replaceChild(newBtn, btn);
+    // Supprime le listener ajouté par initEtoEntryButtons
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
 
-  newBtn.addEventListener("click", (e) => {
-    e.preventDefault();
+    newBtn.addEventListener("click", (e) => {
+      e.preventDefault();
 
-    const type = document.getElementById("rva-type")?.value || "rva";
+      const type = document.getElementById("rva-type")?.value || "rva";
 
-    if (type === "plastie") {
-      // 👉 FORMULAIRE PLASTIE AORTIQUE
-      openEtoFormModal("rva", etoFormHtmlCompactPlastieAortique("rva"));
-    } else {
-      // 👉 FORMULAIRE GÉNÉRAL (pontages / RVA)
-      openEtoFormModal("rva", etoFormHtmlCompact("rva"));
-    }
-  });
+      if (type === "plastie") {
+        // 👉 FORMULAIRE PLASTIE AORTIQUE
+        openEtoFormModal(
+          "rva",
+          etoFormHtmlCompactPlastieAortique("rva")
+        );
+      } else {
+        // 👉 FORMULAIRE GÉNÉRAL (pontages / RVA)
+        openEtoFormModal("rva");
+      }
+    });
+  }
 }
+
   
   expandPatientCharacteristics(); 
   // Calcul Kétamine / Exacyl / Ropivacaïne / Héparine à partir du poids
