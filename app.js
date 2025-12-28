@@ -5818,10 +5818,6 @@ function openEtoFormModal(prefix) {
   initEtoFormHandlers(prefix, overlay);
 }
 
-function openEtoCompteRenduFormPlastieAortique(prefix) {
-  openEtoFormModal(prefix, etoFormHtmlCompactPlastieAortique(prefix));
-}
-
 function etoFormHtmlCompactPlastieAortique(prefix) {
   return `
   <div id="${prefix}-eto-form" class="eto-compact eto-cr">
@@ -6956,22 +6952,27 @@ function renderInterventionRVA() {
 
 initEtoEntryButtons("rva");
 
-// --- Override ouverture Compte rendu ETO selon RVA / plastie aortique ---
+// === Override ouverture Compte rendu ETO (RVA / plastie aortique) ===
 const btn = document.getElementById("rva-eto-open");
-if (btn) {
-  btn.onclick = (e) => {
+if (btn && btn.parentNode) {
+
+  // IMPORTANT : supprimer les listeners ajoutés par initEtoEntryButtons
+  const newBtn = btn.cloneNode(true);
+  btn.parentNode.replaceChild(newBtn, btn);
+
+  newBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
     const type = document.getElementById("rva-type")?.value || "rva";
 
     if (type === "plastie") {
-      // Formulaire ETO spécifique plastie aortique
-      openEtoCompteRenduFormPlastieAortique("rva");
+      // 👉 FORMULAIRE PLASTIE AORTIQUE
+      openEtoFormModal("rva", etoFormHtmlCompactPlastieAortique("rva"));
     } else {
-      // Formulaire ETO général (pontages / RVA)
+      // 👉 FORMULAIRE GÉNÉRAL (pontages / RVA)
       openEtoFormModal("rva", etoFormHtmlCompact("rva"));
     }
-  };
+  });
 }
   
   expandPatientCharacteristics(); 
