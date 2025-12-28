@@ -3426,3 +3426,34 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
   flex-wrap:wrap;
   align-items:center;
 }
+/* =========================================================
+   ETO – homogénéiser police (checkbox incluse)
+   + gras uniquement colonne gauche
+   ========================================================= */
+
+/* 1) Base : même police partout dans le tableau ETO */
+.eto-modal .eto-cr-table,
+.eto-modal .eto-cr-table * {
+  font-family: inherit !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+/* 2) Les labels checkbox (souvent stylés différemment) */
+.eto-modal .eto-cr-table label.checkbox,
+.eto-modal .eto-cr-table .checkbox {
+  font-family: inherit !important;
+  font-weight: 400 !important;
+}
+
+/* 3) Garder le gras UNIQUEMENT pour la colonne gauche (Analyse) */
+.eto-modal .eto-cr-table td.eto-sec {
+  font-weight: 800 !important;
+}
+
+/* 4) (optionnel) si tu as des <strong> qui traînent */
+.eto-modal .eto-cr-table strong,
+.eto-modal .eto-cr-table b {
+  font-weight: 400 !important;
+}
