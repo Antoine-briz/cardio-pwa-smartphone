@@ -5905,12 +5905,19 @@ function buildEtoCompteRenduCompact(prefix, root) {
   if (itv) parts.push(`ITV CCVG ${itv} cm`);
 
   if (dtdvg) {
-    parts.push(`VG non dilaté (DTDVG ${dtdvg} mm)`);
+    const d = Number(dtdvg);
+    if (!Number.isNaN(d)) {
+      parts.push(d >= 56 ? `VG dilaté (DTDVG ${d} mm)` : `VG non dilaté (DTDVG ${d} mm)`);
+    }
   }
 
   if (siv) {
-    parts.push(`non hypertrophié (SIV ${siv} mm)`);
+    const s = Number(siv);
+    if (!Number.isNaN(s)) {
+      parts.push(s >= 13 ? `VG hypertrophié (SIV ${s} mm)` : `VG non hypertrophié (SIV ${s} mm)`);
+    }
   }
+
 
   if (tc) {
     parts.push(`présence de troubles de la cinétique segmentaire`);
