@@ -5987,38 +5987,46 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                 </label>
               </div>
 
-              <div class="eto-subtitle">Cuspide par cuspide</div>
-              <div class="eto-cell eto-subcell">
-                <label>RCC eH (mm)
-                  <input type="number" id="${prefix}-eto-rcc-eh" step="1" min="0"/>
-                </label>
-                <label>RCC gH (mm)
-                  <input type="number" id="${prefix}-eto-rcc-gh" step="1" min="0"/>
-                </label>
-                <label>RCC long. bord libre (mm)
-                  <input type="number" id="${prefix}-eto-rcc-lbl" step="1" min="0"/>
-                </label>
+             <div class="eto-subtitle">Analyse cuspide par cuspide</div>
 
-                <label>LCC eH (mm)
-                  <input type="number" id="${prefix}-eto-lcc-eh" step="1" min="0"/>
-                </label>
-                <label>LCC gH (mm)
-                  <input type="number" id="${prefix}-eto-lcc-gh" step="1" min="0"/>
-                </label>
-                <label>LCC long. bord libre (mm)
-                  <input type="number" id="${prefix}-eto-lcc-lbl" step="1" min="0"/>
-                </label>
+<div class="eto-cusp-line">
+  <strong>Cusp droite :</strong>
+  <label>eH (mm)
+    <input type="number" id="${p("eto-rcc-eh")}" step="1" min="0"/>
+  </label>
+  <label>gH (mm)
+    <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/>
+  </label>
+  <label>Long. bord libre (mm)
+    <input type="number" id="${p("eto-rcc-lbl")}" step="1" min="0"/>
+  </label>
+</div>
 
-                <label>NCC eH (mm)
-                  <input type="number" id="${prefix}-eto-ncc-eh" step="1" min="0"/>
-                </label>
-                <label>NCC gH (mm)
-                  <input type="number" id="${prefix}-eto-ncc-gh" step="1" min="0"/>
-                </label>
-                <label>NCC long. bord libre (mm)
-                  <input type="number" id="${prefix}-eto-ncc-lbl" step="1" min="0"/>
-                </label>
-              </div>
+<div class="eto-cusp-line">
+  <strong>Cusp gauche :</strong>
+  <label>eH (mm)
+    <input type="number" id="${p("eto-lcc-eh")}" step="1" min="0"/>
+  </label>
+  <label>gH (mm)
+    <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/>
+  </label>
+  <label>Long. bord libre (mm)
+    <input type="number" id="${p("eto-lcc-lbl")}" step="1" min="0"/>
+  </label>
+</div>
+
+<div class="eto-cusp-line">
+  <strong>Cusp non coronaire :</strong>
+  <label>eH (mm)
+    <input type="number" id="${p("eto-ncc-eh")}" step="1" min="0"/>
+  </label>
+  <label>gH (mm)
+    <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/>
+  </label>
+  <label>Long. bord libre (mm)
+    <input type="number" id="${p("eto-ncc-lbl")}" step="1" min="0"/>
+  </label>
+</div>
 
               <div class="eto-subtitle">Résultat post-plastie</div>
               <div class="eto-cell eto-subcell">
@@ -6031,19 +6039,25 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                   Fuite résiduelle
                 </label>
 
-                <label>Centrage fuite
-                  <select id="${prefix}-eto-fuite-centrage">
-                    <option value="">—</option>
-                    <option>Centrée</option><option>Excentrée</option>
-                  </select>
-                </label>
+                <div id="${prefix}-eto-fuite-details" style="display:none;">
+  <label>Centrage fuite
+    <select id="${prefix}-eto-fuite-centrage">
+      <option value="">—</option>
+      <option>Centrée</option>
+      <option>Excentrée</option>
+    </select>
+  </label>
 
-                <label>Sévérité fuite
-                  <select id="${prefix}-eto-fuite-sev">
-                    <option value="">—</option>
-                    <option>Minime</option><option>Modérée</option><option>Sévère</option>
-                  </select>
-                </label>
+  <label>Sévérité fuite
+    <select id="${prefix}-eto-fuite-sev">
+      <option value="">—</option>
+      <option>Minime</option>
+      <option>Modérée</option>
+      <option>Sévère</option>
+    </select>
+  </label>
+</div>
+
               </div>
             </td>
 
@@ -6440,6 +6454,81 @@ function initEtoFormHandlers(prefix, root) {
     openEtoSynthese(txt);
   });
 }
+
+function initEtoFormHandlers(prefix, root) {
+  const g = (id) => root.querySelector(`#${prefix}-eto-${id}`);
+
+  const cbRA = g("ra");
+  const cbIA = g("ia");
+  const cbRM = g("rm");
+  const cbIM = g("im");
+  const cbIT = g("it");
+
+  const raInline = root.querySelector(`#${prefix}-eto-ra-inline`);
+  const iaInline = root.querySelector(`#${prefix}-eto-ia-inline`);
+  const rmInline = root.querySelector(`#${prefix}-eto-rm-inline`);
+  const imInline = root.querySelector(`#${prefix}-eto-im-inline`);
+  const papsWrap = root.querySelector(`#${prefix}-eto-paps-wrap`);
+
+  // ✅ Plastie aortique : fuite résiduelle => show/hide centrage + sévérité
+  const cbFuiteResid = root.querySelector(`#${prefix}-eto-fuite-resid`);
+  const fuiteDetails = root.querySelector(`#${prefix}-eto-fuite-details`);
+  const fuiteCentrage = root.querySelector(`#${prefix}-eto-fuite-centrage`);
+  const fuiteSev = root.querySelector(`#${prefix}-eto-fuite-sev`);
+
+  const sync = () => {
+    if (raInline) raInline.style.display = cbRA?.checked ? "block" : "none";
+    if (iaInline) iaInline.style.display = cbIA?.checked ? "block" : "none";
+    if (rmInline) rmInline.style.display = cbRM?.checked ? "block" : "none";
+    if (imInline) imInline.style.display = cbIM?.checked ? "block" : "none";
+    if (papsWrap) papsWrap.style.display = cbIT?.checked ? "inline-flex" : "none";
+
+    // ✅ Gestion fuite résiduelle (plastie aortique)
+    if (fuiteDetails && cbFuiteResid) {
+      const on = !!cbFuiteResid.checked;
+      fuiteDetails.style.display = on ? "" : "none";
+      if (!on) {
+        if (fuiteCentrage) fuiteCentrage.value = "";
+        if (fuiteSev) fuiteSev.value = "";
+      }
+    }
+  };
+
+  [cbRA, cbIA, cbRM, cbIM, cbIT].forEach(el => el?.addEventListener("change", sync));
+  cbFuiteResid?.addEventListener("change", sync);
+  sync();
+
+  // Effacer
+  g("clear")?.addEventListener("click", () => {
+    root.querySelectorAll(`#${prefix}-eto-form input, #${prefix}-eto-form select, #${prefix}-eto-form textarea`)
+      .forEach(el => {
+        if (el.tagName === "SELECT") el.value = "";
+        else if (el.type === "checkbox") el.checked = false;
+        else el.value = "";
+      });
+
+    // Thorax par défaut : Fermé
+    const thorax = g("thorax");
+    if (thorax) thorax.value = "Fermé";
+
+    // Recocher les 3 items par défaut
+    const cbAur = root.querySelector(`#${prefix}-eto-auricule-libre`);
+    const cbParoi = root.querySelector(`#${prefix}-eto-paroi-aorte-ok`);
+    const cbFop = root.querySelector(`#${prefix}-eto-fop-absent`);
+    if (cbAur) cbAur.checked = true;
+    if (cbParoi) cbParoi.checked = true;
+    if (cbFop) cbFop.checked = true;
+
+    sync();
+  });
+
+  // Générer
+  g("generate")?.addEventListener("click", () => {
+    const txt = buildEtoCompteRenduCompact(prefix, root);
+    openEtoSynthese(txt);
+  });
+}
+
 
 function buildEtoCompteRenduCompact(prefix, root) {
   const q = (suffix) => root.querySelector(`#${prefix}-eto-${suffix}`);
