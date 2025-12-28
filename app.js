@@ -6701,15 +6701,9 @@ function renderInterventionRVA() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+  titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("rva")}
   `,
 },
     {
@@ -6737,6 +6731,19 @@ function renderInterventionRVA() {
     encadres,
   });
 
+initEtoEntryButtons("rva");
+
+// Override ouverture CR ETO pour prendre en compte rva-type
+const btn = document.getElementById("rva-eto-open");
+if (btn) {
+  btn.onclick = (e) => {
+    e.preventDefault();
+    const type = document.getElementById("rva-type")?.value || "rva";
+    if (type === "plastie") openEtoCompteRenduFormPlastieAortique("rva");
+    else openEtoCompteRenduFormGeneral("rva"); // identique pontages
+  };
+}
+  
   expandPatientCharacteristics(); 
   // Calcul Kétamine / Exacyl / Ropivacaïne / Héparine à partir du poids
   setupAnesthGlobalDoseLogic();
