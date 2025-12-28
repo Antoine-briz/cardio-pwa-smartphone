@@ -3518,3 +3518,22 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 .eto-modal pre {
   white-space: pre-wrap !important;
 }
+
+.eto-cusp-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0;
+  flex-wrap: wrap;
+}
+
+.eto-cusp-line strong {
+  min-width: 140px;
+  font-weight: 600;
+}
+
+.eto-cusp-line label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
