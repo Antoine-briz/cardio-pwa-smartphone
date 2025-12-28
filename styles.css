@@ -3457,3 +3457,35 @@ button.btn.home-btn.home-danger:not(.ghost):not(.outline):hover {
 .eto-modal .eto-cr-table b {
   font-weight: 400 !important;
 }
+
+/* ==========================================
+   ETO – FORCER INPUTS BLANCS (override thème sombre)
+   ========================================== */
+
+/* Surclasse la règle globale body:not(.theme-light) input[...] */
+body:not(.theme-light) .eto-modal input[type="number"],
+body:not(.theme-light) .eto-modal input[type="text"],
+body:not(.theme-light) .eto-modal select,
+body:not(.theme-light) .eto-modal textarea,
+body:not(.theme-light) .eto-modal .eto-head-field input,
+body:not(.theme-light) .eto-modal .eto-head-field select {
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+  border: 1.6px solid #000 !important;
+  box-shadow: none !important;
+  color-scheme: light !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* ==========================================
+   ETO – HEADER TABLEAU (bleu foncé + texte blanc + gras)
+   ========================================== */
+
+.eto-modal .eto-cr-table thead th {
+  background: #0b3c6d !important; /* bleu foncé */
+  color: #fff !important;
+  font-weight: 900 !important;
+  border-bottom: 2px solid rgba(0,0,0,0.35) !important;
+}
