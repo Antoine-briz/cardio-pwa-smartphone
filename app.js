@@ -6326,7 +6326,7 @@ function renderInterventionPontages() {
 
   initEtoEntryButtons("pc");
   // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
-  initEtoGeneralHandlers("pc");
+  initEtoFormHandlers("pc", document);
 
   expandPatientCharacteristics();
   // Calculs mg/kg globaux (Kétamine, Exacyl, Ropivacaïne, Héparine…)
