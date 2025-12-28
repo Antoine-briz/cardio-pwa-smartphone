@@ -5992,14 +5992,18 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const itvva = val(q("ra-itv"));
     const surf = val(q("ra-surface"));
 
-    const s = ["rétrécissement aortique"];
-    if (sev) s.push(sev.toLowerCase());
-    if (vmax) s.push(`Vmax ${vmax} m/s`);
-    if (gdmax) s.push(`gradient max ${gdmax} mmHg`);
-    if (itvva) s.push(`ITV VA ${itvva} cm`);
-    if (surf) s.push(`surface ${surf} cm²`);
+    const details = [];
+if (sev) details.push(sev.toLowerCase());
+if (vmax) details.push(`Vmax ${vmax} m/s`);
+if (gdmax) details.push(`gradient max ${gdmax} mmHg`);
+if (itvva) details.push(`ITV VA ${itvva} cm`);
+if (surf) details.push(`surface ${surf} cm²`);
 
-    parts.push(s.join(", "));
+let txt = "rétrécissement aortique";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+parts.push(txt);
   }
 
   // Insuffisance aortique
@@ -6009,13 +6013,19 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const vc = val(q("ia-vc"));
     const p12 = val(q("ia-p12"));
 
-    const s = ["insuffisance aortique"];
-    if (dir) s.push(dir.toLowerCase());
-    if (sev) s.push(sev.toLowerCase());
-    if (vc) s.push(`VC ${vc} mm`);
-    if (p12) s.push(`P1/2T ${p12} ms`);
+    const details = [];
 
-    parts.push(s.join(", "));
+if (dir) details.push(dir.toLowerCase());
+if (sev) details.push(sev.toLowerCase());
+if (vc) details.push(`VC ${vc} mm`);
+if (p12) details.push(`P1/2T ${p12} ms`);
+
+let txt = "insuffisance aortique";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+parts.push(txt);
+
   }
 
   // Cas normaux
@@ -6072,13 +6082,20 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const gdm = val(q("rm-gdmoy"));
     const p12 = val(q("rm-p12"));
 
-    const s = ["rétrécissement mitral"];
-    if (sev) s.push(sev.toLowerCase());
-    if (surf) s.push(`surface ${surf} cm²`);
-    if (gdm) s.push(`gradient moyen ${gdm} mmHg`);
-    if (p12) s.push(`P1/2T ${p12} ms`);
+    const details = [];
 
-    parts.push(s.join(", "));
+if (sev) details.push(sev.toLowerCase());
+if (surf) details.push(`surface ${surf} cm²`);
+if (gdm) details.push(`gradient moyen ${gdm} mmHg`);
+if (p12) details.push(`P1/2T ${p12} ms`);
+
+let txt = "rétrécissement mitral";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+
+parts.push(txt);
+
   }
 
   // Insuffisance mitrale
@@ -6088,13 +6105,20 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const vc = val(q("im-vc"));
     const p12 = val(q("im-p12"));
 
-    const s = ["insuffisance mitrale"];
-    if (dir) s.push(dir.toLowerCase());
-    if (sev) s.push(sev.toLowerCase());
-    if (vc) s.push(`VC ${vc} mm`);
-    if (p12) s.push(`P1/2T ${p12} ms`);
+    const details = [];
 
-    parts.push(s.join(", "));
+if (dir) details.push(dir.toLowerCase());
+if (sev) details.push(sev.toLowerCase());
+if (vc) details.push(`VC ${vc} mm`);
+if (p12) details.push(`P1/2T ${p12} ms`);
+
+let txt = "insuffisance mitrale";
+if (details.length) {
+  txt += ` (${details.join(", ")})`;
+}
+
+parts.push(txt);
+
   }
 
   // Cas normaux
