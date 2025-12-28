@@ -5552,7 +5552,7 @@ function etoFormHtmlCompact(prefix) {
                   <label>Sévérité
                     <select id="${prefix}-eto-ra-sev">
                       <option value="">—</option>
-                      <option>Légère</option><option>Modérée</option><option>Sévère</option>
+                      <option>Léger</option><option>Modéré</option><option>Sévère</option>
                     </select>
                   </label>
 
@@ -5664,7 +5664,7 @@ function etoFormHtmlCompact(prefix) {
                   <label>Sévérité
                     <select id="${prefix}-eto-rm-sev">
                       <option value="">—</option>
-                      <option>Légère</option><option>Modérée</option><option>Sévère</option>
+                      <option>Léger</option><option>Modéré</option><option>Sévère</option>
                     </select>
                   </label>
 
@@ -5891,179 +5891,267 @@ function buildEtoCompteRenduCompact(prefix, root) {
     lines.push(parts.join(" "));
   }
 
-  // Fonction VG
-  {
-    const fevg = val(q("fevg"));
-    const itv = val(q("itv-ccvg"));
-    const tc = q("tcseg")?.checked;
-    const dtdvg = val(q("dtdvg"));
-    const siv = val(q("siv"));
+// ===== Fonction VG =====
+{
+  const fevg = val(q("fevg"));
+  const itv = val(q("itv-ccvg"));
+  const tc = q("tcseg")?.checked;
+  const dtdvg = val(q("dtdvg"));
+  const siv = val(q("siv"));
 
-    const parts = [];
-    if (fevg) parts.push(`FEVG estimée à ${fevg}%.`);
-    if (itv) parts.push(`ITV CCVG à ${itv} cm.`);
-    if (tc) parts.push(`Trouble de cinétique segmentaire du VG.`);
-    else parts.push(`Absence de trouble de cinétique segmentaire.`);
-    if (dtdvg) parts.push(`DTDVG ${dtdvg} mm.`);
-    if (siv) parts.push(`SIV ${siv} mm.`);
-    lines.push(parts.length ? parts.join(" ") : "Fonction VG : non renseignée.");
+  const parts = [];
+
+  if (fevg) parts.push(`FEVG estimée à ${fevg} %`);
+  if (itv) parts.push(`ITV CCVG ${itv} cm`);
+
+  if (dtdvg) {
+    parts.push(`VG non dilaté (DTDVG ${dtdvg} mm)`);
   }
 
-  // Fonction VD
-  {
-    const alt = q("vd-alt-syst")?.checked;
-    const dil = q("vd-dilate")?.checked;
-    const hyp = q("vd-hypertro")?.checked;
-    const tapse = val(q("tapse"));
-    const sprime = val(q("sprime"));
-
-    const parts = [];
-    if (alt) parts.push("Altération systolique du VD.");
-    if (dil) parts.push("VD dilaté.");
-    if (hyp) parts.push("VD hypertrophié.");
-    if (tapse) parts.push(`TAPSE ${tapse} mm.`);
-    if (sprime) parts.push(`Onde S’ ${sprime} cm/s.`);
-    lines.push(parts.length ? parts.join(" ") : "Fonction VD : non renseignée.");
+  if (siv) {
+    parts.push(`non hypertrophié (SIV ${siv} mm)`);
   }
 
-  // Valve aortique
-  {
-    const ra = q("ra")?.checked;
-    const ia = q("ia")?.checked;
-    const bic = q("bicuspidie")?.checked;
-
-    const parts = [];
-    parts.push(bic ? "Valve aortique bicuspide." : "Valve aortique tricuspide.");
-
-    if (ra) {
-      const sev = val(q("ra-sev"));
-      const vmax = val(q("ra-vmax"));
-      const gdmax = val(q("ra-gdmax"));
-      const itvva = val(q("ra-itv"));
-      const surf = val(q("ra-surface"));
-      const s = [];
-      s.push("RA");
-      if (sev) s.push(sev.toLowerCase());
-      if (vmax) s.push(`Vmax ${vmax} m/s`);
-      if (gdmax) s.push(`Gd max ${gdmax} mmHg`);
-      if (itvva) s.push(`ITV VA ${itvva} cm`);
-      if (surf) s.push(`surface ${surf} cm²`);
-      parts.push(`${s.join(", ")}.`);
-    }
-
-    if (ia) {
-      const dir = val(q("ia-dir"));
-      const sev = val(q("ia-sev"));
-      const vc = val(q("ia-vc"));
-      const p12 = val(q("ia-p12"));
-      const s = [];
-      s.push("IA");
-      if (dir) s.push(dir.toLowerCase());
-      if (sev) s.push(sev.toLowerCase());
-      if (vc) s.push(`VC ${vc} mm`);
-      if (p12) s.push(`P1/2T ${p12} ms`);
-      parts.push(`${s.join(", ")}.`);
-    }
-
-    if (!ra && !ia) {
-      parts.push("Valve aortique non fuyante, non sténosante.");
-    } else if (!ra && ia) {
-      parts.push("Valve aortique non sténosante.");
-    } else if (ra && !ia) {
-      parts.push("Valve aortique non fuyante.");
-    }
-
-    lines.push(parts.join(" "));
+  if (tc) {
+    parts.push(`présence de troubles de la cinétique segmentaire`);
+  } else {
+    parts.push(`absence de troubles de la cinétique segmentaire`);
   }
 
-  // Diamètres aortiques
-  {
-    const anneau = val(q("anneau-mm"));
-    const sinus = val(q("sinus-mm"));
-    const st = val(q("st-mm"));
-    const tub = val(q("tub-mm"));
-
-    const dims = [];
-    if (anneau) dims.push(`anneau ${anneau} mm`);
-    if (sinus) dims.push(`sinus ${sinus} mm`);
-    if (st) dims.push(`sino-tubulaire ${st} mm`);
-    if (tub) dims.push(`tubulaire ${tub} mm`);
-
-    lines.push(dims.length ? `Diamètres aortiques : ${dims.join(", ")}.` : "Diamètres aortiques : non renseignés.");
+  if (parts.length) {
+    lines.push(`- Fonction VG : ${parts.join(", ")}.`);
   }
-
-  // Valve mitrale
-  {
-    const anneau = val(q("anneau-mitral"));
-    const rm = q("rm")?.checked;
-    const im = q("im")?.checked;
-
-    const parts = [];
-    if (anneau) parts.push(`Anneau mitral ${anneau} mm.`);
-
-    if (rm) {
-      const sev = val(q("rm-sev"));
-      const surf = val(q("rm-surface"));
-      const gdm = val(q("rm-gdmoy"));
-      const p12 = val(q("rm-p12"));
-      const s = ["RM"];
-      if (sev) s.push(sev.toLowerCase());
-      if (surf) s.push(`surface ${surf} cm²`);
-      if (gdm) s.push(`Gd moyen ${gdm} mmHg`);
-      if (p12) s.push(`P1/2T ${p12} ms`);
-      parts.push(`${s.join(", ")}.`);
-    }
-
-    if (im) {
-      const dir = val(q("im-dir"));
-      const sev = val(q("im-sev"));
-      const vc = val(q("im-vc"));
-      const p12 = val(q("im-p12"));
-      const s = ["IM"];
-      if (dir) s.push(dir.toLowerCase());
-      if (sev) s.push(sev.toLowerCase());
-      if (vc) s.push(`VC ${vc} mm`);
-      if (p12) s.push(`P1/2T ${p12} ms`);
-      parts.push(`${s.join(", ")}.`);
-    }
-
-    if (!rm && !im) {
-      parts.push("Valve mitrale non fuyante, non sténosante.");
-    } else if (!rm && im) {
-      parts.push("Valve mitrale non sténosante.");
-    } else if (rm && !im) {
-      parts.push("Valve mitrale non fuyante.");
-    }
-
-    lines.push(parts.length ? parts.join(" ") : "Valve mitrale : non renseignée.");
-  }
-
-  // Tricuspide / PAPs
-  {
-    const anneau = val(q("anneau-tric"));
-    const it = q("it")?.checked;
-    const paps = val(q("paps"));
-
-    const parts = [];
-    if (anneau) parts.push(`Anneau tricuspide ${anneau} mm.`);
-    if (it) {
-      if (paps) parts.push(`IT avec PAPs estimée à ${paps} mmHg.`);
-      else parts.push("IT.");
-    }
-    lines.push(parts.length ? parts.join(" ") : "Tricuspide / PAPs : non renseigné.");
-  }
-
-  // Autres
-  {
-    const parts = [];
-    if (q("auricule-libre")?.checked) parts.push("Auricule libre.");
-    if (q("paroi-aorte-ok")?.checked) parts.push("Paroi aortique intègre.");
-    if (q("fop-absent")?.checked) parts.push("Absence de FOP.");
-    lines.push(parts.length ? parts.join(" ") : "Autres : non renseigné.");
-  }
-
-  return lines.join("\n");
 }
+
+
+
+// ===== Fonction VD =====
+{
+  const alt = q("vd-alt-syst")?.checked;
+  const dil = q("vd-dilate")?.checked;
+  const hyp = q("vd-hypertro")?.checked;
+  const tapse = val(q("tapse"));
+  const sprime = val(q("sprime"));
+
+  const parts = [];
+
+  if (alt) {
+    parts.push("altération de la fonction systolique du VD");
+  } else {
+    parts.push("fonction systolique du VD conservée");
+  }
+
+  if (dil) {
+    parts.push("VD dilaté");
+  } else {
+    parts.push("VD non dilaté");
+  }
+
+  if (hyp) {
+    parts.push("VD hypertrophié");
+  } else {
+    parts.push("VD non hypertrophié");
+  }
+
+  if (tapse) {
+    parts.push(`TAPSE ${tapse} mm`);
+  }
+
+  if (sprime) {
+    parts.push(`onde S’ ${sprime} cm/s`);
+  }
+
+  if (parts.length) {
+    lines.push(`- Fonction VD : ${parts.join(", ")}.`);
+  }
+}
+
+// ===== Valve aortique =====
+{
+  const ra = q("ra")?.checked;
+  const ia = q("ia")?.checked;
+  const bic = q("bicuspidie")?.checked;
+
+  const parts = [];
+
+  // Morphologie
+  parts.push(bic ? "valve aortique bicuspide" : "valve aortique tricuspide");
+
+  // Rétrécissement aortique
+  if (ra) {
+    const sev = val(q("ra-sev"));
+    const vmax = val(q("ra-vmax"));
+    const gdmax = val(q("ra-gdmax"));
+    const itvva = val(q("ra-itv"));
+    const surf = val(q("ra-surface"));
+
+    const s = ["rétrécissement aortique"];
+    if (sev) s.push(sev.toLowerCase());
+    if (vmax) s.push(`Vmax ${vmax} m/s`);
+    if (gdmax) s.push(`gradient max ${gdmax} mmHg`);
+    if (itvva) s.push(`ITV VA ${itvva} cm`);
+    if (surf) s.push(`surface ${surf} cm²`);
+
+    parts.push(s.join(", "));
+  }
+
+  // Insuffisance aortique
+  if (ia) {
+    const dir = val(q("ia-dir"));
+    const sev = val(q("ia-sev"));
+    const vc = val(q("ia-vc"));
+    const p12 = val(q("ia-p12"));
+
+    const s = ["insuffisance aortique"];
+    if (dir) s.push(dir.toLowerCase());
+    if (sev) s.push(sev.toLowerCase());
+    if (vc) s.push(`VC ${vc} mm`);
+    if (p12) s.push(`P1/2T ${p12} ms`);
+
+    parts.push(s.join(", "));
+  }
+
+  // Cas normaux
+  if (!ra && !ia) {
+    parts.push("non fuyante, non sténosante");
+  } else if (!ra && ia) {
+    parts.push("non sténosante");
+  } else if (ra && !ia) {
+    parts.push("non fuyante");
+  }
+
+  if (parts.length) {
+    lines.push(`- Valve aortique : ${parts.join(", ")}.`);
+  }
+}
+
+
+// ===== Diamètres aortiques =====
+{
+  const anneau = val(q("anneau-mm"));
+  const sinus = val(q("sinus-mm"));
+  const st = val(q("st-mm"));
+  const tub = val(q("tub-mm"));
+
+  const parts = [];
+  if (anneau) parts.push(`anneau aortique ${anneau} mm`);
+  if (sinus) parts.push(`sinus de Valsalva ${sinus} mm`);
+  if (st) parts.push(`jonction sino-tubulaire ${st} mm`);
+  if (tub) parts.push(`aorte tubulaire ${tub} mm`);
+
+  if (parts.length) {
+    lines.push(`- Diamètres aortiques : ${parts.join(", ")}.`);
+  }
+}
+
+
+// ===== Valve mitrale =====
+{
+  const anneau = val(q("anneau-mitral"));
+  const rm = q("rm")?.checked;
+  const im = q("im")?.checked;
+
+  const parts = [];
+
+  if (anneau) {
+    parts.push(`anneau mitral ${anneau} mm`);
+  }
+
+  // Rétrécissement mitral
+  if (rm) {
+    const sev = val(q("rm-sev"));
+    const surf = val(q("rm-surface"));
+    const gdm = val(q("rm-gdmoy"));
+    const p12 = val(q("rm-p12"));
+
+    const s = ["rétrécissement mitral"];
+    if (sev) s.push(sev.toLowerCase());
+    if (surf) s.push(`surface ${surf} cm²`);
+    if (gdm) s.push(`gradient moyen ${gdm} mmHg`);
+    if (p12) s.push(`P1/2T ${p12} ms`);
+
+    parts.push(s.join(", "));
+  }
+
+  // Insuffisance mitrale
+  if (im) {
+    const dir = val(q("im-dir"));
+    const sev = val(q("im-sev"));
+    const vc = val(q("im-vc"));
+    const p12 = val(q("im-p12"));
+
+    const s = ["insuffisance mitrale"];
+    if (dir) s.push(dir.toLowerCase());
+    if (sev) s.push(sev.toLowerCase());
+    if (vc) s.push(`VC ${vc} mm`);
+    if (p12) s.push(`P1/2T ${p12} ms`);
+
+    parts.push(s.join(", "));
+  }
+
+  // Cas normaux
+  if (!rm && !im) {
+    parts.push("non fuyante, non sténosante");
+  } else if (!rm && im) {
+    parts.push("non sténosante");
+  } else if (rm && !im) {
+    parts.push("non fuyante");
+  }
+
+  if (parts.length) {
+    lines.push(`- Valve mitrale : ${parts.join(", ")}.`);
+  }
+}
+
+
+// ===== Tricuspide / PAPs =====
+{
+  const anneau = val(q("anneau-tric"));
+  const it = q("it")?.checked;
+  const paps = val(q("paps"));
+
+  const parts = [];
+
+  if (anneau) {
+    parts.push(`anneau tricuspide ${anneau} mm`);
+  }
+
+  if (it) {
+    if (paps) {
+      parts.push(`insuffisance tricuspide avec PAPs estimée à ${paps} mmHg`);
+    } else {
+      parts.push("insuffisance tricuspide");
+    }
+  } else {
+    parts.push("valve tricuspide non fuyante");
+  }
+
+  if (parts.length) {
+    lines.push(`- Tricuspide / PAPs : ${parts.join(", ")}.`);
+  }
+}
+
+// ===== Autres =====
+{
+  const parts = [];
+
+  if (q("auricule-libre")?.checked) {
+    parts.push("auricule gauche libre");
+  }
+
+  if (q("fop-absent")?.checked) {
+    parts.push("absence de foramen ovale perméable");
+  }
+
+  if (q("paroi-aorte-ok")?.checked) {
+    parts.push("intégrité de la paroi aortique");
+  }
+
+  if (parts.length) {
+    lines.push(`- Autres : ${parts.join(", ")}.`);
+  }
+}
+
 
 // --- Synthèse CR (avec Copier + Fermer) ---
 function openEtoSynthese(text) {
