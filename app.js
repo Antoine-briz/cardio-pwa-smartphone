@@ -5776,8 +5776,23 @@ function openEtoFormModal(prefix, bodyHtml) {
   overlay.className = "acr-modal";
   overlay.classList.add("eto-modal");
 
-  // Si bodyHtml n'est pas fourni => comportement identique à avant
-  const html = bodyHtml ?? etoFormHtmlCompact(prefix);
+  // ✅ Body : priorité au bodyHtml fourni, sinon auto-switch selon le select
+  let html = bodyHtml;
+
+  if (!html) {
+    // Plastie aortique
+    if (prefix === "rva" && document.getElementById("rva-type")?.value === "plastie") {
+      html = etoFormHtmlCompactPlastieAortique(prefix);
+    }
+    // Plastie mitrale
+    else if (prefix === "rvm" && document.getElementById("rvm-type")?.value === "plastie") {
+      html = etoFormHtmlCompactPlastieMitrale(prefix);
+    }
+    // Général
+    else {
+      html = etoFormHtmlCompact(prefix);
+    }
+  }
 
   overlay.innerHTML = `
     <div class="acr-modal-card" role="dialog" aria-modal="true" style="max-width:1100px;">
@@ -5820,7 +5835,6 @@ function openEtoFormModal(prefix, bodyHtml) {
   document.body.appendChild(overlay);
   initEtoFormHandlers(prefix, overlay);
 }
-
 
 function etoFormHtmlCompactPlastieAortique(prefix) {
   return `
@@ -6173,6 +6187,198 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
       <button class="btn ghost" id="${prefix}-eto-clear">Effacer la saisie</button>
     </div>
 
+  </div>
+  `;
+}
+
+function etoFormHtmlCompactPlastieMitrale(prefix) {
+  const p = (id) => `${prefix}-eto-${id}`;
+
+  return `
+  <div id="${prefix}-eto-form" class="eto-compact eto-cr">
+    <div class="eto-table-wrap">
+      <table class="eto-cr-table">
+        <thead>
+          <tr>
+            <th class="col-ana">Analyse</th>
+            <th class="col-saisie">Saisie</th>
+            <th class="col-img">Coupes / mesures (cliquer)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- ✅ Tout le reste = IDENTIQUE au général -->
+          <!-- On réutilise exactement les mêmes sections que le général -->
+          ${/* Si ton général est construit autrement, garde ces appels identiques à ton général */""}
+
+          ${etoHtmlFonctionVG ? etoHtmlFonctionVG(prefix) : ""}
+          ${etoHtmlFonctionVD ? etoHtmlFonctionVD(prefix) : ""}
+          ${etoHtmlValveAortique ? etoHtmlValveAortique(prefix) : ""}
+          ${etoHtmlDiametresAortiques ? etoHtmlDiametresAortiques(prefix) : ""}
+
+          <!-- ✅ Valve mitrale (PLASTIE) : remplace uniquement cette section -->
+          <tr>
+            <td class="eto-sec">Valve mitrale</td>
+
+            <td>
+              <div class="eto-cell">
+                <label>Mécanisme IM
+                  <select id="${p("im-meca")}">
+                    <option value="">—</option>
+                    <option>Dilatation</option>
+                    <option>Perforation</option>
+                    <option>Prolapsus</option>
+                    <option>Restriction</option>
+                  </select>
+                </label>
+
+                <label>Centrage IM
+                  <select id="${p("im-centrage")}">
+                    <option value="">—</option>
+                    <option>Centrée</option>
+                    <option>Excentrée</option>
+                  </select>
+                </label>
+
+                <label>Sévérité IM
+                  <select id="${p("im-sev")}">
+                    <option value="">—</option>
+                    <option>Minime</option>
+                    <option>Modérée</option>
+                    <option>Sévère</option>
+                  </select>
+                </label>
+
+                <div class="eto-inline2">
+                  <label>VC (mm)
+                    <input type="number" id="${p("im-vc")}" step="1" min="0"/>
+                  </label>
+
+                  <label>P1/2T (ms)
+                    <input type="number" id="${p("im-p12")}" step="1" min="0"/>
+                  </label>
+
+                  <label class="checkbox">
+                    <input type="checkbox" id="${p("sam")}"/>
+                    SAM
+                  </label>
+                </div>
+
+                <hr/>
+
+                <div class="eto-subtitle">Longueurs</div>
+                <div class="eto-inline2">
+                  <label>Diamètre anneau mitral (mm)
+                    <input type="number" id="${p("anneau-mitral")}" step="1" min="0"/>
+                  </label>
+
+                  <label>Longueur VM ant. (mm)
+                    <input type="number" id="${p("vm-ant-l")}" step="1" min="0"/>
+                  </label>
+
+                  <label>Longueur VM post. (mm)
+                    <input type="number" id="${p("vm-post-l")}" step="1" min="0"/>
+                  </label>
+                </div>
+
+                <div class="eto-subtitle">Coaptation</div>
+                <div class="eto-inline2">
+                  <label>Hauteur de coaptation (mm)
+                    <input type="number" id="${p("coap-h")}" step="1" min="0"/>
+                  </label>
+
+                  <label>Profondeur de coaptation (mm)
+                    <input type="number" id="${p("coap-d")}" step="1" min="0"/>
+                  </label>
+                </div>
+
+                <div class="eto-subtitle">Cordage</div>
+                <div class="eto-inline2">
+                  <label class="checkbox">
+                    <input type="checkbox" id="${p("cord-rupt")}"/>
+                    Rupture de cordage
+                  </label>
+
+                  <label>Longueur cordage VM ant. (mm)
+                    <input type="number" id="${p("cord-ant-l")}" step="1" min="0"/>
+                  </label>
+
+                  <label>Longueur cordage VM post. (mm)
+                    <input type="number" id="${p("cord-post-l")}" step="1" min="0"/>
+                  </label>
+                </div>
+
+                <div class="eto-subtitle">Risque de SAM</div>
+                <div class="eto-inline2">
+                  <label>Distance coaptation – SIV (mm)
+                    <input type="number" id="${p("sam-dist")} " step="1" min="0"/>
+                  </label>
+
+                  <label>Angle mitro-aortique (°)
+                    <input type="number" id="${p("mitro-aort-angle")}" step="1" min="0"/>
+                  </label>
+                </div>
+
+                <div class="eto-subtitle">Résultat post-plastie</div>
+                <div class="eto-inline2">
+                  <label>Gradient moyen (mmHg)
+                    <input type="number" id="${p("post-gdmoy")}" step="1" min="0"/>
+                  </label>
+
+                  <label>Hauteur de coaptation (cH) (mm)
+                    <input type="number" id="${p("post-ch")}" step="1" min="0"/>
+                  </label>
+
+                  <label class="checkbox">
+                    <input type="checkbox" id="${p("fuite-resid")}"/>
+                    Fuite résiduelle
+                  </label>
+
+                  <label>Centrage fuite
+                    <select id="${p("fuite-centrage")}">
+                      <option value="">—</option>
+                      <option>Centrée</option>
+                      <option>Excentrée</option>
+                    </select>
+                  </label>
+
+                  <label>Sévérité fuite
+                    <select id="${p("fuite-sev")}">
+                      <option value="">—</option>
+                      <option>Minime</option>
+                      <option>Modérée</option>
+                      <option>Sévère</option>
+                    </select>
+                  </label>
+
+                  <label class="checkbox">
+                    <input type="checkbox" id="${p("post-sam")}"/>
+                    SAM
+                  </label>
+                </div>
+              </div>
+            </td>
+
+            <td class="eto-imgcol">
+              ${etoImgLink("Classification IM 🖥️", "eto_im_classif.png")}
+              ${etoImgLink("IM VC 🖥️", "eto_im_VC.png")}
+              ${etoImgLink("IM P1/2T 🖥️", "eto_im_1.2.png")}
+              ${etoImgLink("Gd moyen mitral 🖥️", "eto_rm_gdmoyen.png")}
+              ${etoImgLink("Plastie mitrale 🖥️", "cf-plastiemitrale.png")}
+            </td>
+          </tr>
+
+          ${etoHtmlTricuspidePaps ? etoHtmlTricuspidePaps(prefix) : ""}
+          ${etoHtmlAutres ? etoHtmlAutres(prefix) : ""}
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="eto-actions">
+      <button class="btn" id="${prefix}-eto-generate">Générer le CR d'ETO</button>
+      <button class="btn ghost" id="${prefix}-eto-clear">Effacer la saisie</button>
+    </div>
   </div>
   `;
 }
@@ -6984,7 +7190,6 @@ initEtoEntryButtons("rva");
   }
 }
 
-  
   expandPatientCharacteristics(); 
   // Calcul Kétamine / Exacyl / Ropivacaïne / Héparine à partir du poids
   setupAnesthGlobalDoseLogic();
@@ -7222,6 +7427,36 @@ function renderInterventionRVM() {
     encadres,
   });
 
+initEtoEntryButtons("rvm");
+
+  // === Override ouverture Compte rendu ETO selon RVM / plastie mitrale ===
+{
+  const btn = document.getElementById("rvm-eto-open");
+  if (btn && btn.parentNode) {
+
+    // IMPORTANT : supprimer le listener ajouté par initEtoEntryButtons
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const type = document.getElementById("rvm-type")?.value || "rvm";
+
+      if (type === "plastie") {
+        // 👉 FORMULAIRE PLASTIE MITRALE
+        openEtoFormModal(
+          "rvm",
+          etoFormHtmlCompactPlastieMitrale("rvm")
+        );
+      } else {
+        // 👉 FORMULAIRE GÉNÉRAL (pontages / RVM)
+        openEtoFormModal("rvm");
+      }
+    });
+  }
+}
+  
   expandPatientCharacteristics(); 
   // Calcul global des doses (Kétamine / Exacyl / Ropi max / Héparine…)
   setupAnesthGlobalDoseLogic();
