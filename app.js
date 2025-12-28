@@ -5955,6 +5955,49 @@ function openEtoFormModal(prefix) {
   initEtoFormHandlers(prefix, overlay);
 }
 
+function etoFormHtmlCompactPlastieAortique(prefix) {
+  // IDENTIQUE au formulaire "général" (pontages/RVA),
+  // sauf : Valve aortique + Diamètres aortiques -> Évaluation aortique
+
+  return `
+    <div class="eto-table-wrap">
+      <table class="eto-cr-table">
+        <thead>
+          <tr>
+            <th>Analyse</th>
+            <th>Saisie</th>
+            <th>Coupes / mesures</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${etoHtmlConditions(prefix)}
+          ${etoHtmlFonctionVG(prefix)}
+          ${etoHtmlFonctionVD(prefix)}
+
+          ${etoHtmlEvaluationAortique(prefix)}
+
+          ${etoHtmlValveMitrale(prefix)}
+          ${etoHtmlTricuspidePaps(prefix)}
+          ${etoHtmlAutres(prefix)}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="eto-actions">
+      <button class="btn" id="${prefix}-eto-generate">Générer compte rendu d'ETO</button>
+      <button class="btn ghost" id="${prefix}-eto-clear">Effacer la saisie</button>
+    </div>
+  `;
+}
+
+function openEtoCompteRenduFormPlastieAortique(prefix) {
+  // Ouvre la même modal / même style / mêmes handlers que la version générale
+  // mais injecte une version du tableau où VA + diamètres sont remplacés
+  // par "Évaluation aortique".
+
+  openEtoFormModal(prefix, etoFormHtmlCompactPlastieAortique(prefix));
+}
+
 function initEtoFormHandlers(prefix, root) {
   const g = (id) => root.querySelector(`#${prefix}-eto-${id}`);
 
