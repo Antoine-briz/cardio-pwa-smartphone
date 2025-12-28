@@ -5467,17 +5467,17 @@ function etoFormHtmlCompact(prefix) {
                   <input type="number" id="${prefix}-eto-itv-ccvg" step="0.1" min="0"/>
                 </label>
 
-                <label class="checkbox">
-                  <input type="checkbox" id="${prefix}-eto-tcseg"/>
-                  Troubles de cinétique segmentaire
-                </label>
-
                 <label>DTDVG (mm)
                   <input type="number" id="${prefix}-eto-dtdvg" step="1" min="0"/>
                 </label>
 
                 <label>SIV (mm)
                   <input type="number" id="${prefix}-eto-siv" step="1" min="0"/>
+                </label>
+
+                <label class="checkbox">
+                  <input type="checkbox" id="${prefix}-eto-tcseg"/>
+                  Troubles de cinétique segmentaire
                 </label>
               </div>
             </td>
