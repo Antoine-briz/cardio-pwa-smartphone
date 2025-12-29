@@ -6260,97 +6260,107 @@ function etoFormHtmlCompactPlastieMitrale(prefix) {
       <hr/>
 
       <div class="eto-subtitle">Longueurs</div>
-      <div class="eto-inline2">
-        <label>Diamètre anneau mitral (mm)
-          <input type="number" id="${prefix}-eto-anneau-mitral" step="1" min="0"/>
-        </label>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Diamètre anneau mitral (mm)
+      <input type="number" id="${prefix}-eto-anneau-mitral" step="1" min="0"/>
+    </label>
 
-        <label>Longueur VM ant. (mm)
-          <input type="number" id="${prefix}-eto-vm-ant-l" step="1" min="0"/>
-        </label>
+    <label>Longueur VM ant. (mm)
+      <input type="number" id="${prefix}-eto-vm-ant-l" step="1" min="0"/>
+    </label>
 
-        <label>Longueur VM post. (mm)
-          <input type="number" id="${prefix}-eto-vm-post-l" step="1" min="0"/>
-        </label>
-      </div>
-
-      <div class="eto-subtitle">Coaptation</div>
-      <div class="eto-inline2">
-        <label>Hauteur de coaptation (mm)
-          <input type="number" id="${prefix}-eto-coap-h" step="1" min="0"/>
-        </label>
-
-        <label>Profondeur de coaptation (mm)
-          <input type="number" id="${prefix}-eto-coap-d" step="1" min="0"/>
-        </label>
-      </div>
-
-      <div class="eto-subtitle">Cordage</div>
-      <div class="eto-inline2">
-        <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-cord-rupt"/>
-          Rupture de cordage
-        </label>
-
-        <label>Longueur cordage VM ant. (mm)
-          <input type="number" id="${prefix}-eto-cord-ant-l" step="1" min="0"/>
-        </label>
-
-        <label>Longueur cordage VM post. (mm)
-          <input type="number" id="${prefix}-eto-cord-post-l" step="1" min="0"/>
-        </label>
-      </div>
-
-      <div class="eto-subtitle">Risque de SAM</div>
-      <div class="eto-inline2">
-        <label>Distance coaptation – SIV (mm)
-          <input type="number" id="${prefix}-eto-sam-dist" step="1" min="0"/>
-        </label>
-
-        <label>Angle mitro-aortique (°)
-          <input type="number" id="${prefix}-eto-mitro-aort-angle" step="1" min="0"/>
-        </label>
-      </div>
-
-      <div class="eto-subtitle">Résultat post-plastie</div>
-      <div class="eto-inline2">
-        <label>Gradient moyen (mmHg)
-          <input type="number" id="${prefix}-eto-post-gdmoy" step="1" min="0"/>
-        </label>
-
-        <label>Hauteur de coaptation (cH) (mm)
-          <input type="number" id="${prefix}-eto-post-ch" step="1" min="0"/>
-        </label>
-
-        <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
-          Fuite résiduelle
-        </label>
-
-        <div id="${prefix}-eto-fuite-details" style="display:none;">
-  <label>Centrage fuite
-    <select id="${prefix}-eto-fuite-centrage">
-      <option value="">—</option>
-      <option>Centrée</option>
-      <option>Excentrée</option>
-    </select>
-  </label>
-
-  <label>Sévérité fuite
-    <select id="${prefix}-eto-fuite-sev">
-      <option value="">—</option>
-      <option>Minime</option>
-      <option>Modérée</option>
-      <option>Sévère</option>
-    </select>
-  </label>
+    <label>Longueur VM post. (mm)
+      <input type="number" id="${prefix}-eto-vm-post-l" step="1" min="0"/>
+    </label>
+  </div>
 </div>
 
-        <label class="checkbox">
-          <input type="checkbox" id="${prefix}-eto-post-sam"/>
-          SAM
-        </label>
-      </div>
+<div class="eto-subtitle">Coaptation</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Hauteur de coaptation (mm)
+      <input type="number" id="${prefix}-eto-coap-h" step="1" min="0"/>
+    </label>
+
+    <label>Profondeur de coaptation (mm)
+      <input type="number" id="${prefix}-eto-coap-d" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+<div class="eto-subtitle">Cordage</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label class="checkbox">
+      <input type="checkbox" id="${prefix}-eto-cord-rupt"/>
+      Rupture de cordage
+    </label>
+
+    <label>Longueur cordage VM ant. (mm)
+      <input type="number" id="${prefix}-eto-cord-ant-l" step="1" min="0"/>
+    </label>
+
+    <label>Longueur cordage VM post. (mm)
+      <input type="number" id="${prefix}-eto-cord-post-l" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+<div class="eto-subtitle">Risque de SAM</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Distance coaptation – SIV (mm)
+      <input type="number" id="${prefix}-eto-sam-dist" step="1" min="0"/>
+    </label>
+
+    <label>Angle mitro-aortique (°)
+      <input type="number" id="${prefix}-eto-mitro-aort-angle" step="1" min="0"/>
+    </label>
+  </div>
+</div>
+
+<div class="eto-subtitle">Résultat post-plastie</div>
+<div class="eto-cell eto-subcell">
+  <div class="eto-inline2">
+    <label>Gradient moyen (mmHg)
+      <input type="number" id="${prefix}-eto-post-gdmoy" step="1" min="0"/>
+    </label>
+
+    <label>Hauteur de coaptation (cH) (mm)
+      <input type="number" id="${prefix}-eto-post-ch" step="1" min="0"/>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
+      Fuite résiduelle
+    </label>
+  </div>
+
+  <div id="${prefix}-eto-fuite-details" style="display:none;">
+    <label>Centrage fuite
+      <select id="${prefix}-eto-fuite-centrage">
+        <option value="">—</option>
+        <option>Centrée</option>
+        <option>Excentrée</option>
+      </select>
+    </label>
+
+    <label>Sévérité fuite
+      <select id="${prefix}-eto-fuite-sev">
+        <option value="">—</option>
+        <option>Minime</option>
+        <option>Modérée</option>
+        <option>Sévère</option>
+      </select>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" id="${prefix}-eto-post-sam"/>
+      SAM
+    </label>
+  </div>
+</div>
 
     </div>
   </td>
