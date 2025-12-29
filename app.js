@@ -7666,15 +7666,9 @@ function renderInterventionRVT() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+       titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("rvt")}
   `,
 },
     {
@@ -7709,6 +7703,10 @@ function renderInterventionRVT() {
     encadres,
   });
 
+initEtoEntryButtons("rvt");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("rvt", document);
+  
   expandPatientCharacteristics(); 
   // Calcul global poids → Kétamine / Exacyl / Ropivacaïne / Héparine
   setupAnesthGlobalDoseLogic();
@@ -7898,15 +7896,9 @@ function renderInterventionAorteAsc() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+      titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -7941,6 +7933,10 @@ function renderInterventionAorteAsc() {
     encadres,
   });
 
+ initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupAorteAscLogic();
@@ -8313,15 +8309,9 @@ function renderInterventionDissectionAo() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+      titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -8378,6 +8368,10 @@ function renderInterventionDissectionAo() {
     encadres,
   });
 
+  initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   setupAnesthGlobalDoseLogic();
   setupDissectionAoLogic();
@@ -8566,15 +8560,9 @@ function renderInterventionTransplantAnesth() {
       `,
     },
     {
-      titre: "Coupes et mesures ETO",
+      titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoHtmlFonctionVG()}
-    ${etoHtmlVGSegmentaire()}
-    ${etoHtmlValveAortique()}
-    ${etoHtmlValveMitrale()}
-    ${etoHtmlPTDVG()}
-    ${etoHtmlFonctionVD()}
-    ${etoHtmlHTAP()}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -8639,6 +8627,10 @@ function renderInterventionTransplantAnesth() {
     encadres,
   });
 
+initEtoEntryButtons("pc");
+  // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
+  initEtoFormHandlers("pc", document);
+  
   expandPatientCharacteristics(); 
   // Met à jour tous les spans [data-per-kg] éventuels de la partie Anesthésie
   setupAnesthGlobalDoseLogic();
