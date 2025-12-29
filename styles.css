@@ -3537,3 +3537,9 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   align-items: center;
   gap: 4px;
 }
+
+.eto-subtitle {
+  display: block;
+  text-align: left;
+  margin-left: 0;
+}
