@@ -3543,3 +3543,12 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   text-align: left;
   margin-left: 0;
 }
+
+/* Force les sous-titres à passer à la ligne même dans un container flex */
+.eto-subtitle {
+  display: block !important;
+  width: 100% !important;
+  flex: 0 0 100% !important;
+  text-align: left !important;
+  margin: 6px 0 2px !important;
+}
