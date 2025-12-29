@@ -6260,6 +6260,7 @@ function etoFormHtmlCompactPlastieMitrale(prefix) {
       <hr/>
 
       <div class="eto-subtitle">Longueurs</div>
+
 <div class="eto-cell eto-subcell">
   <div class="eto-inline2">
     <label>Diamètre anneau mitral (mm)
@@ -6276,6 +6277,7 @@ function etoFormHtmlCompactPlastieMitrale(prefix) {
   </div>
 </div>
 
+
 <div class="eto-subtitle">Coaptation</div>
 <div class="eto-cell eto-subcell">
   <div class="eto-inline2">
@@ -6289,7 +6291,7 @@ function etoFormHtmlCompactPlastieMitrale(prefix) {
   </div>
 </div>
 
-<div class="eto-subtitle">Cordage</div>
+<div class="eto-subtitle">Cordages</div>
 <div class="eto-cell eto-subcell">
   <div class="eto-inline2">
     <label class="checkbox">
