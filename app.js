@@ -7668,7 +7668,7 @@ function renderInterventionRVT() {
     {
        titre: "Échographie trans-œsophagienne",
   html: `
-    ${etoEntryButtonsHtml("rvt")}
+    ${etoEntryButtonsHtml("pc")}
   `,
 },
     {
@@ -7703,9 +7703,9 @@ function renderInterventionRVT() {
     encadres,
   });
 
-initEtoEntryButtons("rvt");
+initEtoEntryButtons("pc");
   // IMPORTANT : initialise les 3 boutons + logique conditionnelle (RA/IA/RM/IM/IT) + modal
-  initEtoFormHandlers("rvt", document);
+  initEtoFormHandlers("pc", document);
   
   expandPatientCharacteristics(); 
   // Calcul global poids → Kétamine / Exacyl / Ropivacaïne / Héparine
