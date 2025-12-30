@@ -3552,3 +3552,10 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   text-align: left !important;
   margin: 6px 0 2px !important;
 }
+
+.btn-danger{
+  background-color: #c62828;
+  border-color: #c62828;
+  color: #fff;
+}
+.btn-danger:hover{ background-color:#b71c1c; }
