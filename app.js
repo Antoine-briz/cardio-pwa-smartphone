@@ -12442,6 +12442,10 @@ function renderReanAntibiotherapieMenu() {
         </div>
         <!-- Bouton rouge : lien direct PDF -->
       <div style="margin-top:20px;">
+        <button class="btn btn-danger"
+        onclick="window.open('files/MITIC.pdf', '_blank')">
+  Protocoles MITIC
+</button>
         <button class="btn btn-red" onclick='openPdf("Bactériologie clinique.pdf")'>
           Bactériologie clinique en réanimation
         </button>
