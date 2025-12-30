@@ -145,12 +145,12 @@ function renderAnesthMenu() {
         <button class="btn" onclick="location.hash = '#/anesthesie/radiovasculaire'">
           Radio-vasculaire
         </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/consultations'">
-          Consultations
-        </button>
-        <button class="btn" onclick="location.hash = '#/anesthesie/antibiopro'">
-          Antibioprophylaxie
-        </button>
+        <button class="btn btn-danger" onclick="location.hash = '#/anesthesie/consultations'">
+  Consultations
+</button>
+<button class="btn btn-danger" onclick="location.hash = '#/anesthesie/antibiopro'">
+  Antibioprophylaxie
+</button>
       </div>
     </section>
   `;
