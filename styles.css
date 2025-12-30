@@ -3559,3 +3559,9 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   color: #fff;
 }
 .btn-danger:hover{ background-color:#b71c1c; }
+
+.antibio-btn-group{
+  display: flex;
+  flex-direction: column;   /* l’un au-dessus de l’autre */
+  gap: 10px;                /* ✅ espace entre boutons */
+}
