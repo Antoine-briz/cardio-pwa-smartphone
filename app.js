@@ -17500,7 +17500,6 @@ const routes = {
   "#/cec": renderCecMenu,
 
   // Divers
-  "#/planning": renderPlanning,
   "#/annuaire": renderAnnuaire,
   "#/codes": renderCodesAcces,
   "#/acr": renderAcrChirCardiaque,
