@@ -9717,7 +9717,7 @@ function renderReanMenu() {
         </button>
 
         <button class="btn" onclick="location.hash = '#/reanimation/eto'">
-          ETO (hors assistances)
+          ETO 
         </button>
 
         <button class="btn" onclick="renderReanAntibiotherapieMenu()">
