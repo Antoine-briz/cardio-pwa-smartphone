@@ -3358,7 +3358,7 @@ function renderInterventionRadioVascTIPS() {
   renderInterventionPage({
     titre: "TIPS",
     sousTitre: "",
-    image: "radiovasc2.png",
+    image: "radiovasc.png",
     encadres,
   });
 
