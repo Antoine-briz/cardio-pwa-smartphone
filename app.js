@@ -16178,7 +16178,7 @@ function renderEtoBibliotheque() {
   renderInterventionPage({
     titre: "Bibliothèque ETO",
     sousTitre: "",
-    image: "eto_bibliotheque.png",
+    image: "",
     encadres,
   });
 }
