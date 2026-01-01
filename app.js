@@ -12281,7 +12281,7 @@ function setupReanTransplantInfectionsLogic() {
 }
 
 function openHepatiteImage() {
-  window.open("img/hepatite.PNG", "_blank");
+  window.open("img/hepatite.png", "_blank");
 }
 
 function renderReanTransplantCoronaires() {
