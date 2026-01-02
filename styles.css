@@ -3715,3 +3715,39 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 .intervention-shell span {
   font-size: inherit !important;
 }
+
+/* ===============================
+   ACTUALITÉS — ajustements smartphone
+=============================== */
+
+@media (max-width: 600px) {
+  .home-actus-btn{
+    top: 8px;
+    right: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+  .home-actus-btn img{
+    width: 28px;
+    height: 28px;
+  }
+
+  .actus-overlay{
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .actus-modal{
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    padding: 14px;
+  }
+
+  .actus-salle-row{
+    grid-template-columns: 100px 1fr;
+  }
+}
