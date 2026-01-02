@@ -132,6 +132,7 @@ const PRECACHE = [
 "./img/cf-plastieaortique.png",
 "./img/cf-diametre-aortique.png",
 "./img/objectifs-tensionnels.png",
+  "./img/saricnews.png",
 
   // Files
   "./files/Infections des prothèses vasculaires.pdf",
@@ -141,7 +142,6 @@ const PRECACHE = [
 "./files/Protocole fibrinolyse in situ.pdf",
 "./files/Mémo fibrinolyse in situ.pdf",
   "./files/Bactériologie clinique.pdf",
-  "./files/planning_medical.xlsx",
 ];
 
 // INSTALL : pré-cache tous les fichiers définis ci-dessus
