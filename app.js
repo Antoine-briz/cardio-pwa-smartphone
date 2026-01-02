@@ -74,10 +74,7 @@ function renderHome() {
     <section class="home">
 
       <div class="grid">
-      <button class="home-actus-btn"
-        type="button"
-        onclick="openActus()"
-        aria-label="Actualités">
+      <button id="saricnews-logo" class="home-actus-btn" type="button" onclick="openActus()" aria-label="Actualités">
   <img src="img/saricnews.png" alt="SARIC News">
 </button>
         <div class="card" onclick="location.hash = '#/anesthesie'">
@@ -123,6 +120,7 @@ function renderHome() {
 </div>
     </section>
   `;
+  initDraggableSaricLogo();
 }
 
 // =======================================================
@@ -305,6 +303,143 @@ function initActusNoonReset() {
 
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) maybeResetBlocAtNoon();
+  });
+}
+
+// =======================================================
+//  LOGO SARIC NEWS — draggable (PC + mobile) + position mémorisée
+//  - Glisser-déposer souris/doigt
+//  - Ne déclenche PAS openActus() si on a déplacé le logo
+//  - Mémorise la position dans localStorage
+// =======================================================
+
+const SARIC_LOGO_POS_KEY = "saricnews_logo_pos_v1";
+
+function clamp(v, min, max) {
+  return Math.min(Math.max(v, min), max);
+}
+
+function restoreSaricLogoPosition(el) {
+  try {
+    const raw = localStorage.getItem(SARIC_LOGO_POS_KEY);
+    if (!raw) return;
+
+    const pos = JSON.parse(raw);
+    if (typeof pos?.left !== "number" || typeof pos?.top !== "number") return;
+
+    el.style.left = `${pos.left}px`;
+    el.style.top = `${pos.top}px`;
+    el.style.right = "auto";  // important: on quitte le mode top/right
+    el.style.bottom = "auto";
+  } catch (_) {}
+}
+
+function saveSaricLogoPosition(el) {
+  const rect = el.getBoundingClientRect();
+  localStorage.setItem(SARIC_LOGO_POS_KEY, JSON.stringify({
+    left: Math.round(rect.left),
+    top: Math.round(rect.top)
+  }));
+}
+
+function initDraggableSaricLogo() {
+  const el = document.getElementById("saricnews-logo");
+  if (!el) return;
+
+  // évite double init si renderHome est rappelé
+  if (el.dataset.dragInit === "1") return;
+  el.dataset.dragInit = "1";
+
+  restoreSaricLogoPosition(el);
+
+  let startX = 0, startY = 0;
+  let startLeft = 0, startTop = 0;
+  let dragging = false;
+
+  // Empêche le clic (openActus) juste après un drag
+  el.addEventListener("click", (e) => {
+    if (el.dataset.justDragged === "1") {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      el.dataset.justDragged = "0";
+    }
+  }, true);
+
+  el.addEventListener("pointerdown", (e) => {
+    // uniquement bouton principal souris ou touch/stylus
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+
+    const rect = el.getBoundingClientRect();
+
+    startX = e.clientX;
+    startY = e.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+    dragging = false;
+
+    // bascule en mode left/top pour drag
+    el.style.left = `${startLeft}px`;
+    el.style.top = `${startTop}px`;
+    el.style.right = "auto";
+    el.style.bottom = "auto";
+
+    el.setPointerCapture(e.pointerId);
+  });
+
+  el.addEventListener("pointermove", (e) => {
+    if (!el.hasPointerCapture(e.pointerId)) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    // seuil : si on bouge un peu, on considère que c'est un drag
+    if (!dragging && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+      dragging = true;
+    }
+    if (!dragging) return;
+
+    const w = el.offsetWidth;
+    const h = el.offsetHeight;
+
+    const maxLeft = window.innerWidth - w;
+    const maxTop  = window.innerHeight - h;
+
+    const newLeft = clamp(startLeft + dx, 0, Math.max(0, maxLeft));
+    const newTop  = clamp(startTop + dy, 0, Math.max(0, maxTop));
+
+    el.style.left = `${newLeft}px`;
+    el.style.top = `${newTop}px`;
+  });
+
+  el.addEventListener("pointerup", (e) => {
+    if (!el.hasPointerCapture(e.pointerId)) return;
+    el.releasePointerCapture(e.pointerId);
+
+    if (dragging) {
+      saveSaricLogoPosition(el);
+      el.dataset.justDragged = "1";
+      // remet à 0 après un court délai pour éviter blocage de clic
+      setTimeout(() => { el.dataset.justDragged = "0"; }, 250);
+    }
+  });
+
+  // Si l'écran change (rotation / redimensionnement), on re-clamp la position
+  window.addEventListener("resize", () => {
+    const rect = el.getBoundingClientRect();
+    const w = el.offsetWidth, h = el.offsetHeight;
+    const maxLeft = window.innerWidth - w;
+    const maxTop  = window.innerHeight - h;
+
+    const newLeft = clamp(rect.left, 0, Math.max(0, maxLeft));
+    const newTop  = clamp(rect.top, 0, Math.max(0, maxTop));
+
+    el.style.left = `${newLeft}px`;
+    el.style.top = `${newTop}px`;
+    el.style.right = "auto";
+    el.style.bottom = "auto";
+
+    saveSaricLogoPosition(el);
   });
 }
 
@@ -17866,7 +18001,10 @@ function navigate() {
   } else {
     renderNotFound();
   }
+
+  initDraggableSaricLogo();
 }
+
 
 window.addEventListener("hashchange", navigate);
 window.addEventListener("load", navigate);
