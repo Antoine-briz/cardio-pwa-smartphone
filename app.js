@@ -74,6 +74,9 @@ function renderHome() {
     <section class="home">
 
       <div class="grid">
+      <button class="home-actus-btn" type="button" onclick="openActus()" title="Actualités">
+  <img src="img/journal.png" alt="Actualités">
+</button>
         <div class="card" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
           <img src="img/anesthesie.png" alt="Anesthésie" class="menu-section-img" />
@@ -117,6 +120,77 @@ function renderHome() {
 </div>
     </section>
   `;
+}
+
+// ===============================
+//  PURGE BLOC "Organisation bloc 3ème..." À 12:00
+//  - Efface uniquement le bloc du lendemain
+//  - Notes de service inchangées
+//  - Fonctionne à midi pile si app ouverte,
+//    sinon au prochain retour dans l'app après midi
+// ===============================
+
+const ACTUS_BLOC_LAST_RESET_KEY = "saric_actus_bloc3_last_reset_day_v1"; // YYYY-MM-DD
+
+function todayISO() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10);
+}
+
+function isAfterNoonNow() {
+  const now = new Date();
+  return (now.getHours() > 12) || (now.getHours() === 12 && now.getMinutes() >= 0);
+}
+
+function resetBlocForTomorrow() {
+  const key = getBlocKeyForTomorrow();
+  localStorage.removeItem(key); // supprime le contenu
+}
+
+function maybeResetBlocAtNoon() {
+  const day = todayISO();
+  const last = localStorage.getItem(ACTUS_BLOC_LAST_RESET_KEY);
+
+  // on purge une seule fois par jour, à partir de midi
+  if (last !== day && isAfterNoonNow()) {
+    resetBlocForTomorrow();
+    localStorage.setItem(ACTUS_BLOC_LAST_RESET_KEY, day);
+
+    // si l'overlay est ouvert, on rafraîchit l'affichage
+    const ov = document.getElementById("actus-overlay");
+    if (ov && ov.classList.contains("is-open")) fillActusFromStorage();
+  }
+}
+
+// programme le déclenchement au prochain 12:00
+function scheduleNoonReset() {
+  const now = new Date();
+  const target = new Date(now);
+  target.setHours(12, 0, 0, 0);
+
+  // si on a déjà passé midi, cible = midi du lendemain
+  if (now >= target) target.setDate(target.getDate() + 1);
+
+  const delay = target.getTime() - now.getTime();
+
+  setTimeout(() => {
+    maybeResetBlocAtNoon();
+    scheduleNoonReset(); // reprogramme pour le jour suivant
+  }, delay);
+}
+
+// à appeler au démarrage de l'app (après init)
+function initActusNoonReset() {
+  // purge si on ouvre l'app après midi (rattrapage)
+  maybeResetBlocAtNoon();
+
+  // déclenchement "pile à midi" si l'app reste ouverte
+  scheduleNoonReset();
+
+  // rattrapage quand on revient au premier plan
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) maybeResetBlocAtNoon();
+  });
 }
 
 
@@ -17598,6 +17672,7 @@ function renderNotFound() {
 
 const routes = {
   "#/": renderHome,
+  "#/actus": () => { renderHome(); openActus(); },
 
   // Anesthésie
   "#/anesthesie": renderAnesthMenu,
