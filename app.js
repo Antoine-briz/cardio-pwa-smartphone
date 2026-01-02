@@ -334,18 +334,6 @@ function initActusInlineEditing() {
   }
 }
 
-function setActusEditMode(isEdit) {
-  const notesEl = document.getElementById("actus-notes");
-  const saveBtn = document.getElementById("actus-btn-save");
-
-  if (notesEl) notesEl.disabled = !isEdit;
-  [2,3,4,5,6,7].forEach(n => {
-    const el = document.getElementById(`actus-salle-${n}`);
-    if (el) el.disabled = !isEdit;
-  });
-
-  if (saveBtn) saveBtn.disabled = !isEdit;
-}
 
 function saveActus() {
   localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.value || "");
