@@ -151,6 +151,7 @@ function ensureActusOverlay() {
   const overlay = document.createElement("div");
   overlay.id = "actus-overlay";
   overlay.className = "actus-overlay";
+
   overlay.innerHTML = `
     <div class="actus-modal" role="dialog" aria-modal="true">
       <div class="actus-modal-header">
@@ -160,7 +161,7 @@ function ensureActusOverlay() {
 
       <div class="actus-card">
         <div class="actus-card-title">Notes de service</div>
-        <textarea id="actus-notes" class="actus-textarea" rows="6" disabled></textarea>
+        <textarea id="actus-notes" class="actus-textarea" rows="5" disabled></textarea>
       </div>
 
       <div class="actus-card">
@@ -168,17 +169,12 @@ function ensureActusOverlay() {
 
         <div class="actus-salles">
           ${[2,3,4,5,6,7].map(n => `
-            <div class="actus-salle-row">
+            <div class="actus-salle-line">
               <div class="actus-salle-label">Salle ${n}:</div>
-              <input id="actus-salle-${n}" class="actus-input" type="text" disabled />
+              <input id="actus-salle-${n}" class="actus-salle-field" type="text" disabled />
             </div>
           `).join("")}
         </div>
-      </div>
-
-      <div class="actus-actions">
-        <button id="actus-btn-edit" class="btn" type="button" onclick="setActusEditMode(true)">Modifier</button>
-        <button id="actus-btn-save" class="btn" type="button" onclick="saveActus()" disabled>Enregistrer</button>
       </div>
     </div>
   `;
@@ -189,6 +185,7 @@ function ensureActusOverlay() {
 
   document.body.appendChild(overlay);
 
+  // Optionnel mais utile : si une autre fenêtre/onglet modifie localStorage, on rafraîchit l'overlay ouvert
   window.addEventListener("storage", (e) => {
     const ov = document.getElementById("actus-overlay");
     if (!ov || !ov.classList.contains("is-open")) return;
@@ -202,6 +199,7 @@ function openActus() {
   ensureActusOverlay();
   maybeResetBlocAtNoon();      // rattrapage avant affichage
   fillActusFromStorage();
+  initActusInlineEditing();
   setActusEditMode(false);
   document.getElementById("actus-overlay").classList.add("is-open");
 }
@@ -228,6 +226,78 @@ function fillActusFromStorage() {
     const el = document.getElementById(`actus-salle-${n}`);
     if (el) el.value = bloc[String(n)] || "";
   });
+}
+
+function saveActusNow() {
+  // Notes
+  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.value || "");
+
+  // Bloc du lendemain
+  const blocKey = getBlocKeyForTomorrow();
+  const bloc = {};
+  [2,3,4,5,6,7].forEach(n => {
+    bloc[String(n)] = document.getElementById(`actus-salle-${n}`)?.value || "";
+  });
+  localStorage.setItem(blocKey, JSON.stringify(bloc));
+}
+
+function initActusInlineEditing() {
+  const notes = document.getElementById("actus-notes");
+  if (!notes) return;
+
+  // évite double init si overlay recréé
+  if (notes.dataset.inlineInit === "1") return;
+  notes.dataset.inlineInit = "1";
+
+  function enable(el) {
+    el.disabled = false;
+    el.focus();
+    // met le curseur en fin
+    if (el.setSelectionRange && typeof el.value === "string") {
+      const len = el.value.length;
+      el.setSelectionRange(len, len);
+    }
+  }
+
+  function disableAndSave(el) {
+    el.disabled = true;
+    saveActusNow();
+  }
+
+  // Notes : double clic => edit ; blur => save
+  notes.addEventListener("dblclick", () => enable(notes));
+  notes.addEventListener("blur", () => disableAndSave(notes));
+
+  // Salles : double clic => edit ; blur => save ; Enter => save
+  [2,3,4,5,6,7].forEach(n => {
+    const inp = document.getElementById(`actus-salle-${n}`);
+    if (!inp) return;
+
+    inp.addEventListener("dblclick", () => enable(inp));
+    inp.addEventListener("blur", () => disableAndSave(inp));
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        inp.blur();
+      }
+    });
+  });
+
+  // Clic ailleurs dans la modale => enregistre si un champ est en édition
+  const modal = document.querySelector("#actus-overlay .actus-modal");
+  if (modal) {
+    modal.addEventListener("pointerdown", (e) => {
+      const active = document.activeElement;
+      const isEditable =
+        active?.id === "actus-notes" ||
+        (active?.id || "").startsWith("actus-salle-");
+
+      // si on clique ailleurs que le champ actif, on force blur => save
+      if (isEditable && active && e.target !== active) {
+        active.blur();
+      }
+    });
+  }
 }
 
 function setActusEditMode(isEdit) {
