@@ -122,76 +122,189 @@ function renderHome() {
   `;
 }
 
-// ===============================
-//  PURGE BLOC "Organisation bloc 3ème..." À 12:00
-//  - Efface uniquement le bloc du lendemain
-//  - Notes de service inchangées
-//  - Fonctionne à midi pile si app ouverte,
-//    sinon au prochain retour dans l'app après midi
-// ===============================
+// =======================================================
+//  ACTUALITÉS (SMARTPHONE) + PURGE BLOC À 12:00
+//  À coller dans app.js (sans bouton, sans route)
+// =======================================================
 
+const ACTUS_NOTES_KEY = "saric_actus_notes_service_v1";
+const ACTUS_BLOC_KEY_PREFIX = "saric_actus_bloc3_"; // + YYYY-MM-DD (date de demain)
 const ACTUS_BLOC_LAST_RESET_KEY = "saric_actus_bloc3_last_reset_day_v1"; // YYYY-MM-DD
+
+function getTomorrowISO() {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+function formatDateFR(iso) {
+  const [y, m, d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+function getBlocKeyForTomorrow() {
+  return ACTUS_BLOC_KEY_PREFIX + getTomorrowISO();
+}
+
+function ensureActusOverlay() {
+  if (document.getElementById("actus-overlay")) return;
+
+  const overlay = document.createElement("div");
+  overlay.id = "actus-overlay";
+  overlay.className = "actus-overlay";
+  overlay.innerHTML = `
+    <div class="actus-modal" role="dialog" aria-modal="true">
+      <div class="actus-modal-header">
+        <div class="actus-modal-title">Actualités</div>
+        <button class="btn actus-close-btn" type="button" onclick="closeActus()">✕</button>
+      </div>
+
+      <div class="actus-card">
+        <div class="actus-card-title">Notes de service</div>
+        <textarea id="actus-notes" class="actus-textarea" rows="6" disabled></textarea>
+      </div>
+
+      <div class="actus-card">
+        <div class="actus-card-title" id="actus-bloc-title"></div>
+
+        <div class="actus-salles">
+          ${[2,3,4,5,6,7].map(n => `
+            <div class="actus-salle-row">
+              <div class="actus-salle-label">Salle ${n}:</div>
+              <input id="actus-salle-${n}" class="actus-input" type="text" disabled />
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="actus-actions">
+        <button id="actus-btn-edit" class="btn" type="button" onclick="setActusEditMode(true)">Modifier</button>
+        <button id="actus-btn-save" class="btn" type="button" onclick="saveActus()" disabled>Enregistrer</button>
+      </div>
+    </div>
+  `;
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeActus();
+  });
+
+  document.body.appendChild(overlay);
+
+  window.addEventListener("storage", (e) => {
+    const ov = document.getElementById("actus-overlay");
+    if (!ov || !ov.classList.contains("is-open")) return;
+    if (e.key === ACTUS_NOTES_KEY || (e.key && e.key.startsWith(ACTUS_BLOC_KEY_PREFIX))) {
+      fillActusFromStorage();
+    }
+  });
+}
+
+function openActus() {
+  ensureActusOverlay();
+  maybeResetBlocAtNoon();      // rattrapage avant affichage
+  fillActusFromStorage();
+  setActusEditMode(false);
+  document.getElementById("actus-overlay").classList.add("is-open");
+}
+
+function closeActus() {
+  const ov = document.getElementById("actus-overlay");
+  if (ov) ov.classList.remove("is-open");
+  if (location.hash === "#/actus") location.hash = "#/";
+}
+
+function fillActusFromStorage() {
+  const tomorrowISO = getTomorrowISO();
+  document.getElementById("actus-bloc-title").textContent =
+    `Organisation bloc 3ème du ${formatDateFR(tomorrowISO)}`;
+
+  document.getElementById("actus-notes").value =
+    localStorage.getItem(ACTUS_NOTES_KEY) || "";
+
+  const blocKey = getBlocKeyForTomorrow();
+  let bloc = {};
+  try { bloc = JSON.parse(localStorage.getItem(blocKey) || "{}"); } catch { bloc = {}; }
+
+  [2,3,4,5,6,7].forEach(n => {
+    const el = document.getElementById(`actus-salle-${n}`);
+    if (el) el.value = bloc[String(n)] || "";
+  });
+}
+
+function setActusEditMode(isEdit) {
+  const notesEl = document.getElementById("actus-notes");
+  const saveBtn = document.getElementById("actus-btn-save");
+
+  if (notesEl) notesEl.disabled = !isEdit;
+  [2,3,4,5,6,7].forEach(n => {
+    const el = document.getElementById(`actus-salle-${n}`);
+    if (el) el.disabled = !isEdit;
+  });
+
+  if (saveBtn) saveBtn.disabled = !isEdit;
+}
+
+function saveActus() {
+  localStorage.setItem(ACTUS_NOTES_KEY, document.getElementById("actus-notes")?.value || "");
+
+  const blocKey = getBlocKeyForTomorrow();
+  const bloc = {};
+  [2,3,4,5,6,7].forEach(n => {
+    bloc[String(n)] = document.getElementById(`actus-salle-${n}`)?.value || "";
+  });
+  localStorage.setItem(blocKey, JSON.stringify(bloc));
+
+  setActusEditMode(false);
+}
+
+// -------------------------------
+//  Purge quotidienne à 12:00
+// -------------------------------
 
 function todayISO() {
   const d = new Date();
   return d.toISOString().slice(0, 10);
 }
-
 function isAfterNoonNow() {
   const now = new Date();
   return (now.getHours() > 12) || (now.getHours() === 12 && now.getMinutes() >= 0);
 }
-
 function resetBlocForTomorrow() {
-  const key = getBlocKeyForTomorrow();
-  localStorage.removeItem(key); // supprime le contenu
+  localStorage.removeItem(getBlocKeyForTomorrow());
 }
-
 function maybeResetBlocAtNoon() {
   const day = todayISO();
   const last = localStorage.getItem(ACTUS_BLOC_LAST_RESET_KEY);
 
-  // on purge une seule fois par jour, à partir de midi
   if (last !== day && isAfterNoonNow()) {
     resetBlocForTomorrow();
     localStorage.setItem(ACTUS_BLOC_LAST_RESET_KEY, day);
 
-    // si l'overlay est ouvert, on rafraîchit l'affichage
     const ov = document.getElementById("actus-overlay");
     if (ov && ov.classList.contains("is-open")) fillActusFromStorage();
   }
 }
-
-// programme le déclenchement au prochain 12:00
 function scheduleNoonReset() {
   const now = new Date();
   const target = new Date(now);
   target.setHours(12, 0, 0, 0);
-
-  // si on a déjà passé midi, cible = midi du lendemain
   if (now >= target) target.setDate(target.getDate() + 1);
 
   const delay = target.getTime() - now.getTime();
-
   setTimeout(() => {
     maybeResetBlocAtNoon();
-    scheduleNoonReset(); // reprogramme pour le jour suivant
+    scheduleNoonReset();
   }, delay);
 }
 
-// à appeler au démarrage de l'app (après init)
+// À appeler UNE FOIS au démarrage de l'app (mobile)
 function initActusNoonReset() {
-  // purge si on ouvre l'app après midi (rattrapage)
   maybeResetBlocAtNoon();
-
-  // déclenchement "pile à midi" si l'app reste ouverte
   scheduleNoonReset();
 
-  // rattrapage quand on revient au premier plan
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) maybeResetBlocAtNoon();
   });
 }
+
 
 
 // =====================================================================
@@ -17755,3 +17868,4 @@ function navigate() {
 window.addEventListener("hashchange", navigate);
 window.addEventListener("load", navigate);
 
+initActusNoonReset();
