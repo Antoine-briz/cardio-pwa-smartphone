@@ -4073,3 +4073,7 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   border-radius: 10px;
   padding: 0 10px;
 }
+
+@media (max-width: 600px) {
+  .actus-modal-title{ font-size: 22px; }
+  .actus-tool{ width: 38px; height
