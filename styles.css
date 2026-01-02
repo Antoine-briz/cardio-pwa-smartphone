@@ -3717,37 +3717,200 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 }
 
 /* ===============================
-   ACTUALITÉS — ajustements smartphone
+   ACTUALITÉS (SMARTPHONE) — VERSION FINALE
 =============================== */
 
-@media (max-width: 600px) {
+/* ===============================
+   LOGO SARIC NEWS — superposé, x3, sans cadre
+=============================== */
+
+.home-actus-btn{
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 99999;
+
+  width: 132px;              /* x3 */
+  height: 132px;
+
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+
+  display: block;
+  cursor: grab;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;        /* indispensable pour drag au doigt */
+}
+
+.home-actus-btn img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+
+  pointer-events: none;      /* le bouton capte le drag/clic */
+}
+
+.home-actus-btn:active{
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+/* ===============================
+   OVERLAY (caché par défaut)
+=============================== */
+
+.actus-overlay{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 90000;
+
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.actus-overlay.is-open{
+  display: flex;
+}
+
+/* ===============================
+   MODAL (plein écran)
+=============================== */
+
+.actus-modal{
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+
+  border-radius: 0;
+  border: 0;
+  background: rgba(20,20,20,0.96);
+  padding: 14px;
+}
+
+/* Header */
+.actus-modal-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.actus-modal-title{
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.actus-close-btn{
+  padding: 8px 12px;
+}
+
+/* ===============================
+   CARTES (2 ENCadrés UNIQUEMENT)
+=============================== */
+
+.actus-card{
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.actus-card-title{
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+/* ===============================
+   NOTES DE SERVICE
+=============================== */
+
+.actus-textarea{
+  width: 100%;
+  resize: vertical;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  padding: 10px;
+}
+
+/* ===============================
+   ORGANISATION BLOC — LIGNES (PAS DE MINI-CARTES)
+=============================== */
+
+.actus-salles{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actus-salle-line{
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.actus-salle-label{
+  text-align: right;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.actus-salle-field{
+  width: 100%;
+  padding: 10px 10px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+}
+
+.actus-salle-field:disabled{
+  opacity: 0.9;
+}
+
+/* ===============================
+   ACTIONS
+=============================== */
+
+.actus-actions{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+/* ===============================
+   Ajustements petits écrans (optionnel)
+=============================== */
+
+@media (max-width: 380px) {
   .home-actus-btn{
-    top: 8px;
-    right: 10px;
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
+    width: 116px;
+    height: 116px;
   }
-  .home-actus-btn img{
-    width: 28px;
-    height: 28px;
-  }
-
-  .actus-overlay{
-    padding: 0;
-    align-items: stretch;
-    justify-content: stretch;
-  }
-
-  .actus-modal{
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    border-radius: 0;
-    padding: 14px;
-  }
-
-  .actus-salle-row{
-    grid-template-columns: 100px 1fr;
+  .actus-salle-line{
+    grid-template-columns: 92px 1fr;
   }
 }
