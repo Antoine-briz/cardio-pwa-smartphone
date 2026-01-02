@@ -3984,3 +3984,6 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 /* Et si tu veux voir le texte long sans qu'il soit coupé :
    -> tu peux autoriser le retour à la ligne avec textarea (voir option ci-dessous) */
 
+.actus-salle-field{
+  min-height: 3.6em; /* ~3 lignes */
+}
