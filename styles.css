@@ -4403,3 +4403,30 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 #app-footer .footer-actus-btn img{
   display: block;
 }
+
+/* Fix mobile : le "cadre" du bouton Actus devient exactement la couleur du footer */
+#app-footer .footer-actus-btn{
+  background: var(--footer-bg, #222) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app-footer .footer-actus-btn:focus,
+#app-footer .footer-actus-btn:active,
+#app-footer .footer-actus-btn:focus-visible{
+  background: var(--footer-bg, #222) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+  
