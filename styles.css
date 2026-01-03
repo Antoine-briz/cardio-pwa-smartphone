@@ -4372,3 +4372,34 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
     height: 96px;
   }
 }
+
+  /* ======================================================
+   FIX mobile : enlever le rendu "bouton" (encadré) du logo Actus
+   ====================================================== */
+#app-footer .footer-actus-btn{
+  -webkit-appearance: none;
+  appearance: none;
+
+  background: transparent !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+
+  /* évite le flash/halo au tap sur mobile */
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app-footer .footer-actus-btn:focus,
+#app-footer .footer-actus-btn:focus-visible,
+#app-footer .footer-actus-btn:active{
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#app-footer .footer-actus-btn img{
+  display: block;
+}
