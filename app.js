@@ -235,11 +235,10 @@ function ensureActusOverlay() {
   });
 }
 
-
-function openActus() {
+async function openActus() {
   ensureActusOverlay();
-  maybeResetBlocAtNoon();      // rattrapage avant affichage
-  loadActusFromServer();
+  await maybeResetBlocAtNoon();      // rattrapage avant affichage
+  await loadActusFromServer();
   initActusInlineEditing();
   document.getElementById("actus-overlay").classList.add("is-open");
 }
