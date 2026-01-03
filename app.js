@@ -74,9 +74,6 @@ function renderHome() {
     <section class="home">
 
       <div class="grid">
-      <button id="saricnews-logo" class="home-actus-btn" type="button" onclick="openActus()" aria-label="Actualités">
-  <img src="img/saricnews.png" alt="SARIC News">
-</button>
         <div class="card" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
           <img src="img/anesthesie.png" alt="Anesthésie" class="menu-section-img" />
