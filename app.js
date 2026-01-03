@@ -120,7 +120,6 @@ function renderHome() {
 </div>
     </section>
   `;
-  initDraggableSaricLogo();
 }
 
 // =======================================================
@@ -18161,11 +18160,6 @@ function navigate() {
     view();
   } else {
     renderNotFound();
-  }
-
-  // Sécurité : seulement si la fonction existe
-  if (typeof initDraggableSaricLogo === "function") {
-    initDraggableSaricLogo();
   }
 }
 
