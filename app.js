@@ -241,17 +241,23 @@ async function openActus() {
   const overlay = document.getElementById("actus-overlay");
   overlay.classList.add("is-open"); // ✅ ouvre tout de suite
 
-  // (optionnel) affiche un état "chargement"
   setActusLoading(true);
+
+  // ✅ met le bon titre immédiatement
+  updateActusBlocTitle();
 
   try {
     await maybeResetBlocAtNoon();
     await loadActusFromServer();
+
+    // ✅ resécurise le titre après chargement/purge
+    updateActusBlocTitle();
   } finally {
     setActusLoading(false);
     initActusInlineEditing();
   }
 }
+
 
 function setActusLoading(isLoading) {
   const modal = document.querySelector("#actus-overlay .actus-modal");
@@ -441,7 +447,31 @@ function initActusInlineEditing() {
   }
 }
 
+function isAfterNoonNow() {
+  const now = new Date();
+  const noon = new Date(now);
+  noon.setHours(12, 0, 0, 0);
+  return now >= noon;
+}
 
+function getOrganisationDate() {
+  const d = new Date();
+  if (isAfterNoonNow()) d.setDate(d.getDate() + 1); // après 12:00 => demain
+  return d;
+}
+
+function formatFRDate(d) {
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function updateActusBlocTitle() {
+  const el = document.getElementById("actus-bloc-title");
+  if (!el) return;
+  el.textContent = `Organisation bloc 3ème du ${formatFRDate(getOrganisationDate())}`;
+}
 
 // -------------------------------
 //  Purge quotidienne à 12:00
@@ -458,18 +488,21 @@ function isAfterNoonNow() {
 function resetBlocForTomorrow() {
   localStorage.removeItem(getBlocKeyForTomorrow());
 }
-function maybeResetBlocAtNoon() {
-  const day = todayISO();
+
+async function maybeResetBlocAtNoon() {
+  const day = todayISO(); // ta fonction existante (YYYY-MM-DD)
   const last = localStorage.getItem(ACTUS_BLOC_LAST_RESET_KEY);
 
-  if (last !== day && isAfterNoonNow()) {
-    resetBlocForTomorrow();
+  // si on est après midi ET pas encore reset aujourd’hui => purge bloc serveur
+  if (isAfterNoonNow() && last !== day) {
+    await resetBlocForTomorrowServer(); // ta fonction existante (vide salles 2-7 sur le serveur)
     localStorage.setItem(ACTUS_BLOC_LAST_RESET_KEY, day);
-
-    const ov = document.getElementById("actus-overlay");
-    if (ov && ov.classList.contains("is-open")) loadActusFromServer();
   }
+
+  // Dans tous les cas, on met à jour le titre selon l'heure
+  updateActusBlocTitle();
 }
+
 function scheduleNoonReset() {
   const now = new Date();
   const target = new Date(now);
