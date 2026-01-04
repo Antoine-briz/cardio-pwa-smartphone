@@ -3069,7 +3069,7 @@ Surveillance:
   renderSelected();
 }
 
-function renderInterventionEndoprotheses() {
+function renderInterventionEndoprothese() {
   // ----------------------------------------------------------
   // Helpers
   // ----------------------------------------------------------
