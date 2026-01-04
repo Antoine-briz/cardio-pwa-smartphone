@@ -4360,3 +4360,61 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   }
   #app-footer .theme-switcher span{ display: none; }
 }
+
+  /* ======================================================
+   FIX ULTIME : pas de "carré" autour du logo Actualités
+   (à coller TOUT EN BAS du styles.css)
+   ====================================================== */
+
+#app-footer .footer-actus-btn{
+  all: unset !important;               /* reset total */
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  /* taille du bouton (zone cliquable) */
+  width: 110px !important;
+  height: 110px !important;
+
+  background: transparent !important;  /* ✅ aucun fond */
+  background-color: transparent !important;
+  background-image: none !important;
+
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+#app-footer .footer-actus-btn::before,
+#app-footer .footer-actus-btn::after{
+  content: none !important;
+}
+
+#app-footer .footer-actus-btn:focus,
+#app-footer .footer-actus-btn:active,
+#app-footer .footer-actus-btn:focus-visible{
+  background: transparent !important;  /* ✅ jamais de fond */
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+#app-footer .footer-actus-btn img{
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  background: transparent !important;  /* ✅ sécurité */
+}
+
+/* option si tu veux plus petit sur très petits écrans */
+@media (max-width: 380px){
+  #app-footer .footer-actus-btn{
+    width: 96px !important;
+    height: 96px !important;
+  }
+}
