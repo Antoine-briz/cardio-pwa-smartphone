@@ -4076,7 +4076,20 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 
 @media (max-width: 600px) {
   .actus-modal-title{ font-size: 22px; }
-  .actus-tool{ width: 38px; height
+
+  .actus-tool{
+    width: 38px;
+    height: 38px;
+    padding: 0;
+  }
+
+  .actus-swatch{
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+  }
+}
+
 
               /* Titres Intervention : restent grands (comme avant) */
 .intervention-page :where(h1, h2, h3){
@@ -4494,4 +4507,37 @@ body.light-theme .actus-spinner{
 }
 body.light-theme .actus-saving-text{
   color: #000;
+}
+
+/* ✅ Footer : bouton actus sans “carré” */
+#app-footer #saricnews-logo.footer-actus-btn{
+  all: unset !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  line-height: 0 !important;
+}
+
+#app-footer #saricnews-logo.footer-actus-btn img{
+  display: block !important;
+  height: 52px !important;   /* ajuste si besoin */
+  width: auto !important;
+  background: transparent !important;
+}
+
+#app-footer #saricnews-logo.footer-actus-btn::before,
+#app-footer #saricnews-logo.footer-actus-btn::after{
+  content: none !important;
 }
