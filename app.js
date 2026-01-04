@@ -1096,7 +1096,7 @@ function renderAnesthVasculaireMenu() {
         Chirurgies du membre inférieur
       </button>
 
-      <button class="btn btn-blue" onclick="renderInterventionEndoprothese()">
+      <button class="btn btn-blue" onclick="renderInterventionEndoprotheses()">
         Endoprothèses aortiques
       </button>
 
@@ -2443,13 +2443,18 @@ Surveillance:
     // On reconstruit uniquement la partie concernée.
     // Repérage simple sur la phrase du tableau.
     t = t.replace(
-      /Antibioprophylaxie:\s*Céfazoline 2g puis 1g toutes les 4h\s*Si IMC > 50 coché:\s*Céfazoline 4g puis 2g toutes les 4h\.\s*Si allergie cochée:\s*Vancomycine 30mg\/kg IVL une injection 30min avant incision/gi,
-      () => {
-        if (cbAll?.checked) return "Antibioprophylaxie: Vancomycine 30mg/kg IVL une injection 30min avant incision";
-        if (cbImc?.checked) return "Antibioprophylaxie: Céfazoline 4g puis 2g toutes les 4h.";
-        return "Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h";
-      }
-    );
+  /(^|\n)\s*Antibioprophylaxie\s*:\s*[^\n]*/i,
+  (m, start) => {
+    const line =
+      cbAll?.checked
+        ? "Antibioprophylaxie: Vancomycine 30mg/kg IVL une injection 30min avant incision"
+        : cbImc?.checked
+          ? "Antibioprophylaxie: Céfazoline 4g puis 2g toutes les 4h"
+          : "Antibioprophylaxie: Céfazoline 2g puis 1g toutes les 4h";
+    return `${start}${line}`;
+  }
+);
+
 
     // retire les mentions résiduelles "Si ... coché" si jamais
     t = t.replace(/Si IMC > 50 coché:\s*/g, "");
@@ -2931,7 +2936,6 @@ Surveillance:
     image: "vasculaire.png",
     encadres,
   });
-
   // Ouvrir les 2 premiers encadrés
   const cards = document.querySelectorAll("details.card");
   if (cards[0]) cards[0].open = true;
@@ -2958,11 +2962,13 @@ Surveillance:
   // ----------------------------------------------------------
   // Conditions : remplacer sans afficher les consignes
   // ----------------------------------------------------------
-  function antibioticCefazVancomy() {
-    if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
-    if (cbImc?.checked) return "Céfazoline 4g puis 2g toutes les 4h.";
-    return "Céfazoline 2g puis 1g toutes les 4h";
-  }
+function antibioticCefazVancomy() {
+  // Prioritaire : allergie bêta-lactamines
+  if (cbAll?.checked) return "Vancomycine 30mg/kg IVL une injection 30min avant incision";
+  // Sinon Céfazoline selon IMC
+  if (cbImc?.checked) return "Céfazoline 4g puis 2g toutes les 4h";
+  return "Céfazoline 2g puis 1g toutes les 4h";
+}
 
   function applyConditions(interventionName, rawText) {
     let t = rawText ?? "";
@@ -2979,10 +2985,14 @@ Surveillance:
     }
 
     // Antibioprophylaxie cefaz/vancomy (ligne standard du tableau)
-    t = t.replace(
-      /Antibioprophylaxie:\s*Céfazoline 2g puis 1g toutes les 4h\s*Si IMC > 50 coché:\s*Céfazoline 4g puis 2g toutes les 4h\.\s*Si allergie cochée:\s*Vancomycine 30mg\/kg IVL une injection 30min avant incision/gi,
-      () => `Antibioprophylaxie: ${antibioticCefazVancomy()}`
-    );
+   t = t.replace(
+  /(<strong>\s*)?Antibioprophylaxie\s*:?(<\/strong>)?\s*([^\n<]*)(?:<br>)?/i,
+  (m, s1, s2) => {
+    const strongOpen = s1 ? "<strong>" : "";
+    const strongClose = s2 ? "</strong>" : "";
+    return `${strongOpen}Antibioprophylaxie:${strongClose} ${antibioticCefazVancomy()}<br>`;
+  }
+);
 
     // Amputation (Augmentin vs Clinda+Genta si allergie) : on remplace uniquement la fin conditionnelle
     if (interventionName === "Amputation") {
@@ -3044,7 +3054,18 @@ Surveillance:
     if (varRow) varRow.style.display = key === "Varices" ? "" : "none";
 
     setHtml("vmi-gestion", linkifyImgs(nl2brRaw(row.gestion)));
-    setHtml("vmi-monitorage", linkifyImgs(nl2brRaw(row.monitorage)));
+
+let mon = row.monitorage || "";
+
+// retire la consigne écrite entre parenthèses (sans toucher au reste)
+mon = mon.replace(/\s*\(Si induction à risque coché remplacer[^)]*\)\s*/gi, "");
+
+// applique la règle : PNI -> KTa si induction à risque
+if (cbRisk?.checked) {
+  mon = mon.replace(/\bPNI\b/g, "KTa");
+}
+
+setHtml("vmi-monitorage", linkifyImgs(nl2brRaw(mon)));
 
     const prot = applyConditions(key, row.protocole);
     const protHtml = augmentPerKg(linkifyImgs(nl2brRaw(prot)));
@@ -3069,7 +3090,8 @@ Surveillance:
   renderSelected();
 }
 
-function renderInterventionEndoprothese() {
+
+function renderInterventionEndoprotheses() {
   // ----------------------------------------------------------
   // Helpers
   // ----------------------------------------------------------
