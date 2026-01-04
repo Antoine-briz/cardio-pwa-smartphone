@@ -4284,113 +4284,52 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
   display: block;
 }
 
-  /* ===============================
-   FOOTER : Retour | Logo | Thème
-=============================== */
+/* ======================================================
+   FOOTER — Logo Actualités (sans encadré / sans fond)
+   ✅ À mettre TOUT À LA FIN du fichier styles.css
+====================================================== */
 
 #app-footer{
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  grid-template-areas: "back actus theme";
+  grid-template-areas: "theme actus back";
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 12px;
+  background: var(--footer-bg, #222);
+  color: var(--footer-text, #fff);
 }
 
-/* Place les blocs dans les zones (sans changer l'HTML) */
-#app-footer .footer-actions{ grid-area: back; justify-self: start; }
+#app-footer .theme-switcher{ grid-area: theme; justify-self: start; }
 #app-footer .footer-actus-btn{ grid-area: actus; justify-self: center; }
-#app-footer .theme-switcher{ grid-area: theme; justify-self: end; }
+#app-footer .footer-actions{ grid-area: back; justify-self: end; }
 
-/* Logo centré (taille + pas de cadre) */
-.footer-actus-btn{
-  width: 52px;
-  height: 52px;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
+/* ✅ reset total du rendu "bouton" (cadre/fond natif mobile) */
+#app-footer .footer-actus-btn{
+  all: unset;                          /* reset */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-.footer-actus-btn img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
 
-/* Option : réduire un peu sur mobile */
-@media (max-width: 600px){
-  .footer-actus-btn{ width: 44px; height: 44px; }
+  width: 120px;                        /* taille du logo */
+  height: 90px;
 
-  /* Si le thème prend trop de place sur mobile, on compacte un peu */
-  #app-footer .theme-switcher{
-    font-size: 12px;
-    gap: 6px;
-  }
-  #app-footer .theme-switcher span{
-    display: none; /* enlève "Thème :" si trop serré */
-  }
-}
-
-  /* ======================================================
-   Footer - Logo Actualités : plus grand, sans cadre
-   (à mettre en fin de styles.css)
-====================================================== */
-
-#app-footer .footer-actus-btn{
-  width: 120px;          /* ~2-3x */
-  height: 120px;
-  padding: 0;
-  margin: 0;
+  background: transparent !important;  /* aucun fond */
   border: 0 !important;
-  background: transparent !important;
   box-shadow: none !important;
-  border-radius: 0 !important;
   outline: none !important;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-#app-footer .footer-actus-btn img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-/* Option : un peu plus petit si écran très étroit */
-@media (max-width: 600px){
-  #app-footer .footer-actus-btn{
-    width: 96px;
-    height: 96px;
-  }
-}
-
-  /* ======================================================
-   FIX mobile : enlever le rendu "bouton" (encadré) du logo Actus
-   ====================================================== */
-#app-footer .footer-actus-btn{
   -webkit-appearance: none;
   appearance: none;
-
-  background: transparent !important;
-  border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-
-  /* évite le flash/halo au tap sur mobile */
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  line-height: 0;                      /* évite une “boîte” de ligne */
+}
+
+/* ✅ au cas où un style global ajoute des pseudo-éléments */
+#app-footer .footer-actus-btn::before,
+#app-footer .footer-actus-btn::after{
+  content: none !important;
 }
 
 #app-footer .footer-actus-btn:focus,
@@ -4398,127 +4337,22 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
 #app-footer .footer-actus-btn:active{
   outline: none !important;
   box-shadow: none !important;
-}
-
-#app-footer .footer-actus-btn img{
-  display: block;
-}
-
-/* Fix mobile : le "cadre" du bouton Actus devient exactement la couleur du footer */
-#app-footer .footer-actus-btn{
-  background: var(--footer-bg, #222) !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  outline: none !important;
-
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-
-  -webkit-appearance: none;
-  appearance: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#app-footer .footer-actus-btn:focus,
-#app-footer .footer-actus-btn:active,
-#app-footer .footer-actus-btn:focus-visible{
-  background: var(--footer-bg, #222) !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-/* Actus: état chargement (simple) */
-.actus-modal.is-loading{
-  opacity: 0.92;
-}
-
-.actus-modal.is-loading::after{
-  content: "Chargement…";
-  position: sticky;
-  bottom: 0;
-  display: block;
-  padding: 10px 0 0;
-  font-size: 14px;
-  opacity: 0.8;
-  text-align: center;
-}
-
-              /* Swatches couleurs dans la toolbar */
-.actus-color-swatches{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.actus-swatch{
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border-radius: 6px;
-  border: 1px solid rgba(127,127,127,0.35);
-  background: var(--c);
-  cursor: pointer;
-}
-
-.actus-swatch:active{
-  transform: scale(0.96);
-}
-
-/* Pour le blanc : bordure un peu plus visible */
-.actus-swatch[style*="#ffffff"]{
-  border: 1px solid rgba(127,127,127,0.7);
-}
-
-              @media (max-width: 600px){
-  .actus-swatch{ width: 26px; height: 26px; border-radius: 7px; }
-}
-
-/* ======================================================
-   FIX DEFINITIF : enlever le "gros carré" derrière le logo Actus (mobile)
-   ====================================================== */
-
-#app-footer .footer-actus-btn{
-  all: unset !important;                 /* ✅ reset total (gagne contre la plupart des règles) */
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  width: 110px !important;              /* ajuste si tu veux plus/petit */
-  height: 110px !important;
-
-  cursor: pointer !important;
-
-  background: transparent !important;   /* ✅ pas de fond */
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  outline: none !important;
-
-  -webkit-tap-highlight-color: transparent !important;
-}
-
-#app-footer .footer-actus-btn::before,
-#app-footer .footer-actus-btn::after{
-  content: none !important;             /* ✅ au cas où un style ajoute des pseudo-éléments */
-}
-
-#app-footer .footer-actus-btn:focus,
-#app-footer .footer-actus-btn:active,
-#app-footer .footer-actus-btn:focus-visible{
-  outline: none !important;
-  box-shadow: none !important;
   background: transparent !important;
 }
 
+/* Image : aucune “case” derrière */
 #app-footer .footer-actus-btn img{
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-  object-fit: contain !important;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
   background: transparent !important;
 }
 
+/* Option mobile */
+@media (max-width: 600px){
+  #app-footer .footer-actus-btn{
+    width: 110px;
+    height: 82px;
+  }
+}
