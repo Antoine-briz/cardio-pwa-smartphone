@@ -4418,3 +4418,43 @@ body:not(.theme-light) .eto-modal .eto-head-field select {
     height: 96px !important;
   }
 }
+
+  /* ======================================================
+   ACTUALITÉS — Swatches couleur (fix smartphone)
+   (à coller tout en bas du styles.css)
+   ====================================================== */
+
+#actus-overlay .actus-color-swatches{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+/* Reset total => évite les styles globaux button/.btn qui transforment en "lignes" */
+#actus-overlay .actus-swatch{
+  all: unset !important;
+  width: 26px !important;
+  height: 26px !important;
+  display: inline-block !important;
+
+  background-color: var(--c) !important;   /* ✅ la couleur */
+  border: 1px solid rgba(127,127,127,0.45) !important;
+  border-radius: 7px !important;
+
+  box-shadow: none !important;
+  outline: none !important;
+
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Blanc : bordure plus visible */
+#actus-overlay .actus-swatch[style*="#ffffff"]{
+  border-color: rgba(127,127,127,0.75) !important;
+}
+
+/* Press feedback (optionnel) */
+#actus-overlay .actus-swatch:active{
+  transform: scale(0.96) !important;
+}
