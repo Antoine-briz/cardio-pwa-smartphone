@@ -18312,6 +18312,9 @@ const routes = {
  
   // CEC
   "#/cec": renderCEC,
+"#/cec-protocoles": renderCecProtocoles,
+"#/cec-urgences": renderCecUrgences,
+"#/cec-procedures": renderCecProcedures,
 
   "#/enseignement": renderEnseignement,
   "#/bibliographie": renderBibliographie,
