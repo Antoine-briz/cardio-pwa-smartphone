@@ -73,6 +73,7 @@ function renderHome() {
   $app.innerHTML = `
     <section class="home">
 
+      <!-- 1ère ligne : existant -->
       <div class="grid">
         <div class="card" onclick="location.hash = '#/anesthesie'">
           <h3>Protocoles d’anesthésie</h3>
@@ -90,34 +91,46 @@ function renderHome() {
         </div>
       </div>
 
-       <div class="home-buttons">
-  <button
-  class="btn home-btn home-primary"
-  onclick="openHopiaPlanning()">
-  Planning médical
-</button>
+      <!-- 2ème ligne : NOUVEAUX encadrés -->
+      <div class="grid">
+        <div class="card" onclick="location.hash = '#/enseignement'">
+          <h3>Enseignement</h3>
+          <img src="img/enseignement.png" alt="Enseignement" class="menu-section-img" />
+        </div>
 
-  <button
-    class="btn home-btn home-primary"
-    onclick="location.hash = '#/annuaire'">
-    Annuaire
-  </button>
+        <div class="card" onclick="location.hash = '#/bibliographie'">
+          <h3>Bibliographie</h3>
+          <img src="img/bibliographie.png" alt="Bibliographie" class="menu-section-img" />
+        </div>
 
-  <button
-    class="btn home-btn home-primary"
-    onclick="location.hash = '#/codes'">
-    Codes d’accès
-  </button>
+        <div class="card" onclick="location.hash = '#/recherche'">
+          <h3>Recherche</h3>
+          <img src="img/recherche.png" alt="Recherche" class="menu-section-img" />
+        </div>
+      </div>
 
-  <button
-    class="btn home-btn home-danger"
-    onclick="location.hash = '#/acr'">
-    Arrêt cardio-respiratoire
-  </button>
-</div>
+      <!-- Boutons -->
+      <div class="home-buttons">
+        <button class="btn home-btn home-primary" onclick="openHopiaPlanning()">
+          Planning médical
+        </button>
+
+        <button class="btn home-btn home-primary" onclick="location.hash = '#/annuaire'">
+          Annuaire
+        </button>
+
+        <button class="btn home-btn home-primary" onclick="location.hash = '#/codes'">
+          Codes d’accès
+        </button>
+
+        <button class="btn home-btn home-danger" onclick="location.hash = '#/acr'">
+          Arrêt cardio-respiratoire
+        </button>
+      </div>
     </section>
   `;
 }
+
 
 // =======================================================
 //  ACTUALITÉS (SMARTPHONE) + PURGE BLOC À 12:00
