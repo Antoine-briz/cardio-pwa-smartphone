@@ -16891,21 +16891,615 @@ function renderCecProtocoles() {
   `;
 }
 
-function renderCecUrgences() {
+
+function renderCecUrgencesMenu() {
   $app.innerHTML = `
-    <section class="page">
-      <h2>Situations d'urgence – CEC</h2>
+    <section class="intervention-shell">
 
-      <p>
-        Cette section regroupera les conduites à tenir en situation d'urgence sous CEC.
-      </p>
+      <div class="intervention-main">
+        <div class="hero">
+          <h2>Situations d'urgence — CEC</h2>
+        </div>
 
-      <p>
-        (Contenu en cours de construction)
-      </p>
+        <div class="grid">
+          <button class="btn" onclick="renderCecUrgenceHypotension()">
+  Hypotension artérielle per CEC
+</button>
+          <button class="btn" onclick="renderCecUrgenceRetourVeineux()">
+  Retour veineux insuffisant
+</button>
+          <button class="btn" onclick="renderCecUrgenceResistanceHeparine()">
+  Résistance à l’Héparine
+</button>
+          <button class="btn" onclick="renderCecUrgenceCardioplegieInefficace()">
+  Cardioplégie inefficace
+</button>
+          <button class="btn" onclick="renderCecUrgenceDecanulationVeineuseAccidentelle()">
+  Décanulation veineuse accidentelle
+</button>
+          <button class="btn" onclick="renderCecUrgenceDissectionAortiqueSurLaCanulation()">
+  Dissection aortique sur la canulation
+</button>
+          <button class="btn" onclick="renderCecUrgenceChangementCircuitCEC()">
+  Changement de circuit de CEC
+</button>
+          <button class="btn" onclick="renderCecUrgenceEntreeAirOxygenateur()">
+  Entrée d’air dans l’oxygénateur
+</button>
+          <button class="btn" onclick="renderCecUrgenceEmbolieGazeuseMassive()">
+  Embolie gazeuse massive
+</button>
+
+<button class="btn" onclick="renderCecUrgenceThromboseDeCircuit()">
+  Thrombose de circuit
+</button>
+
+<button class="btn" onclick="renderCecUrgenceSevrageCecDifficile()">
+  Sevrage de CEC difficile
+</button>
+        </div>
+      </div>
+
+      <aside class="intervention-side">
+        <img src="img/cec1.png" alt="Circulation extra-corporelle">
+      </aside>
+
     </section>
   `;
 }
+function renderCecUrgenceHypotension() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Hémodilution au départ de CEC</li>
+          <li>Vasodilatation induite par les agents anesthésiques</li>
+          <li>Administration de cardioplégie</li>
+          <li>Choc septique (endocardite), ou syndrome inflammatoire (CEC longue++)</li>
+          <li>Réchauffement après hypothermie profonde</li>
+          <li>Diminution des résistances vasculaires systémiques après déclampage aortique</li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <p class="cec-consq">
+          Une PAM comprise entre 50 et 80 mmHg est habituellement la cible acceptée en CEC.<br>
+          Une valeur de PAM inférieure peut nécessiter un traitement
+        </p>
+      `
+    },
+    {
+  titre: "Algorithme de prise en charge",
+  ouvert: true,
+  html: `
+    <div class="cec-algo-image-wrap">
+      <img src="img/algo-1.png"
+           alt="Algorithme de prise en charge de l'hypotension artérielle en CEC"
+           class="cec-algo-image">
+    </div>
+  `
+}
+  ];
+
+  renderInterventionPage({
+    titre: "Hypotension artérielle per CEC",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceHypotension = renderCecUrgenceHypotension;
+
+function renderCecUrgenceRetourVeineux() {
+  const encadres = [
+    {
+      titre: "Prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-2.png"
+               alt="Algorithme de prise en charge du retour veineux insuffisant en CEC"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Retour veineux insuffisant",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceRetourVeineux = renderCecUrgenceRetourVeineux;
+
+function renderCecUrgenceResistanceHeparine() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Déficit congénital ou acquis en antithrombine (AT)</li>
+          <li>Traitement par héparine non fractionnée (HNF) &gt; 7 j</li>
+          <li>Endocardite infectieuse</li>
+          <li>Syndrome inflammatoire chronique</li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <p class="cec-consq">
+          Impossibilité d’obtenir l’ACT cible nécessaire pour l’initiation de la CEC (habituellement 400 s)
+        </p>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-3.png"
+               alt="Algorithme de prise en charge de la résistance à l’Héparine"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Résistance à l’Héparine",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceResistanceHeparine = renderCecUrgenceResistanceHeparine;
+
+function renderCecUrgenceCardioplegieInefficace() {
+  const encadres = [
+    {
+      titre: "Diagnostic",
+      ouvert: true,
+      html: `
+        <p>
+          Échec d’arrêt du cœur après 1–2 min de première cardioplégie bien menée
+        </p>
+      `
+    },
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Clampage aortique incomplet</li>
+          <li>Insuffisance aortique</li>
+          <li>
+            Erreur d’administration médicamenteuse dans la seringue de cardioplégie
+            (garder les ampoules)
+          </li>
+          <li>
+            Malposition d’une canule coronaire ou aspiration concomitante sur le Y
+            de cardioplégie
+          </li>
+          <li>Cardioplégie rétrograde insuffisante</li>
+          <li>
+            Omission de fermeture de la ligne de purge entre la cardioplégie et le
+            réservoir veineux, non-occlusivité de la pompe
+          </li>
+          <li>
+            Fistule broncho-coronaire ou alimentation par une mammaire interne non
+            clampée (redux de pontages)
+          </li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <ul class="cec-consq">
+          <li>
+            Persistance d’une contractilité cardiaque avec surconsommation d’oxygène.
+          </li>
+        </ul>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-4.png"
+               alt="Algorithme de prise en charge de la cardioplégie inefficace"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Cardioplégie inefficace",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceCardioplegieInefficace =
+  renderCecUrgenceCardioplegieInefficace;
+
+function renderCecUrgenceDecanulationVeineuseAccidentelle() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Manipulation intempestive d’une canule veineuse</li>
+          <li>Fixation incorrecte de la canule</li>
+          <li>Traction sur la ligne veineuse (position de la table, mouvement du chirurgien ou de l’aide)</li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <p class="cec-consq">
+          Diminution brutale du retour veineux avec arrêt de la pompe artérielle<br>
+          Risque de désamorçage de la CEC et d’embolie gazeuse
+        </p>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-5.png"
+               alt="Algorithme de prise en charge de la décannulation veineuse accidentelle"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Décanulation veineuse accidentelle",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceDecanulationVeineuseAccidentelle =
+  renderCecUrgenceDecanulationVeineuseAccidentelle;
+
+function renderCecUrgenceDissectionAortiqueSurLaCanulation() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Canulation sur une plaque d’athérome</li>
+          <li>Canule aortique insuffisamment enfoncée dans la paroi de l’artère</li>
+          <li>Canulation fémorale (CEC ou ECMO) avec canules de gros calibre ou insuffisamment profilées</li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <p class="cec-consq">
+          Extension rapide du faux chenal, risque de rupture aortique ou de malperfusion d’organes, arrêt de pompe artérielle
+        </p>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-6.png"
+               alt="Algorithme de prise en charge de la dissection aortique sur la canulation"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Dissection aortique sur la canulation",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceDissectionAortiqueSurLaCanulation =
+  renderCecUrgenceDissectionAortiqueSurLaCanulation;
+
+function renderCecUrgenceChangementCircuitCEC() {
+  const encadres = [
+    {
+      titre: "Généralité",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li><strong>Il s’agit d’une procédure d’exception +++</strong></li>
+          <li>
+            La décision de recourir à cette manœuvre ne doit être prise qu’en
+            <strong>concertation médico-chirurgicale</strong>
+          </li>
+          <li>
+            Nécessité de provoquer un <strong>arrêt circulatoire</strong> pour passer d’un
+            circuit à un autre. Cet arrêt doit être <strong>le plus court possible</strong>
+          </li>
+          <li>
+            Le <strong>changement complet du circuit</strong> est préférable à un changement isolé
+            de corps de pompe ou d’oxygénateur
+            (limite la durée de l’arrêt et le risque d’embolie gazeuse)
+          </li>
+          <li>
+            Un <strong>deuxième perfusionniste</strong> doit pouvoir se trouver en salle
+          </li>
+        </ul>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-7.png"
+               alt="Algorithme de prise en charge du changement de circuit de CEC"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Changement de circuit de CEC",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceChangementCircuitCEC =
+  renderCecUrgenceChangementCircuitCEC;
+
+function renderCecUrgenceEntreeAirOxygenateur() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Dysfonction ou mauvaise utilisation du détecteur de niveau</li>
+          <li>
+            Cavitation : arrêt brutal de pompe, cardioplégie non ou mal asservie
+            à l’artère
+          </li>
+        </ul>
+      `
+    },
+    {
+      titre: "Alerte",
+      ouvert: true,
+      html: `
+        <p class="cec-consq">
+          <strong>Nécessite une intervention immédiate +++</strong><br><br>
+          L’utilisation des filtres artériels actuels diminue toutefois largement
+          le risque d’embolie gazeuse artérielle si les mesures correctives sont
+          prises à temps
+        </p>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-8.png"
+               alt="Algorithme de prise en charge de l’entrée d’air dans l’oxygénateur"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Entrée d’air dans l’oxygénateur",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceEntreeAirOxygenateur =
+  renderCecUrgenceEntreeAirOxygenateur;
+
+function renderCecUrgenceEmbolieGazeuseMassive() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>
+            Ne devrait plus se voir compte tenu des équipements de sécurité
+            (asservissement de la pompe aux détecteurs de niveau et de bulles, filtres artériels)
+          </li>
+          <li>
+            Défaut de matériel, rupture d’oxygénateur, obstruction de l’event de sortie des gaz
+          </li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <ul class="cec-consq">
+          <li>
+            <strong>Nécessite une intervention immédiate +++</strong>
+            Gravité extrême compte-tenu du cumul arrêt circulatoire/ embolie gazeuse cérébrale
+          </li>
+        </ul>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-9.png"
+               alt="Algorithme de prise en charge de l’embolie gazeuse massive"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Embolie gazeuse massive",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceEmbolieGazeuseMassive =
+  renderCecUrgenceEmbolieGazeuseMassive;
+function renderCecUrgenceThromboseDeCircuit() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Défaut d’injection d’héparine (attention en cas de redémarrage CEC)</li>
+          <li>Thrombopénie induite à l’héparine</li>
+          <li>Injection accidentelle de protamine per CEC</li>
+          <li>Aspiration de sang protaminé après arrêt de CEC</li>
+          <li>Résistance à l’héparine et défaut de contrôle ACT</li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <p class="cec-consq">
+          La thrombose peut se situer à <strong>2 endroits</strong>
+        </p>
+        <ul class="cec-consq">
+          <li>
+            <strong>Filtre du réservoir veineux et / ou du cardiotome:</strong>
+            Défaut de retour veineux, malgré cœur « plein », niveau air-sang bas ou instable avec
+            caillotage diffus et filtres remplis
+          </li>
+          <li>
+            <strong>Oxygénateur:</strong>
+            Diminution du débit artériel mesuré et écart important avec le débit calculé.
+            Diminution de la pression sur la ligne artérielle, et majoration de la pression en pré-membrane.
+            Caillots observés dans le réservoir. Défaut d’oxygénation
+          </li>
+        </ul>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-10.png"
+               alt="Algorithme de prise en charge de la thrombose de circuit"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Thrombose de circuit",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceThromboseDeCircuit =
+  renderCecUrgenceThromboseDeCircuit;
+function renderCecUrgenceSevrageCecDifficile() {
+  const encadres = [
+    {
+      titre: "Étiologies",
+      ouvert: true,
+      html: `
+        <ul class="cec-etiol">
+          <li>Clampage prolongé et/ou défaut de cardioprotection</li>
+          <li>Dysfonction cardiaque gauche et/ou droite préopératoire</li>
+          <li>
+            Obstruction, plicature ou twist coronaire (artères mammaires ou anastomoses distales des pontages,
+            circonflexe sur la plastie mitrale, anastomoses proximales sur le Bentall ou le Tirone David)
+          </li>
+          <li>Malposition d’une prothèse valvulaire ou échec de réparation valvulaire</li>
+        </ul>
+      `
+    },
+    {
+      titre: "Conséquences",
+      ouvert: true,
+      html: `
+        <ul class="cec-consq">
+          <li>
+            Impossibilité de séparer le patient de la CEC sans inotropes, vasopresseurs ou assistance mécanique (CPIA, ECMO)
+          </li>
+          <li>Troubles du rythme récidivants ou persistants</li>
+        </ul>
+      `
+    },
+    {
+      titre: "Algorithme de prise en charge",
+      ouvert: true,
+      html: `
+        <div class="cec-algo-image-wrap">
+          <img src="img/algo-11.png"
+               alt="Algorithme de prise en charge du sevrage de CEC difficile"
+               class="cec-algo-image">
+        </div>
+      `
+    }
+  ];
+
+  renderInterventionPage({
+    titre: "Sevrage de CEC difficile",
+    sousTitre: "",
+    image: "cec1.png",
+    encadres,
+  });
+}
+
+window.renderCecUrgenceSevrageCecDifficile =
+  renderCecUrgenceSevrageCecDifficile;
+
 
 function renderCecProcedures() {
   $app.innerHTML = `
@@ -18353,7 +18947,7 @@ const routes = {
   // CEC
   "#/cec": renderCEC,
 "#/cec-protocoles": renderCecProtocoles,
-"#/cec-urgences": renderCecUrgences,
+"#/cec-urgences": renderCecUrgencesMenu,
 "#/cec-procedures": renderCecProcedures,
 
   "#/enseignement": renderEnseignement,
