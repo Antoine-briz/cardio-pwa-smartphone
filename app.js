@@ -16849,17 +16849,39 @@ function renderEtoBibliotheque() {
 //  CEC
 // =====================================================================
 
-function renderCecMenu() {
+function renderCEC() {
   $app.innerHTML = `
-    <section>
-      <div class="hero">
-        <img src="cec.png" alt="CEC" class="menu-section-img" />
+    <section class="intervention-page">
+
+      <header class="intervention-header">
         <h2>Circulation extra-corporelle</h2>
+      </header>
+
+      <div class="intervention-image">
+        <img src="img/cec1.png" alt="CEC" class="intervention-img">
       </div>
-      <p>Menu CEC à remplir ensuite (priming, anticoagulation, sevrage, particularités, etc.).</p>
+
+      <div class="intervention-actions">
+        <button class="btn home-btn home-primary"
+                onclick="location.hash = '#/cec-protocoles'">
+          Protocoles de CEC
+        </button>
+
+        <button class="btn home-btn home-primary"
+                onclick="location.hash = '#/cec-urgences'">
+          Situations d'urgence
+        </button>
+
+        <button class="btn home-btn home-primary"
+                onclick="location.hash = '#/cec-procedures'">
+          Procédures spécifiques
+        </button>
+      </div>
+
     </section>
   `;
 }
+
 
 function renderEnseignement() {
   $app.innerHTML = `
@@ -18289,7 +18311,7 @@ const routes = {
   "#/adaptee/erv":       () => renderBacteriaPage("erv",       BACTERIA_DATA.erv),
  
   // CEC
-  "#/cec": renderCecMenu,
+  "#/cec": renderCEC,
 
   "#/enseignement": renderEnseignement,
   "#/bibliographie": renderBibliographie,
