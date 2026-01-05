@@ -16854,9 +16854,8 @@ function renderCEC() {
     <section>
       <h2>Circulation extra-corporelle</h2>
 
-      <img src="img/cec1.png" alt="Circulation extra-corporelle" class="home-hero-img">
-
       <div class="grid">
+        <img src="img/cec1.png" alt="Circulation extra-corporelle" class="home-hero-img">
         <button class="btn" onclick="location.hash = '#/cec-protocoles'">
           Protocoles de CEC
         </button>
@@ -16897,11 +16896,10 @@ function renderCecUrgencesMenu() {
 
       <h2>Situations d'urgence — CEC</h2>
 
-      <img src="img/cec1.png"
+      <div class="grid">
+        <img src="img/cec1.png"
            alt="Circulation extra-corporelle"
            class="menu-section-img">
-
-      <div class="grid">
         <button class="btn" onclick="renderCecUrgenceHypotension()">
           Hypotension artérielle per CEC
         </button>
