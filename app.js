@@ -16854,7 +16854,7 @@ function renderCEC() {
     <section>
       <h2>Circulation extra-corporelle</h2>
 
-      <img src="img/cec1.png" alt="Circulation extra-corporelle">
+      <img src="img/cec1.png" alt="Circulation extra-corporelle" class="home-hero-img">
 
       <div class="grid">
         <button class="btn" onclick="location.hash = '#/cec-protocoles'">
