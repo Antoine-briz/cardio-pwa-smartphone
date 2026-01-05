@@ -16891,62 +16891,67 @@ function renderCecProtocoles() {
   `;
 }
 
-
 function renderCecUrgencesMenu() {
   $app.innerHTML = `
-    <section class="intervention-shell">
+    <section>
 
-      <div class="intervention-main">
-        <div class="hero">
-          <h2>Situations d'urgence — CEC</h2>
-        </div>
+      <h2>Situations d'urgence — CEC</h2>
 
-        <div class="grid">
-          <button class="btn" onclick="renderCecUrgenceHypotension()">
-  Hypotension artérielle per CEC
-</button>
-          <button class="btn" onclick="renderCecUrgenceRetourVeineux()">
-  Retour veineux insuffisant
-</button>
-          <button class="btn" onclick="renderCecUrgenceResistanceHeparine()">
-  Résistance à l’Héparine
-</button>
-          <button class="btn" onclick="renderCecUrgenceCardioplegieInefficace()">
-  Cardioplégie inefficace
-</button>
-          <button class="btn" onclick="renderCecUrgenceDecanulationVeineuseAccidentelle()">
-  Décanulation veineuse accidentelle
-</button>
-          <button class="btn" onclick="renderCecUrgenceDissectionAortiqueSurLaCanulation()">
-  Dissection aortique sur la canulation
-</button>
-          <button class="btn" onclick="renderCecUrgenceChangementCircuitCEC()">
-  Changement de circuit de CEC
-</button>
-          <button class="btn" onclick="renderCecUrgenceEntreeAirOxygenateur()">
-  Entrée d’air dans l’oxygénateur
-</button>
-          <button class="btn" onclick="renderCecUrgenceEmbolieGazeuseMassive()">
-  Embolie gazeuse massive
-</button>
+      <img src="img/cec1.png"
+           alt="Circulation extra-corporelle"
+           class="menu-section-img">
 
-<button class="btn" onclick="renderCecUrgenceThromboseDeCircuit()">
-  Thrombose de circuit
-</button>
+      <div class="grid">
+        <button class="btn" onclick="renderCecUrgenceHypotension()">
+          Hypotension artérielle per CEC
+        </button>
 
-<button class="btn" onclick="renderCecUrgenceSevrageCecDifficile()">
-  Sevrage de CEC difficile
-</button>
-        </div>
+        <button class="btn" onclick="renderCecUrgenceRetourVeineux()">
+          Retour veineux insuffisant
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceResistanceHeparine()">
+          Résistance à l’Héparine
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceCardioplegieInefficace()">
+          Cardioplégie inefficace
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceDecanulationVeineuseAccidentelle()">
+          Décanulation veineuse accidentelle
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceDissectionAortiqueSurLaCanulation()">
+          Dissection aortique sur la canulation
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceChangementCircuitCEC()">
+          Changement de circuit de CEC
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceEntreeAirOxygenateur()">
+          Entrée d’air dans l’oxygénateur
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceEmbolieGazeuseMassive()">
+          Embolie gazeuse massive
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceThromboseDeCircuit()">
+          Thrombose de circuit
+        </button>
+
+        <button class="btn" onclick="renderCecUrgenceSevrageCecDifficile()">
+          Sevrage de CEC difficile
+        </button>
       </div>
-
-      <aside class="intervention-side">
-        <img src="img/cec1.png" alt="Circulation extra-corporelle">
-      </aside>
 
     </section>
   `;
 }
+
+
 function renderCecUrgenceHypotension() {
   const encadres = [
     {
