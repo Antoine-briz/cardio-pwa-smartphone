@@ -4457,3 +4457,10 @@ body.light-theme .actus-saving-text{
 .actus-swatch[style*="#ffffff"]{
   border-color: rgba(127,127,127,0.85) !important;
 }
+
+/* Force coins arrondis pour les images "hero" des menus (CEC, ATB, etc.) */
+.home-hero-img{
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+}
