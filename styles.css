@@ -4649,3 +4649,14 @@ body.theme-dark .cec-box{ color:#111; }
   height: auto;
   margin: 0 auto;
 }
+
+/* =====================================================
+   FIX smartphone : homogénéisation uniquement DANS les encadrés
+   (sans toucher aux titres <summary>)
+===================================================== */
+
+details.card .card-body,
+details.card .card-body * {
+  font-size: 1rem !important;
+  line-height: 1.35 !important;
+}
