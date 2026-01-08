@@ -159,27 +159,21 @@ const PRECACHE = [
   "./files/Bactériologie clinique.pdf",
 ];
 
-// INSTALL : pré-cache tous les fichiers définis ci-dessus
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE))
-  );
-  self.skipWaiting();
-});
-
 // INSTALL : pré-cache (robuste) — n'échoue pas si 1 ressource est manquante
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
 
     // On tente d'ajouter tout, mais on n'échoue pas si un item est absent (404)
-    await Promise.allSettled(
-      PRECACHE.map((url) =>
-        cache.add(url).catch((err) => {
-          console.warn("[SW] Precaching failed:", url, err);
-        })
-      )
-    );
+    const UNIQUE = [...new Set(PRECACHE)];
+
+await Promise.allSettled(
+  UNIQUE.map((url) =>
+    cache.add(url).catch((err) => {
+      console.warn("[SW] Precaching failed:", url, err);
+    })
+  )
+);
 
     await self.skipWaiting();
   })());
