@@ -4660,3 +4660,431 @@ details.card .card-body * {
   font-size: 1rem !important;
   line-height: 1.35 !important;
 }
+
+
+/* =========================================================
+   ENSEIGNEMENT – VERSION SYNTHÉTISÉE (PPT-like)
+   Clair et lisible en thème sombre comme clair
+========================================================= */
+
+.enseignement-page .muted { opacity: 0.7; }
+
+/* =========================
+   TOOLBAR (haut)
+========================= */
+.enseignement-page .enseignement-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  margin: 12px 0;
+}
+
+.enseignement-page .enseignement-toolbar input[type="search"] {
+  flex: 1;
+  min-width: 280px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 10px;
+}
+
+.enseignement-page .enseignement-toolbar select {
+  width: 220px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 10px;
+}
+
+.enseignement-page .enseignement-toolbar .btn {
+  width: auto;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.enseignement-page .enseignement-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .enseignement-page .enseignement-layout {
+    grid-template-columns: 1fr;
+  }
+  .enseignement-page .enseignement-toolbar {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================
+   CARTE TABLEAU
+========================= */
+.enseignement-page .table-wrap {
+  background: #f5f5f5;
+  border: 2px solid #000;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.enseignement-page .enseignement-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  background: transparent;
+  color: #000;
+}
+
+.enseignement-page .enseignement-table thead th {
+  background: #f5f5f5;
+  color: #000;
+  padding: 10px;
+  font-weight: 700;
+  border-bottom: 2px solid #000;
+}
+
+.enseignement-page .enseignement-table tbody tr {
+  background: #ffffff;
+}
+
+.enseignement-page .enseignement-table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #000;
+}
+
+.enseignement-page .ens-row {
+  cursor: pointer;
+}
+
+.enseignement-page .ens-row.selected {
+  background: #e6e6e6;
+}
+
+.enseignement-page .ens-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #000;
+  border: 1px solid #000;
+}
+
+/* =========================
+   ACTIONS BAS
+========================= */
+.enseignement-page .enseignement-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 980px) {
+  .enseignement-page .enseignement-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================
+   CARTE APERÇU
+========================= */
+.enseignement-page .enseignement-preview {
+  background: #f5f5f5;
+  border: 2px solid #000;
+  border-radius: 16px;
+  padding: 12px;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enseignement-page .ens-preview-empty {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  opacity: 0.7;
+}
+
+.enseignement-page .ens-preview-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enseignement-page .ens-preview-frame {
+  width: 100%;
+  height: 520px;
+  margin-top: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 0;
+}
+
+/* =========================
+   MODALE AJOUT / MODIF
+========================= */
+.ens-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.ens-modal-backdrop.hidden { display: none; }
+
+.ens-modal {
+  width: min(720px, 95vw);
+  background: #f5f5f5;
+  color: #000;
+  border: 2px solid #000;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.ens-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ens-modal-close {
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #000;
+}
+
+.ens-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ens-form label span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ens-form input[type="text"],
+.ens-form select {
+  width: 100%;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 10px;
+}
+
+.ens-dropzone {
+  background: #ffffff;
+  border: 2px dashed #000;
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+}
+
+.ens-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ⚠️ Les .btn ne sont PAS modifiés :
+   → tes boutons bleus restent inchangés */
+
+/* Aperçu : l’iframe doit prendre toute la carte */
+.enseignement-page .enseignement-preview {
+  padding: 0 !important;          /* supprime le padding qui crée des marges */
+  overflow: hidden !important;     /* coins propres */
+  display: block !important;       /* plus de centrage flex */
+}
+
+/* Iframe pleine largeur/hauteur */
+.enseignement-page .ens-preview-frame {
+  display: block;
+  width: 100%;
+  height: 650px;                  /* ajuste si tu veux plus/moins haut */
+  border: 0;
+  border-radius: 16px;            /* suit les coins de la carte */
+}
+
+/* Message vide : recentrer (car preview n’est plus flex) */
+.enseignement-page .ens-preview-empty {
+  padding: 20px;
+  text-align: center;
+}
+
+/* =========================
+   Titre Enseignement
+========================= */
+.enseignement-page h2,
+.enseignement-page .enseignement-title {
+  text-align: center;
+  font-size: 2.4rem;   /* ~2x plus grand qu’un h2 standard */
+  font-weight: 800;
+  margin: 10px 0 16px;
+}
+
+/* =========================
+   Enseignement – largeur recherche réduite
+========================= */
+
+/* Barre du haut toujours en ligne */
+.enseignement-page .enseignement-toolbar {
+  justify-content: flex-start;
+}
+
+/* Recherche : largeur divisée par deux */
+.enseignement-page .enseignement-toolbar input[type="search"] {
+  flex: 0 0 50%;          /* prend 50% de la largeur au lieu de 100% */
+  max-width: 420px;       /* limite visuelle (ajuste si besoin) */
+}
+
+/* Les autres éléments restent collés à gauche */
+.enseignement-page .enseignement-toolbar select,
+.enseignement-page .enseignement-toolbar .btn {
+  flex: 0 0 auto;
+}
+
+/* Indication du code SARIC */
+.enseignement-page .ens-code-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #000;
+  opacity: 0.7;
+}
+
+/* ====== MODALE AJOUTER / MODIFIER : toujours claire et lisible ====== */
+
+/* Fond de la modale */
+.enseignement-page .ens-modal{
+  background: #f7f7f7 !important;   /* clair, pas blanc agressif */
+  color: #000 !important;
+  border: 2px solid #000 !important;
+}
+
+/* Titres/labels */
+.enseignement-page .ens-modal-head h3,
+.enseignement-page .ens-form label span{
+  color: #000 !important;
+  opacity: 1 !important;
+}
+
+/* Croix */
+.enseignement-page .ens-modal-close{
+  color: #000 !important;
+}
+
+/* Champs (titre/auteur/domaine) : clairs */
+.enseignement-page .ens-form input[type="text"],
+.enseignement-page .ens-form select{
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
+
+/* Dropzone : clair + bordure noire + texte noir */
+.enseignement-page .ens-dropzone{
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px dashed #000 !important;
+}
+
+.enseignement-page .ens-dropzone .muted,
+.enseignement-page .ens-file-name{
+  color: #000 !important;
+  opacity: 0.75 !important;
+}
+
+.enseignement-page .enseignement-actions{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;               /* ✅ 2 lignes si écran petit */
+  justify-content: flex-start;
+}
+
+.enseignement-page .enseignement-actions .btn{
+  width: auto !important;
+  display: inline-flex !important;
+}
+
+/* Actions bas : 5 boutons en ligne, wrap si écran petit */
+.enseignement-page .enseignement-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;              /* ✅ autorise 2 lignes sur petits écrans */
+  justify-content:flex-start;
+}
+
+.enseignement-page .enseignement-actions .btn{
+  width:auto !important;
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+}
+/* Smartphone : aperçu sous le tableau + hauteur iframe adaptée */
+@media (max-width: 980px){
+  .enseignement-page .enseignement-layout{
+    grid-template-columns: 1fr !important;  /* ✅ 1 colonne => aperçu dessous */
+  }
+
+  .enseignement-page .enseignement-preview{
+    min-height: 320px;
+  }
+
+  .enseignement-page .ens-preview-frame{
+    height: 60vh;              /* ✅ scroll vertical dans l’iframe */
+    width: 100%;
+  }
+}
+/* Modale toujours claire et lisible (même thème sombre) */
+.enseignement-page .ens-modal{
+  background: #f7f7f7 !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+}
+
+.enseignement-page .ens-modal-head h3,
+.enseignement-page .ens-form label span{
+  color:#000 !important;
+  opacity:1 !important;
+}
+
+.enseignement-page .ens-modal-close{
+  color:#000 !important;
+}
+
+/* Champs (Titre / Auteur / Domaine) */
+.enseignement-page .ens-form input[type="text"],
+.enseignement-page .ens-form select{
+  background:#fff !important;
+  color:#000 !important;
+  border:1px solid #000 !important;
+}
+
+/* Zone fichier (dropzone) */
+.enseignement-page .ens-dropzone{
+  background:#fff !important;
+  color:#000 !important;
+  border:2px dashed #000 !important;
+}
+
+.enseignement-page .ens-dropzone .muted,
+.enseignement-page .ens-file-name{
+  color:#000 !important;
+  opacity:0.75 !important;
+}
