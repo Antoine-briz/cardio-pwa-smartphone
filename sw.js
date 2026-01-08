@@ -170,16 +170,22 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// ACTIVATE : nettoie les anciens caches
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => (key !== CACHE_NAME ? caches.delete(key) : null))
+// INSTALL : pré-cache (robuste) — n'échoue pas si 1 ressource est manquante
+self.addEventListener("install", (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+
+    // On tente d'ajouter tout, mais on n'échoue pas si un item est absent (404)
+    await Promise.allSettled(
+      PRECACHE.map((url) =>
+        cache.add(url).catch((err) => {
+          console.warn("[SW] Precaching failed:", url, err);
+        })
       )
-    )
-  );
-  self.clients.claim();
+    );
+
+    await self.skipWaiting();
+  })());
 });
 
 // FETCH : stratégie hors-ligne (cache d'abord pour le local)
