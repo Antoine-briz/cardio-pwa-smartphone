@@ -17920,15 +17920,29 @@ const renderPreview = (doc) => {
 
   // ===== PDF : aperçu plein cadre =====
   if (kind === "pdf") {
-    $preview.innerHTML = `
-      <iframe
-        class="ens-preview-frame"
-        src="${resolveFileUrl(doc.fileUrl)}"
-        title="Aperçu PDF">
-      </iframe>
-    `;
-    return;
+  const url = resolveFileUrl(doc.fileUrl);
+
+  // Titre toujours affiché
+  $preview.innerHTML = `
+    <div class="ens-preview-head">
+      <div class="ens-preview-title">${doc.title || ""}</div>
+    </div>
+    <div id="ens-preview-body"></div>
+  `;
+
+  const body = document.getElementById("ens-preview-body");
+
+  // ✅ Mobile : PDF.js multi-pages (fiable iOS/Android/PWA)
+  if (isMobilePreview()) {
+    await renderPdfWithPdfjs(body, url);
+  } else {
+    // ✅ Desktop : iframe (rapide)
+    body.innerHTML = `<iframe class="ens-preview-frame" src="${url}#view=FitH" loading="lazy"></iframe>`;
   }
+
+  return;
+}
+
 
   // ===== PPT / PPTX : pas d’aperçu intégré =====
   $preview.innerHTML = `
@@ -18246,6 +18260,86 @@ $form.addEventListener("submit", async (e) => {
 };
 
   load();
+}
+
+// ===== PDF.js preview helpers =====
+let currentPdfRenderToken = 0;
+
+function isMobilePreview() {
+  return window.matchMedia && window.matchMedia("(max-width: 980px)").matches;
+}
+
+async function renderPdfWithPdfjs(container, pdfUrl) {
+  if (!window.pdfjsLib) {
+    container.innerHTML = `<div class="ens-preview-loading">PDF.js non chargé.</div>`;
+    return;
+  }
+
+  // Annule les rendus précédents
+  const myToken = ++currentPdfRenderToken;
+
+  container.innerHTML = `
+    <div class="ens-preview-pdf">
+      <div class="ens-preview-loading">Chargement du PDF…</div>
+      <div class="ens-preview-pages" id="ens-preview-pages"></div>
+    </div>
+  `;
+
+  const pagesWrap = container.querySelector("#ens-preview-pages");
+  const loadingEl = container.querySelector(".ens-preview-loading");
+
+  try {
+    // Charge le PDF
+    const loadingTask = window.pdfjsLib.getDocument({
+      url: pdfUrl,
+      // Important sur certains environnements
+      withCredentials: false
+    });
+
+    const pdf = await loadingTask.promise;
+
+    if (myToken !== currentPdfRenderToken) return;
+
+    loadingEl.textContent = `Rendu des pages (0 / ${pdf.numPages})…`;
+
+    // Largeur dispo (sans dépasser)
+    const availableWidth = Math.max(280, container.clientWidth - 2);
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      if (myToken !== currentPdfRenderToken) return;
+
+      const page = await pdf.getPage(pageNum);
+      const viewport1 = page.getViewport({ scale: 1 });
+
+      // Scale pour que la page rentre dans la largeur
+      const scale = availableWidth / viewport1.width;
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d", { alpha: false });
+
+      // Canvas en pixels réels
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+
+      pagesWrap.appendChild(canvas);
+
+      await page.render({ canvasContext: ctx, viewport }).promise;
+
+      loadingEl.textContent = `Rendu des pages (${pageNum} / ${pdf.numPages})…`;
+    }
+
+    loadingEl.remove();
+  } catch (err) {
+    console.error("PDF.js render error:", err);
+    container.innerHTML = `
+      <div class="ens-preview-loading">
+        Impossible d’afficher l’aperçu PDF sur ce navigateur.
+        <br/>
+        <a href="${pdfUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a>
+      </div>
+    `;
+  }
 }
 
 
