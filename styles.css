@@ -5163,3 +5163,29 @@ details.card .card-body * {
     height: 55vh;
   }
 }
+
+/* ===== Enseignement : Mobile — stop "1 lettre par ligne" ===== */
+@media (max-width: 600px) {
+
+  /* On laisse le tableau scroller horizontalement au lieu d'écraser les colonnes */
+  .enseignement-page .enseignement-table{
+    table-layout: auto !important;
+    min-width: 760px !important; /* force le scroll horizontal plutôt que le wrap extrême */
+  }
+
+  /* Règles générales : ne casse PAS au caractère */
+  .enseignement-page .enseignement-table th,
+  .enseignement-page .enseignement-table td{
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  /* Colonne Titre (2e colonne) : une ligne + ellipsis */
+  .enseignement-page .enseignement-table th:nth-child(2),
+  .enseignement-page .enseignement-table td:nth-child(2){
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 260px; /* ajuste si tu veux plus/moins */
+  }
+}
