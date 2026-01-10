@@ -17906,7 +17906,7 @@ const norm = (s) => (s ?? "")
     });
   };
 
-const renderPreview = (doc) => {
+const renderPreview = async (doc) => {
   if (!doc) {
     $preview.innerHTML = `
       <div class="ens-preview-empty">
