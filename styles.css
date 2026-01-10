@@ -5088,3 +5088,78 @@ details.card .card-body * {
   color:#000 !important;
   opacity:0.75 !important;
 }
+
+/* =========================
+   Enseignement — Fix mobile overflow + lisibilité
+========================= */
+@media (max-width: 600px) {
+
+  /* Empêche tout dépassement horizontal du conteneur */
+  .enseignement-page,
+  .enseignement-page .enseignement-left,
+  .enseignement-page .table-wrap {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Le wrapper peut scroller si nécessaire, mais sans “déborder” visuellement */
+  .enseignement-page .table-wrap {
+    overflow-x: auto;                 /* scroll horizontal si vraiment nécessaire */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Supprime le min-width desktop qui force le dépassement */
+  .enseignement-page .enseignement-table {
+    min-width: 0 !important;
+    width: 100% !important;
+    table-layout: fixed;              /* force les colonnes à respecter l’écran */
+  }
+
+  /* Colonnes : autorise le retour à la ligne au lieu de pousser l'écran */
+  .enseignement-page .enseignement-table th,
+  .enseignement-page .enseignement-table td {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* Réduire typo + padding pour que ça rentre */
+  .enseignement-page .enseignement-table thead th,
+  .enseignement-page .enseignement-table tbody td {
+    font-size: 12px !important;
+    padding: 8px 8px !important;
+  }
+
+  /* En-têtes un peu plus compacts */
+  .enseignement-page .enseignement-table thead th {
+    font-size: 12px !important;
+  }
+
+  /* Badge fichier et boutons compacts */
+  .enseignement-page .ens-badge {
+    font-size: 10px !important;
+    padding: 3px 6px !important;
+  }
+
+  .enseignement-page .btn.small,
+  .enseignement-page .enseignement-actions .btn {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  /* Toolbar : tout rentre sans pousser */
+  .enseignement-page .enseignement-toolbar {
+    flex-wrap: wrap !important;
+  }
+  .enseignement-page .enseignement-toolbar input[type="search"],
+  .enseignement-page .enseignement-toolbar select {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Aperçu */
+  .enseignement-page .ens-preview-frame {
+    width: 100%;
+    height: 55vh;
+  }
+}
