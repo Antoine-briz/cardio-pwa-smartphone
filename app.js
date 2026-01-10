@@ -18064,11 +18064,13 @@ const renderPreview = (doc) => {
   $filterDomain.addEventListener("change", () => { currentPage = 1; renderTable(); });
   $filterAuthor.addEventListener("change", () => { currentPage = 1; renderTable(); });
 
- $btnAdd.addEventListener("click", async () => {
+$btnAdd.addEventListener("click", async () => {
+  if (!(await ensureEnsAdminCodeOnce())) return;
   openModal("add");
 });
 
- $btnEdit.addEventListener("click", async () => {
+$btnEdit.addEventListener("click", async () => {
+  if (!(await ensureEnsAdminCodeOnce())) return;
   if (selectedIds.size !== 1) return;
 
   const id = Array.from(selectedIds)[0];
@@ -18076,7 +18078,8 @@ const renderPreview = (doc) => {
   if (doc) openModal("edit", doc);
 });
 
- $btnDelete.addEventListener("click", async () => {
+$btnDelete.addEventListener("click", async () => {
+  if (!(await ensureEnsAdminCodeOnce())) return;
   if (selectedIds.size === 0) return;
   if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
 
@@ -18101,6 +18104,7 @@ const renderPreview = (doc) => {
     alert("Erreur : suppression impossible.");
   }
 });
+
 
   $btnDownload.addEventListener("click", async () => {
   if (selectedIds.size === 0) return;
