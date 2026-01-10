@@ -80,6 +80,16 @@
   console.log("✅ AppCheck OK =", typeof firebase.appCheck);
 </script>
 
+<!-- PDF.js (viewer multi-pages) -->
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.js"></script>
+<script>
+  // Chemin du worker PDF.js (obligatoire)
+  if (window.pdfjsLib) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
+  }
+</script>
+  
 <!-- Application -->
 <script src="./app.js?v=1.0.0"></script>
   
