@@ -83,12 +83,17 @@
 <!-- PDF.js (viewer multi-pages) -->
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.js"></script>
 <script>
-  // Chemin du worker PDF.js (obligatoire)
-  if (window.pdfjsLib) {
-    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
-  }
+  (function () {
+    const pdfjs = window.pdfjsLib || globalThis.pdfjsLib;
+    if (pdfjs) {
+      pdfjs.GlobalWorkerOptions.workerSrc =
+        "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
+    } else {
+      console.warn("pdfjsLib introuvable juste après le chargement de pdf.min.js");
+    }
+  })();
 </script>
+
   
 <!-- Application -->
 <script src="./app.js?v=1.0.0"></script>
