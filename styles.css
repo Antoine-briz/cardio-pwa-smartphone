@@ -5189,3 +5189,41 @@ details.card .card-body * {
     max-width: 260px; /* ajuste si tu veux plus/moins */
   }
 }
+/* ===== PDF.js preview (multi-pages) ===== */
+.enseignement-page .ens-preview-pdf {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+.enseignement-page .ens-preview-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.enseignement-page .ens-preview-pages canvas {
+  display: block;
+  width: 100% !important;     /* ✅ ne dépasse jamais horizontalement */
+  height: auto !important;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid #000;     /* cohérent avec ton style clair */
+  border-radius: 10px;
+}
+
+/* Texte "chargement" */
+.enseignement-page .ens-preview-loading {
+  font-size: 13px;
+  opacity: 0.8;
+  padding: 10px 0;
+}
+
+/* Sur mobile : assure que le bloc preview ne déborde pas */
+@media (max-width: 600px) {
+  .enseignement-page .enseignement-preview {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
