@@ -18270,8 +18270,16 @@ function isMobilePreview() {
 }
 
 async function renderPdfWithPdfjs(container, pdfUrl) {
-  if (!window.pdfjsLib) {
-    container.innerHTML = `<div class="ens-preview-loading">PDF.js non chargé.</div>`;
+  const pdfjs = window.pdfjsLib || globalThis.pdfjsLib; // ✅ robust
+
+  if (!pdfjs) {
+    console.warn("[Enseignement] pdfjsLib introuvable. Vérifie le chargement de pdf.min.js.");
+    container.innerHTML = `
+      <div class="ens-preview-loading">
+        Aperçu PDF indisponible (PDF.js non chargé).<br/>
+        <a href="${pdfUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a>
+      </div>
+    `;
     return;
   }
 
@@ -18290,11 +18298,13 @@ async function renderPdfWithPdfjs(container, pdfUrl) {
 
   try {
     // Charge le PDF
-    const loadingTask = window.pdfjsLib.getDocument({
+    const loadingTask = pdfjs.getDocument({
       url: pdfUrl,
-      // Important sur certains environnements
       withCredentials: false
     });
+
+    const pdf = await loadingTask.promise;
+
 
     const pdf = await loadingTask.promise;
 
