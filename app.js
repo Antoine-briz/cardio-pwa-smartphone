@@ -18305,9 +18305,6 @@ async function renderPdfWithPdfjs(container, pdfUrl) {
 
     const pdf = await loadingTask.promise;
 
-
-    const pdf = await loadingTask.promise;
-
     if (myToken !== currentPdfRenderToken) return;
 
     loadingEl.textContent = `Rendu des pages (0 / ${pdf.numPages})…`;
