@@ -17945,26 +17945,28 @@ const renderPreview = async (doc) => {
   if (kind === "pdf") {
   const url = resolveFileUrl(doc.fileUrl);
 
-  // Titre toujours affiché
+  // ✅ Aperçu PDF = iframe (comme ton autre appli), partout (mobile + PC)
   $preview.innerHTML = `
     <div class="ens-preview-head">
       <div class="ens-preview-title">${doc.title || ""}</div>
     </div>
-    <div id="ens-preview-body"></div>
+
+    <div class="ens-preview-iframe-wrap">
+      <iframe
+        class="ens-preview-frame"
+        src="${url}#view=FitH&toolbar=0&navpanes=0"
+        loading="lazy"
+        title="Aperçu PDF">
+      </iframe>
+    </div>
+
+    <div class="ens-preview-fallback muted">
+      Si l’aperçu ne s’affiche pas sur votre téléphone, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
+    </div>
   `;
-
-  const body = document.getElementById("ens-preview-body");
-
-  // ✅ Mobile : PDF.js multi-pages (fiable iOS/Android/PWA)
-  if (isMobilePreview()) {
-    await renderPdfWithPdfjs(body, url);
-  } else {
-    // ✅ Desktop : iframe (rapide)
-    body.innerHTML = `<iframe class="ens-preview-frame" src="${url}#view=FitH" loading="lazy"></iframe>`;
-  }
-
   return;
 }
+
 
 
   // ===== PPT / PPTX : pas d’aperçu intégré =====
