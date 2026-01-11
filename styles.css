@@ -5227,3 +5227,35 @@ details.card .card-body * {
     overflow-x: hidden;
   }
 }
+/* Wrap iframe preview : empêche les dépassements */
+.enseignement-page .ens-preview-iframe-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.enseignement-page .ens-preview-frame {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 520px;
+  border: 0;
+  background: #fff;
+}
+
+/* Mobile : hauteur adaptée */
+@media (max-width: 600px) {
+  .enseignement-page .ens-preview-frame {
+    height: 65vh;
+  }
+}
+
+/* Fallback discret */
+.enseignement-page .ens-preview-fallback {
+  margin-top: 10px;
+  font-size: 12px;
+}
+.enseignement-page .ens-preview-fallback a {
+  text-decoration: underline;
+  font-weight: 700;
+}
