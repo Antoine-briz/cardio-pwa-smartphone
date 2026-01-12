@@ -17943,25 +17943,22 @@ const renderPreview = async (doc) => {
 
   // ===== PDF : aperçu plein cadre =====
   if (kind === "pdf") {
-  const url = resolveFileUrl(doc.fileUrl);
+  const isMobile = window.matchMedia && window.matchMedia("(max-width: 980px)").matches;
 
-  // ✅ Aperçu PDF = iframe (comme ton autre appli), partout (mobile + PC)
+  // Mobile: <embed> souvent plus compatible que iframe
+  const viewer = isMobile
+    ? `<embed class="ens-preview-frame" src="${url}#toolbar=0&navpanes=0&view=FitH" type="application/pdf" />`
+    : `<iframe class="ens-preview-frame" src="${url}#toolbar=0&navpanes=0&view=FitH" loading="lazy"></iframe>`;
+
   $preview.innerHTML = `
     <div class="ens-preview-head">
-      <div class="ens-preview-title">${doc.title || ""}</div>
+      <div class="ens-preview-title">${esc(doc.title || "")}</div>
     </div>
-
     <div class="ens-preview-iframe-wrap">
-      <iframe
-        class="ens-preview-frame"
-        src="${url}#view=FitH&toolbar=0&navpanes=0"
-        loading="lazy"
-        title="Aperçu PDF">
-      </iframe>
+      ${viewer}
     </div>
-
-    <div class="ens-preview-fallback muted">
-      Si l’aperçu ne s’affiche pas sur votre téléphone, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
+    <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
+      Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
     </div>
   `;
   return;
