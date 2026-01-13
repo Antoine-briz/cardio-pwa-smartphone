@@ -17640,7 +17640,18 @@ if (!contentType || contentType === "application/octet-stream") {
 }
 
 // ⚠️ on force le contentType
+const isPdf  = String(file.name || "").toLowerCase().endsWith(".pdf");
+const isPpt  = String(file.name || "").toLowerCase().endsWith(".ppt");
+const isPptx = String(file.name || "").toLowerCase().endsWith(".pptx");
+
+const contentType =
+  isPdf  ? "application/pdf" :
+  isPpt  ? "application/vnd.ms-powerpoint" :
+  isPptx ? "application/vnd.openxmlformats-officedocument.presentationml.presentation" :
+  (file.type || "application/octet-stream");
+
 await ref.put(file, { contentType });
+
 
     const fileUrl = await ref.getDownloadURL();
 
