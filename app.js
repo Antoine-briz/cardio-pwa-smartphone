@@ -17644,13 +17644,14 @@ const isPdf  = String(file.name || "").toLowerCase().endsWith(".pdf");
 const isPpt  = String(file.name || "").toLowerCase().endsWith(".ppt");
 const isPptx = String(file.name || "").toLowerCase().endsWith(".pptx");
 
-const contentType =
+const finalContentType =
   isPdf  ? "application/pdf" :
   isPpt  ? "application/vnd.ms-powerpoint" :
   isPptx ? "application/vnd.openxmlformats-officedocument.presentationml.presentation" :
   (file.type || "application/octet-stream");
 
-await ref.put(file, { contentType });
+await ref.put(file, { contentType: finalContentType });
+
 
 
     const fileUrl = await ref.getDownloadURL();
@@ -18440,21 +18441,17 @@ function renderRecherche() {
 
     const path = `research/${protocolId}/${Date.now()}__${safeFileName(file.name)}`;
     const ref = window.storage.ref().child(path);
-    const isPdf = String(file.name || "").toLowerCase().endsWith(".pdf");
-const isPpt = String(file.name || "").toLowerCase().endsWith(".ppt");
+    const isPdf  = String(file.name || "").toLowerCase().endsWith(".pdf");
+const isPpt  = String(file.name || "").toLowerCase().endsWith(".ppt");
 const isPptx = String(file.name || "").toLowerCase().endsWith(".pptx");
 
-const contentType =
-  isPdf ? "application/pdf" :
-  isPpt ? "application/vnd.ms-powerpoint" :
+const finalContentType =
+  isPdf  ? "application/pdf" :
+  isPpt  ? "application/vnd.ms-powerpoint" :
   isPptx ? "application/vnd.openxmlformats-officedocument.presentationml.presentation" :
   (file.type || "application/octet-stream");
 
-await ref.put(file, { contentType });
-
-    const fileUrl = await ref.getDownloadURL();
-    return { fileUrl, storagePath: path, fileName: file.name };
-  };
+await ref.put(file, { contentType: finalContentType });
 
   const deleteFromStorage = async (storagePath) => {
     if (!storagePath) return;
