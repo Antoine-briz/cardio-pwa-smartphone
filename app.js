@@ -18258,6 +18258,9 @@ function isMobile() {
    - Desktop : split gauche/droite + image
    - Mobile : 1 colonne, sans image
 ========================= */
+
+
+
 function renderBibliographie() {
   const mobile = isMobile();
 
