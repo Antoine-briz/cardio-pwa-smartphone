@@ -17952,31 +17952,46 @@ const norm = (s) => (s ?? "")
 
 const renderPreview = async (doc) => {
   if (!doc) {
+    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
+    return;
+  }
+
+  const url = resolveFileUrl(doc.fileUrl);
+  const kind = fileKind(doc.fileName || doc.title || "");
+
+  if (kind !== "pdf") {
     $preview.innerHTML = `
-      <div class="ens-preview-empty">
-        Sélectionnez un fichier pour afficher un aperçu
+      <div class="ens-preview-head">
+        <div class="ens-preview-title">${esc(doc.title || "")}</div>
+      </div>
+      <div class="muted" style="margin-top:10px;">
+        Aperçu intégré non disponible pour PowerPoint.
+        <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
       </div>
     `;
     return;
   }
 
-  const kind = fileKind(doc.fileName || doc.title || "");
-
-  // ===== PDF : aperçu plein cadre =====
-  if (kind === "pdf") {
-  const url = resolveFileUrl(doc.fileUrl);
+  // ==========================
+  // PDF : stratégie "comme l'autre appli"
+  // - Desktop : iframe
+  // - Mobile : PDF.js (fiable)
+  // - + fallback : si iframe ne charge pas -> PDF.js
+  // ==========================
 
   $preview.innerHTML = `
     <div class="ens-preview-head">
       <div class="ens-preview-title">${esc(doc.title || "")}</div>
     </div>
 
-    <div class="ens-preview-iframe-wrap">
+    <div class="ens-preview-iframe-wrap" id="ens-preview-wrap">
       <iframe
         class="ens-preview-frame"
+        id="ens-preview-iframe"
         src="${url}"
         title="Aperçu PDF"
-        loading="lazy">
+        loading="lazy"
+        referrerpolicy="no-referrer">
       </iframe>
     </div>
 
@@ -17984,18 +17999,34 @@ const renderPreview = async (doc) => {
       Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
     </div>
   `;
-  return;
-}
 
-  // ===== PPT / PPTX : pas d’aperçu intégré =====
-  $preview.innerHTML = `
-    <div class="ens-preview-empty">
-      Aperçu non disponible pour PowerPoint.<br>
-      Utilisez la colonne <strong>Ouvrir</strong> du tableau.
-    </div>
-  `;
+  // ✅ Sur mobile: on force PDF.js (car iframe PDF Firebase = souvent KO)
+  if (isMobilePreview()) {
+    await renderPdfWithPdfjs($preview, url);
+    return;
+  }
+
+  // ✅ Desktop: on tente iframe, et si ça ne charge pas -> PDF.js
+  const iframe = document.getElementById("ens-preview-iframe");
+  let loaded = false;
+
+  const timer = setTimeout(async () => {
+    if (!loaded) {
+      // fallback PDF.js
+      await renderPdfWithPdfjs($preview, url);
+    }
+  }, 1500);
+
+  iframe.addEventListener("load", () => {
+    loaded = true;
+    clearTimeout(timer);
+  });
+
+  iframe.addEventListener("error", async () => {
+    clearTimeout(timer);
+    await renderPdfWithPdfjs($preview, url);
+  });
 };
-
   
   const renderTable = () => {
     applyFilters();
@@ -18324,6 +18355,12 @@ async function renderPdfWithPdfjs(container, pdfUrl) {
       </div>
     `;
     return;
+  }
+
+  // ✅ IMPORTANT (surtout mobile) : worker PDF.js
+  if (!pdfjs.GlobalWorkerOptions.workerSrc) {
+    pdfjs.GlobalWorkerOptions.workerSrc =
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
   }
 
   // Annule les rendus précédents
