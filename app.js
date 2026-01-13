@@ -17801,10 +17801,13 @@ const norm = (s) => (s ?? "")
         <button class="btn" id="ens-download-all">Tout télécharger</button>
       </div>
 
-      <div class="muted" style="margin-top:10px; font-size:12px; text-align:center;">
-        Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard
-      </div>
-    </div>
+      <div class="muted" style="margin-top:10px; font-size:12px;">
+  Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard 
+</div>
+<div class="muted" style="margin-top:8px; font-size:12px;">
+            Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
+          </div>
+        </div>
 
     <!-- Modal -->
     <div class="ens-modal-backdrop hidden" id="ens-modal-backdrop">
@@ -18555,11 +18558,13 @@ $app.innerHTML = `
           <button class="btn" id="rch-download" type="button" disabled>Télécharger</button>
         </div>
 
-        <div class="muted" style="margin-top:8px; font-size:12px;">
-          Code requis pour Ajouter / Modifier / Supprimer : <strong>Contactez Antoine BRIZARD</strong>
+        <div class="muted" style="margin-top:10px; font-size:12px;">
+  Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard 
+</div>
+<div class="muted" style="margin-top:8px; font-size:12px;">
+            Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
+          </div>
         </div>
-
-      </div>
     </div>
 
     <!-- Modal protocole (ajout) -->
