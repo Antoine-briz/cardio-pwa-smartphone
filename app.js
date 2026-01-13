@@ -17760,7 +17760,6 @@ const norm = (s) => (s ?? "")
     <div class="enseignement-head">
       <div>
         <h2>Enseignement</h2>
-        <p class="muted">Supports pédagogiques partagés (PDF / PPT)</p>
       </div>
     </div>
 
@@ -18515,7 +18514,6 @@ $app.innerHTML = `
     <div class="enseignement-head">
       <div style="width:100%;">
         <h2 style="text-align:center; font-size:36px;">Recherche</h2>
-        <p class="muted" style="text-align:center;">Documents de protocoles de recherche (PDF / PPT)</p>
       </div>
     </div>
 
