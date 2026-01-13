@@ -7981,7 +7981,7 @@ function renderInterventionRVM() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID
-          (ajouter « KTa radial droit » si indiqué), BIS, NIRS si FdR, ETO,
+           (gauche si mitrale vidéo avec canulation JID), BIS, NIRS si FdR, ETO,
           Swan-Ganz si FEVG &lt; 35% ou HTAP.
         </p>
         <p><strong>Objectif IM :</strong> Plein, rapide, ouvert.</p>
@@ -7996,7 +7996,7 @@ function renderInterventionRVM() {
         </p>
         <p id="rvm-video-text" style="display:none;">
           <strong>Si plastie mitrale avec vidéo :</strong>
-          Intubation sélective par Carlens ou bloqueur endobronchique.
+          Intubation sélective ou bloqueur endobronchique.
         </p>
         <p>
           <strong>Entretien :</strong> AIVOC Propofol/Sufentanil.
@@ -8014,7 +8014,8 @@ function renderInterventionRVM() {
           <strong>ALR :</strong> Bloc thoracique transverse,
           Ropivacaïne 3,75 mg/mL 15–20 mL x2
           (dose max 3 mg/kg ≈
-            <span data-per-kg="3" data-unit="mg"></span>).
+            <span data-per-kg="3" data-unit="mg"></span>).<strong>Si plastie mitrale avec vidéo :</strong>
+          Bloc paravertébral (Ropivacaïne 3,75 mg/mL 15–20 mL) avec cathéter paravertébral .
         </p>
       `,
     },
