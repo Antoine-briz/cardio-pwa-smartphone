@@ -18441,17 +18441,10 @@ function renderRecherche() {
 
     const path = `research/${protocolId}/${Date.now()}__${safeFileName(file.name)}`;
     const ref = window.storage.ref().child(path);
-    const uploadIsPdf  = String(file.name || "").toLowerCase().endsWith(".pdf");
-const uploadIsPpt  = String(file.name || "").toLowerCase().endsWith(".ppt");
-const uploadIsPptx = String(file.name || "").toLowerCase().endsWith(".pptx");
-
-const finalContentType =
-  uploadIsPdf  ? "application/pdf" :
-  uploadIsPpt  ? "application/vnd.ms-powerpoint" :
-  uploadIsPptx ? "application/vnd.openxmlformats-officedocument.presentationml.presentation" :
-  (file.type || "application/octet-stream");
-
-await ref.put(file, { contentType: finalContentType });
+    await ref.put(file);
+    const fileUrl = await ref.getDownloadURL();
+    return { fileUrl, storagePath: path, fileName: file.name };
+  };
 
   const deleteFromStorage = async (storagePath) => {
     if (!storagePath) return;
@@ -18793,6 +18786,7 @@ const hideEditProtocolsModal = () => {
   </section>
 `;
 
+
   // ==============================
   // DOM refs
   // ==============================
@@ -19004,29 +18998,20 @@ $protoEditList.addEventListener("click", async (e) => {
     const kind = fileKind(doc.fileName || doc.title || "");
 
     if (kind === "pdf") {
-  const url = resolveFileUrl(doc.fileUrl);
-
-  $preview.innerHTML = `
-    <div class="ens-preview-head">
-      <div class="ens-preview-title">${esc(doc.title || "")}</div>
-    </div>
-
-    <div class="ens-preview-iframe-wrap">
-      <iframe
-        class="ens-preview-frame"
-        src="${url}"
-        title="Aperçu PDF"
-        loading="lazy">
-      </iframe>
-    </div>
-
-    <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
-      Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
-    </div>
-  `;
-  return;
-}
-
+      // ✅ Aperçu PDF = iframe (comme ton autre appli), fiable mobile
+      $preview.innerHTML = `
+        <div class="ens-preview-head">
+          <div class="ens-preview-title">${esc(doc.title || "")}</div>
+        </div>
+        <div class="ens-preview-iframe-wrap">
+          <iframe class="ens-preview-frame" src="${url}#view=FitH&toolbar=0&navpanes=0" loading="lazy"></iframe>
+        </div>
+        <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
+          Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
+        </div>
+      `;
+      return;
+    }
 
     // PPT/PPTX : pas d'aperçu intégré fiable → on invite à ouvrir
     $preview.innerHTML = `
@@ -19349,7 +19334,9 @@ $protoEditList.addEventListener("click", async (e) => {
     }
   })();
 }
-}
+
+
+
 
 // =====================================================================
 //  PAGES “PLANNING” ET “ANNUAIRE” (PLACEHOLDERS)
