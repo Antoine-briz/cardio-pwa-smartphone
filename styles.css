@@ -5418,3 +5418,89 @@ details.card .card-body * {
   }
 }
 
+/* =========================================================
+   BIBLIOGRAPHIE — VERSION SMARTPHONE (1 colonne, sans image)
+   À coller TOUT EN BAS de style.css
+========================================================= */
+
+@media (max-width: 900px){
+
+  /* 1) Plus de split 2 colonnes */
+  .biblio-split{
+    display: block !important;     /* une seule colonne */
+  }
+
+  /* 2) On masque l'image de droite si jamais elle existe */
+  .biblio-right{
+    display: none !important;
+  }
+
+  /* 3) Layout et espacements plus compacts */
+  .biblio-left{
+    gap: 12px !important;
+  }
+
+  .biblio-left .page-title{
+    font-size: 1.9rem !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* 4) Les tableaux ne doivent jamais dépasser l’écran */
+  .biblio-table-wrap{
+    width: 100% !important;
+    overflow-x: auto !important;     /* si vraiment trop large -> scroll horizontal */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .biblio-table{
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: auto !important;   /* plus souple sur mobile */
+  }
+
+  /* Colonne "Spécialité" moins large sur mobile */
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    width: 140px !important;
+  }
+
+  /* 5) Grille des revues : 2 colonnes (retour à la ligne) */
+  .biblio-journal-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  /* cartes un peu plus compactes */
+  .biblio-journal-card{
+    padding: 8px 6px !important;
+    border-radius: 14px !important;
+  }
+
+  .biblio-journal-card img{
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .biblio-journal-card span{
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+  }
+
+  /* 6) Texte du tableau toujours noir (thème sombre OK) */
+  .biblio-box,
+  .biblio-box *{
+    color: #000 !important;
+  }
+
+  /* 7) Bordures visibles même sur mobile */
+  .biblio-table thead th{
+    border-bottom: 2px solid rgba(0,0,0,0.22) !important;
+  }
+  .biblio-table tbody td{
+    border-bottom: 1px solid rgba(0,0,0,0.14) !important;
+  }
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    border-right: 2px solid rgba(0,0,0,0.22) !important;
+  }
+}
