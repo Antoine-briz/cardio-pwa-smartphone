@@ -17756,111 +17756,101 @@ const norm = (s) => (s ?? "")
   };
 
   $app.innerHTML = `
-    <section class="page enseignement-page">
-      <div class="enseignement-head">
-        <div>
-          <h2>Enseignement</h2>
-          <p class="muted">Supports pédagogiques partagés (PDF / PPT)</p>
+  <section class="page enseignement-page">
+    <div class="enseignement-head">
+      <div>
+        <h2>Enseignement</h2>
+        <p class="muted">Supports pédagogiques partagés (PDF / PPT)</p>
+      </div>
+    </div>
+
+    <div class="enseignement-toolbar">
+      <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
+      <select id="ens-filter-domain">
+        <option value="">Tous les domaines</option>
+      </select>
+      <select id="ens-filter-author">
+        <option value="">Tous les auteurs</option>
+      </select>
+    </div>
+
+    <div class="enseignement-left">
+      <div class="table-wrap">
+        <table class="enseignement-table">
+          <thead>
+            <tr>
+              <th style="width:110px;">Fichier</th>
+              <th>Titre</th>
+              <th style="width:130px;">Date d’ajout</th>
+              <th style="width:180px;">Auteur</th>
+              <th style="width:160px;">Domaine</th>
+              <th style="width:110px;">Ouvrir</th>
+            </tr>
+          </thead>
+          <tbody id="ens-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="enseignement-pagination" id="ens-pagination"></div>
+
+      <div class="enseignement-actions">
+        <button class="btn" id="ens-add">Ajouter</button>
+        <button class="btn" id="ens-edit" disabled>Modifier</button>
+        <button class="btn danger" id="ens-delete" disabled>Supprimer</button>
+        <button class="btn" id="ens-download" disabled>Télécharger</button>
+        <button class="btn" id="ens-download-all">Tout télécharger</button>
+      </div>
+
+      <div class="muted" style="margin-top:10px; font-size:12px; text-align:center;">
+        Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Rapprochez vous d'Antoine Brizard
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="ens-modal-backdrop hidden" id="ens-modal-backdrop">
+      <div class="ens-modal" role="dialog" aria-modal="true">
+        <div class="ens-modal-head">
+          <h3 id="ens-modal-title">Ajouter un fichier</h3>
+          <button class="ens-modal-close" id="ens-modal-close" aria-label="Fermer">×</button>
         </div>
-      </div>
 
-      <div class="enseignement-toolbar">
-        <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
-        <select id="ens-filter-domain">
-          <option value="">Tous les domaines</option>
-        </select>
-        <select id="ens-filter-author">
-          <option value="">Tous les auteurs</option>
-        </select>
-      </div>
+        <form id="ens-form" class="ens-form">
+          <input type="hidden" id="ens-form-id" value="" />
 
-            <div class="enseignement-layout">
-        <div class="enseignement-left">
-          <div class="table-wrap">
-            <table class="enseignement-table">
-              <thead>
-                <tr>
-                  <th style="width:110px;">Fichier</th>
-                  <th>Titre</th>
-                  <th style="width:130px;">Date d’ajout</th>
-                  <th style="width:180px;">Auteur</th>
-                  <th style="width:160px;">Domaine</th>
-                  <th style="width:110px;">Ouvrir</th>
-                </tr>
-              </thead>
-              <tbody id="ens-tbody"></tbody>
-            </table>
-          </div>
+          <label>
+            <span>Titre</span>
+            <input id="ens-form-title" type="text" required />
+          </label>
 
-          <div class="enseignement-pagination" id="ens-pagination"></div>
+          <label>
+            <span>Auteur</span>
+            <input id="ens-form-author" type="text" required />
+          </label>
 
-          <div class="enseignement-actions">
-            <button class="btn" id="ens-add">Ajouter</button>
-            <button class="btn" id="ens-edit" disabled>Modifier</button>
-            <button class="btn danger" id="ens-delete" disabled>Supprimer</button>
-            <button class="btn" id="ens-download" disabled>Télécharger</button>
-            <button class="btn" id="ens-download-all">Tout télécharger</button>
-          </div>
-<div class="muted" style="margin-top:10px; font-size:12px; text-align:center;">
-  Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Rapprochez vous d'Antoine Brizard 
-</div>
+          <label>
+            <span>Domaine</span>
+            <select id="ens-form-domain" required></select>
+          </label>
 
-
-          <!-- ✅ Aperçu EN DESSOUS (smartphone) -->
-          <div class="enseignement-preview" id="ens-preview" style="margin-top: 14px;">
-            <div class="ens-preview-empty">
-              Sélectionnez un fichier pour afficher un aperçu
+          <div class="ens-dropzone" id="ens-dropzone">
+            <div class="ens-dropzone-text">
+              <strong>Fichier</strong>
+              <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
+              <div class="ens-file-name" id="ens-file-name">Aucun fichier sélectionné</div>
             </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- Modal -->
-      <div class="ens-modal-backdrop hidden" id="ens-modal-backdrop">
-        <div class="ens-modal" role="dialog" aria-modal="true">
-          <div class="ens-modal-head">
-            <h3 id="ens-modal-title">Ajouter un fichier</h3>
-            <button class="ens-modal-close" id="ens-modal-close" aria-label="Fermer">×</button>
+            <input id="ens-form-file" type="file"
+              accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
           </div>
 
-          <form id="ens-form" class="ens-form">
-            <input type="hidden" id="ens-form-id" value="" />
-
-            <label>
-              <span>Titre</span>
-              <input id="ens-form-title" type="text" required />
-            </label>
-
-            <label>
-              <span>Auteur</span>
-              <input id="ens-form-author" type="text" required />
-            </label>
-
-            <label>
-              <span>Domaine</span>
-              <select id="ens-form-domain" required></select>
-            </label>
-
-            <div class="ens-dropzone" id="ens-dropzone">
-              <div class="ens-dropzone-text">
-                <strong>Fichier</strong>
-                <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
-                <div class="ens-file-name" id="ens-file-name">Aucun fichier sélectionné</div>
-              </div>
-              <input id="ens-form-file" type="file"
-                accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
-            </div>
-
-            <div class="ens-form-actions">
-              <button type="button" class="btn" id="ens-cancel">Annuler</button>
-              <button type="submit" class="btn primary" id="ens-save">Enregistrer</button>
-            </div>
-          </form>
-        </div>
+          <div class="ens-form-actions">
+            <button type="button" class="btn" id="ens-cancel">Annuler</button>
+            <button type="submit" class="btn primary" id="ens-save">Enregistrer</button>
+          </div>
+        </form>
       </div>
-    </section>
-  `;
+    </div>
+  </section>
+`;
 
   const $search = document.getElementById("ens-search");
   const $filterDomain = document.getElementById("ens-filter-domain");
@@ -17874,7 +17864,6 @@ const norm = (s) => (s ?? "")
   const $btnDownload = document.getElementById("ens-download");
   const $btnDownloadAll = document.getElementById("ens-download-all");
 
-  const $preview = document.getElementById("ens-preview");
 
   const $modalBackdrop = document.getElementById("ens-modal-backdrop");
   const $modalTitle = document.getElementById("ens-modal-title");
@@ -17950,83 +17939,6 @@ const norm = (s) => (s ?? "")
     });
   };
 
-const renderPreview = async (doc) => {
-  if (!doc) {
-    $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
-    return;
-  }
-
-  const url = resolveFileUrl(doc.fileUrl);
-  const kind = fileKind(doc.fileName || doc.title || "");
-
-  if (kind !== "pdf") {
-    $preview.innerHTML = `
-      <div class="ens-preview-head">
-        <div class="ens-preview-title">${esc(doc.title || "")}</div>
-      </div>
-      <div class="muted" style="margin-top:10px;">
-        Aperçu intégré non disponible pour PowerPoint.
-        <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
-      </div>
-    `;
-    return;
-  }
-
-  // ==========================
-  // PDF : stratégie "comme l'autre appli"
-  // - Desktop : iframe
-  // - Mobile : PDF.js (fiable)
-  // - + fallback : si iframe ne charge pas -> PDF.js
-  // ==========================
-
-  $preview.innerHTML = `
-    <div class="ens-preview-head">
-      <div class="ens-preview-title">${esc(doc.title || "")}</div>
-    </div>
-
-    <div class="ens-preview-iframe-wrap" id="ens-preview-wrap">
-      <iframe
-        class="ens-preview-frame"
-        id="ens-preview-iframe"
-        src="${url}"
-        title="Aperçu PDF"
-        loading="lazy"
-        referrerpolicy="no-referrer">
-      </iframe>
-    </div>
-
-    <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
-      Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
-    </div>
-  `;
-
-  // ✅ Sur mobile: on force PDF.js (car iframe PDF Firebase = souvent KO)
-  if (isMobilePreview()) {
-    await renderPdfWithPdfjs($preview, url);
-    return;
-  }
-
-  // ✅ Desktop: on tente iframe, et si ça ne charge pas -> PDF.js
-  const iframe = document.getElementById("ens-preview-iframe");
-  let loaded = false;
-
-  const timer = setTimeout(async () => {
-    if (!loaded) {
-      // fallback PDF.js
-      await renderPdfWithPdfjs($preview, url);
-    }
-  }, 1500);
-
-  iframe.addEventListener("load", () => {
-    loaded = true;
-    clearTimeout(timer);
-  });
-
-  iframe.addEventListener("error", async () => {
-    clearTimeout(timer);
-    await renderPdfWithPdfjs($preview, url);
-  });
-};
   
   const renderTable = () => {
     applyFilters();
@@ -18077,7 +17989,6 @@ const renderPreview = async (doc) => {
         });
 
         const doc = allDocs.find(d => d.id === id);
-        renderPreview(doc);
         setButtonsState();
       });
 
@@ -18322,8 +18233,7 @@ $form.addEventListener("submit", async (e) => {
     currentPage = 1;
     filteredDocs = [];
     selectedIds.clear();
-    activeDocId = null;
-    renderPreview(null);
+    activeDocId = null;;
     renderTable();
   } catch (err) {
     console.error(err);
@@ -18336,101 +18246,6 @@ $form.addEventListener("submit", async (e) => {
   load();
 }
 
-// ===== PDF.js preview helpers =====
-let currentPdfRenderToken = 0;
-
-function isMobilePreview() {
-  return window.matchMedia && window.matchMedia("(max-width: 980px)").matches;
-}
-
-async function renderPdfWithPdfjs(container, pdfUrl) {
-  const pdfjs = window.pdfjsLib || globalThis.pdfjsLib; // ✅ robust
-
-  if (!pdfjs) {
-    console.warn("[Enseignement] pdfjsLib introuvable. Vérifie le chargement de pdf.min.js.");
-    container.innerHTML = `
-      <div class="ens-preview-loading">
-        Aperçu PDF indisponible (PDF.js non chargé).<br/>
-        <a href="${pdfUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a>
-      </div>
-    `;
-    return;
-  }
-
-  // ✅ IMPORTANT (surtout mobile) : worker PDF.js
-  if (!pdfjs.GlobalWorkerOptions.workerSrc) {
-    pdfjs.GlobalWorkerOptions.workerSrc =
-      "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
-  }
-
-  // Annule les rendus précédents
-  const myToken = ++currentPdfRenderToken;
-
-  container.innerHTML = `
-    <div class="ens-preview-pdf">
-      <div class="ens-preview-loading">Chargement du PDF…</div>
-      <div class="ens-preview-pages" id="ens-preview-pages"></div>
-    </div>
-  `;
-
-  const pagesWrap = container.querySelector("#ens-preview-pages");
-  const loadingEl = container.querySelector(".ens-preview-loading");
-
-  try {
-    // ✅ Charge le PDF (réglages CRUCIAUX pour Firebase + mobile)
-    const loadingTask = pdfjs.getDocument({
-      url: pdfUrl,
-      withCredentials: false,
-
-      // 🔥 IMPORTANT : évite les requêtes "Range" (souvent instables/bloquées sur mobile)
-      disableRange: true,
-      disableStream: true,
-      disableAutoFetch: true
-    });
-
-    const pdf = await loadingTask.promise;
-
-    if (myToken !== currentPdfRenderToken) return;
-
-    loadingEl.textContent = `Rendu des pages (0 / ${pdf.numPages})…`;
-
-    // Largeur dispo (sans dépasser)
-    const availableWidth = Math.max(280, container.clientWidth - 2);
-
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      if (myToken !== currentPdfRenderToken) return;
-
-      const page = await pdf.getPage(pageNum);
-      const viewport1 = page.getViewport({ scale: 1 });
-
-      // Scale pour que la page rentre dans la largeur
-      const scale = availableWidth / viewport1.width;
-      const viewport = page.getViewport({ scale });
-
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d", { alpha: false });
-
-      canvas.width = Math.floor(viewport.width);
-      canvas.height = Math.floor(viewport.height);
-
-      pagesWrap.appendChild(canvas);
-
-      await page.render({ canvasContext: ctx, viewport }).promise;
-
-      loadingEl.textContent = `Rendu des pages (${pageNum} / ${pdf.numPages})…`;
-    }
-
-    loadingEl.remove();
-  } catch (err) {
-    console.error("PDF.js render error (mobile):", err);
-    container.innerHTML = `
-      <div class="ens-preview-loading">
-        Impossible d’afficher l’aperçu PDF sur ce téléphone.<br/>
-        <a href="${pdfUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a>
-      </div>
-    `;
-  }
-}
 
 
 function renderBibliographie() {
@@ -18585,7 +18400,6 @@ const bindProtoEditActions = () => {
           currentProtocolName = "";
           $select.value = "";
           $body.classList.add("hidden");
-          renderPreview(null);
         }
 
         await loadProtocols();
@@ -18660,7 +18474,6 @@ if ($protoRemove) {
         currentProtocolName = "";
         $select.value = "";
         $body.classList.add("hidden");
-        renderPreview(null);
       }
 
       await loadProtocols();
@@ -18694,7 +18507,7 @@ const hideEditProtocolsModal = () => {
   // ==============================
   // UI
   // ==============================
-  $app.innerHTML = `
+$app.innerHTML = `
   <section class="page recherche-page enseignement-page">
     <div class="enseignement-head">
       <div style="width:100%;">
@@ -18717,8 +18530,6 @@ const hideEditProtocolsModal = () => {
 
     <!-- Zone qui n'apparait qu'après sélection -->
     <div id="rch-body" class="hidden">
-
-      <!-- ✅ MOBILE: on force la preview en dessous via l'ordre DOM (CSS fera le reste) -->
       <div class="enseignement-left">
 
         <div class="table-wrap">
@@ -18746,13 +18557,6 @@ const hideEditProtocolsModal = () => {
 
         <div class="muted" style="margin-top:8px; font-size:12px;">
           Code requis pour Ajouter / Modifier / Supprimer : <strong>SARIC2026</strong>
-        </div>
-
-        <!-- ✅ Preview sous le tableau + boutons (mobile) -->
-        <div class="enseignement-right" style="margin-top:12px;">
-          <div class="enseignement-preview" id="rch-preview">
-            <div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>
-          </div>
         </div>
 
       </div>
@@ -18832,6 +18636,7 @@ const hideEditProtocolsModal = () => {
         </form>
       </div>
     </div>
+
   </section>
 `;
 
@@ -18856,7 +18661,6 @@ const $protoEditList = document.getElementById("rch-proto-edit-list");
   
   const $tbody = document.getElementById("rch-tbody");
   const $pagination = document.getElementById("rch-pagination");
-  const $preview = document.getElementById("rch-preview");
 
   const $btnAdd = document.getElementById("rch-add");
   const $btnEdit = document.getElementById("rch-edit");
@@ -18992,7 +18796,6 @@ $protoEditList.addEventListener("click", async (e) => {
         currentProtocolName = "";
         $select.value = "";
         $body.classList.add("hidden");
-        renderPreview(null);
       }
 
       await loadProtocols();
@@ -19037,42 +18840,6 @@ $protoEditList.addEventListener("click", async (e) => {
   // ==============================
   // Rendering
   // ==============================
-  const renderPreview = (doc) => {
-    if (!doc) {
-      $preview.innerHTML = `<div class="ens-preview-empty">Sélectionnez un fichier pour afficher un aperçu</div>`;
-      return;
-    }
-
-    const url = resolveFileUrl(doc.fileUrl);
-    const kind = fileKind(doc.fileName || doc.title || "");
-
-    if (kind === "pdf") {
-      // ✅ Aperçu PDF = iframe (comme ton autre appli), fiable mobile
-      $preview.innerHTML = `
-        <div class="ens-preview-head">
-          <div class="ens-preview-title">${esc(doc.title || "")}</div>
-        </div>
-        <div class="ens-preview-iframe-wrap">
-          <iframe class="ens-preview-frame" src="${url}#view=FitH&toolbar=0&navpanes=0" loading="lazy"></iframe>
-        </div>
-        <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
-          Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
-        </div>
-      `;
-      return;
-    }
-
-    // PPT/PPTX : pas d'aperçu intégré fiable → on invite à ouvrir
-    $preview.innerHTML = `
-      <div class="ens-preview-head">
-        <div class="ens-preview-title">${esc(doc.title || "")}</div>
-      </div>
-      <div class="muted" style="margin-top:10px;">
-        Aperçu intégré non disponible pour PowerPoint.
-        <br/>Clique pour <a href="${url}" target="_blank" rel="noopener">ouvrir le fichier</a>.
-      </div>
-    `;
-  };
 
   const updateButtons = () => {
     $btnEdit.disabled = selectedIds.size !== 1;
@@ -19158,7 +18925,6 @@ $protoEditList.addEventListener("click", async (e) => {
         renderTable();
 
         const doc = allDocs.find((x) => x.id === id);
-        renderPreview(doc);
       });
     });
 
@@ -19200,7 +18966,6 @@ $protoEditList.addEventListener("click", async (e) => {
     activeDocId = null;
     currentPage = 1;
 
-    renderPreview(null);
     renderTable();
   };
 
@@ -19376,7 +19141,6 @@ $protoEditList.addEventListener("click", async (e) => {
       await loadProtocols();
       // Tant qu'aucun protocole sélectionné : on masque le body
       $body.classList.add("hidden");
-      renderPreview(null);
     } catch (err) {
       console.error(err);
       alert("Erreur : impossible de charger la page Recherche.");
