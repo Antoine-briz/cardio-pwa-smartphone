@@ -5596,3 +5596,15 @@ details.card .card-body * {
     width: min(96vw, 520px) !important;
   }
 }
+/* BiBL — newsletter */
+.bibl-newsletter{
+  margin: 6px 0 10px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.bibl-newsletter a{
+  color: #0b2f6b;
+  text-decoration: underline;
+  word-break: break-all;
+}
