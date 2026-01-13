@@ -18377,10 +18377,15 @@ async function renderPdfWithPdfjs(container, pdfUrl) {
   const loadingEl = container.querySelector(".ens-preview-loading");
 
   try {
-    // Charge le PDF
+    // ✅ Charge le PDF (réglages CRUCIAUX pour Firebase + mobile)
     const loadingTask = pdfjs.getDocument({
       url: pdfUrl,
-      withCredentials: false
+      withCredentials: false,
+
+      // 🔥 IMPORTANT : évite les requêtes "Range" (souvent instables/bloquées sur mobile)
+      disableRange: true,
+      disableStream: true,
+      disableAutoFetch: true
     });
 
     const pdf = await loadingTask.promise;
@@ -18405,7 +18410,6 @@ async function renderPdfWithPdfjs(container, pdfUrl) {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d", { alpha: false });
 
-      // Canvas en pixels réels
       canvas.width = Math.floor(viewport.width);
       canvas.height = Math.floor(viewport.height);
 
@@ -18418,11 +18422,10 @@ async function renderPdfWithPdfjs(container, pdfUrl) {
 
     loadingEl.remove();
   } catch (err) {
-    console.error("PDF.js render error:", err);
+    console.error("PDF.js render error (mobile):", err);
     container.innerHTML = `
       <div class="ens-preview-loading">
-        Impossible d’afficher l’aperçu PDF sur ce navigateur.
-        <br/>
+        Impossible d’afficher l’aperçu PDF sur ce téléphone.<br/>
         <a href="${pdfUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a>
       </div>
     `;
