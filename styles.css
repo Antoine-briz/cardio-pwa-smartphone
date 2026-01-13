@@ -5504,3 +5504,95 @@ details.card .card-body * {
     border-right: 2px solid rgba(0,0,0,0.22) !important;
   }
 }
+
+/* =========================================================
+   BiBL / Juniors — VERSION SMARTPHONE
+   - Pas d’aperçu (colonne droite masquée si jamais)
+   - Tableau lisible via scroll horizontal (pas écrasé verticalement)
+========================================================= */
+
+@media (max-width: 900px){
+
+  /* Sécurité : même si un jour la colonne preview revient */
+  .enseignement-right{
+    display: none !important;
+  }
+
+  /* Layout = 1 colonne */
+  .page.enseignement-page .enseignement-layout{
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* Marges plus compactes */
+  .page.enseignement-page > .enseignement-head,
+  .page.enseignement-page > .enseignement-toolbar,
+  .page.enseignement-page > .enseignement-layout{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* -------------------------------------------------------
+     TABLEAU : scroll horizontal (la règle clé)
+     ------------------------------------------------------- */
+
+  /* le wrapper doit pouvoir scroller horizontalement */
+  .enseignement-left .table-wrap{
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+  }
+
+  /* le tableau ne doit PAS se réduire en "colonne" */
+  .enseignement-table{
+    width: max-content !important;     /* largeur = contenu */
+    min-width: 980px !important;       /* force un tableau lisible */
+    table-layout: auto !important;
+  }
+
+  /* cellules un peu plus compactes */
+  .enseignement-table th,
+  .enseignement-table td{
+    white-space: nowrap !important;    /* évite des retours à la ligne moches */
+    padding: 10px 10px !important;
+    font-size: 14px !important;
+  }
+
+  /* colonne titre : on limite mais on garde lisible */
+  .enseignement-table td.ens-title{
+    max-width: 320px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Pagination et boutons : empêche de dépasser */
+  .enseignement-actions{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .enseignement-actions .btn{
+    flex: 1 1 auto !important;
+    min-width: 150px; /* évite trop petit */
+  }
+
+  /* Toolbar : empilement vertical pour éviter débordements */
+  .enseignement-toolbar{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .enseignement-toolbar input,
+  .enseignement-toolbar select{
+    width: 100% !important;
+  }
+
+  /* Modal : largeur adaptée */
+  .ens-modal{
+    width: min(96vw, 520px) !important;
+  }
+}
