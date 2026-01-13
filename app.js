@@ -18441,14 +18441,14 @@ function renderRecherche() {
 
     const path = `research/${protocolId}/${Date.now()}__${safeFileName(file.name)}`;
     const ref = window.storage.ref().child(path);
-    const isPdf  = String(file.name || "").toLowerCase().endsWith(".pdf");
-const isPpt  = String(file.name || "").toLowerCase().endsWith(".ppt");
-const isPptx = String(file.name || "").toLowerCase().endsWith(".pptx");
+    const uploadIsPdf  = String(file.name || "").toLowerCase().endsWith(".pdf");
+const uploadIsPpt  = String(file.name || "").toLowerCase().endsWith(".ppt");
+const uploadIsPptx = String(file.name || "").toLowerCase().endsWith(".pptx");
 
 const finalContentType =
-  isPdf  ? "application/pdf" :
-  isPpt  ? "application/vnd.ms-powerpoint" :
-  isPptx ? "application/vnd.openxmlformats-officedocument.presentationml.presentation" :
+  uploadIsPdf  ? "application/pdf" :
+  uploadIsPpt  ? "application/vnd.ms-powerpoint" :
+  uploadIsPptx ? "application/vnd.openxmlformats-officedocument.presentationml.presentation" :
   (file.type || "application/octet-stream");
 
 await ref.put(file, { contentType: finalContentType });
