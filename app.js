@@ -17943,28 +17943,28 @@ const renderPreview = async (doc) => {
 
   // ===== PDF : aperçu plein cadre =====
   if (kind === "pdf") {
-  const isMobile = window.matchMedia && window.matchMedia("(max-width: 980px)").matches;
-
-  // Mobile: <embed> souvent plus compatible que iframe
-  const viewer = isMobile
-    ? `<embed class="ens-preview-frame" src="${url}#toolbar=0&navpanes=0&view=FitH" type="application/pdf" />`
-    : `<iframe class="ens-preview-frame" src="${url}#toolbar=0&navpanes=0&view=FitH" loading="lazy"></iframe>`;
+  const url = resolveFileUrl(doc.fileUrl);
 
   $preview.innerHTML = `
     <div class="ens-preview-head">
       <div class="ens-preview-title">${esc(doc.title || "")}</div>
     </div>
+
     <div class="ens-preview-iframe-wrap">
-      ${viewer}
+      <iframe
+        class="ens-preview-frame"
+        src="${url}"
+        title="Aperçu PDF"
+        loading="lazy">
+      </iframe>
     </div>
+
     <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
       Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
     </div>
   `;
   return;
 }
-
-
 
   // ===== PPT / PPTX : pas d’aperçu intégré =====
   $preview.innerHTML = `
@@ -18429,7 +18429,18 @@ function renderRecherche() {
 
     const path = `research/${protocolId}/${Date.now()}__${safeFileName(file.name)}`;
     const ref = window.storage.ref().child(path);
-    await ref.put(file);
+    const isPdf = String(file.name || "").toLowerCase().endsWith(".pdf");
+const isPpt = String(file.name || "").toLowerCase().endsWith(".ppt");
+const isPptx = String(file.name || "").toLowerCase().endsWith(".pptx");
+
+const contentType =
+  isPdf ? "application/pdf" :
+  isPpt ? "application/vnd.ms-powerpoint" :
+  isPptx ? "application/vnd.openxmlformats-officedocument.presentationml.presentation" :
+  (file.type || "application/octet-stream");
+
+await ref.put(file, { contentType });
+
     const fileUrl = await ref.getDownloadURL();
     return { fileUrl, storagePath: path, fileName: file.name };
   };
@@ -18985,20 +18996,29 @@ $protoEditList.addEventListener("click", async (e) => {
     const kind = fileKind(doc.fileName || doc.title || "");
 
     if (kind === "pdf") {
-      // ✅ Aperçu PDF = iframe (comme ton autre appli), fiable mobile
-      $preview.innerHTML = `
-        <div class="ens-preview-head">
-          <div class="ens-preview-title">${esc(doc.title || "")}</div>
-        </div>
-        <div class="ens-preview-iframe-wrap">
-          <iframe class="ens-preview-frame" src="${url}#view=FitH&toolbar=0&navpanes=0" loading="lazy"></iframe>
-        </div>
-        <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
-          Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
-        </div>
-      `;
-      return;
-    }
+  const url = resolveFileUrl(doc.fileUrl);
+
+  $preview.innerHTML = `
+    <div class="ens-preview-head">
+      <div class="ens-preview-title">${esc(doc.title || "")}</div>
+    </div>
+
+    <div class="ens-preview-iframe-wrap">
+      <iframe
+        class="ens-preview-frame"
+        src="${url}"
+        title="Aperçu PDF"
+        loading="lazy">
+      </iframe>
+    </div>
+
+    <div class="ens-preview-fallback muted" style="margin-top:10px;font-size:12px;">
+      Si l’aperçu ne s’affiche pas, <a href="${url}" target="_blank" rel="noopener">ouvrir le PDF</a>.
+    </div>
+  `;
+  return;
+}
+
 
     // PPT/PPTX : pas d'aperçu intégré fiable → on invite à ouvrir
     $preview.innerHTML = `
