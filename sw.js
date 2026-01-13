@@ -1,6 +1,6 @@
 // ------- sw.js : PWA hors-ligne pour l'app de réanimation -------
 
-const CACHE_NAME = "cardio-icu-v1";
+const CACHE_NAME = "saric-cache-v20260113-03";
 
 // Tous les fichiers à pré-cacher (HTML, CSS, JS, images, Excel)
 const PRECACHE = [
@@ -212,29 +212,53 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Pour le reste (CSS, JS, images, Excel, etc.) : cache d'abord, puis réseau
-  event.respondWith(
-    (async () => {
-      const cached = await caches.match(req, { ignoreSearch: true });
-      if (cached) {
-        // En arrière-plan, on tente une mise à jour silencieuse
-        fetch(req)
-          .then(async (networkResp) => {
-            const cache = await caches.open(CACHE_NAME);
-            await cache.put(req, networkResp.clone());
-          })
-          .catch(() => {});
-        return cached;
-      }
+    // Pour le reste : on différencie JS/CSS (network-first) et assets (cache-first)
+  event.respondWith((async () => {
+    const isJS = req.destination === "script" || url.pathname.endsWith(".js");
+    const isCSS = req.destination === "style" || url.pathname.endsWith(".css");
 
+    // ✅ JS/CSS : NETWORK FIRST (sinon tu restes bloqué sur un vieux app.js)
+    if (isJS || isCSS) {
       try {
-        const networkResp = await fetch(req);
+        const networkResp = await fetch(req, { cache: "no-store" });
         const cache = await caches.open(CACHE_NAME);
         await cache.put(req, networkResp.clone());
         return networkResp;
       } catch (e) {
-        // Si on est hors ligne et que ce n'était pas en cache : rien à faire
+        const cached = await caches.match(req, { ignoreSearch: false });
+        if (cached) return cached;
         return new Response("", { status: 504, statusText: "Offline" });
       }
-    })()
-  );
+    }
+
+    // ✅ Assets (images, etc.) : CACHE FIRST + update en arrière-plan
+    const cached = await caches.match(req, { ignoreSearch: false });
+    if (cached) {
+      fetch(req).then(async (networkResp) => {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(req, networkResp.clone());
+      }).catch(() => {});
+      return cached;
+    }
+
+    try {
+      const networkResp = await fetch(req);
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(req, networkResp.clone());
+      return networkResp;
+    } catch (e) {
+      return new Response("", { status: 504, statusText: "Offline" });
+    }
+  })());
+
 });
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve())));
+    await self.clients.claim();
+  })());
+});
+
+                      
