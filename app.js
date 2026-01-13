@@ -19349,7 +19349,7 @@ $protoEditList.addEventListener("click", async (e) => {
     }
   })();
 }
-
+}
 
 // =====================================================================
 //  PAGES “PLANNING” ET “ANNUAIRE” (PLACEHOLDERS)
