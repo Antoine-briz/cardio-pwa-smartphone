@@ -16880,7 +16880,6 @@ function renderCEC() {
       <h2>Circulation extra-corporelle</h2>
 
       <div class="grid">
-        <img src="img/cec1.png" alt="Circulation extra-corporelle" class="home-hero-img">
         <button class="btn" onclick="location.hash = '#/cec-protocoles'">
           Protocoles de CEC
         </button>
