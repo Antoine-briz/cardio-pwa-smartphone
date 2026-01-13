@@ -18248,16 +18248,763 @@ $form.addEventListener("submit", async (e) => {
   load();
 }
 
+// helper: détecte smartphone (tu peux ajuster le seuil)
+function isMobile() {
+  return window.matchMedia("(max-width: 900px)").matches;
+}
 
-
+/* =========================
+   PAGE BIBLIOGRAPHIE (responsive)
+   - Desktop : split gauche/droite + image
+   - Mobile : 1 colonne, sans image
+========================= */
 function renderBibliographie() {
+  const mobile = isMobile();
+
   $app.innerHTML = `
-    <section class="page">
-      <h2>Bibliographie</h2>
-      <p>Références, articles, recommandations et lectures utiles.</p>
+    <section class="container">
+      <div class="biblio-split ${mobile ? "biblio-split--mobile" : ""}">
+        <div class="biblio-left">
+          <h2 class="page-title page-title--biblio">Bibliographie</h2>
+
+          <div class="biblio-actions">
+            <button class="btn btn-darkblue" id="btnBiblioJuniors">
+              Internes: Biblio & staff juniors
+            </button>
+
+            <button class="btn btn-darkblue btn-bibl-typewriter" id="btnBiblioHebdo">
+              BiBL.
+            </button>
+          </div>
+
+          <!-- ✅ Tableau Revues médicales -->
+          <div class="biblio-box">
+            <div class="biblio-table-wrap">
+              <table class="biblio-table">
+                <thead>
+                  <tr>
+                    <th>Spécialité</th>
+                    <th>Revues médicales</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td class="biblio-spec">Anesthésie (cardiaque)</td>
+                    <td>
+                      <div class="biblio-journal-grid">
+                        <a class="biblio-journal-card" href="https://www.bjanaesthesia.org" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/bja.png" alt="BJA logo">
+                          <span>British Journal of Anaesthesia (BJA)</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://pubs.asahq.org/anesthesiology" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/anesthesiology.png" alt="Anesthesiology logo">
+                          <span>Anesthesiology</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://journals.lww.com/anesthesia-analgesia" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/anesthesia_analgesia.png" alt="Anesthesia &amp; Analgesia logo">
+                          <span>Anesthesia &amp; Analgesia</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.jcvaonline.com" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/jcva.png" alt="JCVA logo">
+                          <span>JCVA</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://journals.lww.com/ejanaesthesiology" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/eja.png" alt="EJA logo">
+                          <span>EJA</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="biblio-spec">Réanimation</td>
+                    <td>
+                      <div class="biblio-journal-grid">
+                        <a class="biblio-journal-card" href="https://www.atsjournals.org/journal/ajrccm" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/ajrccm.png" alt="AJRCCM logo">
+                          <span>AJRCCM</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://journals.lww.com/ccmjournal" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/critical_care_medicine.png" alt="Critical Care Medicine logo">
+                          <span>Critical Care Medicine</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.springer.com/journal/134" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/intensive_care_medicine.png" alt="Intensive Care Medicine logo">
+                          <span>Intensive Care Medicine</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://ccforum.biomedcentral.com" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/critical_care.png" alt="Critical Care logo">
+                          <span>Critical Care</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://annalsofintensivecare.springeropen.com" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/annals_intensive_care.png" alt="Annals of Intensive Care logo">
+                          <span>Annals of Intensive Care</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="biblio-spec">Chirurgie cardiaque &amp; thoracique</td>
+                    <td>
+                      <div class="biblio-journal-grid">
+                        <a class="biblio-journal-card" href="https://www.jtcvs.org" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/jtcvs.png" alt="JTCVS logo">
+                          <span>JTCVS</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://academic.oup.com/ejcts" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/ejcts.png" alt="EJCTS logo">
+                          <span>EJCTS</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.annalsthoracicsurgery.org" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/annals_thoracic_surgery.png" alt="Annals of Thoracic Surgery logo">
+                          <span>Annals of Thoracic Surgery</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.ahajournals.org/journal/circinterventions" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/circ_interventions.png" alt="Circ: Cardiovascular Interventions logo">
+                          <span>Circ: Cardiovascular Interventions</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.journals.elsevier.com/seminars-in-thoracic-and-cardiovascular-surgery" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/seminars_tcv_surgery.png" alt="Seminars TCV Surgery logo">
+                          <span>Seminars TCV Surgery</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="biblio-spec">Cardiologie</td>
+                    <td>
+                      <div class="biblio-journal-grid">
+                        <a class="biblio-journal-card" href="https://www.ahajournals.org/journal/circ" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/circulation.png" alt="Circulation logo">
+                          <span>Circulation</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://academic.oup.com/eurheartj" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/ehj.png" alt="European Heart Journal logo">
+                          <span>European Heart Journal</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.jacc.org" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/jacc.png" alt="JACC logo">
+                          <span>JACC</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.nature.com/nrcardio" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/nature_reviews_cardiology.png" alt="Nature Reviews Cardiology logo">
+                          <span>Nat Rev Cardiol</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://jamanetwork.com/journals/jamacardiology" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/jama_cardiology.png" alt="JAMA Cardiology logo">
+                          <span>JAMA Cardiology</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="biblio-spec">Infectiologie</td>
+                    <td>
+                      <div class="biblio-journal-grid">
+                        <a class="biblio-journal-card" href="https://www.thelancet.com/journals/laninf/home" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/laninf.png" alt="Lancet Infectious Diseases logo">
+                          <span>Lancet Infectious Diseases</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://academic.oup.com/cid" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/cid.png" alt="Clinical Infectious Diseases logo">
+                          <span>Clinical Infectious Diseases</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.nature.com/nrmicro" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/nature_reviews_microbiology.png" alt="Nature Reviews Microbiology logo">
+                          <span>Nat Rev Microbiol</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://wwwnc.cdc.gov/eid" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/eid.png" alt="EID logo">
+                          <span>Emerging Infectious Diseases</span>
+                        </a>
+                        <a class="biblio-journal-card" href="https://www.journals.elsevier.com/journal-of-infection" target="_blank" rel="noopener noreferrer">
+                          <img src="img/journals/journal_of_infection.png" alt="Journal of Infection logo">
+                          <span>Journal of Infection</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        ${
+          mobile
+            ? ""
+            : `
+          <div class="biblio-right" aria-hidden="true">
+            <img src="img/bibliographie2.png" alt="Bibliographie">
+          </div>`
+        }
+      </div>
     </section>
   `;
+
+  document.getElementById("btnBiblioJuniors")?.addEventListener("click", () => {
+    location.hash = "#/bibliographie/juniors";
+  });
+
+  document.getElementById("btnBiblioHebdo")?.addEventListener("click", () => {
+    location.hash = "#/bibliographie/hebdo";
+  });
+
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }
+
+/* =========================
+   PAGES BIBLIOGRAPHIE (smartphone)
+   - Pas de colonne preview
+   - Pas d'iframe PDF (aucun aperçu)
+   - Table ne doit pas dépasser (wrap/scroll géré par CSS)
+========================= */
+
+function renderBiblioJuniors() {
+  return renderTeachingClonePageMobile({
+    title: "Internes: Biblio & staff juniors",
+    collectionName: "biblioJuniors",
+    storageFolder: "biblioJuniors",
+  });
+}
+
+function renderBiblioHebdo() {
+  return renderTeachingClonePageMobile({
+    title: "BiBL.",
+    collectionName: "biblioHebdo",
+    storageFolder: "biblioHebdo",
+  });
+}
+
+/* =========================
+   CLONE Enseignement — VERSION MOBILE
+   - Identique (toolbar + table + actions + modal)
+   - MAIS:
+     1) pas de panneau preview
+     2) clic ligne ne déclenche pas d'aperçu (juste sélection)
+========================= */
+
+function renderTeachingClonePageMobile(cfg) {
+  const DOMAINS = ["Réanimation","Anesthésie","ETO","CEC","Infectiologie","Cardiologie","Autre"];
+  const API_BASE = (window.ENSEIGNEMENT_API_BASE || "").replace(/\/$/, "");
+  const teachingCol = () => window.db.collection(cfg.collectionName);
+
+  const fileExt = (name = "") => {
+    const m = String(name).toLowerCase().match(/\.([a-z0-9]+)$/);
+    return m ? m[1] : "";
+  };
+
+  const uploadToStorage = async (file) => {
+    const MAX_PDF = 40 * 1024 * 1024;
+    const MAX_PPT = 80 * 1024 * 1024;
+
+    if (!file) throw new Error("Aucun fichier sélectionné.");
+    const name = String(file.name || "fichier");
+    const ext = name.toLowerCase().split(".").pop();
+    const isPdf = ext === "pdf";
+    const isPpt = ext === "ppt" || ext === "pptx";
+    if (!isPdf && !isPpt) throw new Error("Format non autorisé. Seuls PDF et PPT/PPTX sont acceptés.");
+    if (isPdf && file.size > MAX_PDF) throw new Error("PDF trop volumineux (limite 40 Mo).");
+    if (isPpt && file.size > MAX_PPT) throw new Error("PPT/PPTX trop volumineux (limite 80 Mo).");
+
+    const safeName = name.replace(/[^\w.\-]+/g, "_");
+    const path = `${cfg.storageFolder}/${Date.now()}__${safeName}`;
+    const ref = window.storage.ref().child(path);
+
+    let contentType = file.type;
+    if (!contentType || contentType === "application/octet-stream") {
+      if (ext === "pdf") contentType = "application/pdf";
+      else if (ext === "ppt") contentType = "application/vnd.ms-powerpoint";
+      else if (ext === "pptx") contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    }
+
+    await ref.put(file, { contentType });
+    const fileUrl = await ref.getDownloadURL();
+    return { fileUrl, storagePath: path, fileName: name };
+  };
+
+  const deleteFromStorage = async (storagePath) => {
+    if (!storagePath) return;
+    try { await window.storage.ref().child(storagePath).delete(); }
+    catch (e) { console.warn("Storage delete warning:", e?.message || e); }
+  };
+
+  const resolveFileUrl = (u) => {
+    if (!u) return "";
+    if (/^https?:\/\//i.test(u)) return u;
+    return `${API_BASE}${u.startsWith("/") ? "" : "/"}${u}`;
+  };
+
+  const norm = (s) => (s ?? "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const PAGE_SIZE = 10;
+
+  let allDocs = [];
+  let filteredDocs = [];
+  let selectedIds = new Set();
+  let currentPage = 1;
+
+  const fmtDate = (iso) => {
+    try {
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("fr-FR");
+    } catch { return ""; }
+  };
+
+  const fileKind = (name = "") => {
+    const n = name.toLowerCase();
+    if (n.endsWith(".pdf")) return "pdf";
+    if (n.endsWith(".ppt") || n.endsWith(".pptx")) return "ppt";
+    return "file";
+  };
+
+  const openInNewTab = (url) => {
+    if (!url) return;
+    window.open(resolveFileUrl(url), "_blank", "noopener,noreferrer");
+  };
+
+  const downloadUrl = (url, filename) => {
+    const a = document.createElement("a");
+    a.href = resolveFileUrl(url);
+    if (filename) a.download = filename;
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  // ✅ Version mobile : pas de colonne preview du tout
+  $app.innerHTML = `
+    <section class="page enseignement-page enseignement-page--mobile">
+      <div class="enseignement-head">
+        <div><h2>${cfg.title}</h2></div>
+      </div>
+
+      <div class="enseignement-toolbar">
+        <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
+        <select id="ens-filter-domain">
+          <option value="">Tous les domaines</option>
+        </select>
+        <select id="ens-filter-author">
+          <option value="">Tous les auteurs</option>
+        </select>
+      </div>
+
+      <div class="enseignement-layout enseignement-layout--mobile">
+        <div class="enseignement-left">
+          <div class="table-wrap">
+            <table class="enseignement-table">
+              <thead>
+                <tr>
+                  <th style="width:90px;">Fichier</th>
+                  <th>Titre</th>
+                  <th style="width:110px;">Date</th>
+                  <th style="width:140px;">Auteur</th>
+                  <th style="width:130px;">Domaine</th>
+                  <th style="width:90px;">Ouvrir</th>
+                </tr>
+              </thead>
+              <tbody id="ens-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="enseignement-pagination" id="ens-pagination"></div>
+
+          <div class="enseignement-actions">
+            <button class="btn" id="ens-add">Ajouter</button>
+            <button class="btn" id="ens-edit" disabled>Modifier</button>
+            <button class="btn danger" id="ens-delete" disabled>Supprimer</button>
+            <button class="btn" id="ens-download" disabled>Télécharger</button>
+            <button class="btn" id="ens-download-all">Tout télécharger</button>
+          </div>
+
+          <div class="muted" style="margin-top:10px; font-size:16px;">
+            Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard
+          </div>
+          <div class="muted" style="margin-top:8px; font-size:16px;">
+            Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal (identique) -->
+      <div class="ens-modal-backdrop hidden" id="ens-modal-backdrop">
+        <div class="ens-modal" role="dialog" aria-modal="true">
+          <div class="ens-modal-head">
+            <h3 id="ens-modal-title">Ajouter un fichier</h3>
+            <button class="ens-modal-close" id="ens-modal-close" aria-label="Fermer">×</button>
+          </div>
+
+          <form id="ens-form" class="ens-form">
+            <input type="hidden" id="ens-form-id" value="" />
+
+            <label>
+              <span>Titre</span>
+              <input id="ens-form-title" type="text" required />
+            </label>
+
+            <label>
+              <span>Auteur</span>
+              <input id="ens-form-author" type="text" required />
+            </label>
+
+            <label>
+              <span>Domaine</span>
+              <select id="ens-form-domain" required></select>
+            </label>
+
+            <div class="ens-dropzone" id="ens-dropzone">
+              <div class="ens-dropzone-text">
+                <strong>Fichier</strong>
+                <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
+                <div class="ens-file-name" id="ens-file-name">Aucun fichier sélectionné</div>
+              </div>
+              <input id="ens-form-file" type="file"
+                accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+            </div>
+
+            <div class="ens-form-actions">
+              <button type="button" class="btn" id="ens-cancel">Annuler</button>
+              <button type="submit" class="btn primary" id="ens-save">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  `;
+
+  const $search = document.getElementById("ens-search");
+  const $filterDomain = document.getElementById("ens-filter-domain");
+  const $filterAuthor = document.getElementById("ens-filter-author");
+  const $tbody = document.getElementById("ens-tbody");
+  const $pagination = document.getElementById("ens-pagination");
+
+  const $btnAdd = document.getElementById("ens-add");
+  const $btnEdit = document.getElementById("ens-edit");
+  const $btnDelete = document.getElementById("ens-delete");
+  const $btnDownload = document.getElementById("ens-download");
+  const $btnDownloadAll = document.getElementById("ens-download-all");
+
+  const $modalBackdrop = document.getElementById("ens-modal-backdrop");
+  const $modalTitle = document.getElementById("ens-modal-title");
+  const $modalClose = document.getElementById("ens-modal-close");
+  const $form = document.getElementById("ens-form");
+  const $formId = document.getElementById("ens-form-id");
+  const $formTitle = document.getElementById("ens-form-title");
+  const $formAuthor = document.getElementById("ens-form-author");
+  const $formDomain = document.getElementById("ens-form-domain");
+  const $formFile = document.getElementById("ens-form-file");
+  const $dropzone = document.getElementById("ens-dropzone");
+  const $fileName = document.getElementById("ens-file-name");
+  const $btnCancel = document.getElementById("ens-cancel");
+
+  $formDomain.innerHTML = DOMAINS.map(d => `<option value="${d}">${d}</option>`).join("");
+
+  const setButtonsState = () => {
+    const n = selectedIds.size;
+    $btnDelete.disabled = n === 0;
+    $btnDownload.disabled = n === 0;
+    $btnEdit.disabled = n !== 1;
+  };
+
+  const refreshFilterOptions = () => {
+    const domains = Array.from(new Set(allDocs.map(d => d.domain).filter(Boolean))).sort((a,b)=>a.localeCompare(b,"fr"));
+    $filterDomain.innerHTML = `<option value="">Tous les domaines</option>` + domains.map(d => `<option value="${d}">${d}</option>`).join("");
+
+    const authors = Array.from(new Set(allDocs.map(d => d.author).filter(Boolean))).sort((a,b)=>a.localeCompare(b,"fr"));
+    $filterAuthor.innerHTML = `<option value="">Tous les auteurs</option>` + authors.map(a => `<option value="${a}">${a}</option>`).join("");
+  };
+
+  const applyFilters = () => {
+    const q = norm($search.value || "");
+    const domain = $filterDomain.value || "";
+    const author = $filterAuthor.value || "";
+
+    filteredDocs = allDocs.filter(doc => {
+      const okTitle = !q || norm(doc.title || "").includes(q);
+      const okDomain = !domain || (doc.domain === domain);
+      const okAuthor = !author || (doc.author === author);
+      return okTitle && okDomain && okAuthor;
+    });
+
+    const totalPages = Math.max(1, Math.ceil(filteredDocs.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+  };
+
+  const renderPagination = () => {
+    const totalPages = Math.max(1, Math.ceil(filteredDocs.length / PAGE_SIZE));
+    if (totalPages <= 1) { $pagination.innerHTML = ""; return; }
+    let html = `<div class="ens-pages">`;
+    for (let p = 1; p <= totalPages; p++) {
+      html += `<button class="ens-page ${p===currentPage ? "active":""}" data-page="${p}">${p}</button>`;
+    }
+    html += `</div>`;
+    $pagination.innerHTML = html;
+    $pagination.querySelectorAll("[data-page]").forEach(b => {
+      b.addEventListener("click", () => { currentPage = Number(b.getAttribute("data-page")) || 1; renderTable(); });
+    });
+  };
+
+  const renderTable = () => {
+    applyFilters();
+    const totalPages = Math.max(1, Math.ceil(filteredDocs.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageDocs = filteredDocs.slice(start, start + PAGE_SIZE);
+
+    $tbody.innerHTML = pageDocs.map(doc => {
+      const k = fileKind(doc.fileName || "");
+      const badge = k === "pdf"
+        ? `<span class="ens-badge pdf">PDF</span>`
+        : (k === "ppt" ? `<span class="ens-badge ppt">PPT</span>` : `<span class="ens-badge file">FILE</span>`);
+
+      const isSelected = selectedIds.has(doc.id);
+      return `
+        <tr class="ens-row ${isSelected ? "selected" : ""}" data-id="${doc.id}">
+          <td>${badge}</td>
+          <td class="ens-title">${doc.title || ""}</td>
+          <td>${fmtDate(doc.addedAt)}</td>
+          <td>${doc.author || ""}</td>
+          <td>${doc.domain || ""}</td>
+          <td><button class="btn small" data-open="${doc.id}">Ouvrir</button></td>
+        </tr>
+      `;
+    }).join("");
+
+    // ✅ Mobile : clic = sélection uniquement (PAS d'aperçu)
+    $tbody.querySelectorAll("tr.ens-row").forEach(tr => {
+      const id = tr.getAttribute("data-id");
+
+      tr.addEventListener("click", (ev) => {
+        const multi = ev.ctrlKey || ev.metaKey;
+        if (!multi) selectedIds = new Set([id]);
+        else { selectedIds.has(id) ? selectedIds.delete(id) : selectedIds.add(id); }
+
+        $tbody.querySelectorAll("tr.ens-row").forEach(r => {
+          const rid = r.getAttribute("data-id");
+          r.classList.toggle("selected", selectedIds.has(rid));
+        });
+
+        setButtonsState();
+      });
+
+      // double-clic -> ouvrir (utile sur certains navigateurs)
+      tr.addEventListener("dblclick", () => {
+        const doc = allDocs.find(d => d.id === id);
+        if (doc?.fileUrl) openInNewTab(doc.fileUrl);
+      });
+    });
+
+    // bouton ouvrir
+    $tbody.querySelectorAll("[data-open]").forEach(btn => {
+      btn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        const id = btn.getAttribute("data-open");
+        const doc = allDocs.find(d => d.id === id);
+        if (doc?.fileUrl) openInNewTab(doc.fileUrl);
+      });
+    });
+
+    renderPagination();
+    setButtonsState();
+  };
+
+  const openModal = (mode, doc = null) => {
+    $modalTitle.textContent = mode === "edit" ? "Modifier un fichier" : "Ajouter un fichier";
+    $formId.value = doc?.id || "";
+    $formTitle.value = doc?.title || "";
+    $formAuthor.value = doc?.author || "";
+    $formDomain.value = doc?.domain || DOMAINS[0];
+    $formFile.value = "";
+    $fileName.textContent = "Aucun fichier sélectionné";
+    $modalBackdrop.classList.remove("hidden");
+  };
+
+  const closeModal = () => $modalBackdrop.classList.add("hidden");
+
+  const setChosenFile = (file) => {
+    $fileName.textContent = file ? `${file.name} (${Math.round(file.size/1024)} Ko)` : "Aucun fichier sélectionné";
+  };
+
+  $formFile.addEventListener("change", () => setChosenFile($formFile.files?.[0]));
+  $dropzone.addEventListener("dragover", (e) => { e.preventDefault(); $dropzone.classList.add("dragover"); });
+  $dropzone.addEventListener("dragleave", () => $dropzone.classList.remove("dragover"));
+  $dropzone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    $dropzone.classList.remove("dragover");
+    const file = e.dataTransfer?.files?.[0];
+    if (!file) return;
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    $formFile.files = dt.files;
+    setChosenFile(file);
+  });
+
+  $modalClose.addEventListener("click", closeModal);
+  $btnCancel.addEventListener("click", closeModal);
+  $modalBackdrop.addEventListener("click", (e) => { if (e.target === $modalBackdrop) closeModal(); });
+
+  $search.addEventListener("input", () => { currentPage = 1; renderTable(); });
+  $filterDomain.addEventListener("change", () => { currentPage = 1; renderTable(); });
+  $filterAuthor.addEventListener("change", () => { currentPage = 1; renderTable(); });
+
+  // admin code (identique)
+  const SARIC_ADMIN_CODE = "SARIC2026";
+  const SARIC_ADMIN_SESSION_KEY = "saric_admin_ok";
+  function isAdminSession() { return sessionStorage.getItem(SARIC_ADMIN_SESSION_KEY) === "1"; }
+  async function ensureAdminCodeOnce() {
+    if (isAdminSession()) return true;
+    const code = prompt("Code requis pour cette action :");
+    if (!code) return false;
+    if (code.trim() === SARIC_ADMIN_CODE) { sessionStorage.setItem(SARIC_ADMIN_SESSION_KEY, "1"); return true; }
+    alert("Code incorrect."); return false;
+  }
+
+  $btnAdd.addEventListener("click", async () => { if (!(await ensureAdminCodeOnce())) return; openModal("add"); });
+  $btnEdit.addEventListener("click", async () => {
+    if (!(await ensureAdminCodeOnce())) return;
+    if (selectedIds.size !== 1) return;
+    const id = Array.from(selectedIds)[0];
+    const doc = allDocs.find(d => d.id === id);
+    if (doc) openModal("edit", doc);
+  });
+
+  $btnDelete.addEventListener("click", async () => {
+    if (!(await ensureAdminCodeOnce())) return;
+    if (selectedIds.size === 0) return;
+    if (!confirm("Supprimer les fichiers sélectionnés ?")) return;
+
+    try {
+      for (const id of Array.from(selectedIds)) {
+        const docRef = teachingCol().doc(id);
+        const snap = await docRef.get();
+        if (snap.exists) {
+          const data = snap.data() || {};
+          await deleteFromStorage(data.storagePath);
+          await docRef.delete();
+        }
+      }
+      selectedIds.clear();
+      await load();
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : suppression impossible.");
+    }
+  });
+
+  $btnDownload.addEventListener("click", () => {
+    if (selectedIds.size === 0) return;
+    Array.from(selectedIds).forEach(id => {
+      const doc = allDocs.find(d => d.id === id);
+      if (doc?.fileUrl) downloadUrl(doc.fileUrl, doc.fileName || undefined);
+    });
+  });
+
+  $btnDownloadAll.addEventListener("click", async () => {
+    try {
+      const zip = new JSZip();
+      for (const d of allDocs) {
+        if (!d.fileUrl) continue;
+        const res = await fetch(d.fileUrl);
+        const blob = await res.blob();
+        const ext = fileExt(d.fileName || d.title || "fichier");
+        const base = (d.title || d.fileName || "document").replace(/[^\w.\-]+/g, "_");
+        zip.file(ext ? `${base}.${ext}` : base, blob);
+      }
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(zipBlob);
+      a.download = `${cfg.storageFolder}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    } catch (err) {
+      console.error(err);
+      alert("Erreur : impossible de créer le ZIP.");
+    }
+  });
+
+  $form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = ($formId.value || "").trim();
+    const title = ($formTitle.value || "").trim();
+    const author = ($formAuthor.value || "").trim();
+    const domain = ($formDomain.value || "").trim();
+    const file = $formFile.files?.[0] || null;
+
+    try {
+      if (!id) {
+        if (!file) { alert("Veuillez sélectionner un fichier."); return; }
+        const up = await uploadToStorage(file);
+        await teachingCol().add({
+          title, author, domain,
+          addedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          fileUrl: up.fileUrl,
+          fileName: up.fileName,
+          storagePath: up.storagePath,
+        });
+      } else {
+        const docRef = teachingCol().doc(id);
+        const beforeSnap = await docRef.get();
+        const before = beforeSnap.exists ? (beforeSnap.data() || {}) : {};
+        let patch = { title, author, domain };
+        if (file) {
+          await deleteFromStorage(before.storagePath);
+          const up = await uploadToStorage(file);
+          patch = { ...patch, fileUrl: up.fileUrl, fileName: up.fileName, storagePath: up.storagePath };
+        }
+        await docRef.set(patch, { merge: true });
+      }
+
+      closeModal();
+      await load();
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Erreur lors de l'enregistrement.");
+    }
+  });
+
+  const load = async () => {
+    try {
+      const snap = await teachingCol().orderBy("addedAt", "desc").get();
+      allDocs = snap.docs.map(d => {
+        const data = d.data() || {};
+        return {
+          id: d.id,
+          title: data.title || "",
+          author: data.author || "",
+          domain: data.domain || "",
+          addedAt: data.addedAt?.toDate ? data.addedAt.toDate().toISOString() : (data.addedAt || ""),
+          fileUrl: data.fileUrl || "",
+          fileName: data.fileName || "",
+          storagePath: data.storagePath || "",
+        };
+      });
+
+      refreshFilterOptions();
+      currentPage = 1;
+      filteredDocs = [];
+      selectedIds.clear();
+      renderTable();
+    } catch (err) {
+      console.error(err);
+      $tbody.innerHTML = `<tr><td colspan="6"><span class="muted">Erreur de chargement.</span></td></tr>`;
+      $pagination.innerHTML = "";
+      setButtonsState();
+    }
+  };
+
+  load();
+}
+
 
 
 function renderRecherche() {
