@@ -5617,3 +5617,11 @@ details.card .card-body * {
   text-align: center;
   margin: 12px 0 16px;
 }
+
+.cec-credit{
+  margin-top: 12px;
+  font-style: italic;
+  font-size: 14px;
+  color: #444;
+  text-align: left;
+}
