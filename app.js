@@ -18583,114 +18583,115 @@ function renderTeachingClonePageMobile(cfg) {
   };
 
   // ✅ Version mobile : pas de colonne preview du tout
-  $app.innerHTML = `
-    <section class="page enseignement-page enseignement-page--mobile">
+  // ✅ Version mobile : pas de colonne preview du tout
+$app.innerHTML = `
+  <section class="page enseignement-page enseignement-page--mobile">
     <div class="enseignement-head">
       <div><h2>${cfg.title}</h2></div>
     </div>
 
-    ${
-      cfg.showBiblNewsletter
-        ? `
-        <div class="bibl-newsletter">
-          Abonnez-vous gratuitement à la newsletter hebdo. :
-          <a href="https://www.bibl.fr/" target="_blank" rel="noopener noreferrer">
-            https://www.bibl.fr/
-          </a>
+    ${cfg.showBiblNewsletter ? `
+      <div class="bibl-newsletter">
+        Abonnez-vous gratuitement à la newsletter hebdo. :
+        <a href="https://www.bibl.fr/" target="_blank" rel="noopener noreferrer">
+          https://www.bibl.fr/
+        </a>
+      </div>
+    ` : ""}
+
+    <div class="enseignement-toolbar">
+      <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
+      <select id="ens-filter-domain">
+        <option value="">Tous les domaines</option>
+      </select>
+      <select id="ens-filter-author">
+        <option value="">Tous les auteurs</option>
+      </select>
+    </div>
+
+    <div class="enseignement-layout enseignement-layout--mobile">
+      <div class="enseignement-left">
+        <div class="table-wrap">
+          <table class="enseignement-table">
+            <thead>
+              <tr>
+                <th style="width:90px;">Fichier</th>
+                <th>Titre</th>
+                <th style="width:110px;">Date</th>
+                <th style="width:140px;">Auteur</th>
+                <th style="width:130px;">Domaine</th>
+                <th style="width:90px;">Ouvrir</th>
+              </tr>
+            </thead>
+            <tbody id="ens-tbody"></tbody>
+          </table>
         </div>
 
-      <div class="enseignement-toolbar">
-        <input id="ens-search" type="search" placeholder="Rechercher dans les titres…" autocomplete="off" />
-        <select id="ens-filter-domain">
-          <option value="">Tous les domaines</option>
-        </select>
-        <select id="ens-filter-author">
-          <option value="">Tous les auteurs</option>
-        </select>
-      </div>
+        <div class="enseignement-pagination" id="ens-pagination"></div>
 
-      <div class="enseignement-layout enseignement-layout--mobile">
-        <div class="enseignement-left">
-          <div class="table-wrap">
-            <table class="enseignement-table">
-              <thead>
-                <tr>
-                  <th style="width:90px;">Fichier</th>
-                  <th>Titre</th>
-                  <th style="width:110px;">Date</th>
-                  <th style="width:140px;">Auteur</th>
-                  <th style="width:130px;">Domaine</th>
-                  <th style="width:90px;">Ouvrir</th>
-                </tr>
-              </thead>
-              <tbody id="ens-tbody"></tbody>
-            </table>
-          </div>
+        <div class="enseignement-actions">
+          <button class="btn" id="ens-add">Ajouter</button>
+          <button class="btn" id="ens-edit" disabled>Modifier</button>
+          <button class="btn danger" id="ens-delete" disabled>Supprimer</button>
+          <button class="btn" id="ens-download" disabled>Télécharger</button>
+          <button class="btn" id="ens-download-all">Tout télécharger</button>
+        </div>
 
-          <div class="enseignement-pagination" id="ens-pagination"></div>
-
-          <div class="enseignement-actions">
-            <button class="btn" id="ens-add">Ajouter</button>
-            <button class="btn" id="ens-edit" disabled>Modifier</button>
-            <button class="btn danger" id="ens-delete" disabled>Supprimer</button>
-            <button class="btn" id="ens-download" disabled>Télécharger</button>
-            <button class="btn" id="ens-download-all">Tout télécharger</button>
-          </div>
-
-          <div class="muted" style="margin-top:10px; font-size:16px;">
-            Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard
-          </div>
-          <div class="muted" style="margin-top:8px; font-size:16px;">
-            Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
-          </div>
+        <div class="muted" style="margin-top:10px; font-size:16px;">
+          Code requis pour <strong>Ajouter / Modifier / Supprimer</strong> : Contactez Antoine Brizard
+        </div>
+        <div class="muted" style="margin-top:8px; font-size:16px;">
+          Vos documents ne doivent pas comporter de données sensibles ou d'informations patients.
         </div>
       </div>
+    </div>
 
-      <!-- Modal (identique) -->
-      <div class="ens-modal-backdrop hidden" id="ens-modal-backdrop">
-        <div class="ens-modal" role="dialog" aria-modal="true">
-          <div class="ens-modal-head">
-            <h3 id="ens-modal-title">Ajouter un fichier</h3>
-            <button class="ens-modal-close" id="ens-modal-close" aria-label="Fermer">×</button>
-          </div>
+    <!-- Modal (identique) -->
+    <div class="ens-modal-backdrop hidden" id="ens-modal-backdrop">
+      <div class="ens-modal" role="dialog" aria-modal="true">
+        <div class="ens-modal-head">
+          <h3 id="ens-modal-title">Ajouter un fichier</h3>
+          <button class="ens-modal-close" id="ens-modal-close" aria-label="Fermer">×</button>
+        </div>
 
-          <form id="ens-form" class="ens-form">
-            <input type="hidden" id="ens-form-id" value="" />
+        <form id="ens-form" class="ens-form">
+          <input type="hidden" id="ens-form-id" value="" />
 
-            <label>
-              <span>Titre</span>
-              <input id="ens-form-title" type="text" required />
-            </label>
+          <label>
+            <span>Titre</span>
+            <input id="ens-form-title" type="text" required />
+          </label>
 
-            <label>
-              <span>Auteur</span>
-              <input id="ens-form-author" type="text" required />
-            </label>
+          <label>
+            <span>Auteur</span>
+            <input id="ens-form-author" type="text" required />
+          </label>
 
-            <label>
-              <span>Domaine</span>
-              <select id="ens-form-domain" required></select>
-            </label>
+          <label>
+            <span>Domaine</span>
+            <select id="ens-form-domain" required></select>
+          </label>
 
-            <div class="ens-dropzone" id="ens-dropzone">
-              <div class="ens-dropzone-text">
-                <strong>Fichier</strong>
-                <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
-                <div class="ens-file-name" id="ens-file-name">Aucun fichier sélectionné</div>
-              </div>
-              <input id="ens-form-file" type="file"
-                accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+          <div class="ens-dropzone" id="ens-dropzone">
+            <div class="ens-dropzone-text">
+              <strong>Fichier</strong>
+              <div class="muted">Glisser-déposer ici, ou <span class="ens-browse">parcourir</span></div>
+              <div class="ens-file-name" id="ens-file-name">Aucun fichier sélectionné</div>
             </div>
+            <input id="ens-form-file" type="file"
+              accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+          </div>
 
-            <div class="ens-form-actions">
-              <button type="button" class="btn" id="ens-cancel">Annuler</button>
-              <button type="submit" class="btn primary" id="ens-save">Enregistrer</button>
-            </div>
-          </form>
-        </div>
+          <div class="ens-form-actions">
+            <button type="button" class="btn" id="ens-cancel">Annuler</button>
+            <button type="submit" class="btn primary" id="ens-save">Enregistrer</button>
+          </div>
+        </form>
       </div>
-    </section>
-  `;
+    </div>
+  </section>
+`;
+
 
   const $search = document.getElementById("ens-search");
   const $filterDomain = document.getElementById("ens-filter-domain");
