@@ -225,6 +225,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+// ✅ Toujours réseau pour le JSON hebdo BiBL (sinon cache = ancienne semaine)
+if (url.pathname.endsWith("/bibliography/bibl_weekly.json")) {
+  event.respondWith(fetch(req, { cache: "no-store" }));
+  return;
+}
+  
   // Navigation (documents HTML) : on essaie le réseau puis le cache
   if (req.mode === "navigate" || req.destination === "document") {
     event.respondWith(
