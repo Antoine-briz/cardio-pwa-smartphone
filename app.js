@@ -18604,18 +18604,12 @@ async function renderBiBLWeeklyJsonPage() {
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
 
-  try {
-  // 1) on récupère l’URL du fichier dans Firebase Storage
+try {
+  // 1) URL du fichier dans Firebase Storage
   const ref = window.storage.ref().child("bibliography/bibl_weekly.json");
-  let downloadUrl = await ref.getDownloadURL();
+  const downloadUrl = await ref.getDownloadURL();
 
-  // ✅ Fix CORS : on force le domaine "appspot.com" (compatible CORS)
-  downloadUrl = downloadUrl.replace(
-    /\/b\/([^/]+)\.firebasestorage\.app\//,
-    "/b/$1.appspot.com/"
-  );
-
-  // ✅ anti-cache
+  // 2) Fetch du JSON (anti-cache)
   const resp = await fetch(`${downloadUrl}&v=${Date.now()}`, { cache: "no-store" });
   if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
@@ -18640,16 +18634,19 @@ async function renderBiBLWeeklyJsonPage() {
         <td>${journal}</td>
         <td>${title}</td>
         <td class="bibl-abs">${abs}</td>
-        <td>${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">Ouvrir</a>` : ``}</td>
+        <td>
+          ${url ? `<a href="${escHtml(url)}" target="_blank" rel="noopener noreferrer">Ouvrir</a>` : ``}
+        </td>
       </tr>
     `;
   }).join("");
+
 } catch (e) {
   console.error(e);
   $tbody.innerHTML = `<tr><td colspan="5"><span class="muted">Erreur de chargement du fichier hebdomadaire.</span></td></tr>`;
 }
 }
-
+  
 /* =========================
    CLONE Enseignement — VERSION MOBILE
    - Identique (toolbar + table + actions + modal)
