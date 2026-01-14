@@ -16946,7 +16946,10 @@ function renderCEC() {
           Procédures spécifiques
         </button>
       </div>
-
+  <!-- ✅ Mention contribution -->
+  <div class="cec-credit">
+    Avec l'aimable contribution du Dr Florent LAVERDURE
+  </div>
       <div id="cec-section-root" style="margin-top:16px;"></div>
     </section>
   `;
