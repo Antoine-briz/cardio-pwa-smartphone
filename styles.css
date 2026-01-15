@@ -5632,3 +5632,108 @@ details.card .card-body * {
   flex-direction: column;
   gap: 12px;   /* espace entre les 2 boutons */
 }
+/* =========================================
+   BIBLIOGRAPHIE — SMARTPHONE FIX
+   - Texte lisible en thème sombre (blanc)
+   - Revues sur 2 lignes (3 + 2)
+   - Boutons avec espace
+========================================= */
+
+@media (max-width: 900px){
+
+  /* Espace entre les 2 boutons */
+  .biblio-actions{
+    display: grid;
+    gap: 10px; /* <- espace entre "Internes" et "BiBL." */
+  }
+
+  /* Box + table en mode sombre : texte BLANC */
+  .biblio-box{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .biblio-box,
+  .biblio-box *{
+    color: #fff !important;
+  }
+
+  /* Le tableau ne doit pas être "trop large" -> scroll horizontal si besoin */
+  .biblio-table-wrap{
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Table : éviter que la colonne gauche prenne trop */
+  .biblio-table{
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  /* Colonne "Spécialité" plus étroite */
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    width: 120px;          /* <- réduit fortement */
+    max-width: 120px;
+    white-space: normal;   /* autorise 2 lignes pour le texte */
+  }
+
+  .biblio-spec{
+    font-weight: 800;
+    color: #fff !important;
+  }
+
+  /* Grille revues : 3 colonnes -> 5 éléments => 2 lignes (3 + 2) */
+  .biblio-journal-grid{
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: start;
+  }
+
+  /* Cartes revues compactes */
+  .biblio-journal-card{
+    padding: 6px 4px !important;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #fff !important;
+    background: transparent;
+  }
+
+  /* Logos plus petits pour tenir */
+  .biblio-journal-card img{
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px;
+    background: #fff; /* logo lisible */
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* Titre sous le logo : compact (sinon ça casse tout) */
+  .biblio-journal-card span{
+    display: block;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    font-weight: 700 !important;
+    text-align: center;
+    color: #fff !important;
+    word-break: break-word; /* si trop long, il casse */
+  }
+
+  /* En-têtes de table en blanc */
+  .biblio-table thead th{
+    color: #fff !important;
+    font-weight: 900;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* Séparations de lignes/colonnes en clair */
+  .biblio-table td{
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    border-right: 1px solid rgba(255,255,255,0.18);
+  }
+}
