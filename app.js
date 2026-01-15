@@ -10204,14 +10204,22 @@ function setupPacemakerLogic() {
   }
 
   function updateATB() {
-    // IMC > 50 n'est pas explicitement dans la cellule caracs pour cette ligne,
-    // on garde donc les posologies textuelles, avec uniquement l'allergie :
-    if (cbAllergie && cbAllergie.checked) {
-      if (liVanco) liVanco.style.display = "";
-    } else {
-      if (liVanco) liVanco.style.display = "none";
-    }
+  const allergie = !!(cbAllergie && cbAllergie.checked);
+
+  if (allergie) {
+    // ✅ Allergie BL : on masque toute céfazoline
+    if (liCefaStd) liCefaStd.style.display = "none";
+    if (liCefaObese) liCefaObese.style.display = "none";
+    // ✅ et on affiche la vancomycine
+    if (liVanco) liVanco.style.display = "";
+  } else {
+    // ✅ Pas allergique : on ré-affiche la céfazoline (standard par défaut)
+    if (liCefaStd) liCefaStd.style.display = "";
+    if (liCefaObese) liCefaObese.style.display = "none"; // pas d'IMC dans cette page
+    // ✅ et on masque la vancomycine
+    if (liVanco) liVanco.style.display = "none";
   }
+}
 
   function updateAll() {
     updateMonitor();
@@ -10258,7 +10266,7 @@ function renderInterventionAblationDroit() {
     },
     {
       titre: "Antibioprophylaxie",
-      html: `<p>Non indiquée.</p>`,
+      html: `<p>Uniquement si dispositif intra-vasculaire (PM/DAI ou valve prothétique): Cefazoline 2g (Vancomycine 30mg/kg si allergie aux béta-lactamines).</p>`,
     },
     {
       titre: "Coupes et mesures ETO",
@@ -10324,7 +10332,7 @@ function renderInterventionAblationGauche() {
     },
     {
       titre: "Antibioprophylaxie",
-      html: `<p>Non indiquée.</p>`,
+      html: `<p>Uniquement si dispositif intra-vasculaire (PM/DAI ou valve prothétique): Cefazoline 2g (Vancomycine 30mg/kg si allergie aux béta-lactamines).</p>`,
     },
     {
       titre: "Coupes et mesures ETO",
