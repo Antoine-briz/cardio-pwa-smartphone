@@ -7556,7 +7556,10 @@ function renderInterventionPontages() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID, BIS,
-          NIRS si FdR, ETO possible, discuter Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          NIRS si FdR, ETO possible
+          <span id="monitorage-swanganz" style="display:none;">
+      , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
+    </span>.
         </p>
         <p><strong>Objectif :</strong> Lent, mou, fermé.</p>
       `,
@@ -7787,7 +7790,10 @@ function renderInterventionRVA() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID, BIS,
-          NIRS si FdR, ETO, discuter Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          NIRS si FdR, ETO
+          <span id="monitorage-swanganz" style="display:none;">
+      , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
+    </span>.
         </p>
         <p><strong>Objectif IA :</strong> Plein, rapide, ouvert.</p>
         <p><strong>Objectif RA :</strong> Plein, régulier, fermé.</p>
@@ -8016,8 +8022,10 @@ function renderInterventionRVM() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID
-           (gauche si mitrale vidéo avec canulation JID), BIS, NIRS si FdR, ETO,
-          discuter Swan-Ganz si FEVG &lt; 35% ou HTAP.
+           (gauche si mitrale vidéo avec canulation JID), BIS, NIRS si FdR, ETO
+           <span id="monitorage-swanganz" style="display:none;">
+      , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
+    </span>.
         </p>
         <p><strong>Objectif IM :</strong> Plein, rapide, ouvert.</p>
         <p><strong>Objectif RM :</strong> Fermé, vide, lent.</p>
@@ -8482,7 +8490,10 @@ function renderInterventionAorteAsc() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTc 5 voies, BIS,
-          NIRS <strong>systématique</strong>, ETO, Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          NIRS <strong>systématique</strong>, ETO
+          <span id="monitorage-swanganz" style="display:none;">
+      , discuter Swan-Ganz si FEVG &lt; 35% ou HTAP
+    </span>.
         </p>
         <p>
           <strong>Objectif :</strong> Plein, mou, ouvert, lent. Éviter les pics hypertensifs&nbsp;!
