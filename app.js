@@ -7588,11 +7588,16 @@ function renderInterventionPontages() {
         </p>
 
         <p>
-          <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2
-          (dose max 3 mg/kg ≈
-            <span data-per-kg="3" data-unit="mg"></span>).
-        </p>
+  <strong>ALR :</strong>
+  Bloc thoracique transverse
+  <span class="alr-screen"
+        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+    🖥️
+  </span>,
+  Ropivacaïne 3,75 mg/mL 15–20 mL x2
+  (dose max 3 mg/kg ≈
+    <span data-per-kg="3" data-unit="mg"></span>).
+</p>
       `,
     },
     {
@@ -7834,11 +7839,16 @@ function renderInterventionRVA() {
         </p>
 
         <p>
-          <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2
-          (dose max 3 mg/kg ≈
-            <span data-per-kg="3" data-unit="mg"></span>).
-        </p>
+  <strong>ALR :</strong>
+  Bloc thoracique transverse
+  <span class="alr-screen"
+        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+    🖥️
+  </span>,
+  Ropivacaïne 3,75 mg/mL 15–20 mL x2
+  (dose max 3 mg/kg ≈
+    <span data-per-kg="3" data-unit="mg"></span>).
+</p>
       `,
     },
     {
@@ -8076,12 +8086,16 @@ function renderInterventionRVM() {
           (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
         <p>
-          <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2
-          (dose max 3 mg/kg ≈
-            <span data-per-kg="3" data-unit="mg"></span>).<strong>Si plastie mitrale avec vidéo :</strong>
-          Bloc paravertébral (Ropivacaïne 3,75 mg/mL 15–20 mL) avec cathéter paravertébral .
-        </p>
+  <strong>ALR :</strong>
+  Bloc thoracique transverse
+  <span class="alr-screen"
+        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+    🖥️
+  </span>,
+  Ropivacaïne 3,75 mg/mL 15–20 mL x2
+  (dose max 3 mg/kg ≈
+    <span data-per-kg="3" data-unit="mg"></span>).
+</p>
       `,
     },
     {
@@ -8317,12 +8331,17 @@ function renderInterventionRVT() {
           Exacyl 20 mg/kg
           (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
-        <p>
-          <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2
-          (Max 3 mg/kg ≈
-            <span data-per-kg="3" data-unit="mg"></span>).
-        </p>
+       <p>
+  <strong>ALR :</strong>
+  Bloc thoracique transverse
+  <span class="alr-screen"
+        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+    🖥️
+  </span>,
+  Ropivacaïne 3,75 mg/mL 15–20 mL x2
+  (dose max 3 mg/kg ≈
+    <span data-per-kg="3" data-unit="mg"></span>).
+</p>
         <p style="font-size: 0.9em; opacity: 0.8;">
           (Remplacement par Etomidate si induction à risque, Rocuronium 1,2 mg/kg si séquence rapide,
           comme indiqué dans le tableau.)
@@ -8552,10 +8571,16 @@ function renderInterventionAorteAsc() {
           (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
         <p>
-          <strong>ALR :</strong> Bloc thoracique transverse,
-          Ropivacaïne 3,75 mg/mL 15–20 mL x2 (Max 3 mg/kg ≈
-            <span data-per-kg="3" data-unit="mg"></span>).
-        </p>
+  <strong>ALR :</strong>
+  Bloc thoracique transverse
+  <span class="alr-screen"
+        onclick="openImage('img/blocs/bloc-thoracique-transverse.png')">
+    🖥️
+  </span>,
+  Ropivacaïne 3,75 mg/mL 15–20 mL x2
+  (dose max 3 mg/kg ≈
+    <span data-per-kg="3" data-unit="mg"></span>).
+</p>
         <p style="font-size:0.9em;opacity:0.8;">
           (Remplacement par Etomidate si induction à risque, Rocuronium 1,2 mg/kg si séquence rapide cochée,
           comme indiqué dans le tableau.)
