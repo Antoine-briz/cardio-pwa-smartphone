@@ -7671,6 +7671,17 @@ function setupPcLogic() {
   const liVanco = document.getElementById("pc-vancomycine");
   const spanVanco = document.getElementById("pc-vanco-dose");
 
+// === Règle Swan-Ganz conditionnelle ===
+const swanGanzLine = document.getElementById("monitorage-swanganz");
+
+if (cbRisk && swanGanzLine) {
+  const updateSwanGanz = () => {
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
+  };
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
+  
   function updateInduction() {
     const poids = parseKg(poidsInputId);
     let txt = "<strong>Induction :</strong> ";
@@ -7904,7 +7915,17 @@ function setupRvaLogic() {
   const liCefaObese = document.getElementById("rva-cefazoline-obese");
   const liVanco = document.getElementById("rva-vancomycine");
   const spanVanco = document.getElementById("rva-vanco-dose");
+// === Règle Swan-Ganz conditionnelle ===
+const swanGanzLine = document.getElementById("monitorage-swanganz");
 
+if (cbRisk && swanGanzLine) {
+  const updateSwanGanz = () => {
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
+  };
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
+  
   function updateInduction() {
     const poids = parseKg(poidsId);
     let txt = "<strong>Induction :</strong> ";
@@ -8144,6 +8165,17 @@ function setupRvmLogic() {
   const liVanco = document.getElementById("rvm-vancomycine");
   const spanVanco = document.getElementById("rvm-vanco-dose");
 
+// === Règle Swan-Ganz conditionnelle ===
+const swanGanzLine = document.getElementById("monitorage-swanganz");
+
+if (cbRisk && swanGanzLine) {
+  const updateSwanGanz = () => {
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
+  };
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
+  
   function updateInduction() {
     const poids = parseKg(poidsId);
     let txt = "<strong>Induction :</strong> ";
@@ -8610,6 +8642,17 @@ function setupAorteAscLogic() {
   const liVanco = document.getElementById("aoasc-vancomycine");
   const spanVanco = document.getElementById("aoasc-vanco-dose");
 
+// === Règle Swan-Ganz conditionnelle ===
+const swanGanzLine = document.getElementById("monitorage-swanganz");
+
+if (cbRisk && swanGanzLine) {
+  const updateSwanGanz = () => {
+    swanGanzLine.style.display = cbRisk.checked ? "inline" : "none";
+  };
+  updateSwanGanz();
+  cbRisk.addEventListener("change", updateSwanGanz);
+}
+  
   function updateInduction() {
     const poids = parseKg(poidsId);
     let txt = "<strong>Induction :</strong> ";
