@@ -20,6 +20,59 @@ function norm(s) {
     .trim();
 }
 
+function openImg(name) {
+  const popup = document.getElementById("img-popup");
+  const imgEl = document.getElementById("popup-img");
+
+  // Sécurité
+  if (!popup || !imgEl) return;
+
+  // 🔁 reset
+  imgEl.src = "";
+  imgEl.style.width = "";
+  imgEl.style.height = "";
+  imgEl.style.maxWidth = "";
+  imgEl.style.display = "";
+
+  // On va utiliser un wrapper scroll UNIQUEMENT pour ces 2 images
+  const isTableauACR = name === "tableauacr.png";
+  const isSFAR = name === "aidecognitiveSFAR.png";
+
+  // Cherche (ou crée) le wrapper scroll autour de l'image
+  let wrap = popup.querySelector(".img-scroll-wrap");
+
+  if (isTableauACR || isSFAR) {
+    // Crée le wrapper si absent
+    if (!wrap) {
+      wrap = document.createElement("div");
+      wrap.className = "img-scroll-wrap";
+
+      // On place le wrapper à la place de l'image dans la popup
+      // => on "déplace" l'image existante dedans
+      imgEl.parentNode.insertBefore(wrap, imgEl);
+      wrap.appendChild(imgEl);
+    }
+
+    // Applique le facteur d'agrandissement
+    const scale = isTableauACR ? 1 : 1;
+
+    imgEl.src = `img/${name}`;
+    imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
+    imgEl.style.height = "auto";
+    imgEl.style.maxWidth = "none";
+  } else {
+    // ✅ Toutes les autres images : affichage EXACTEMENT comme avant
+    if (wrap) {
+      // Si wrapper présent, on remet l'image hors wrapper pour revenir au mode normal
+      wrap.parentNode.insertBefore(imgEl, wrap);
+      wrap.remove();
+    }
+    imgEl.src = `img/${name}`;
+  }
+
+  popup.style.display = "flex";
+}
+
 function imgLink(label, file) {
   return `<a href="javascript:void(0)" class="inline-img-link"
             onclick="openImg('${file}')">${label}</a>`;
@@ -7591,7 +7644,7 @@ function renderInterventionPontages() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-bloc-thoracique-transverse.png')">
+        onclick="openImg('img/cf-bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -7842,7 +7895,7 @@ function renderInterventionRVA() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-bloc-thoracique-transverse.png')">
+        onclick="openImg('img/cf-bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -8085,8 +8138,8 @@ function renderInterventionRVM() {
           Exacyl 20 mg/kg
           (<span data-per-kg="20" data-unit="mg"></span>) puis 2 mg/kg/h (sauf CI).
         </p>
-        <p> <strong>ALR :</strong> Bloc thoracique transverse Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose max 3 mg/kg ≈ <span data-per-kg="3" data-unit="mg"></span>). <span class="alr-screen" onclick="openImage('img/cf-bloc-thoracique-transverse.png')"> 🖥️ </span>, 
-        Si plastie mitrale vidéo: bloc paravertébral Ropivacaïne 3,75 mg/mL 15–20 mL avec cathéter <span class="alr-screen" onclick="openImage('img/cf-bpv.png')"> 🖥️ </span>
+        <p> <strong>ALR :</strong> Bloc thoracique transverse Ropivacaïne 3,75 mg/mL 15–20 mL x2 (dose max 3 mg/kg ≈ <span data-per-kg="3" data-unit="mg"></span>). <span class="alr-screen" onclick="openImg('img/cf-bloc-thoracique-transverse.png')"> 🖥️ </span>, 
+        Si plastie mitrale vidéo: bloc paravertébral Ropivacaïne 3,75 mg/mL 15–20 mL avec cathéter <span class="alr-screen" onclick="openImg('img/cf-bpv.png')"> 🖥️ </span>
         </p>
       `,
     },
@@ -8327,7 +8380,7 @@ function renderInterventionRVT() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-
+        onclick="openImg('img/cf-
         bloc-thoracique-transverse.png')">
     🖥️
   </span>,
@@ -8567,7 +8620,7 @@ function renderInterventionAorteAsc() {
   <strong>ALR :</strong>
   Bloc thoracique transverse
   <span class="alr-screen"
-        onclick="openImage('img/cf-bloc-thoracique-transverse.png')">
+        onclick="openImg('img/cf-bloc-thoracique-transverse.png')">
     🖥️
   </span>,
   Ropivacaïne 3,75 mg/mL 15–20 mL x2
@@ -11815,59 +11868,6 @@ function renderReanEto() {
     image: "eto.png",
     encadres,
   });
-}
-
-function openImg(name) {
-  const popup = document.getElementById("img-popup");
-  const imgEl = document.getElementById("popup-img");
-
-  // Sécurité
-  if (!popup || !imgEl) return;
-
-  // 🔁 reset
-  imgEl.src = "";
-  imgEl.style.width = "";
-  imgEl.style.height = "";
-  imgEl.style.maxWidth = "";
-  imgEl.style.display = "";
-
-  // On va utiliser un wrapper scroll UNIQUEMENT pour ces 2 images
-  const isTableauACR = name === "tableauacr.png";
-  const isSFAR = name === "aidecognitiveSFAR.png";
-
-  // Cherche (ou crée) le wrapper scroll autour de l'image
-  let wrap = popup.querySelector(".img-scroll-wrap");
-
-  if (isTableauACR || isSFAR) {
-    // Crée le wrapper si absent
-    if (!wrap) {
-      wrap = document.createElement("div");
-      wrap.className = "img-scroll-wrap";
-
-      // On place le wrapper à la place de l'image dans la popup
-      // => on "déplace" l'image existante dedans
-      imgEl.parentNode.insertBefore(wrap, imgEl);
-      wrap.appendChild(imgEl);
-    }
-
-    // Applique le facteur d'agrandissement
-    const scale = isTableauACR ? 1 : 1;
-
-    imgEl.src = `img/${name}`;
-    imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
-    imgEl.style.height = "auto";
-    imgEl.style.maxWidth = "none";
-  } else {
-    // ✅ Toutes les autres images : affichage EXACTEMENT comme avant
-    if (wrap) {
-      // Si wrapper présent, on remet l'image hors wrapper pour revenir au mode normal
-      wrap.parentNode.insertBefore(imgEl, wrap);
-      wrap.remove();
-    }
-    imgEl.src = `img/${name}`;
-  }
-
-  popup.style.display = "flex";
 }
 
 
