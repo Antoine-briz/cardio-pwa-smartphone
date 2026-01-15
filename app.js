@@ -18550,15 +18550,6 @@ function renderBibliographie() {
             </div>
           </div>
         </div>
-
-        ${
-          mobile
-            ? ""
-            : `
-          <div class="biblio-right" aria-hidden="true">
-            <img src="img/bibliographie2.png" alt="Bibliographie">
-          </div>`
-        }
       </div>
     </section>
   `;
@@ -18582,14 +18573,6 @@ function renderBibliographie() {
 ========================= */
 
 function renderBiblioJuniors() {
-  return renderTeachingClonePageMobile({
-    title: "Internes: Biblio & staff juniors",
-    collectionName: "biblioJuniors",
-    storageFolder: "biblioJuniors",
-  });
-}
-
-function renderBiblioJuniors() {
   return renderTeachingClonePage({
     title: "Internes: Biblio & staff juniors",
     collectionName: "biblioJuniors",
@@ -18607,7 +18590,7 @@ async function renderBiBLWeeklyJsonPage() {
     <section class="page enseignement-page">
       <div class="enseignement-head">
         <div>
-          <h2>BiBL.</h2>
+          <h2>Newsletter BiBL.</h2>
         </div>
       </div>
 
@@ -18711,7 +18694,7 @@ try {
      2) clic ligne ne déclenche pas d'aperçu (juste sélection)
 ========================= */
 
-function renderTeachingClonePageMobile(cfg) {
+function renderTeachingClonePage(cfg) {
   const DOMAINS = ["Réanimation","Anesthésie","ETO","CEC","Infectiologie","Cardiologie","Autre"];
   const API_BASE = (window.ENSEIGNEMENT_API_BASE || "").replace(/\/$/, "");
   const teachingCol = () => window.db.collection(cfg.collectionName);
