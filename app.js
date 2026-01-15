@@ -7556,7 +7556,7 @@ function renderInterventionPontages() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID, BIS,
-          NIRS si FdR, ETO possible, Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          NIRS si FdR, ETO possible, discuter Swan-Ganz si FEVG &lt; 35% ou HTAP.
         </p>
         <p><strong>Objectif :</strong> Lent, mou, fermé.</p>
       `,
@@ -7787,9 +7787,10 @@ function renderInterventionRVA() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID, BIS,
-          NIRS si FdR, ETO, Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          NIRS si FdR, ETO, discuter Swan-Ganz si FEVG &lt; 35% ou HTAP.
         </p>
         <p><strong>Objectif IA :</strong> Plein, rapide, ouvert.</p>
+        <p><strong>Objectif RA :</strong> Plein, régulier, fermé.</p>
       `,
     },
     {
@@ -8016,9 +8017,10 @@ function renderInterventionRVM() {
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies JID
            (gauche si mitrale vidéo avec canulation JID), BIS, NIRS si FdR, ETO,
-          Swan-Ganz si FEVG &lt; 35% ou HTAP.
+          discuter Swan-Ganz si FEVG &lt; 35% ou HTAP.
         </p>
         <p><strong>Objectif IM :</strong> Plein, rapide, ouvert.</p>
+        <p><strong>Objectif RM :</strong> Fermé, vide, lent.</p>
       `,
     },
     {
@@ -8250,7 +8252,7 @@ function renderInterventionRVT() {
       html: `
         <p>
           Scope ECG 5 branches, SpO₂, KTa radial gauche, KTC 5 voies, BIS,
-          NIRS si FdR, ETO, Swan-Ganz si induction à risque.
+          NIRS si FdR, ETO
         </p>
         <p><strong>Objectif IT :</strong> Normovolémie, rapide, ouvert (RVP basses).</p>
         <p><strong>Objectif RT :</strong> Plein, lent, fermé.</p>
