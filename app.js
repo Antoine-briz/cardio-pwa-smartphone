@@ -3,7 +3,9 @@
 // =====================================================================
 //  ROUTER DE BASE
 // =====================================================================
-const ACTUS_API_URL = "https://script.google.com/macros/s/AKfycbzyNf3XddrkPfjfk7fJZqqEoj7geuTUMEfq7DCKgwwWExALcam15U1XsRfHXiWDCpCf/exec";
+const ACTUS_API_URL =
+  "https://script.google.com/macros/s/AKfycbzyNf3XddrkPfjfk7fJZqqEoj7geuTUMEfq7DCKgwwWExALcam15U1XsRfHXiWDCpCf/exec";
+
 const $app = document.getElementById("app");
 
 function h(cls, html) {
@@ -20,90 +22,72 @@ function norm(s) {
     .trim();
 }
 
+// =====================================================================
+//  POPUP IMAGES (utilisé partout via onclick)
+// =====================================================================
 function openImg(name) {
   const popup = document.getElementById("img-popup");
   const imgEl = document.getElementById("popup-img");
-
-  // Sécurité
   if (!popup || !imgEl) return;
 
-  // 🔁 reset
+  // reset
   imgEl.src = "";
   imgEl.style.width = "";
   imgEl.style.height = "";
   imgEl.style.maxWidth = "";
   imgEl.style.display = "";
 
-  // On va utiliser un wrapper scroll UNIQUEMENT pour ces 2 images
+  // wrapper scroll uniquement pour certaines images (si tu en as besoin)
   const isTableauACR = name === "tableauacr.png";
   const isSFAR = name === "aidecognitiveSFAR.png";
 
-  // Cherche (ou crée) le wrapper scroll autour de l'image
   let wrap = popup.querySelector(".img-scroll-wrap");
 
+  const src =
+    /^(https?:)?\/\//.test(name) || name.startsWith("img/") || name.startsWith("./img/")
+      ? name
+      : `img/${name}`;
+
   if (isTableauACR || isSFAR) {
-    // Crée le wrapper si absent
     if (!wrap) {
       wrap = document.createElement("div");
       wrap.className = "img-scroll-wrap";
-
-      // On place le wrapper à la place de l'image dans la popup
-      // => on "déplace" l'image existante dedans
       imgEl.parentNode.insertBefore(wrap, imgEl);
       wrap.appendChild(imgEl);
     }
 
-    // Applique le facteur d'agrandissement
-    const scale = isTableauACR ? 1 : 1;
-
-    const src =
-  /^(https?:)?\/\//.test(name) || name.startsWith("img/") || name.startsWith("./img/")
-    ? name
-    : `img/${name}`;
-
-imgEl.src = src;
-
-    imgEl.style.width = `${scale * 100}%`;   // 300% ou 200%
+    imgEl.src = src;
+    imgEl.style.width = "100%"; // tu peux mettre "200%" si tu veux zoomer
     imgEl.style.height = "auto";
     imgEl.style.maxWidth = "none";
   } else {
-    // ✅ Toutes les autres images : affichage EXACTEMENT comme avant
+    // mode normal
     if (wrap) {
-      // Si wrapper présent, on remet l'image hors wrapper pour revenir au mode normal
       wrap.parentNode.insertBefore(imgEl, wrap);
       wrap.remove();
     }
-    const src =
-  /^(https?:)?\/\//.test(name) || name.startsWith("img/") || name.startsWith("./img/")
-    ? name
-    : `img/${name}`;
-
-imgEl.src = src;
-
+    imgEl.src = src;
   }
 
   popup.style.display = "flex";
 }
 
+// Liens inline vers images
 function imgLink(label, file) {
-  return `<a href="javascript:void(0)" class="inline-img-link"
-            onclick="openImg('${file}')">${label}</a>`;
+  return `<a href="javascript:void(0)" class="inline-img-link" onclick="openImg('${file}')">${label}</a>`;
 }
 
+// Icône écran 🖥️ qui ouvre une image
 function imgIcon(file) {
-  return `<span class="eto-icon"
-            onclick="openImg('${file}')">🖥️</span>`;
-
-function sectionHeader(title, imageFile) {
-  return `
-    <div class="hero">
-      <h2>${title}</h2>
-      <img src="img/${imageFile}" alt="${title}">
-    </div>
-  `;
+  return `<span class="eto-icon" onclick="openImg('${file}')">🖥️</span>`;
 }
 
-  // Avec image : encadré incliné à droite
+// =====================================================================
+//  EN-TÊTE DE SECTION (UNE SEULE VERSION !)
+//  -> titre + image SOUS le titre (comme tu veux)
+// =====================================================================
+function sectionHeader(title, imageFile) {
+  // imageFile: ex "chircec2.png" (dans /img/)
   return `
     <div class="hero page-header-card">
       <h2>${title}</h2>
@@ -113,7 +97,16 @@ function sectionHeader(title, imageFile) {
     </div>
   `;
 }
-  
+
+// IMPORTANT : exposer les helpers utilisés en onclick="..."
+window.openImg = openImg;
+window.imgLink = imgLink;
+window.imgIcon = imgIcon;
+window.sectionHeader = sectionHeader;
+
+// =====================================================================
+//  CLASSES "screen-shape"
+// =====================================================================
 function applyScreenShapeClass() {
   const r = window.innerWidth / window.innerHeight;
   document.body.classList.toggle("screen-square", r < 1.2);
@@ -126,23 +119,17 @@ applyScreenShapeClass();
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
-  
+
 // ==========================
 //  GESTION DU THÈME GLOBAL
 // ==========================
 const THEME_KEY = "theme"; // "dark" ou "light"
 
-// Applique le thème au <body> + synchronise les radios si elles existent
 function applyTheme(theme) {
   const isLight = theme === "light";
-
-  // Une seule classe pour le thème clair
   document.body.classList.toggle("theme-light", isLight);
-
-  // Sauvegarde
   localStorage.setItem(THEME_KEY, theme);
 
-  // Synchronise les radios si présentes
   const darkRadio = document.getElementById("theme-dark");
   const lightRadio = document.getElementById("theme-light");
   if (darkRadio && lightRadio) {
@@ -151,7 +138,6 @@ function applyTheme(theme) {
   }
 }
 
-// Initialise le thème + branche les radios du footer
 function initTheme() {
   const saved = localStorage.getItem(THEME_KEY) || "dark";
   applyTheme(saved);
@@ -173,41 +159,30 @@ function openPdf(file) {
   const url = new URL(`files/${file}`, window.location.href);
   window.open(url.toString(), "_blank");
 }
+window.openPdf = openPdf;
 
-// =========================================================
-// Helpers globaux (nécessaires car appelés depuis onclick="..."
-// =========================================================
-window.sectionHeader = function sectionHeader(title, imgFile) {
-  // imgFile ex: "chircec.png" (dans /img/)
-  return `
-    <div class="section-header">
-      <img src="img/${imgFile}" alt="" class="section-header-img">
-      <h2 class="section-header-title">${title}</h2>
-    </div>
-  `;
-};
-
-// Petit historique interne pour le bouton "retour" (footer)
+// =====================================================================
+//  NAV BACK (footer) — historique interne
+// =====================================================================
 window.__navStack = window.__navStack || [];
 
 window.openSubPage = function openSubPage(renderFn, backFn) {
-  // backFn = la fonction qui reconstruit le menu précédent
   if (typeof backFn === "function") window.__navStack.push(backFn);
   if (typeof renderFn === "function") renderFn();
 
-  // remonter en haut après navigation
-  requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  });
 };
 
-// Optionnel : fonction appelée par ton bouton retour du footer
-// (si tu en as déjà une, ne la duplique pas : adapte juste le contenu)
 window.goBackSmart = function goBackSmart() {
   const fn = window.__navStack.pop();
   if (typeof fn === "function") {
     fn();
-    requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
   } else {
-    // fallback : accueil
     location.hash = "#/";
   }
 };
