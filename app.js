@@ -1200,70 +1200,71 @@ function renderAnesthCardioStructMenu() {
   $app.innerHTML = `
     <section>
       ${sectionHeader("Cardiologie structurelle et rythmologie", "cardiostruct.png")}
+
       <div class="grid">
         <button class="btn" onclick="openSubPage(renderInterventionTAVI, renderAnesthCardioStructMenu)">
-            TAVI
-          </button>
+          TAVI
+        </button>
 
-          <button class="btn" onclick="openSubPage(renderInterventionMitraClip, renderAnesthCardioStructMenu)">
-            Mitra-clip
-          </button>
+        <button class="btn" onclick="openSubPage(renderInterventionMitraClip, renderAnesthCardioStructMenu)">
+          Mitra-clip
+        </button>
 
-          <button class="btn" onclick="openSubPage(renderInterventionFOPCIA, renderAnesthCardioStructMenu)">
-            Fermeture FOP / CIA
-          </button>
-        </div>
+        <button class="btn" onclick="openSubPage(renderInterventionFOPCIA, renderAnesthCardioStructMenu)">
+          Fermeture FOP / CIA
+        </button>
+
         <button class="btn" onclick="openSubPage(renderInterventionPacemakerDAI, renderAnesthCardioStructMenu)">
-            Pacemaker &amp; DAI
-          </button>
+          Pacemaker &amp; DAI
+        </button>
 
-          <button class="btn" onclick="openSubPage(renderInterventionAblationDroit, renderAnesthCardioStructMenu)">
-            Ablations du cœur droit
-          </button>
+        <button class="btn" onclick="openSubPage(renderInterventionAblationDroit, renderAnesthCardioStructMenu)">
+          Ablations du cœur droit
+        </button>
 
-          <button class="btn" onclick="openSubPage(renderInterventionAblationGauche, renderAnesthCardioStructMenu)">
-            Ablations du cœur gauche
-          </button>
+        <button class="btn" onclick="openSubPage(renderInterventionAblationGauche, renderAnesthCardioStructMenu)">
+          Ablations du cœur gauche
+        </button>
       </div>
     </section>
   `;
 }
 
 function renderAnesthVasculaireMenu() {
-  const app = document.getElementById("app");
+  $app.innerHTML = `
+    <section>
+      ${sectionHeader("Chirurgie vasculaire", "vasculaire.png")}
 
-  app.innerHTML = `
-    <h2>Chirurgie vasculaire</h2>
+      <div class="grid">
+        <button class="btn btn-blue" onclick="openSubPage(renderInterventionCarotide, renderAnesthVasculaireMenu)">
+          Chirurgies de la carotide et des TSA
+        </button>
 
-    <div class="grid">
+        <button class="btn btn-blue" onclick="openSubPage(renderInterventionAorteThoracique, renderAnesthVasculaireMenu)">
+          Chirurgies de l’aorte thoracique et thoraco-abdominale
+        </button>
 
-      <button class="btn btn-blue" onclick="openSubPage(renderInterventionCarotide, renderAnesthVasculaireMenu)">
-            Chirurgies de la carotide et des TSA
-          </button>
+        <button class="btn btn-blue" onclick="openSubPage(renderInterventionAorteAbdominale, renderAnesthVasculaireMenu)">
+          Chirurgies de l’aorte abdominale et artères viscérales
+        </button>
 
-          <button class="btn btn-blue" onclick="openSubPage(renderInterventionAorteThoracique, renderAnesthVasculaireMenu)">
-            Chirurgies de l’aorte thoracique et thoraco-abdominale
-          </button>
+        <button class="btn btn-blue" onclick="openSubPage(renderInterventionMembreInferieur, renderAnesthVasculaireMenu)">
+          Chirurgies du membre inférieur
+        </button>
 
-          <button class="btn btn-blue" onclick="openSubPage(renderInterventionAorteAbdominale, renderAnesthVasculaireMenu)">
-            Chirurgies de l’aorte abdominale et artères viscérales
-          </button>
+        <button class="btn btn-blue" onclick="openSubPage(renderInterventionEndoprotheses, renderAnesthVasculaireMenu)">
+          Endoprothèses aortiques
+        </button>
 
-          <button class="btn btn-blue" onclick="openSubPage(renderInterventionMembreInferieur, renderAnesthVasculaireMenu)">
-            Chirurgies du membre inférieur
-          </button>
-
-          <button class="btn btn-blue" onclick="openSubPage(renderInterventionEndoprotheses, renderAnesthVasculaireMenu)">
-            Endoprothèses aortiques
-          </button>
-
-      <button class="btn btn-red" onclick="openSubPage(renderVasculaireProtocoles, renderAnesthVasculaireMenu)">
-        Protocoles spécifiques
-      </button>
-
-    </div>
+        <button class="btn btn-red" onclick="openSubPage(renderVasculaireProtocoles, renderAnesthVasculaireMenu)">
+          Protocoles spécifiques
+        </button>
+      </div>
+    </section>
   `;
 }
+
+
 function renderVasculaireProtocoles() {
   const app = document.getElementById("app");
 
