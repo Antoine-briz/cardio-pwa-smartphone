@@ -174,6 +174,44 @@ function openPdf(file) {
   window.open(url.toString(), "_blank");
 }
 
+// =========================================================
+// Helpers globaux (nécessaires car appelés depuis onclick="..."
+// =========================================================
+window.sectionHeader = function sectionHeader(title, imgFile) {
+  // imgFile ex: "chircec.png" (dans /img/)
+  return `
+    <div class="section-header">
+      <img src="img/${imgFile}" alt="" class="section-header-img">
+      <h2 class="section-header-title">${title}</h2>
+    </div>
+  `;
+};
+
+// Petit historique interne pour le bouton "retour" (footer)
+window.__navStack = window.__navStack || [];
+
+window.openSubPage = function openSubPage(renderFn, backFn) {
+  // backFn = la fonction qui reconstruit le menu précédent
+  if (typeof backFn === "function") window.__navStack.push(backFn);
+  if (typeof renderFn === "function") renderFn();
+
+  // remonter en haut après navigation
+  requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+};
+
+// Optionnel : fonction appelée par ton bouton retour du footer
+// (si tu en as déjà une, ne la duplique pas : adapte juste le contenu)
+window.goBackSmart = function goBackSmart() {
+  const fn = window.__navStack.pop();
+  if (typeof fn === "function") {
+    fn();
+    requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+  } else {
+    // fallback : accueil
+    location.hash = "#/";
+  }
+};
+
 // =====================================================================
 //  PAGE D’ACCUEIL
 // =====================================================================
