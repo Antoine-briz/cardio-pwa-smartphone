@@ -919,7 +919,7 @@ function renderAnesthConsultTraitements() {
           <!-- Héparine non fractionnée -->
           <details>
             <summary>
-              <span style="color:#b91c1c; font-weight:600;">
+              <span style="color:#000; font-weight:600;">
                 Héparine non fractionnée
               </span>
             </summary>
@@ -932,7 +932,7 @@ function renderAnesthConsultTraitements() {
           <!-- Héparines de bas poids moléculaire -->
           <details>
             <summary>
-              <span style="color:#b91c1c; font-weight:600;">
+              <span style="color:#000; font-weight:600;">
                 Héparines de bas poids moléculaire
               </span>
             </summary>
@@ -945,7 +945,7 @@ function renderAnesthConsultTraitements() {
           <!-- Anticoagulants oraux directs -->
           <details>
             <summary>
-              <span style="color:#b91c1c; font-weight:600;">
+              <span style="color:#000; font-weight:600;">
                 Anticoagulants oraux directs
               </span>
             </summary>
@@ -967,7 +967,7 @@ function renderAnesthConsultTraitements() {
           <!-- Anti-vitamines K -->
           <details>
             <summary>
-              <span style="color:#b91c1c; font-weight:600;">
+              <span style="color:#000; font-weight:600;">
                 Anti-vitamines K
               </span>
             </summary>
@@ -1089,6 +1089,10 @@ function renderAnesthConsultTraitements() {
             <li>
               Inhibiteurs DPP-4 (sitagliptine, vildagliptine…)&nbsp;:
               Poursuivre jusqu’au matin de l’intervention (risque d’hypoglycémie faible).
+            </li>
+            <li>
+              Agonistes GLP1 (Semaglutide, Dulaglutide, Liraglutide)&nbsp;:
+              Arrêt J-6 car inhibiteur de la vidange gastrique (considérer estomac plein sinon)
             </li>
             <li>
               Inhibiteurs SGLT2 (gliflozines&nbsp;: dapagliflozine, empagliflozine…)&nbsp;:
