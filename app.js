@@ -7397,7 +7397,7 @@ function buildEtoCompteRenduCompact(prefix, root) {
     const ra = q("ra") ? q("ra").checked : false;
     const isPlastieAortique =
   !!root.querySelector(`#${prefix}-eto-ia-meca`) ||   // champ spécifique plastie ao
-  !!root.querySelector(`#${prefix}-eto-eto-rcc-eh`);  // champs cuspides
+  !!root.querySelector(`#${prefix}-eto-rcc-eh`);      // champ cuspide (ID réel)
 
 const ia = (q("ia") ? q("ia").checked : false) || isPlastieAortique;
     const bic = q("bicuspidie") ? q("bicuspidie").checked : false;
@@ -7427,11 +7427,16 @@ const ia = (q("ia") ? q("ia").checked : false) || isPlastieAortique;
 
     // IA (général OU plastie aortique)
 if (ia) {
-  const dir = val(q("ia-dir")) || val(q("ia-centrage")); // général vs plastie
-  const sev = val(q("ia-sev"));
-  const vc  = val(q("ia-vc"));
-  const p12 = val(q("ia-p12"));
+  const dir  = val(q("ia-dir")) || val(q("ia-centrage")); // général vs plastie
+  const sev  = val(q("ia-sev"));
+  const vc   = val(q("ia-vc"));
+  const p12  = val(q("ia-p12"));
   const meca = val(q("ia-meca")); // plastie aortique
+
+  // ✅ nouveaux marqueurs
+  const sor = val(q("ia-sor"));
+  const vr  = val(q("ia-vr"));
+  const fr  = val(q("ia-fr"));
 
   const details = [];
   if (meca) details.push(meca.toLowerCase());
@@ -7439,11 +7444,15 @@ if (ia) {
   if (sev)  details.push(sev.toLowerCase());
   if (vc)   details.push(`VC ${vc} mm`);
   if (p12)  details.push(`P1/2T ${p12} ms`);
+  if (sor)  details.push(`SOR ${sor} cm²`);
+  if (vr)   details.push(`VR ${vr} mL`);
+  if (fr)   details.push(`FR ${fr} %`);
 
   let txt = "insuffisance aortique";
   if (details.length) txt += ` (${details.join(", ")})`;
   parts.push(txt);
 }
+
 
 
     if (!ra && !ia) parts.push("non fuyante, non sténosante");
