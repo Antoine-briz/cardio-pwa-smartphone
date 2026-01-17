@@ -6673,155 +6673,196 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
             </td>
           </tr>
 
-          <!-- ÉVALUATION AORTIQUE (PLASTIE) : remplace Valve aortique + Diamètres aortiques -->
-          <tr>
-            <td class="eto-sec">Évaluation aortique</td>
-            <td>
-              <div class="eto-cell">
-                <label class="checkbox">
-                  <input type="checkbox" id="${prefix}-eto-bicuspidie"/>
-                  Bicuspide
-                </label>
+<!-- ÉVALUATION AORTIQUE (PLASTIE) : remplace Valve aortique + Diamètres aortiques -->
+<tr>
+  <td class="eto-sec">Évaluation aortique</td>
 
-                <label>Mécanisme IA
-                  <select id="${prefix}-eto-ia-meca">
-                    <option value="">—</option>
-                    <option>Dilatation</option>
-                    <option>Perforation</option>
-                    <option>Prolapsus</option>
-                    <option>Restriction</option>
-                  </select>
-                </label>
+  <!-- Colonne centrale : données/mesures -->
+  <td>
+    <div class="eto-cell">
 
-                <label>Centrage IA
-                  <select id="${prefix}-eto-ia-centrage">
-                    <option value="">—</option>
-                    <option>Centrée</option>
-                    <option>Excentrée</option>
-                  </select>
-                </label>
+      <!-- Type de valve (remplace bicuspidie) -->
+      <label>Type de valve
+        <select id="${prefix}-eto-valve-type">
+          <option value="">—</option>
+          <option>Tricuspide</option>
+          <option>Fused BAV</option>
+          <option>Non fused BAV</option>
+          <option>Partial fused BAV</option>
+          <option>Unicuspide</option>
+        </select>
+      </label>
 
-                <label>Sévérité IA
-                  <select id="${prefix}-eto-ia-sev">
-                    <option value="">—</option>
-                    <option>Légère</option><option>Modérée</option><option>Sévère</option>
-                  </select>
-                </label>
+      <!-- Angle commisural (affiché seulement si BAV) -->
+      <div id="${prefix}-eto-comm-angle-wrap" style="display:none;">
+        <label>Angle commisural (°)
+          <input type="number" id="${prefix}-eto-comm-angle" step="1" min="0" max="180"/>
+        </label>
+      </div>
 
-                <label>VC (mm)
-                  <input type="number" id="${prefix}-eto-ia-vc" step="1" min="0"/>
-                </label>
+      <label>Mécanisme IA
+        <select id="${prefix}-eto-ia-meca">
+          <option value="">—</option>
+          <option>Dilatation</option>
+          <option>Perforation</option>
+          <option>Prolapsus</option>
+          <option>Restriction</option>
+        </select>
+      </label>
 
-                <label>P1/2T (ms)
-                  <input type="number" id="${prefix}-eto-ia-p12" step="1" min="0"/>
-                </label>
-              </div>
+      <label>Centrage IA
+        <select id="${prefix}-eto-ia-centrage">
+          <option value="">—</option>
+          <option>Centrée</option>
+          <option>Excentrée</option>
+        </select>
+      </label>
 
-              <div class="eto-subtitle">Diamètres aortiques</div>
-              <div class="eto-cell eto-subcell">
-                <label>Anneau (mm)
-                  <input type="number" id="${prefix}-eto-anneau-mm" step="1" min="0"/>
-                </label>
+      <label>Sévérité IA
+        <select id="${prefix}-eto-ia-sev">
+          <option value="">—</option>
+          <option>Légère</option>
+          <option>Modérée</option>
+          <option>Sévère</option>
+        </select>
+      </label>
 
-                <label>Sinus (mm)
-                  <input type="number" id="${prefix}-eto-sinus-mm" step="1" min="0"/>
-                </label>
+      <label>VC (mm)
+        <input type="number" id="${prefix}-eto-ia-vc" step="1" min="0"/>
+      </label>
 
-                <label>Sino-tubulaire (mm)
-                  <input type="number" id="${prefix}-eto-st-mm" step="1" min="0"/>
-                </label>
+      <label>P1/2T (ms)
+        <input type="number" id="${prefix}-eto-ia-p12" step="1" min="0"/>
+      </label>
 
-                <label>Tubulaire (mm)
-                  <input type="number" id="${prefix}-eto-tub-mm" step="1" min="0"/>
-                </label>
-              </div>
+      <label>SOR (cm²)
+        <input type="number" id="${prefix}-eto-ia-sor" step="0.01" min="0"/>
+      </label>
 
-             <div class="eto-subtitle">Analyse cuspide par cuspide</div>
+      <label>VR (mL)
+        <input type="number" id="${prefix}-eto-ia-vr" step="1" min="0"/>
+      </label>
 
-<div class="eto-cell eto-subcell">
-  <div class="eto-cusp-line">
-    <strong>Cusp droite :</strong>
-    <label>eH (mm)
-      <input type="number" id="${p("eto-rcc-eh")}" step="1" min="0"/>
-    </label>
-    <label>gH (mm)
-      <input type="number" id="${p("eto-rcc-gh")}" step="1" min="0"/>
-    </label>
-    <label>Long. bord libre (mm)
-      <input type="number" id="${p("eto-rcc-lbl")}" step="1" min="0"/>
-    </label>
-  </div>
+      <label>FR (%)
+        <input type="number" id="${prefix}-eto-ia-fr" step="1" min="0" max="100"/>
+      </label>
 
-  <div class="eto-cusp-line">
-    <strong>Cusp gauche :</strong>
-    <label>eH (mm)
-      <input type="number" id="${p("eto-lcc-eh")}" step="1" min="0"/>
-    </label>
-    <label>gH (mm)
-      <input type="number" id="${p("eto-lcc-gh")}" step="1" min="0"/>
-    </label>
-    <label>Long. bord libre (mm)
-      <input type="number" id="${p("eto-lcc-lbl")}" step="1" min="0"/>
-    </label>
-  </div>
+    </div>
 
-  <div class="eto-cusp-line">
-    <strong>Cusp non coronaire :</strong>
-    <label>eH (mm)
-      <input type="number" id="${p("eto-ncc-eh")}" step="1" min="0"/>
-    </label>
-    <label>gH (mm)
-      <input type="number" id="${p("eto-ncc-gh")}" step="1" min="0"/>
-    </label>
-    <label>Long. bord libre (mm)
-      <input type="number" id="${p("eto-ncc-lbl")}" step="1" min="0"/>
-    </label>
-  </div>
-</div>
+    <div class="eto-subtitle">Diamètres aortiques</div>
+    <div class="eto-cell eto-subcell">
+      <label>Anneau (mm)
+        <input type="number" id="${prefix}-eto-anneau-mm" step="1" min="0"/>
+      </label>
 
-              <div class="eto-subtitle">Résultat post-plastie</div>
-              <div class="eto-cell eto-subcell">
-                <label>cH (mm)
-                  <input type="number" id="${prefix}-eto-plastie-ch" step="1" min="0"/>
-                </label>
+      <label>Sinus (mm)
+        <input type="number" id="${prefix}-eto-sinus-mm" step="1" min="0"/>
+      </label>
 
-                <label class="checkbox">
-                  <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
-                  Fuite résiduelle
-                </label>
+      <label>Sino-tubulaire (mm)
+        <input type="number" id="${prefix}-eto-st-mm" step="1" min="0"/>
+      </label>
 
-                <div id="${prefix}-eto-fuite-details" style="display:none;">
-  <label>Centrage fuite
-    <select id="${prefix}-eto-fuite-centrage">
-      <option value="">—</option>
-      <option>Centrée</option>
-      <option>Excentrée</option>
-    </select>
-  </label>
+      <label>Tubulaire (mm)
+        <input type="number" id="${prefix}-eto-tub-mm" step="1" min="0"/>
+      </label>
+    </div>
 
-  <label>Sévérité fuite
-    <select id="${prefix}-eto-fuite-sev">
-      <option value="">—</option>
-      <option>Minime</option>
-      <option>Modérée</option>
-      <option>Sévère</option>
-    </select>
-  </label>
-</div>
+    <div class="eto-subtitle">Analyse cuspide par cuspide</div>
+    <div class="eto-cell eto-subcell">
+      <div class="eto-cusp-line">
+        <strong>Cusp droite :</strong>
+        <label>eH (mm)
+          <input type="number" id="${p("rcc-eh")}" step="1" min="0"/>
+        </label>
+        <label>gH (mm)
+          <input type="number" id="${p("rcc-gh")}" step="1" min="0"/>
+        </label>
+      </div>
 
-              </div>
-            </td>
+      <div class="eto-cusp-line">
+        <strong>Cusp gauche :</strong>
+        <label>eH (mm)
+          <input type="number" id="${p("lcc-eh")}" step="1" min="0"/>
+        </label>
+        <label>gH (mm)
+          <input type="number" id="${p("lcc-gh")}" step="1" min="0"/>
+        </label>
+      </div>
 
-            <td class="eto-imgcol">
-              ${etoImgLink("Morphologie VA", "eto_ao_morphologie.png")}
-              ${etoImgLink("Classification IA", "eto_ao_quantification.png")}
-              ${etoImgLink("IA VC", "eto_ia_VC.png")}
-              ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
-              ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
-              ${etoImgLink("Plastie aortique", "cf-plastieaortique.png")}
-            </td>
-          </tr>
+      <div class="eto-cusp-line">
+        <strong>Cusp non coronaire :</strong>
+        <label>eH (mm)
+          <input type="number" id="${p("ncc-eh")}" step="1" min="0"/>
+        </label>
+        <label>gH (mm)
+          <input type="number" id="${p("ncc-gh")}" step="1" min="0"/>
+        </label>
+      </div>
+    </div>
 
+    <div class="eto-subtitle">Résultat post-plastie</div>
+    <div class="eto-cell eto-subcell">
+
+      <label>Anneau aortique (mm)
+        <input type="number" id="${prefix}-eto-post-anneau" step="1" min="0"/>
+      </label>
+
+      <label>Hauteur de coaptation (mm)
+        <input type="number" id="${prefix}-eto-post-coapt" step="1" min="0"/>
+      </label>
+
+      <label>Hauteur effective (mm)
+        <input type="number" id="${prefix}-eto-post-eh" step="1" min="0"/>
+      </label>
+
+      <label>Gradient moyen (mmHg)
+        <input type="number" id="${prefix}-eto-post-gmoy" step="1" min="0"/>
+      </label>
+
+      <label>Gradient max (mmHg)
+        <input type="number" id="${prefix}-eto-post-gmax" step="1" min="0"/>
+      </label>
+
+      <label class="checkbox">
+        <input type="checkbox" id="${prefix}-eto-fuite-resid"/>
+        Fuite résiduelle
+      </label>
+
+      <div id="${prefix}-eto-fuite-details" style="display:none;">
+        <label>Centrage fuite
+          <select id="${prefix}-eto-fuite-centrage">
+            <option value="">—</option>
+            <option>Centrée</option>
+            <option>Excentrée</option>
+          </select>
+        </label>
+
+        <label>Sévérité fuite
+          <select id="${prefix}-eto-fuite-sev">
+            <option value="">—</option>
+            <option>Minime</option>
+            <option>Modérée</option>
+            <option>Sévère</option>
+          </select>
+        </label>
+      </div>
+
+    </div>
+  </td>
+
+  <!-- ✅ Colonne droite : tutoriel (DOIT être dans le même <tr>) -->
+  <td class="eto-imgcol">
+    ${etoImgLink("Morphologie VA", "eto_ao_morphologie.png")}
+    ${etoImgLink("Classification IA", "eto_ao_quantification.png")}
+    ${etoImgLink("IA VC", "eto_ia_VC.png")}
+    ${etoImgLink("IA P1/2T", "eto_ia_1.2.png")}
+    ${etoImgLink("Diamètres aortiques", "cf-diametre-aortique.png")}
+    ${etoImgLink("Plastie aortique", "cf-plastieaortique.png")}
+  </td>
+</tr>
+
+        
           <!-- Valve mitrale (inchangé) -->
           <tr>
             <td class="eto-sec">Valve mitrale</td>
@@ -7432,33 +7473,60 @@ if (ia) {
     }
   }
 
-  // ✅ AJOUT : Analyse cuspide par cuspide (PLASTIE AORTIQUE)
+ // ✅ AJOUT : Analyse cuspide par cuspide (PLASTIE AORTIQUE)
   // (ne sort des lignes que si au moins une valeur est saisie)
   {
-    const makeCuspLine = (label, ehId, ghId, lblId) => {
-      const eh = val(q(ehId));
-      const gh = val(q(ghId));
-      const lbl = val(q(lblId));
+    const makeCuspLine = (label, ehId, ghId) => {
+  const eh = val(q(ehId));
+  const gh = val(q(ghId));
+  if (!eh && !gh) return null;
 
-      if (!eh && !gh && !lbl) return null;
+  const items = [];
+  if (eh) items.push(`eH ${eh} mm`);
+  if (gh) items.push(`gH ${gh} mm`);
+  return `- <strong>${label}</strong> : ${items.join(", ")}.`;
+};
 
-      const items = [];
-      if (eh) items.push(`eH ${eh} mm`);
-      if (gh) items.push(`gH ${gh} mm`);
-      if (lbl) items.push(`Bord libre ${lbl} mm`);
-
-      return `- <strong>${label}</strong> : ${items.join(", ")}.`;
-    };
-
-    // IDs attendus (ceux de ton formulaire plastie aortique)
-    const l1 = makeCuspLine("Cusp droite", "eto-rcc-eh", "eto-rcc-gh", "eto-rcc-lbl");
-    const l2 = makeCuspLine("Cusp gauche", "eto-lcc-eh", "eto-lcc-gh", "eto-lcc-lbl");
-    const l3 = makeCuspLine("Cusp non coronaire", "eto-ncc-eh", "eto-ncc-gh", "eto-ncc-lbl");
+const l1 = makeCuspLine("Cusp droite", "rcc-eh", "rcc-gh");
+const l2 = makeCuspLine("Cusp gauche", "lcc-eh", "lcc-gh");
+const l3 = makeCuspLine("Cusp non coronaire", "ncc-eh", "ncc-gh");
 
     if (l1) lines.push(l1);
     if (l2) lines.push(l2);
     if (l3) lines.push(l3);
   }
+
+// ✅ AJOUT : Résultat post-plastie (PLASTIE AORTIQUE)
+{
+  const postAnneau = val(q("post-anneau"));
+  const postCoapt  = val(q("post-coapt"));
+  const postEh     = val(q("post-eh"));
+  const postGmoy   = val(q("post-gmoy"));
+  const postGmax   = val(q("post-gmax"));
+
+  const fuite = q("fuite-resid") ? q("fuite-resid").checked : false;
+  const fuiteC = val(q("fuite-centrage"));
+  const fuiteS = val(q("fuite-sev"));
+
+  const parts = [];
+  if (postAnneau) parts.push(`anneau ${postAnneau} mm`);
+  if (postCoapt)  parts.push(`hauteur de coaptation ${postCoapt} mm`);
+  if (postEh)     parts.push(`hauteur effective ${postEh} mm`);
+  if (postGmoy)   parts.push(`gradient moyen ${postGmoy} mmHg`);
+  if (postGmax)   parts.push(`gradient max ${postGmax} mmHg`);
+
+  if (fuite) {
+    const d = [];
+    if (fuiteC) d.push(fuiteC.toLowerCase());
+    if (fuiteS) d.push(fuiteS.toLowerCase());
+    parts.push(`fuite résiduelle${d.length ? ` (${d.join(", ")})` : ""}`);
+  }
+
+  if (parts.length) {
+    lines.push(`- <strong>Résultat post-plastie</strong> : ${parts.join(", ")}.`);
+  }
+}
+  
 
   // ===== Valve mitrale =====
   {
