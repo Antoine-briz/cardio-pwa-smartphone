@@ -17099,7 +17099,7 @@ function etoHtmlValveAortique() {
           <span class="eto-icon" onclick="openImg('eto_ia_1.2.png')">🖥️</span>
         </li>
         <li>
-          Insuffisance mitrale: Mesures pour plastie aortique
+          Insuffisance aortique: Mesures pour plastie aortique
           <span class="eto-icon" onclick="openImg('cf-plastieaortique.png')">🖥️</span>
         </li>
         <li>
