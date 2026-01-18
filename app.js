@@ -17080,7 +17080,7 @@ function etoHtmlValveAortique() {
         </li>
         <li>
           Mesure des diamètres aortiques
-          <span class="eto-icon" onclick="openImg('cf-diametresaortiques.png')">🖥️</span>
+          <span class="eto-icon" onclick="openImg('cf-diametre-aortique.png')">🖥️</span>
         </li>
         <li>
           Insuffisance aortique : Classification
