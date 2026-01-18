@@ -6353,6 +6353,19 @@ function etoFormHtmlCompact(prefix) {
                   <label>P1/2T (ms)
                     <input type="number" id="${prefix}-eto-ia-p12" step="1" min="0"/>
                   </label>
+
+<label>SOR (cm²)
+        <input type="number" id="${prefix}-eto-ia-sor" step="0.01" min="0"/>
+      </label>
+
+      <label>VR (mL)
+        <input type="number" id="${prefix}-eto-ia-vr" step="1" min="0"/>
+      </label>
+
+      <label>FR (%)
+        <input type="number" id="${prefix}-eto-ia-fr" step="1" min="0" max="100"/>
+      </label> 
+                  
                 </div>
               </div>
             </td>
@@ -6462,6 +6475,18 @@ function etoFormHtmlCompact(prefix) {
                   <label>P1/2T (ms)
                     <input type="number" id="${prefix}-eto-im-p12" step="1" min="0"/>
                   </label>
+<label>SOR (cm²)
+        <input type="number" id="${prefix}-eto-im-sor" step="0.01" min="0"/>
+      </label>
+
+      <label>VR (mL)
+        <input type="number" id="${prefix}-eto-im-vr" step="1" min="0"/>
+      </label>
+
+      <label>FR (%)
+        <input type="number" id="${prefix}-eto-im-fr" step="1" min="0" max="100"/>
+      </label> 
+                  
                 </div>
               </div>
             </td>
@@ -6935,6 +6960,19 @@ function etoFormHtmlCompactPlastieAortique(prefix) {
                   <label>P1/2T (ms)
                     <input type="number" id="${prefix}-eto-im-p12" step="1" min="0"/>
                   </label>
+<label>SOR (cm²)
+        <input type="number" id="${prefix}-eto-im-sor" step="0.01" min="0"/>
+      </label>
+
+      <label>VR (mL)
+        <input type="number" id="${prefix}-eto-im-vr" step="1" min="0"/>
+      </label>
+
+      <label>FR (%)
+        <input type="number" id="${prefix}-eto-im-fr" step="1" min="0" max="100"/>
+      </label> 
+
+                  
                 </div>
               </div>
             </td>
