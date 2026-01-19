@@ -1376,20 +1376,20 @@ function renderInterventionCarotide() {
   // Données : contenu des cellules (avec la même mise en forme)
   // NB: ici je garde la présentation "comme cellule" (pas de tirets ajoutés).
   // ----------------------------------------------------------
-  const DATA = {
+const DATA = {
     "Endartériectomie carotidienne": {
       hasPoseMateriel: true,
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br>" +
-        "Consultation ORL avant 2ᵉ côté si patient non revu<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
+        "- Consultation ORL avant 2ᵉ côté si patient non revu<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Maintien Kardégic<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
+        "- Maintien Kardégic<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
         "Si carotide symptomatique : possibilité de maintenir le clopidogrel après accord chirurgien (relayer prasugrel et ticagrélor par du clopidogrel) <br><br>" +
         "Pré-commande&nbsp;: 2 CGR",
       monitorage: "Scope 5 branches, SpO2,  VVP, KTa, TOF, BIS, NIRS",
@@ -1399,11 +1399,11 @@ function renderInterventionCarotide() {
       orientation:
         "<strong>SSPI 2h minimum</strong><br><br>" +
         "<strong>Examens à l’entrée:</strong><br>" +
-        "ECG<br><br>" +
+        "- ECG<br><br>" +
         "<strong>Surveillance:</strong><br>" +
-        "Examen neuro<br>" +
-        "Hématome cervical<br>" +
-        "Obj PAS &lt; 160 mmHg",
+        "- Examen neuro<br>" +
+        "- Hématome cervical<br>" +
+        "- Obj PAS &lt; 160 mmHg",
       kind: "CAROTIDE_CLAMP",
     },
 
@@ -1411,14 +1411,15 @@ function renderInterventionCarotide() {
       hasPoseMateriel: true,
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
+        "- Consultation ORL avant 2ᵉ côté si patient non revu<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Maintien Kardégic<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
+        "- Maintien Kardégic<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
         "Possibilité de maintenir le clopidogrel après accord chirurgien (relayer prasugrel et ticagrélor par du clopidogrel)<br><br>" +
         "Pré-commande&nbsp;: 2 CGR",
       monitorage: "Scope 5 branches, SpO2,  VVP, KTa, TOF, BIS, NIRS",
@@ -1428,11 +1429,11 @@ function renderInterventionCarotide() {
       orientation:
         "<strong>SSPI 2h minimum</strong><br><br>" +
         "<strong>Examens à l’entrée:</strong><br>" +
-        "ECG<br><br>" +
+        "- ECG<br><br>" +
         "<strong>Surveillance:</strong><br>" +
-        "Examen neuro<br>" +
-        "Hématome cervical<br>" +
-        "Obj PAS &lt; 160 mmHg",
+        "- Examen neuro<br>" +
+        "- Hématome cervical<br>" +
+        "- Obj PAS &lt; 160 mmHg",
       kind: "CAROTIDE_CLAMP",
     },
 
@@ -1440,26 +1441,26 @@ function renderInterventionCarotide() {
       hasPoseMateriel: true,
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Maintien Kardégic<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
-        "Pré-commande&nbsp;: 2 CGR",
+        "- Maintien Kardégic<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
+        "Pré-commande&nbsp;: 5 CGR + 5 PFC + 1 CUP",
       monitorage:
         "Scope 5 branches, SpO2, VVP, KTa, TOF, BIS, NIRS, Cell-saver, accélérateur/réchauffeur",
       alr: "Aucune",
       orientation:
         "<strong>SSPI 2h minimum</strong><br><br>" +
         "<strong>Examens à l’entrée:</strong><br>" +
-        "ECG<br><br>" +
+        "- ECG<br><br>" +
         "<strong>Surveillance:</strong><br>" +
-        "Examen neuro<br>" +
-        "Hématome cervical<br>" +
-        "Obj PAS &lt; 160 mmHg",
+        "- Examen neuro<br>" +
+        "- Hématome cervical<br>" +
+        "- Obj PAS &lt; 160 mmHg",
       kind: "CAROTIDE_CLAMP_QUANTRA",
     },
 
@@ -1467,15 +1468,14 @@ function renderInterventionCarotide() {
       hasPoseMateriel: false,
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br>" +
-        "Radiographie de thorax de référence<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Maintien Kardégic<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
+        "- Maintien Kardégic<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
         "Pré-commande&nbsp;: 2 CGR",
       monitorage:
         "Scope 5 branches, SpO2, VVP, KTa, TOF, BIS, NIRS, Cell-saver, accélérateur/réchauffeur",
@@ -1483,14 +1483,14 @@ function renderInterventionCarotide() {
       orientation:
         "<strong>SSPI 24h</strong><br><br>" +
         "<strong>Examens:</strong><br>" +
-        "ECG + Biologie<br>" +
-        "GdS à 20h<br>" +
-        "Biologie + ECG à J1<br><br>" +
+        "- ECG + Biologie<br>" +
+        "- GdS à 20h<br>" +
+        "- Biologie + ECG à J1<br><br>" +
         "<strong>Surveillance:</strong><br>" +
-        "Risque d’œdème laryngé<br>" +
-        "Examen neuro<br>" +
-        "Hématome cervical<br>" +
-        "Obj PAS &lt; 160 mmHg",
+        "- Risque d’œdème laryngé<br>" +
+        "- Examen neuro<br>" +
+        "- Hématome cervical<br>" +
+        "- Obj PAS &lt; 160 mmHg",
       kind: "CAROTIDE_STANDARD",
     },
 
@@ -1498,16 +1498,18 @@ function renderInterventionCarotide() {
       hasPoseMateriel: false,
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br>" +
-        "Radiographie de thorax de référence<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
+        "- ETT de repos<br>" +
+        "- CoroTDM ou coronarographie<br>" +
+        "- EDTSA<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Maintien Kardégic<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
-        "Pré-commande&nbsp;: 2 CGR",
+        "- Maintien Kardégic<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
+        "Pré-commande&nbsp;: 5 CGR + 5 PFC + 1 CUP",
       monitorage:
         "Scope 5 branches, SpO2, KTc fémoral, KTa, TOF, BIS, NIRS, Cell-saver, accélérateur/réchauffeur",
       alr:
@@ -1516,14 +1518,14 @@ function renderInterventionCarotide() {
       orientation:
         "<strong>USIP/Réa</strong><br><br>" +
         "<strong>Examens à l’entrée:&nbsp;&nbsp;</strong><br>" +
-        "ECG<br>" +
-        "Radio de thorax<br>" +
-        "GDS-lact, NFS, ionogramme, BHC, troponinémie, TP/TCA<br><br>" +
+        "- ECG<br>" +
+        "- Radio de thorax<br>" +
+        "- GDS-lact, NFS, ionogramme, BHC, troponinémie, TP/TCA<br><br>" +
         "<strong>Surveillance:</strong><br>" +
-        "Saignement<br>" +
-        "Défaillance respiratoire<br>" +
-        "Examen neuro<br>" +
-        "Obj PAS &lt; 160 mmHg",
+        "- Saignement<br>" +
+        "- Défaillance respiratoire<br>" +
+        "- Examen neuro<br>" +
+        "- Obj PAS &lt; 160 mmHg",
       kind: "TSA_STERNOTOMIE",
     },
 
@@ -1531,30 +1533,33 @@ function renderInterventionCarotide() {
       hasPoseMateriel: false,
       gestion:
         "<strong>Examens complémentaires&nbsp;: </strong><br>" +
-        "Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
-        "ECG<br>" +
-        "Radiographie de thorax de référence<br><br>" +
+        "- Biologie pré-opératoire (NFS-Pl, ionogramme, BHC, troponinémie, TP/TCA, Groupe x2, RAI)<br>" +
+        "- ECG<br>" +
+        "- Radiographie de thorax de référence<br><br>" +
         "<strong>&nbsp;Gestion des traitements&nbsp;: </strong><br>" +
-        "Maintien Kardégic<br>" +
-        "Arrêt Clopidogrel J-5<br>" +
-        "Arrêt Ticagrélor J-5<br>" +
-        "Arrêt Prasugrel J-7<br>" +
-        "Arrêt AOD J-5<br><br>" +
+        "- Maintien Kardégic<br>" +
+        "- Arrêt Clopidogrel J-5<br>" +
+        "- Arrêt Ticagrélor J-5<br>" +
+        "- Arrêt Prasugrel J-7<br>" +
+        "- Arrêt AOD J-5<br><br>" +
         "Pré-commande&nbsp;: 2 CGR",
       monitorage: "Scope 5 branches, SpO2, VVP, PNI, TOF, BIS",
       alr: "Infiltration chirurgicale par Ropivacaïne 2mg/mL",
       orientation:
         "<strong>SSPI 2h minimum</strong><br><br>" +
         "<strong>Examens à l’entrée:</strong><br>" +
-        "Radiographie de thorax +/- ECG +/- Hemocue<br><br>" +
+        "- Radiographie de thorax<br>" +
+        "- +/- ECG +/- Hemocue<br>" +
+        "- +/- Hemocue<br><br>" +
         "<strong>Surveillance:</strong><br>" +
-        "Douleur: PCA Morphine<br>" +
-        "Défaillance respi (PNO/Ep. Pleural)<br>" +
-        "Ischémie de MS",
+        "- Douleur: PCA Morphine<br>" +
+        "- Défaillance respi (PNO/Ep. Pleural)<br>" +
+        "- Ischémie de MS",
       kind: "STTB",
     },
   };
 
+  
   const INTERVENTIONS = Object.keys(DATA);
 
   // ----------------------------------------------------------
