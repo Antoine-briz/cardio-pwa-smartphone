@@ -5779,3 +5779,30 @@ details.card .card-body * {
     border-right: 1px solid rgba(255,255,255,0.18) !important;
   }
 }
+/* ===========================
+   Sticky footer (global)
+   =========================== */
+
+/* Important sur mobile : 100dvh > 100vh (barre d’adresse) */
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Le conteneur principal de l’app doit grandir */
+#app {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Le footer est poussé en bas quand il manque de contenu */
+#app-footer {
+  margin-top: auto;
+}
+
