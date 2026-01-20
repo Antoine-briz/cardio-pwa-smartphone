@@ -17260,6 +17260,14 @@ function etoHtmlValveMitrale() {
           <span class="eto-icon" onclick="openImg('cf-plastiemitrale.png')">🖥️</span>
         </li>
         <li>
+          Insuffisance mitrale: Facteurs de risque de SAM
+          <span class="eto-icon" onclick="openImg('fdrSAM.png')">🖥️</span>
+        </li>
+        <li>
+          Insuffisance mitrale: Algorithme décisionnel SAM
+          <span class="eto-icon" onclick="openImg('algoSAM.png')">🖥️</span>
+        </li>
+        <li>
           Rétrécissement mitral: Gradient moyen
           <span class="eto-icon" onclick="openImg('eto_rm_gdmoyen.png')">🖥️</span>
         </li>
