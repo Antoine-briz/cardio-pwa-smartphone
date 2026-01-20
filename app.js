@@ -6608,8 +6608,6 @@ function etoFormHtmlCompact(prefix) {
               ${etoImgLink("Classification IM", "eto_im_classif.png")}
               ${etoImgLink("IM VC", "eto_im_VC.png")}
               ${etoImgLink("IM P1/2T", "eto_im_1.2.png")}
-              ${etoImgLink("Facteurs de risque de SAM", "fdrSAM.png")}
-              ${etoImgLink("Algorithme décisionnel SAM", "algoSAM.png")}
             </td>
           </tr>
 
@@ -7328,7 +7326,9 @@ function etoFormHtmlCompactPlastieMitrale(prefix) {
     ${etoImgLink("IM P1/2T", "eto_im_1.2.png")}
     ${etoImgLink("IM PISA", "eto_im_PISA.png")}
     ${etoImgLink("Gd moyen mitral", "eto_rm_gdmoyen.png")}
-    ${etoImgLink("Plastie mitrale", "cf-plastiemitrale.png")}
+    ${etoImgLink("Mesures pour plastie mitrale", "cf-plastiemitrale.png")}
+    ${etoImgLink("Facteurs de risque de SAM", "fdrSAM.png")}
+    ${etoImgLink("Algorithme décisionnel SAM", "algoSAM.png")}
   </td>
 </tr>`;
 
