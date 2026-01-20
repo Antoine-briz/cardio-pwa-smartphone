@@ -17490,49 +17490,49 @@ function renderCecUrgencesMenu() {
         <img src="img/cec1.png"
            alt="Circulation extra-corporelle"
            class="menu-section-img">
-        <button class="btn" onclick="renderCecUrgenceHypotension()">
-          Hypotension artérielle per CEC
-        </button>
+        <button class="btn" onclick="openSubPage(renderCecUrgenceHypotension, renderCecUrgencesMenu)">
+    Hypotension artérielle per CEC
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceRetourVeineux()">
-          Retour veineux insuffisant
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceRetourVeineux, renderCecUrgencesMenu)">
+    Retour veineux insuffisant
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceResistanceHeparine()">
-          Résistance à l’Héparine
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceResistanceHeparine, renderCecUrgencesMenu)">
+    Résistance à l’Héparine
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceCardioplegieInefficace()">
-          Cardioplégie inefficace
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceCardioplegieInefficace, renderCecUrgencesMenu)">
+    Cardioplégie inefficace
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceDecanulationVeineuseAccidentelle()">
-          Décanulation veineuse accidentelle
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceDecanulationVeineuseAccidentelle, renderCecUrgencesMenu)">
+    Décanulation veineuse accidentelle
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceDissectionAortiqueSurLaCanulation()">
-          Dissection aortique sur la canulation
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceDissectionAortiqueSurLaCanulation, renderCecUrgencesMenu)">
+    Dissection aortique sur la canulation
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceChangementCircuitCEC()">
-          Changement de circuit de CEC
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceChangementCircuitCEC, renderCecUrgencesMenu)">
+    Changement de circuit de CEC
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceEntreeAirOxygenateur()">
-          Entrée d’air dans l’oxygénateur
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceEntreeAirOxygenateur, renderCecUrgencesMenu)">
+    Entrée d’air dans l’oxygénateur
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceEmbolieGazeuseMassive()">
-          Embolie gazeuse massive
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceEmbolieGazeuseMassive, renderCecUrgencesMenu)">
+    Embolie gazeuse massive
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceThromboseDeCircuit()">
-          Thrombose de circuit
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceThromboseDeCircuit, renderCecUrgencesMenu)">
+    Thrombose de circuit
+  </button>
 
-        <button class="btn" onclick="renderCecUrgenceSevrageCecDifficile()">
-          Sevrage de CEC difficile
-        </button>
+  <button class="btn" onclick="openSubPage(renderCecUrgenceSevrageCecDifficile, renderCecUrgencesMenu)">
+    Sevrage de CEC difficile
+  </button>
       </div>
 
     </section>
