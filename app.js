@@ -17483,62 +17483,56 @@ function renderCecProtocoles() {
 function renderCecUrgencesMenu() {
   $app.innerHTML = `
     <section>
-
-      <h2>Situations d'urgence — CEC</h2>
+      ${sectionHeader("Situations d'urgence — CEC", "cec1.png")}
 
       <div class="grid">
-        <img src="img/cec1.png"
-           alt="Circulation extra-corporelle"
-           class="menu-section-img">
-        <button class="btn" onclick="openSubPage(renderCecUrgenceHypotension, renderCecUrgencesMenu)">
-    Hypotension artérielle per CEC
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceHypotension, renderCecUrgencesMenu)">
+          Hypotension artérielle per CEC
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceRetourVeineux, renderCecUrgencesMenu)">
-    Retour veineux insuffisant
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceRetourVeineux, renderCecUrgencesMenu)">
+          Retour veineux insuffisant
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceResistanceHeparine, renderCecUrgencesMenu)">
-    Résistance à l’Héparine
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceResistanceHeparine, renderCecUrgencesMenu)">
+          Résistance à l’Héparine
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceCardioplegieInefficace, renderCecUrgencesMenu)">
-    Cardioplégie inefficace
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceCardioplegieInefficace, renderCecUrgencesMenu)">
+          Cardioplégie inefficace
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceDecanulationVeineuseAccidentelle, renderCecUrgencesMenu)">
-    Décanulation veineuse accidentelle
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceDecanulationVeineuseAccidentelle, renderCecUrgencesMenu)">
+          Décanulation veineuse accidentelle
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceDissectionAortiqueSurLaCanulation, renderCecUrgencesMenu)">
-    Dissection aortique sur la canulation
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceDissectionAortiqueSurLaCanulation, renderCecUrgencesMenu)">
+          Dissection aortique sur la canulation
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceChangementCircuitCEC, renderCecUrgencesMenu)">
-    Changement de circuit de CEC
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceChangementCircuitCEC, renderCecUrgencesMenu)">
+          Changement de circuit de CEC
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceEntreeAirOxygenateur, renderCecUrgencesMenu)">
-    Entrée d’air dans l’oxygénateur
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceEntreeAirOxygenateur, renderCecUrgencesMenu)">
+          Entrée d’air dans l’oxygénateur
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceEmbolieGazeuseMassive, renderCecUrgencesMenu)">
-    Embolie gazeuse massive
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceEmbolieGazeuseMassive, renderCecUrgencesMenu)">
+          Embolie gazeuse massive
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceThromboseDeCircuit, renderCecUrgencesMenu)">
-    Thrombose de circuit
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceThromboseDeCircuit, renderCecUrgencesMenu)">
+          Thrombose de circuit
+        </button>
 
-  <button class="btn" onclick="openSubPage(renderCecUrgenceSevrageCecDifficile, renderCecUrgencesMenu)">
-    Sevrage de CEC difficile
-  </button>
+        <button type="button" class="btn" onclick="openSubPage(renderCecUrgenceSevrageCecDifficile, renderCecUrgencesMenu)">
+          Sevrage de CEC difficile
+        </button>
       </div>
-
     </section>
   `;
 }
-
 
 function renderCecUrgenceHypotension() {
   const encadres = [
