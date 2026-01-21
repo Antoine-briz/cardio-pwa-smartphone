@@ -13701,16 +13701,52 @@ function renderProbaMenu() {
     `)}
 
     ${h("grid cols-2", `
-      <button class="btn outline" onclick="location.hash='#/proba/pneumonies'">Pneumonies</button>
-      <button class="btn outline" onclick="location.hash='#/proba/mediastinite'">Médiastinites post-opératoires</button>
-      <button class="btn outline" onclick="location.hash='#/proba/scarpa'">Infections de Scarpa</button>
-      <button class="btn outline" onclick="location.hash='#/proba/endocardite'">Endocardites infectieuses</button>
-      <button class="btn outline" onclick="location.hash='#/proba/iu'">Infections urinaires</button>
-      <button class="btn outline" onclick="location.hash='#/proba/abdo'">Infections intra-abdominales</button>
-      <button class="btn outline" onclick="location.hash='#/proba/dermohypo'">Infections des parties molles</button>
-      <button class="btn outline" onclick="location.hash='#/proba/neuro'">Infections neuro-méningées</button>
-      <button class="btn outline" onclick="location.hash='#/proba/sepsis'">Sepsis sans porte d'entrée</button>
-    `)}
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaPneumonies, renderProbaMenu)">
+    Pneumonies
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaMediastinite, renderProbaMenu)">
+    Médiastinites post-opératoires
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaScarpa, renderProbaMenu)">
+    Infections de Scarpa
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaEndocardite, renderProbaMenu)">
+    Endocardites infectieuses
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaIU, renderProbaMenu)">
+    Infections urinaires
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaAbdo, renderProbaMenu)">
+    Infections intra-abdominales
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaDermohypo, renderProbaMenu)">
+    Infections des parties molles
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaNeuro, renderProbaMenu)">
+    Infections neuro-méningées
+  </button>
+
+  <button type="button" class="btn"
+    onclick="openSubPage(renderProbaSepsis, renderProbaMenu)">
+    Sepsis sans porte d'entrée
+  </button>
+`)}
+
 
     ${h("card", `
       <button class="btn ghost" onclick="history.back()">← Retour</button>
