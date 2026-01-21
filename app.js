@@ -3657,7 +3657,7 @@ function renderAnesthRadioVascMenu() {
 </button>
       </div>
       <div class="actions">
-        <button class="btn ghost" onclick="history.back()">← Retour</button>
+        <button class="btn ghost" onclick="goBackSmart()">Retour</button>
       </div>
     </section>
   `;
@@ -13749,7 +13749,7 @@ function renderProbaMenu() {
 
 
     ${h("card", `
-      <button class="btn ghost" onclick="history.back()">← Retour</button>
+      <button class="btn ghost" onclick="goBackSmart()">Retour</button>
     `)}
   `;
 }
@@ -13789,9 +13789,14 @@ function renderAdapteeMenu() {
     anchor.href = link.href;
     anchor.textContent = link.text;
     anchor.addEventListener("click", (e) => {
-      e.preventDefault(); // Empêche la navigation par défaut
-      location.hash = link.href; // Change le hash pour afficher la bonne page
-    });
+  e.preventDefault();
+
+  // ✅ empile le menu comme "page de retour" puis navigue
+  openSubPage(() => {
+    location.hash = link.href;
+  }, renderAdapteeMenu);
+});
+
     linksContainer.appendChild(anchor);
   });
 
@@ -14902,7 +14907,7 @@ function renderBacteriaPage(slug, data){
       </div>
 
       <div class="actions">
-        <button class="btn ghost" onclick="history.back()">← Retour</button>
+        <button class="btn ghost" onclick="goBackSmart()">Retour</button>
       </div>
     </div>
   `;
