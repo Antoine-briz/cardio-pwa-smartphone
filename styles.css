@@ -5900,3 +5900,33 @@ html, body {
   border-radius: 6px;
 }
 
+/* ✅ Fix overflow horizontal sur mobile : autoriser les flex-items à rétrécir */
+.intervention-main,
+.info-card,
+.info-card .info-content,
+.bact-page {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ✅ Le scroll horizontal doit se faire DANS l'encadré */
+.info-card .info-content {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ✅ Les tableaux peuvent être plus larges que l'encadré (scroll interne) */
+.info-card .info-content table {
+  width: max-content;     /* le tableau prend la largeur nécessaire */
+  max-width: none;        /* important */
+  border-collapse: collapse;
+}
+
+/* Optionnel : évite qu'une image ou un élément inline dépasse */
+.info-card img,
+.intervention-side img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
