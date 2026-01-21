@@ -21892,9 +21892,14 @@ function renderAcrChirCardiaque() {
 }
 
 document.addEventListener("click", (e) => {
-  if (e.target.id === "back-button") {
-    window.history.back();
-  }
+  const btn = e.target.closest("#back-button");
+  if (!btn) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  // ✅ Retour “intelligent” basé sur ton historique interne
+  window.goBackSmart();
 });
 
 
