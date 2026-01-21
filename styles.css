@@ -253,6 +253,7 @@ input[type="text"], input[type="number"], select, textarea {
   width: 100%;              /* Prend toute la largeur de l'écran */
   max-width: 100%;          /* Ne dépasse jamais la largeur de l'écran */
   box-sizing: border-box;   /* Inclus les bordures et paddings dans la largeur totale */
+  overflow: hidden;         /* Masque tout contenu qui dépasse de l'encadré */
 }
 
 /* 2️⃣ Encadré avec tableau à l'intérieur qui peut déborder horizontalement */
@@ -262,7 +263,22 @@ input[type="text"], input[type="number"], select, textarea {
   padding: 0 5px;             /* Un peu d'espace sur les côtés pour le confort */
 }
 
+/* 3️⃣ Les tableaux peuvent dépasser à droite à l'intérieur de l'encadré */
+.info-card table {
+  width: auto !important;     /* Permet au tableau de se déployer au besoin */
+  min-width: 720px;           /* Largeur minimale pour éviter que les colonnes soient trop étroites */
+  table-layout: auto;         /* Laisse les colonnes s'ajuster automatiquement */
+  border-collapse: collapse;  /* Fusionne les bordures du tableau */
+}
 
+/* 4️⃣ Empêcher le texte dans les cellules de déborder des cellules */
+.info-card table td,
+.info-card table th {
+  white-space: nowrap;        /* Empêche le texte de se casser à la ligne */
+  overflow: hidden;           /* Cache tout contenu qui dépasse */
+  text-overflow: ellipsis;    /* Affiche "..." si le texte dépasse de la cellule */
+  padding: 6px 8px;           /* Un peu d'espace autour du texte */
+}
 
 /* 5️⃣ Taille de la police des tableaux et du contenu ajustée pour mobile */
 @media (max-width: 768px) {
@@ -375,6 +391,22 @@ html, body {
   padding: 0 5px;                /* Ajoute un peu d'espace sur les côtés pour plus de confort */
 }
 
+/* 5️⃣ S'assurer que le tableau prend toute la largeur sans provoquer de débordement */
+.info-card table {
+  width: 100% !important;     /* Assure que le tableau prend toute la largeur disponible */
+  min-width: 600px;           /* Largeur minimale, ajustée si nécessaire */
+  table-layout: auto;         /* Les colonnes s'ajustent automatiquement */
+  border-collapse: collapse;  /* Fusionne les bordures du tableau */
+}
+
+/* 6️⃣ Les cellules du tableau ne doivent pas déborder et doivent être visibles */
+.info-card table td,
+.info-card table th {
+  white-space: nowrap;        /* Empêche le texte de se couper sur plusieurs lignes dans les cellules */
+  overflow: hidden;           /* Cache les parties du texte qui dépassent */
+  text-overflow: ellipsis;    /* Affiche "..." si le texte est trop long pour tenir dans la cellule */
+  padding: 6px 8px;           /* Espace autour du texte dans les cellules */
+}
 
 /* 7️⃣ Gérer le défilement horizontal dans les tableaux pour que l'utilisateur puisse les voir en entier */
 .info-card .info-content {
@@ -487,7 +519,7 @@ html, body {
   .info-card { padding: 10px; }
   .info-card h3 { font-size: 14px; }  /* Réduction de la police des titres */
   .info-content { font-size: 12px; line-height: 1.4; }  /* Réduction de la police du contenu */
-  .bact-page { padding-left: 10px; padding-right: 10px; width: 100%; box-sizing: border-box; /* ✅ */ } /* Assure que la page bactérie prend toute la largeur */
+  .bact-page { padding-left: 10px; padding-right: 10px; width: 100%; } /* Assure que la page bactérie prend toute la largeur */
 }
 
 /* =========================================================
@@ -502,6 +534,12 @@ html, body {
   }
 
   /* Ajustement de la largeur des tableaux pour qu'ils occupent toute la largeur de l'encadré */
+  table.simple, table.pheno {
+    width: 100% !important;       /* Tableaux prennent toute la largeur de l'encadré */
+    table-layout: auto;           /* Les colonnes s'ajustent automatiquement */
+    min-width: 600px;             /* Largeur minimale pour éviter une compression excessive */
+    border-collapse: collapse;   /* Fusionne les bordures des cellules */
+  }
 
   /* S'assurer que le texte dans les tableaux soit lisible et adapté */
   table.simple th, table.simple td,
@@ -510,6 +548,14 @@ html, body {
     padding: 4px 6px;
   }
 
+  /* Assure que les 4 derniers encadrés (Phénotype, Antibiotique de référence, Antibiotique selon le site infectieux, Ajout si choc septique) ont un défilement horizontal */
+  .info-card:nth-child(4),  /* Phénotype habituel */
+  .info-card:nth-child(5),  /* Antibiotique de référence */
+  .info-card:nth-child(6),  /* Antibiotique selon le site infectieux */
+  .info-card:nth-child(7) { /* Ajout si choc septique */
+    overflow-x: auto !important;  /* Permet le défilement horizontal des tableaux uniquement */
+    white-space: nowrap;           /* Évite que le texte dans les cellules du tableau se brise sur plusieurs lignes */
+  }
   
   /* Optionnel : visuel de la barre de défilement */
   .info-card .info-content::-webkit-scrollbar { height: 8px; }
@@ -518,6 +564,13 @@ html, body {
     border-radius: 4px;
   }
   .info-card .info-content::-webkit-scrollbar-thumb:hover { background: #888; }
+}
+
+/* Forcer les tableaux à être responsives */
+table.simple, table.pheno {
+  width: 100% !important; /* Assurez-vous que le tableau prend toute la largeur */
+  table-layout: fixed; /* Pour ajuster la taille des colonnes automatiquement */
+  border-collapse: collapse;
 }
 
 /* Appliquer un défilement horizontal à l'intérieur des tableaux */
@@ -534,11 +587,20 @@ html, body {
   overflow: hidden;          /* Empêcher tout débordement de l'encadré */
 }
 
+/* Appliquer un défilement horizontal pour le tableau, et permettre le dépassement */
+.info-card table {
+  width: auto !important;      /* Permet au tableau de dépasser si nécessaire */
+  min-width: 720px;            /* Largeur minimale, ajustez selon le contenu */
+  table-layout: auto;          /* Colonne s'ajuste automatiquement */
+  border-collapse: collapse;   /* Fusionne les bordures du tableau */
+}
 
 /* Limiter le contenu à la largeur des cellules (éviter les dépassements dans les cellules) */
 .info-card table td,
 .info-card table th {
   white-space: nowrap;      /* Empêche le texte de s'étendre à la ligne */
+  overflow: hidden;         /* Masque les parties du contenu qui dépassent la cellule */
+  text-overflow: ellipsis;  /* Affiche "..." si le texte dépasse */
   padding: 6px 8px;         /* Un peu d'espace autour du texte */
 }
 
@@ -583,6 +645,7 @@ html, body {
 
 /* Rétablir les bordures des tableaux */
 table.simple, table.pheno {
+  width: 100%;
   border-collapse: collapse; /* Fusionner les bordures des cellules */
   font-size: 14px;
   background-color: white;
@@ -767,6 +830,9 @@ table.simple th, table.pheno th {
     color: #f3f4f6;
   }
 }
+
+
+
 
 /* === Ajouts Cardio ICU === */
 
@@ -5352,6 +5418,92 @@ details.card .card-body * {
   }
 }
 
+/* =========================================================
+   BIBLIOGRAPHIE — VERSION SMARTPHONE (1 colonne, sans image)
+   À coller TOUT EN BAS de style.css
+========================================================= */
+
+@media (max-width: 900px){
+
+  /* 1) Plus de split 2 colonnes */
+  .biblio-split{
+    display: block !important;     /* une seule colonne */
+  }
+
+  /* 2) On masque l'image de droite si jamais elle existe */
+  .biblio-right{
+    display: none !important;
+  }
+
+  /* 3) Layout et espacements plus compacts */
+  .biblio-left{
+    gap: 12px !important;
+  }
+
+  .biblio-left .page-title{
+    font-size: 1.9rem !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* 4) Les tableaux ne doivent jamais dépasser l’écran */
+  .biblio-table-wrap{
+    width: 100% !important;
+    overflow-x: auto !important;     /* si vraiment trop large -> scroll horizontal */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .biblio-table{
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: auto !important;   /* plus souple sur mobile */
+  }
+
+  /* Colonne "Spécialité" moins large sur mobile */
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    width: 140px !important;
+  }
+
+  /* 5) Grille des revues : 2 colonnes (retour à la ligne) */
+  .biblio-journal-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  /* cartes un peu plus compactes */
+  .biblio-journal-card{
+    padding: 8px 6px !important;
+    border-radius: 14px !important;
+  }
+
+  .biblio-journal-card img{
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .biblio-journal-card span{
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+  }
+
+  /* 6) Texte du tableau toujours noir (thème sombre OK) */
+  .biblio-box,
+  .biblio-box *{
+    color: #000 !important;
+  }
+
+  /* 7) Bordures visibles même sur mobile */
+  .biblio-table thead th{
+    border-bottom: 2px solid rgba(0,0,0,0.22) !important;
+  }
+  .biblio-table tbody td{
+    border-bottom: 1px solid rgba(0,0,0,0.14) !important;
+  }
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    border-right: 2px solid rgba(0,0,0,0.22) !important;
+  }
+}
 
 /* =========================================================
    BiBL / Juniors — VERSION SMARTPHONE
@@ -5455,514 +5607,4 @@ details.card .card-body * {
   color: #0b2f6b;
   text-decoration: underline;
   word-break: break-all;
-}
-.bibl-newsletter{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  text-align: center;
-  margin: 12px 0 16px;
-}
-
-.cec-credit{
-  margin-top: 12px;
-  font-style: italic;
-  font-size: 14px;
-  color: #444;
-  text-align: left;
-}
-
-/* Boutons ETO (RVA / RVM) */
-.eto-buttons{
-  display: flex;
-  flex-direction: column;
-  gap: 12px;   /* espace entre les 2 boutons */
-}
-/* =========================================
-   BIBLIOGRAPHIE — SMARTPHONE FIX
-   - Texte lisible en thème sombre (blanc)
-   - Revues sur 2 lignes (3 + 2)
-   - Boutons avec espace
-========================================= */
-
-@media (max-width: 900px){
-
-  /* Espace entre les 2 boutons */
-  .biblio-actions{
-    display: grid;
-    gap: 10px; /* <- espace entre "Internes" et "BiBL." */
-  }
-
-  /* Box + table en mode sombre : texte BLANC */
-  .biblio-box{
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-
-  .biblio-box,
-  .biblio-box *{
-    color: #fff !important;
-  }
-
-  /* Le tableau ne doit pas être "trop large" -> scroll horizontal si besoin */
-  .biblio-table-wrap{
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Table : éviter que la colonne gauche prenne trop */
-  .biblio-table{
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  /* Colonne "Spécialité" plus étroite */
-  .biblio-table th:first-child,
-  .biblio-table td:first-child{
-    width: 120px;          /* <- réduit fortement */
-    max-width: 120px;
-    white-space: normal;   /* autorise 2 lignes pour le texte */
-  }
-
-  .biblio-spec{
-    font-weight: 800;
-    color: #fff !important;
-  }
-
-  /* Grille revues : 3 colonnes -> 5 éléments => 2 lignes (3 + 2) */
-  .biblio-journal-grid{
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-    align-items: start;
-  }
-
-  /* Cartes revues compactes */
-  .biblio-journal-card{
-    padding: 6px 4px !important;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #fff !important;
-    background: transparent;
-  }
-
-  /* Logos plus petits pour tenir */
-  .biblio-journal-card img{
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 10px;
-    background: #fff; /* logo lisible */
-    border: 1px solid rgba(255,255,255,0.25);
-  }
-
-  /* Titre sous le logo : compact (sinon ça casse tout) */
-  .biblio-journal-card span{
-    display: block;
-    font-size: 11px !important;
-    line-height: 1.15 !important;
-    font-weight: 700 !important;
-    text-align: center;
-    color: #fff !important;
-    word-break: break-word; /* si trop long, il casse */
-  }
-
-  /* En-têtes de table en blanc */
-  .biblio-table thead th{
-    color: #fff !important;
-    font-weight: 900;
-    border-bottom: 1px solid rgba(255,255,255,0.25);
-  }
-
-  /* Séparations de lignes/colonnes en clair */
-  .biblio-table td{
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-  }
-  .biblio-table th:first-child,
-  .biblio-table td:first-child{
-    border-right: 1px solid rgba(255,255,255,0.18);
-  }
-}
-
-/* =========================================
-   BIBLIOGRAPHIE — SMARTPHONE (FIX FINAL UNIQUE)
-   Objectifs :
-   - 1 colonne, sans image
-   - au moins 3 revues par ligne (3 + 2)
-   - colonne "Spécialité" plus étroite
-   - pas de dépassement écran (scroll horizontal possible)
-   - texte lisible en thème sombre (blanc)
-   - espace autour des boutons
-========================================= */
-
-@media (max-width: 900px){
-
-  /* 1) 1 colonne + pas d'image */
-  .biblio-split{ display: block !important; }
-  .biblio-right{ display: none !important; }
-
-  /* 2) Espaces autour des boutons */
-  .biblio-actions{
-    display: grid !important;
-    gap: 12px !important;          /* espace entre boutons */
-    margin: 10px 0 18px !important;/* espace au-dessus & dessous */
-  }
-
-  /* boutons plus respirants sur mobile */
-  .biblio-actions .btn{
-    min-height: 56px !important;
-    font-size: 1.05rem !important;
-    font-weight: 800 !important;
-    border-radius: 14px !important;
-  }
-
-  /* 3) Thème sombre : texte BLANC dans la box/table */
-  .biblio-box{
-    background: rgba(255,255,255,0.06) !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-  }
-  .biblio-box,
-  .biblio-box *{
-    color: #fff !important;
-  }
-
-  /* 4) Table : ne sort jamais de l’écran, scroll horizontal autorisé */
-  .biblio-table-wrap{
-    width: 100% !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Important : on empêche le tableau de “se compresser” */
-  .biblio-table{
-    width: max-content !important;   /* largeur = contenu */
-    min-width: 100% !important;      /* mais au moins l'écran */
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-    table-layout: fixed !important;  /* contrôle largeurs colonnes */
-  }
-
-  /* 5) Colonne spécialité plus étroite */
-  .biblio-table th:first-child,
-  .biblio-table td:first-child{
-    width: 105px !important;       /* plus étroit */
-    max-width: 105px !important;
-    white-space: normal !important;/* autorise 2 lignes */
-    word-break: break-word !important;
-    vertical-align: top !important;
-  }
-
-  .biblio-spec{
-    font-weight: 900 !important;
-    font-size: 0.95rem !important;
-  }
-
-  /* 6) Grille revues : 3 colonnes -> 5 items => 2 lignes (3 + 2) */
-  .biblio-journal-grid{
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-    align-items: start !important;
-  }
-
-  /* cartes compactes */
-  .biblio-journal-card{
-    padding: 6px 4px !important;
-    border-radius: 12px !important;
-    text-decoration: none !important;
-    background: transparent !important;
-  }
-
-  /* logos plus petits */
-  .biblio-journal-card img{
-    width: 38px !important;
-    height: 38px !important;
-    object-fit: contain !important;
-    border-radius: 10px !important;
-    background: #fff !important; /* logos lisibles */
-    border: 1px solid rgba(255,255,255,0.25) !important;
-  }
-
-  /* texte sous logo compact */
-  .biblio-journal-card span{
-    display: block !important;
-    margin-top: 6px !important;
-    font-size: 10.5px !important;
-    line-height: 1.15 !important;
-    font-weight: 800 !important;
-    text-align: center !important;
-    word-break: break-word !important;
-  }
-
-  /* 7) entêtes / séparations en clair */
-  .biblio-table thead th{
-    font-weight: 900 !important;
-    border-bottom: 1px solid rgba(255,255,255,0.25) !important;
-  }
-
-  .biblio-table td{
-    border-bottom: 1px solid rgba(255,255,255,0.12) !important;
-    vertical-align: top !important;
-  }
-
-  .biblio-table th:first-child,
-  .biblio-table td:first-child{
-    border-right: 1px solid rgba(255,255,255,0.18) !important;
-  }
-}
-/* ===========================
-   Sticky footer (global)
-   =========================== */
-
-/* Important sur mobile : 100dvh > 100vh (barre d’adresse) */
-html, body {
-  height: 100%;
-}
-
-body {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Le conteneur principal de l’app doit grandir */
-#app {
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Le footer est poussé en bas quand il manque de contenu */
-#app-footer {
-  margin-top: auto;
-}
-
-/* =========================================================
-   FIX MOBILE — pages bactéries qui débordent à droite
-   À AJOUTER dans style.css (idéalement tout en bas)
-   ========================================================= */
-
-/* 1) Empêche l'image héro de dépasser */
-.bact-hero img{
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* 2) Les contenus (surtout tables) doivent pouvoir scroller horizontalement */
-.bact-page .info-content{
-  max-width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 3) Tables responsive : ne dépassent pas le conteneur */
-.bact-page .info-content table{
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-}
-
-/* 4) Casse des mots / longues chaînes (posologies, molécules, etc.) */
-.bact-page,
-.bact-page *{
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-/* 5) Ceinture + bretelles : évite tout scroll horizontal global */
-html, body{
-  overflow-x: hidden;
-}
-
-/* ===== Fix débordement mobile tables bactéries ===== */
-
-#app,
-#app > * {
-  min-width: 0;
-}
-
-.info-card,
-.info-content {
-  max-width: 100%;
-  min-width: 0;
-}
-
-/* Le scroll horizontal se fait DANS la carte */
-.info-content {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Le tableau prend sa largeur naturelle sans élargir la page */
-.info-content table {
-  width: max-content;
-  min-width: 100%;
-  border-collapse: collapse;
-}
-
-/* Tables scrollables dans les encadrés */
-.info-card .info-content {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.info-card .info-content table {
-  width: max-content;   /* permet au tableau d’être large */
-  min-width: 100%;      /* au minimum la largeur de la carte */
-  border-collapse: collapse;
-  table-layout: auto;
-}
-
-.info-card .info-content th,
-.info-card .info-content td {
-  white-space: nowrap;
-}
-
-/* ✅ Cartes : ne pas couper le scroll horizontal des tableaux */
-.info-card{
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: visible; /* important: ne pas bloquer le scroll des enfants */
-}
-
-/* ✅ Zone de contenu : c’est elle qui gère le scroll horizontal */
-.info-card .info-content{
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* ✅ Les tableaux peuvent être plus larges que la carte (scroll interne) */
-.info-card .info-content table{
-  width: max-content;      /* le tableau garde sa vraie largeur */
-  min-width: 600px;        /* ajustable si tu veux */
-  border-collapse: collapse;
-}
-
-/* ✅ Sécurité: éviter qu’un élément hors-table fasse déborder la page */
-.bact-page, .intervention-shell{
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-/* =========================================================
-   ✅ TABLES DANS info-card : pas de débordement page,
-   mais scroll horizontal à l'intérieur de l'encadré
-   ========================================================= */
-
-/* 1) La page ne doit jamais scroller horizontalement */
-html, body {
-  overflow-x: hidden;
-}
-
-/* 2) L'encadré ne dépasse jamais l'écran */
-.bact-page,
-.info-card {
-  max-width: 100%;
-}
-
-/* 3) Le scroll horizontal se fait UNIQUEMENT dans le contenu */
-.info-card .info-content {
-  display: block;
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 4) Le tableau garde sa largeur naturelle (peut être > écran) */
-.info-card .info-content table {
-  width: max-content;     /* clé : le tableau peut dépasser */
-  min-width: 100%;        /* au minimum, il remplit l'encadré */
-  border-collapse: collapse;
-}
-
-/* 5) Les cellules : pas de "..." (sinon tu perds de l'info) */
-.info-card .info-content th,
-.info-card .info-content td {
-  white-space: nowrap;    /* colonnes sur une ligne */
-  overflow: visible;
-  text-overflow: clip;
-}
-
-/* 6) Optionnel : scrollbar visible sur mobile webkit */
-.info-card .info-content::-webkit-scrollbar {
-  height: 8px;
-}
-.info-card .info-content::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,.25);
-  border-radius: 6px;
-}
-
-/* ✅ Fix overflow horizontal sur mobile : autoriser les flex-items à rétrécir */
-.intervention-main,
-.info-card,
-.info-card .info-content,
-.bact-page {
-  min-width: 0;
-  max-width: 100%;
-}
-
-/* ✅ Le scroll horizontal doit se faire DANS l'encadré */
-.info-card .info-content {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* ✅ Les tableaux peuvent être plus larges que l'encadré (scroll interne) */
-.info-card .info-content table {
-  width: max-content;     /* le tableau prend la largeur nécessaire */
-  max-width: none;        /* important */
-  border-collapse: collapse;
-}
-
-/* Optionnel : évite qu'une image ou un élément inline dépasse */
-.info-card img,
-.intervention-side img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* ✅ Empêche les débordements dus à width:100% + padding */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-/* ✅ Le tableau peut être plus large que la card, et se scrolle dans .info-content */
-.info-card table {
-  width: max-content;
-  min-width: 100%;
-  border-collapse: collapse;
-}
-
-/* 1) ✅ Fix universel : width inclut padding/border => stop overflow "fantôme" */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-/* 2) ✅ Si une règle récalcitrante provoque un overflow global, on le coupe */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-/* 3) ✅ Tables : les cards ne débordent jamais, les tables scrollent dedans */
-.info-card .info-content,
-.card .info-content,
-.info-content {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.info-content table {
-  width: max-content;
-  min-width: 100%;
-  border-collapse: collapse;
 }
