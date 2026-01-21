@@ -263,13 +263,6 @@ input[type="text"], input[type="number"], select, textarea {
   padding: 0 5px;             /* Un peu d'espace sur les côtés pour le confort */
 }
 
-/* 3️⃣ Les tableaux peuvent dépasser à droite à l'intérieur de l'encadré */
-.info-card table {
-  width: auto !important;     /* Permet au tableau de se déployer au besoin */
-  min-width: 720px;           /* Largeur minimale pour éviter que les colonnes soient trop étroites */
-  table-layout: auto;         /* Laisse les colonnes s'ajuster automatiquement */
-  border-collapse: collapse;  /* Fusionne les bordures du tableau */
-}
 
 /* 4️⃣ Empêcher le texte dans les cellules de déborder des cellules */
 .info-card table td,
@@ -831,6 +824,48 @@ table.simple th, table.pheno th {
   }
 }
 
+/* =========================================================
+   FIX OVERFLOW MOBILE (pages bactéries + tables)
+   ========================================================= */
+
+/* Important avec #app en flex : autorise les enfants à rétrécir */
+#app { min-width: 0; }
+#app > * { min-width: 0; }
+
+/* Empêche un composant de pousser la page hors écran */
+.bact-page,
+.info-grid,
+.info-card,
+.info-content {
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Les tables doivent scroller dans leur conteneur (pas élargir la page) */
+.info-content {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Par défaut un tableau peut dépasser : on le garde "scrollable" */
+.info-content table {
+  width: max-content;   /* le tableau prend la largeur nécessaire */
+  min-width: 100%;      /* mais au minimum remplit le conteneur */
+  border-collapse: collapse;
+}
+
+/* Images : sécurité anti-débordement */
+.bact-page img,
+.bact-hero img,
+.info-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Bonus : casse les mots très longs si besoin */
+.info-content {
+  overflow-wrap: anywhere;
+}
 
 
 
