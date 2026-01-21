@@ -580,13 +580,6 @@ table.simple, table.pheno {
   overflow: hidden;          /* Empêcher tout débordement de l'encadré */
 }
 
-/* Appliquer un défilement horizontal pour le tableau, et permettre le dépassement */
-.info-card table {
-  width: auto !important;      /* Permet au tableau de dépasser si nécessaire */
-  min-width: 720px;            /* Largeur minimale, ajustez selon le contenu */
-  table-layout: auto;          /* Colonne s'ajuste automatiquement */
-  border-collapse: collapse;   /* Fusionne les bordures du tableau */
-}
 
 /* Limiter le contenu à la largeur des cellules (éviter les dépassements dans les cellules) */
 .info-card table td,
