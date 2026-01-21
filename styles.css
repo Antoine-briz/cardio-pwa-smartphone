@@ -487,7 +487,7 @@ html, body {
   .info-card { padding: 10px; }
   .info-card h3 { font-size: 14px; }  /* Réduction de la police des titres */
   .info-content { font-size: 12px; line-height: 1.4; }  /* Réduction de la police du contenu */
-  .bact-page { padding-left: 10px; padding-right: 10px; width: 100%; } /* Assure que la page bactérie prend toute la largeur */
+  .bact-page { padding-left: 10px; padding-right: 10px; width: 100%; box-sizing: border-box; /* ✅ */ } /* Assure que la page bactérie prend toute la largeur */
 }
 
 /* =========================================================
@@ -5928,5 +5928,17 @@ html, body {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* ✅ Empêche les débordements dus à width:100% + padding */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ✅ Le tableau peut être plus large que la card, et se scrolle dans .info-content */
+.info-card table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
 }
 
