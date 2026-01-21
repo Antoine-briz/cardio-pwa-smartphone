@@ -5608,3 +5608,180 @@ details.card .card-body * {
   text-decoration: underline;
   word-break: break-all;
 }
+
+.bibl-newsletter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  text-align: center;
+  margin: 12px 0 16px;
+}
+
+.cec-credit{
+  margin-top: 12px;
+  font-style: italic;
+  font-size: 14px;
+  color: #444;
+  text-align: left;
+}
+
+/* Boutons ETO (RVA / RVM) */
+.eto-buttons{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;   /* espace entre les 2 boutons */
+}
+
+/* =========================================
+   BIBLIOGRAPHIE — SMARTPHONE (UNIQUE)
+   - Texte lisible en thème sombre (blanc)
+   - Revues sur 2 lignes (3 + 2)
+   - Boutons avec espace
+   - Pas de dépassement écran : scroll horizontal DANS le wrap
+========================================= */
+@media (max-width: 900px){
+
+  /* 1) 1 colonne + pas d'image */
+  .biblio-split{ display: block !important; }
+  .biblio-right{ display: none !important; }
+
+  /* 2) Espaces autour des boutons */
+  .biblio-actions{
+    display: grid !important;
+    gap: 12px !important;
+    margin: 10px 0 18px !important;
+  }
+
+  .biblio-actions .btn{
+    min-height: 56px !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    border-radius: 14px !important;
+  }
+
+  /* 3) Box + table en mode sombre : texte BLANC */
+  .biblio-box{
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+  }
+
+  .biblio-box,
+  .biblio-box *{
+    color: #fff !important;
+  }
+
+  /* 4) ✅ Le scroll horizontal doit se faire ICI, sans pousser la page */
+  .biblio-table-wrap{
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;                 /* ✅ clé anti-overflow en flex/grid */
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ✅ Le tableau peut être plus large que le wrap => scroll interne */
+  .biblio-table{
+    width: max-content !important;           /* largeur = contenu */
+    min-width: 100% !important;              /* au moins la largeur écran */
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    table-layout: auto !important;           /* ⚠️ évite les débordements de fixed */
+  }
+
+  /* 5) Colonne "Spécialité" plus étroite */
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    width: 105px !important;
+    max-width: 105px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    vertical-align: top !important;
+  }
+
+  .biblio-spec{
+    font-weight: 900 !important;
+    font-size: 0.95rem !important;
+    color: #fff !important;
+  }
+
+  /* 6) Grille revues : 3 colonnes -> 5 éléments => 2 lignes (3 + 2) */
+  .biblio-journal-grid{
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  .biblio-journal-card{
+    padding: 6px 4px !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    color: #fff !important;
+    background: transparent !important;
+  }
+
+  .biblio-journal-card img{
+    width: 38px !important;
+    height: 38px !important;
+    object-fit: contain !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
+  }
+
+  .biblio-journal-card span{
+    display: block !important;
+    font-size: 10.5px !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    color: #fff !important;
+    word-break: break-word !important;
+  }
+
+  /* 7) En-têtes + séparations */
+  .biblio-table thead th{
+    color: #fff !important;
+    font-weight: 900 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.25) !important;
+  }
+
+  .biblio-table td{
+    border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+    vertical-align: top !important;
+  }
+
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    border-right: 1px solid rgba(255,255,255,0.18) !important;
+  }
+}
+
+/* ===========================
+   Sticky footer (global)
+   =========================== */
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Le conteneur principal de l’app doit grandir */
+#app {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* ✅ évite que le contenu pousse la page en largeur */
+}
+
+/* Le footer est poussé en bas quand il manque de contenu */
+#app-footer {
+  margin-top: auto;
+}
