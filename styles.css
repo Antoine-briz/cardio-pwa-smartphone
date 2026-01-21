@@ -253,7 +253,6 @@ input[type="text"], input[type="number"], select, textarea {
   width: 100%;              /* Prend toute la largeur de l'écran */
   max-width: 100%;          /* Ne dépasse jamais la largeur de l'écran */
   box-sizing: border-box;   /* Inclus les bordures et paddings dans la largeur totale */
-  overflow: hidden;         /* Masque tout contenu qui dépasse de l'encadré */
 }
 
 /* 2️⃣ Encadré avec tableau à l'intérieur qui peut déborder horizontalement */
@@ -5862,5 +5861,34 @@ html, body{
 .info-card .info-content th,
 .info-card .info-content td {
   white-space: nowrap;
+}
+
+/* ✅ Cartes : ne pas couper le scroll horizontal des tableaux */
+.info-card{
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: visible; /* important: ne pas bloquer le scroll des enfants */
+}
+
+/* ✅ Zone de contenu : c’est elle qui gère le scroll horizontal */
+.info-card .info-content{
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ✅ Les tableaux peuvent être plus larges que la carte (scroll interne) */
+.info-card .info-content table{
+  width: max-content;      /* le tableau garde sa vraie largeur */
+  min-width: 600px;        /* ajustable si tu veux */
+  border-collapse: collapse;
+}
+
+/* ✅ Sécurité: éviter qu’un élément hors-table fasse déborder la page */
+.bact-page, .intervention-shell{
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
