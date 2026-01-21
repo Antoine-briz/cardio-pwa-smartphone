@@ -824,51 +824,6 @@ table.simple th, table.pheno th {
   }
 }
 
-/* =========================================================
-   FIX OVERFLOW MOBILE (pages bactéries + tables)
-   ========================================================= */
-
-/* Important avec #app en flex : autorise les enfants à rétrécir */
-#app { min-width: 0; }
-#app > * { min-width: 0; }
-
-/* Empêche un composant de pousser la page hors écran */
-.bact-page,
-.info-grid,
-.info-card,
-.info-content {
-  max-width: 100%;
-  min-width: 0;
-}
-
-/* Les tables doivent scroller dans leur conteneur (pas élargir la page) */
-.info-content {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Par défaut un tableau peut dépasser : on le garde "scrollable" */
-.info-content table {
-  width: max-content;   /* le tableau prend la largeur nécessaire */
-  min-width: 100%;      /* mais au minimum remplit le conteneur */
-  border-collapse: collapse;
-}
-
-/* Images : sécurité anti-débordement */
-.bact-page img,
-.bact-hero img,
-.info-content img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Bonus : casse les mots très longs si besoin */
-.info-content {
-  overflow-wrap: anywhere;
-}
-
-
-
 /* === Ajouts Cardio ICU === */
 
 .hero {
@@ -5877,5 +5832,31 @@ body {
 /* 5) Ceinture + bretelles : évite tout scroll horizontal global */
 html, body{
   overflow-x: hidden;
+}
+
+/* ===== Fix débordement mobile tables bactéries ===== */
+
+#app,
+#app > * {
+  min-width: 0;
+}
+
+.info-card,
+.info-content {
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Le scroll horizontal se fait DANS la carte */
+.info-content {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Le tableau prend sa largeur naturelle sans élargir la page */
+.info-content table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
 }
 
