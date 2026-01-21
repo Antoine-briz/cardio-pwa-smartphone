@@ -384,13 +384,6 @@ html, body {
   padding: 0 5px;                /* Ajoute un peu d'espace sur les côtés pour plus de confort */
 }
 
-/* 5️⃣ S'assurer que le tableau prend toute la largeur sans provoquer de débordement */
-.info-card table {
-  width: 100% !important;     /* Assure que le tableau prend toute la largeur disponible */
-  min-width: 600px;           /* Largeur minimale, ajustée si nécessaire */
-  table-layout: auto;         /* Les colonnes s'ajustent automatiquement */
-  border-collapse: collapse;  /* Fusionne les bordures du tableau */
-}
 
 /* 6️⃣ Les cellules du tableau ne doivent pas déborder et doivent être visibles */
 .info-card table td,
@@ -5851,5 +5844,23 @@ html, body{
   width: max-content;
   min-width: 100%;
   border-collapse: collapse;
+}
+
+/* Tables scrollables dans les encadrés */
+.info-card .info-content {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.info-card .info-content table {
+  width: max-content;   /* permet au tableau d’être large */
+  min-width: 100%;      /* au minimum la largeur de la carte */
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.info-card .info-content th,
+.info-card .info-content td {
+  white-space: nowrap;
 }
 
