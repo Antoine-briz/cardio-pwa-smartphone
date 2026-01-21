@@ -5942,3 +5942,27 @@ html, body {
   border-collapse: collapse;
 }
 
+/* 1) ✅ Fix universel : width inclut padding/border => stop overflow "fantôme" */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2) ✅ Si une règle récalcitrante provoque un overflow global, on le coupe */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* 3) ✅ Tables : les cards ne débordent jamais, les tables scrollent dedans */
+.info-card .info-content,
+.card .info-content,
+.info-content {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.info-content table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+}
