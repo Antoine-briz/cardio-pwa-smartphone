@@ -14901,6 +14901,10 @@ function renderBacteriaPage(slug, data){
           <div class="info-content">${data.choc}</div>
         </section>
       </div>
+
+      <div class="actions">
+        <button class="btn ghost" onclick="history.back()">← Retour</button>
+      </div>
     </div>
   `;
 }
