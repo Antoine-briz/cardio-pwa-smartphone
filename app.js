@@ -12311,8 +12311,19 @@ function renderReanEerMenu() {
       ${sectionHeader("EER et échanges plasmatiques", "dialyse.png")}
 
       <div class="grid">
-        <button class="btn" onclick="renderReanEerPostOp()">EER post-opératoire</button>
-        <button class="btn" onclick="renderReanEchangesPlasmatiques()">Echanges plasmatiques</button>
+       <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanEerPostOp, renderReanEerMenu)">
+            EER post-opératoire
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanEchangesPlasmatiques, renderReanEerMenu)">
+            Échanges plasmatiques
+          </button>
       </div>
     </section>
   `;
@@ -12694,21 +12705,40 @@ function renderReanTransplantMenu() {
     <section>
       ${sectionHeader("Transplantation cardiaque", "transplantation.png")}
       <div class="grid">
-        <button class="btn" onclick="renderReanTransplantHemodynamique()">
-          Gestion hémodynamique post-opératoire
-        </button>
-        <button class="btn" onclick="renderReanTransplantImmuno()">
-          Protocole d’immunosuppression
-        </button>
-        <button class="btn" onclick="renderReanTransplantRejet()">
-          Rejet aigu de greffon
-        </button>
-        <button class="btn" onclick="renderReanTransplantInfections()">
-          Infections et transplantation
-        </button>
-        <button class="btn" onclick="renderReanTransplantCoronaires()">
-          Prévention maladie coronaire du greffon
-        </button>
+        <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantHemodynamique, renderReanTransplantMenu)">
+            Gestion hémodynamique post-opératoire
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantImmuno, renderReanTransplantMenu)">
+            Protocole d’immunosuppression
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantRejet, renderReanTransplantMenu)">
+            Rejet aigu de greffon
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantInfections, renderReanTransplantMenu)">
+            Infections et transplantation
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanTransplantCoronaires, renderReanTransplantMenu)">
+            Prévention de la maladie coronaire du greffon
+          </button>
       </div>
     </section>
   `;
@@ -13529,21 +13559,40 @@ function renderReanAssistancesMenu() {
     <section>
       ${sectionHeader("Assistances circulatoires", "assistances.png")}
       <div class="grid">
-        <button class="btn" onclick="renderReanAssistECMO()">
-          ECMO artério-veineuse
-        </button>
-        <button class="btn" onclick="renderReanAssistBCPIA()">
-          BCPIA
-        </button>
-        <button class="btn" onclick="renderReanAssistImpella()">
-          Impella
-        </button>
-        <button class="btn" onclick="renderReanAssistLVAD()">
-          LVAD
-        </button>
-        <button class="btn" onclick="renderReanAssistCardioWest()">
-          Cardio-west
-        </button>
+        <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanAssistECMO, renderReanAssistMenu)">
+            ECMO artério-veineuse
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanAssistBCPIA, renderReanAssistMenu)">
+            BCPIA
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanAssistImpella, renderReanAssistMenu)">
+            Impella
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanAssistLVAD, renderReanAssistMenu)">
+            LVAD
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="openSubPage(renderReanAssistCardioWest, renderReanAssistMenu)">
+            Cardio-West
+          </button>
       </div>
     </section>
   `;
