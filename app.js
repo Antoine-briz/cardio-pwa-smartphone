@@ -165,6 +165,7 @@ window.openPdf = openPdf;
 //  NAV BACK (footer) — historique interne
 // =====================================================================
 window.__navStack = window.__navStack || [];
+window.__lastHash = window.__lastHash || "";
 
 window.openSubPage = function openSubPage(renderFn, backFn) {
   if (typeof backFn === "function") window.__navStack.push(backFn);
