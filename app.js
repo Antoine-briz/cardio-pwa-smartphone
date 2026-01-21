@@ -10971,21 +10971,25 @@ function renderReanFormulesMenu() {
       ${sectionHeader("Formules", "formules.png")}
 
       <div class="grid">
-        <button class="btn" onclick="renderReanFormulesVentilation()">
-          Ventilation
-        </button>
+        <button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesVentilation, renderReanFormulesMenu)">
+  Ventilation
+</button>
 
-        <button class="btn" onclick="renderReanFormulesCardio()">
-          Cardio-vasculaire
-        </button>
+<button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesCardio, renderReanFormulesMenu)">
+  Cardio-vasculaire
+</button>
 
-        <button class="btn" onclick="renderReanFormulesMetabolique()">
-          Métabolique
-        </button>
+<button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesMetabolique, renderReanFormulesMenu)">
+  Métabolique
+</button>
 
-        <button class="btn" onclick="renderReanFormulesNeuro()">
-          Neurologie
-        </button>
+<button type="button" class="btn"
+  onclick="openSubPage(renderReanFormulesNeuro, renderReanFormulesMenu)">
+  Neurologie
+</button>
       </div>
 
     </section>
@@ -13702,48 +13706,48 @@ function renderProbaMenu() {
     `)}
 
     ${h("grid cols-2", `
-  <button type="button" class="btn"
-    onclick="openSubPage(renderProbaPneumonies, renderProbaMenu)">
+ <button type="button" class="btn"
+    onclick="openSubPage(renderProbaPneumonie, renderProbaMenu)">
     Pneumonies
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaMediastinite, renderProbaMenu)">
+    onclick="openSubPage(renderProbaMediastiniteForm, renderProbaMenu)">
     Médiastinites post-opératoires
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaScarpa, renderProbaMenu)">
+    onclick="openSubPage(renderProbaScarpaForm, renderProbaMenu)">
     Infections de Scarpa
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaEndocardite, renderProbaMenu)">
+    onclick="openSubPage(renderProbaEndocarditeForm, renderProbaMenu)">
     Endocardites infectieuses
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaIU, renderProbaMenu)">
+    onclick="openSubPage(renderProbaIUForm, renderProbaMenu)">
     Infections urinaires
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaAbdo, renderProbaMenu)">
+    onclick="openSubPage(renderProbaAbdoForm, renderProbaMenu)">
     Infections intra-abdominales
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaDermohypo, renderProbaMenu)">
+    onclick="openSubPage(renderProbaDermohypoForm, renderProbaMenu)">
     Infections des parties molles
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaNeuro, renderProbaMenu)">
+    onclick="openSubPage(renderProbaNeuroForm, renderProbaMenu)">
     Infections neuro-méningées
   </button>
 
   <button type="button" class="btn"
-    onclick="openSubPage(renderProbaSepsis, renderProbaMenu)">
+    onclick="openSubPage(renderProbaSepsisForm, renderProbaMenu)">
     Sepsis sans porte d'entrée
   </button>
 `)}
