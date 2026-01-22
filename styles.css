@@ -5978,4 +5978,60 @@ body {
   min-width: 0;
 }
 
+/* =========================================
+   BIBLIOGRAPHIE — BORDURES TABLEAU
+   - Thème sombre : bordures blanches
+   - Thème clair : bordures noires
+   - Uniquement pour la bibliographie
+========================================= */
+
+/* ===== Base : structure des bordures ===== */
+.biblio-table{
+  border-collapse: collapse !important;
+}
+
+/* bordure externe */
+.biblio-table{
+  border: 1px solid currentColor !important;
+}
+
+/* bordures internes */
+.biblio-table th,
+.biblio-table td{
+  border: 1px solid currentColor !important;
+}
+
+/* =========================================
+   THEME SOMBRE (par défaut)
+========================================= */
+
+.biblio-box,
+.biblio-box *{
+  color: #fff !important;
+}
+
+/* currentColor = blanc */
+.biblio-table{
+  color: #fff !important;
+}
+
+/* =========================================
+   THEME CLAIR
+========================================= */
+
+.theme-light .biblio-box,
+.theme-light .biblio-box *{
+  color: #111 !important;
+}
+
+/* currentColor = noir */
+.theme-light .biblio-table{
+  color: #000 !important;
+}
+
+.theme-light .biblio-table th,
+.theme-light .biblio-table td{
+  border-color: #000 !important;
+}
+
 
