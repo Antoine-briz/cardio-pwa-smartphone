@@ -5754,3 +5754,19 @@ details.card .card-body * {
   }
 }
 
+/* =========================================
+   BIBLIOGRAPHIE — THEME CLAIR UNIQUEMENT
+========================================= */
+
+.theme-light .biblio-table,
+.theme-light .biblio-table th,
+.theme-light .biblio-table td{
+  color: #111 !important;
+}
+
+.theme-light .biblio-table thead th{
+  color: #000 !important;
+  font-weight: 800;
+}
+
+
