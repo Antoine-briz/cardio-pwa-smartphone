@@ -20771,7 +20771,6 @@ function renderAnnuaire() {
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Poste</th>
               <th>Téléphone</th>
             </tr>
           </thead>
@@ -20832,7 +20831,6 @@ function renderAnnuaire() {
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Poste</th>
               <th>Téléphone</th>
             </tr>
           </thead>
@@ -20870,7 +20868,6 @@ function renderAnnuaire() {
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Poste</th>
               <th>Téléphone</th>
             </tr>
           </thead>
@@ -20903,7 +20900,6 @@ function renderAnnuaire() {
           <thead>
             <tr>
               <th>Nom</th>
-              <th>Poste</th>
               <th>Téléphone</th>
             </tr>
           </thead>
