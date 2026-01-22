@@ -5609,15 +5609,6 @@ details.card .card-body * {
   word-break: break-all;
 }
 
-.bibl-newsletter{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  text-align: center;
-  margin: 12px 0 16px;
-}
 
 .cec-credit{
   margin-top: 12px;
