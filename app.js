@@ -2630,7 +2630,7 @@ function antibioticCefazVancomy() {
     // 3) Antibioprophylaxie : on remplace la ligne, en conservant le <strong>...</strong>
 t = t.replace(
   /(<strong>\s*Antibioprophylaxie\s*:\s*<\/strong>)[^\n]*/i,
-  (_, strongLabel) => `${strongLabel} ${antibioticCefazVancomy()}<br>`
+  (_, strongLabel) => `${strongLabel} ${antibioticCefazVancomy()}`
 );
 
     // retire les mentions résiduelles "Si ... coché" si jamais
