@@ -5615,33 +5615,30 @@ details.card .card-body * {
    - 1 colonne, sans image
    - pas de dépassement écran
    - scroll horizontal DANS .biblio-table-wrap (pas sur la page)
-   - texte blanc en thème sombre
-   - revues sur 2 lignes (3 + 2)
-   - espace autour des boutons
+   - revues alignées : logo au-dessus + titre centré
+   - titre revues sur 2 lignes max
+   - thème sombre : texte blanc
+   - thème clair : texte noir (y compris titres revues)
    IMPORTANT : scoped uniquement à la section bibliographie
 ========================================= */
 
 @media (max-width: 900px){
 
-  /* 0) Anti-débordement global (uniquement pour la zone biblio) */
+  /* 0) Anti-débordement local */
   .biblio-split,
   .biblio-left,
   .biblio-box,
   .biblio-table-wrap{
-    min-width: 0 !important;     /* ✅ clé anti-overflow en flex/grid */
+    min-width: 0 !important;
     max-width: 100% !important;
     box-sizing: border-box;
   }
 
   /* 1) 1 colonne + pas d'image */
-  .biblio-split{
-    display: block !important;
-  }
-  .biblio-right{
-    display: none !important;
-  }
+  .biblio-split{ display: block !important; }
+  .biblio-right{ display: none !important; }
 
-  /* 2) Boutons : espace + confort */
+  /* 2) Boutons */
   .biblio-actions{
     display: grid !important;
     gap: 12px !important;
@@ -5654,19 +5651,21 @@ details.card .card-body * {
     border-radius: 14px !important;
   }
 
-  /* 3) Box en mode sombre (texte blanc) */
+  /* 3) Box : ne doit jamais pousser la page */
   .biblio-box{
     width: 100% !important;
-    overflow: hidden !important; /* ✅ empêche la box de pousser la page */
+    overflow: hidden !important;
     background: rgba(255,255,255,0.06) !important;
     border: 1px solid rgba(255,255,255,0.12) !important;
   }
+
+  /* ✅ Par défaut (thème sombre) : blanc */
   .biblio-box,
   .biblio-box *{
     color: #fff !important;
   }
 
-  /* 4) ✅ Scroll horizontal ici, jamais sur la page */
+  /* 4) Scroll horizontal uniquement dans le wrap */
   .biblio-table-wrap{
     display: block !important;
     width: 100% !important;
@@ -5675,20 +5674,18 @@ details.card .card-body * {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* 4bis) ✅ Table peut dépasser => scroll interne
-     On force un rendu "inline-block" pour éviter que certains navigateurs
-     élargissent le viewport malgré overflow-x:auto du wrapper. */
+  /* Table plus large possible => scroll interne */
   .biblio-table{
-    display: inline-block !important;
-    width: max-content !important;  /* largeur = contenu */
-    min-width: 100% !important;     /* au moins largeur écran */
+    display: inline-table !important; /* mieux que inline-block pour les tables */
+    width: max-content !important;
+    min-width: 100% !important;
     max-width: none !important;
     border-collapse: separate !important;
     border-spacing: 0 !important;
     table-layout: auto !important;
   }
 
-  /* 5) Colonne "Spécialité" plus étroite (autorise 2 lignes) */
+  /* 5) Colonne "Spécialité" + étroite */
   .biblio-table th:first-child,
   .biblio-table td:first-child{
     width: 105px !important;
@@ -5702,52 +5699,215 @@ details.card .card-body * {
   .biblio-spec{
     font-weight: 900 !important;
     font-size: 0.95rem !important;
-    color: #fff !important;
   }
 
-  /* 6) Grille revues : 3 colonnes -> 5 éléments => 2 lignes (3 + 2) */
+  /* 6) Grille revues : 3 colonnes => 2 lignes (3 + 2) */
   .biblio-journal-grid{
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 10px !important;
     align-items: start !important;
+    justify-items: center !important; /* ✅ centre les cartes dans chaque cellule */
   }
 
+  /* ✅ Carte revue : logo au-dessus, titre centré */
   .biblio-journal-card{
-    padding: 6px 4px !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    padding: 8px 6px !important;
     border-radius: 12px !important;
     text-decoration: none !important;
     background: transparent !important;
-    color: #fff !important;
   }
 
   .biblio-journal-card img{
-    width: 38px !important;
-    height: 38px !important;
+    width: 40px !important;
+    height: 40px !important;
     object-fit: contain !important;
     border-radius: 10px !important;
     background: #fff !important; /* logos lisibles */
     border: 1px solid rgba(255,255,255,0.25) !important;
+    display: block;
   }
 
+  /* ✅ Titre : 2 lignes max, centré */
   .biblio-journal-card span{
-    display: block !important;
-    margin-top: 6px !important;
-    font-size: 10.5px !important;
+    width: 100% !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;   /* ✅ 2 lignes max */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+
+    font-size: 11px !important;
     line-height: 1.15 !important;
     font-weight: 800 !important;
     text-align: center !important;
     word-break: break-word !important;
-    color: #fff !important;
   }
 
-  /* 7) En-têtes + séparations */
+  /* 7) En-têtes + séparations (thème sombre par défaut) */
   .biblio-table thead th{
-    color: #fff !important;
     font-weight: 900 !important;
     border-bottom: 1px solid rgba(255,255,255,0.25) !important;
   }
+  .biblio-table td{
+    border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+    vertical-align: top !important;
+  }
+}
+/* =========================================
+   BIBLIOGRAPHIE — SMARTPHONE (UNIQUE / SAFE)
+   Objectifs :
+   - 1 colonne, sans image
+   - pas de dépassement écran
+   - scroll horizontal DANS .biblio-table-wrap (pas sur la page)
+   - revues alignées : logo au-dessus + titre centré
+   - titre revues sur 2 lignes max
+   - thème sombre : texte blanc
+   - thème clair : texte noir (y compris titres revues)
+   IMPORTANT : scoped uniquement à la section bibliographie
+========================================= */
 
+@media (max-width: 900px){
+
+  /* 0) Anti-débordement local */
+  .biblio-split,
+  .biblio-left,
+  .biblio-box,
+  .biblio-table-wrap{
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* 1) 1 colonne + pas d'image */
+  .biblio-split{ display: block !important; }
+  .biblio-right{ display: none !important; }
+
+  /* 2) Boutons */
+  .biblio-actions{
+    display: grid !important;
+    gap: 12px !important;
+    margin: 10px 0 18px !important;
+  }
+  .biblio-actions .btn{
+    min-height: 56px !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    border-radius: 14px !important;
+  }
+
+  /* 3) Box : ne doit jamais pousser la page */
+  .biblio-box{
+    width: 100% !important;
+    overflow: hidden !important;
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+  }
+
+  /* ✅ Par défaut (thème sombre) : blanc */
+  .biblio-box,
+  .biblio-box *{
+    color: #fff !important;
+  }
+
+  /* 4) Scroll horizontal uniquement dans le wrap */
+  .biblio-table-wrap{
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Table plus large possible => scroll interne */
+  .biblio-table{
+    display: inline-table !important; /* mieux que inline-block pour les tables */
+    width: max-content !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    table-layout: auto !important;
+  }
+
+  /* 5) Colonne "Spécialité" + étroite */
+  .biblio-table th:first-child,
+  .biblio-table td:first-child{
+    width: 105px !important;
+    max-width: 105px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    vertical-align: top !important;
+    border-right: 1px solid rgba(255,255,255,0.18) !important;
+  }
+
+  .biblio-spec{
+    font-weight: 900 !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* 6) Grille revues : 3 colonnes => 2 lignes (3 + 2) */
+  .biblio-journal-grid{
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: start !important;
+    justify-items: center !important; /* ✅ centre les cartes dans chaque cellule */
+  }
+
+  /* ✅ Carte revue : logo au-dessus, titre centré */
+  .biblio-journal-card{
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    padding: 8px 6px !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    background: transparent !important;
+  }
+
+  .biblio-journal-card img{
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: contain !important;
+    border-radius: 10px !important;
+    background: #fff !important; /* logos lisibles */
+    border: 1px solid rgba(255,255,255,0.25) !important;
+    display: block;
+  }
+
+  /* ✅ Titre : 2 lignes max, centré */
+  .biblio-journal-card span{
+    width: 100% !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;   /* ✅ 2 lignes max */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    word-break: break-word !important;
+  }
+
+  /* 7) En-têtes + séparations (thème sombre par défaut) */
+  .biblio-table thead th{
+    font-weight: 900 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.25) !important;
+  }
   .biblio-table td{
     border-bottom: 1px solid rgba(255,255,255,0.12) !important;
     vertical-align: top !important;
@@ -5756,17 +5916,20 @@ details.card .card-body * {
 
 /* =========================================
    BIBLIOGRAPHIE — THEME CLAIR UNIQUEMENT
+   ✅ force le texte noir (titres revues inclus)
 ========================================= */
 
-.theme-light .biblio-table,
-.theme-light .biblio-table th,
-.theme-light .biblio-table td{
+.theme-light .biblio-box,
+.theme-light .biblio-box *{
   color: #111 !important;
 }
 
 .theme-light .biblio-table thead th{
   color: #000 !important;
-  font-weight: 800;
+}
+
+.theme-light .biblio-journal-card span{
+  color: #111 !important; /* ✅ titres revues noirs */
 }
 
 .cec-credit{
