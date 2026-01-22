@@ -2627,13 +2627,18 @@ function antibioticCefazVancomy() {
       t = t.replace("Atracurium 0,5mg/kg", "Rocuronium 1,2mg/kg ou Célocurine 1mg/kg car séquence rapide");
     }
 
-    // 3) Antibioprophylaxie : appliquer “Si IMC > 50 … / Si allergie …” sans afficher ces consignes
-    // On reconstruit uniquement la partie concernée.
-    // Repérage simple sur la phrase du tableau.
-    t = t.replace(
+    // 3) Antibioprophylaxie : on remplace la ligne, en conservant le <strong>...</strong>
+t = t.replace(
+  /(<strong>\s*Antibioprophylaxie\s*:\s*<\/strong>)[^\n]*/i,
+  (_, strongLabel) => `${strongLabel} ${antibioticCefazVancomy()}`
+);
+
+// fallback si jamais tu as une version sans <strong>
+t = t.replace(
   /(Antibioprophylaxie\s*:)[^\n]*/i,
   (_, label) => `${label} ${antibioticCefazVancomy()}`
 );
+
 
     // retire les mentions résiduelles "Si ... coché" si jamais
     t = t.replace(/Si IMC > 50 coché:\s*/g, "");
