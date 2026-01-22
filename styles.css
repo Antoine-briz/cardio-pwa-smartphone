@@ -6034,4 +6034,42 @@ body {
   border-color: #000 !important;
 }
 
+/* =========================================
+   BIBLIOGRAPHIE — FORCER LES BORDURES INTERNES/EXTERNES
+   (ne touche que la table bibliographie)
+========================================= */
+
+/* 1) Table en "collapse" sinon les traits internes peuvent disparaître */
+.biblio-table-wrap .biblio-table{
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+/* 2) Bordure externe */
+.biblio-table-wrap .biblio-table{
+  border: 1px solid #fff !important; /* sombre par défaut */
+}
+
+/* 3) Bordures internes : CHAQUE cellule */
+.biblio-table-wrap .biblio-table th,
+.biblio-table-wrap .biblio-table td{
+  border: 1px solid #fff !important;   /* sombre par défaut */
+  border-left: 1px solid #fff !important;
+  border-right: 1px solid #fff !important;
+  border-top: 1px solid #fff !important;
+  border-bottom: 1px solid #fff !important;
+
+  /* au cas où des styles hérités masquent le trait */
+  border-style: solid !important;
+}
+
+/* 4) THEME CLAIR : tout en NOIR (bordures + séparation) */
+.theme-light .biblio-table-wrap .biblio-table{
+  border-color: #000 !important;
+}
+
+.theme-light .biblio-table-wrap .biblio-table th,
+.theme-light .biblio-table-wrap .biblio-table td{
+  border-color: #000 !important;
+}
 
