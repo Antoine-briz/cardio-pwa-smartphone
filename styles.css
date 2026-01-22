@@ -5769,4 +5769,50 @@ details.card .card-body * {
   font-weight: 800;
 }
 
+.cec-credit{
+  margin-top: 12px;
+  font-style: italic;
+  font-size: 14px;
+  color: #444;
+  text-align: left;
+}
+
+/* Boutons ETO (RVA / RVM) */
+.eto-buttons{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;   /* espace entre les 2 boutons */
+}
+
+/* ===========================
+   Sticky footer (global) — SAFE (sans body:flex)
+   Objectif :
+   - footer en bas si page courte
+   - footer après le contenu si page longue
+   - impact minimal sur le reste
+   =========================== */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+/* 100dvh gère mieux la barre d’adresse mobile */
+body {
+  min-height: 100dvh;
+}
+
+/* Le footer “colle” en bas quand il n’y a pas assez de contenu,
+   sans transformer toute la page en flex. */
+#app-footer {
+  position: sticky;
+  top: 100dvh;
+}
+
+/* Optionnel mais safe : évite qu’un contenu très large élargisse la page */
+#app {
+  min-width: 0;
+}
+
 
